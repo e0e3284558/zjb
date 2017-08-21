@@ -15,7 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//认证路由开始
+//--------------------------------------------------------------------------
+
 Auth::routes();
+
+//--------------------------------------------------------------------------
+//认证路由结束
 
 
 //门户模块路由开始
@@ -28,11 +34,14 @@ Route::get('/home', 'Portal\IndexController@index')->name('home');
 //门户模块路由结束
 
 
-
-
 //用户模块路由开始
 //-------------------------------------------------------------------------
-
+Route::group(['prefix' => 'users','namespace' => 'User'], function () {
+    Route::get('index', 'DefaultController@index')->name('users.index');
+    Route::get('unit', 'OrganizationController@unit')->name('users.unit');
+    Route::get('orgs', 'OrganizationController@index')->name('users.orgs');
+    Route::get('groups', 'GroupsController@index')->name('users.groups');
+});
 
 
 //-------------------------------------------------------------------------
