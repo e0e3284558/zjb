@@ -42,7 +42,16 @@ Route::group(['prefix' => 'users','namespace' => 'User'], function () {
     Route::get('orgs', 'OrganizationController@index')->name('users.orgs');
     Route::get('groups', 'GroupsController@index')->name('users.groups');
 });
-
-
 //-------------------------------------------------------------------------
 //用户模块路由结束
+
+
+
+//报修模块路由开始
+//-------------------------------------------------------------------------
+Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
+    //报修分类
+    Route::resource('classify', 'ClassifyController');
+});
+//-------------------------------------------------------------------------
+//报修模块路由结束

@@ -2599,16 +2599,16 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "cbfb3679d0a91ec56caa63ed8de3052c6792376a"
+                "reference": "e3fdf7a5f545c2d6fe3c349a4c58394d03ba1c9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/db-dumper/cbfb3679d0a91ec56caa63ed8de3052c6792376a.zip",
-                "reference": "cbfb3679d0a91ec56caa63ed8de3052c6792376a",
+                "url": "https://files.phpcomposer.com/files/spatie/db-dumper/e3fdf7a5f545c2d6fe3c349a4c58394d03ba1c9b.zip",
+                "reference": "e3fdf7a5f545c2d6fe3c349a4c58394d03ba1c9b",
                 "shasum": ""
             },
             "require": {
@@ -2645,7 +2645,7 @@
                 "mysqldump",
                 "spatie"
             ],
-            "time": "2017-05-25T20:43:25+00:00"
+            "time": "2017-08-18T11:48:03+00:00"
         },
         {
             "name": "spatie/laravel-backup",
@@ -4913,16 +4913,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "ecb0b2cdaa0add708fe6f329ef65ae0c5225130b"
+                "reference": "9a02332089ac48e704c70f6cefed30c224e3c0b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/sebastianbergmann/php-token-stream/ecb0b2cdaa0add708fe6f329ef65ae0c5225130b.zip",
-                "reference": "ecb0b2cdaa0add708fe6f329ef65ae0c5225130b",
+                "url": "https://files.phpcomposer.com/files/sebastianbergmann/php-token-stream/9a02332089ac48e704c70f6cefed30c224e3c0b0.zip",
+                "reference": "9a02332089ac48e704c70f6cefed30c224e3c0b0",
                 "shasum": ""
             },
             "require": {
@@ -4958,7 +4958,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-08-03T14:17:41+00:00"
+            "time": "2017-08-20T05:47:52+00:00"
         },
         {
             "name": "phpunit/phpunit",
