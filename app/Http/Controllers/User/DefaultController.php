@@ -22,7 +22,7 @@ class DefaultController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-       return view('user.index');
+       return view('user.user.index');
     }
 
 

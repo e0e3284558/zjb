@@ -16,11 +16,14 @@
     <link href="{{ asset('assets/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
     <!-- Toastr style -->
-    <link href="{{ asset('assets/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
-
-    <!-- Gritter -->
-    <link href="{{ asset('assets/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
     
+    <!-- Datatables style -->
+    <link href="{{ asset('assets/js/plugins/dataTables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- jqGrid style-->
+    <link href="{{ asset('assets/js/plugins/jqGrid/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet">
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -29,8 +32,16 @@
 
     <!-- Custom -->
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+
+    <!-- Mainly scripts -->
+    <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/plugins/metisMenu/jquery.metisMenu.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+
+
 </head>
-<body  class="pace-done fixed-sidebar full-height-layout skin-1">
+<body  class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
     <div id="wrapper">
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -62,12 +73,12 @@
 
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
-                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                         <form role="search" class="navbar-form-custom" action="search_results.html">
                             <div class="form-group">
-                                <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                                <input type="text" placeholder="搜索" class="form-control" name="top-search" id="top-search">
                             </div>
                         </form>
                     </div>
@@ -173,8 +184,8 @@
 
 
                         <li>
-                            <a href="login.html">
-                                <i class="fa fa-sign-out"></i> Log out
+                            <a href="{{ route('logout') }}">
+                                <i class="fa fa-power-off"></i> 退出
                             </a>
                         </li>
                         <li>
@@ -794,26 +805,55 @@
         </div>
     </div>
 
-    <!-- Mainly scripts -->
-    <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-
+    
 
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ asset('assets/js/inspinia.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
 
     <!-- Toastr -->
-    <script src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}" type="text/javascript"></script>
+    <!-- dataTables -->
+    <script src="{{ asset('assets/js/plugins/dataTables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
+    <!-- jqGrid -->
+    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            
+        //初始化datatables
+        $.extend( $.fn.dataTable.defaults, {
+            'language':{
+                "sProcessing":   "处理中...",
+                "sLengthMenu":   "显示 _MENU_ 项结果",
+                "sZeroRecords":  "没有匹配结果",
+                "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix":  "",
+                "sSearch":       "搜索:",
+                "sUrl":          "",
+                "sEmptyTable":     "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands":  ",",
+                "oPaginate": {
+                    "sFirst":    "首页",
+                    "sPrevious": "上页",
+                    "sNext":     "下页",
+                    "sLast":     "末页"
+                },
+                "oAria": {
+                    "sSortAscending":  ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        } );
+        //初始化toastr
+        
 
+        $(document).ready(function() {
         });
     </script>
 
@@ -822,6 +862,8 @@
         if (localStorageSupport){
             localStorage.setItem("fixedfooter",'on');
             localStorage.setItem("fixedsidebar",'on');
+            localStorage.setItem("fixednavbar",'off');
+            localStorage.setItem("fixednavbar2",'off');
         }
 
         // Enable/disable fixed top navbar

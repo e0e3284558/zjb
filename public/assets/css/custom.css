@@ -1,0 +1,13 @@
+.full-height-ibox{
+	margin-bottom: 0px;
+	height: 100%;
+}
+.full-height-ibox .ibox-content{
+	height:calc(100% - 49px);
+}
+.full-height-wrapper{
+	padding: 15px;
+}
+.skin-1 .wrapper-content2 {
+  padding: 30px 15px;
+}
