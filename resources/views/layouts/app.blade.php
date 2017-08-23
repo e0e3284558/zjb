@@ -27,6 +27,15 @@
     <!-- jsTree style-->
     <link href="{{ asset('assets/js/plugins/jsTree/themes/default/style.min.css') }}" rel="stylesheet">
 
+    <!-- bootstrap-treeView -->
+    <link href="{{ asset('assets/js/plugins/bootstrap-treeview/dist/bootstrap-treeview.min.css') }}" rel="stylesheet">
+
+    <!--日期表单 bootstrap-datepicker-->
+    <link href="{{asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
+
+    <!--sweetalert style-->
+    <link href="{{asset('assets/js/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet">
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -36,12 +45,16 @@
     <!-- Custom -->
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
+
     <!-- Mainly scripts -->
     <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/metisMenu/jquery.metisMenu.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
-
+    <!-- bootstrap-treeView -->
+    <script src="{{ asset('assets/js/plugins/bootstrap-treeview/dist/bootstrap-treeview.min.js') }}" type="text/javascript"></script>
+    {{--表单JS验证--}}
+    <script src="{{asset('assets/js/plugins/jquery-validation-1.17.0/dist/jquery.validate.js')}}"></script>
 
 </head>
 <body  class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
@@ -819,10 +832,13 @@
     <script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
     <!-- jqGrid -->
-    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
 
-    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+    <!-- sweetalert -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
