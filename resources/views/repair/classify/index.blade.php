@@ -87,7 +87,7 @@
                             </p>
 
                             <div class="dd" id="nestable2">
-                                <form action="{{url('repair/classify')}}" method="post">
+                                <form  class="form-horizontal"  action="{{url('repair/classify')}}" method="post">
                                     {{csrf_field()}}
                                     <li class="dd-item">
                                         <div class="dd-handle ">
@@ -103,7 +103,7 @@
                                         </div>
                                     </li>
 
-                                    <li class="dd-item">
+                                    <li class="dd-item  hide">
                                         <div class="dd-handle ">
                                             <label>分类图标</label>
                                             <input type="text" class="form-control" value="fa fa-cogs" disabled name="icon" placeholder="分类图标">
