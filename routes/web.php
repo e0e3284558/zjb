@@ -43,10 +43,20 @@ Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], f
     Route::get('departments', 'DepartmentController@index')->name('users.departments');
     Route::get('groups', 'GroupsController@index')->name('users.groups');
 });
-
-
 //-------------------------------------------------------------------------
 //用户模块路由结束
+
+
+
+//报修模块路由开始
+//-------------------------------------------------------------------------
+Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
+    //报修分类
+    Route::resource('classify', 'ClassifyController');
+});
+//-------------------------------------------------------------------------
+//报修模块路由结束
+
 
 //资产管理模块路由开始
 //-------------------------------------------------------------------------

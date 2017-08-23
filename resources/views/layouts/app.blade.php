@@ -27,8 +27,11 @@
     <!-- jsTree style-->
     <link href="{{ asset('assets/js/plugins/jsTree/themes/default/style.min.css') }}" rel="stylesheet">
 
+    <!-- toastr style-->
+    <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
+
     <!-- bootstrap-treeView -->
-    <link href="{{ asset('assets/js/plugins/bootstrap-treeview/dist/bootstrap-treeview.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.css') }}" rel="stylesheet">
 
     <!--日期表单 bootstrap-datepicker-->
     <link href="{{asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
@@ -51,10 +54,7 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/metisMenu/jquery.metisMenu.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
-    <!-- bootstrap-treeView -->
-    <script src="{{ asset('assets/js/plugins/bootstrap-treeview/dist/bootstrap-treeview.min.js') }}" type="text/javascript"></script>
-    {{--表单JS验证--}}
-    <script src="{{asset('assets/js/plugins/jquery-validation-1.17.0/dist/jquery.validate.js')}}"></script>
+
 
 </head>
 <body  class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
@@ -110,7 +110,7 @@
                                 <li>
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/a7.jpg">
+                                            <img alt="image" class="img-circle" src="{{url('img/a7.jpg')}}">
                                         </a>
                                         <div class="media-body">
                                             <small class="pull-right">46h ago</small>
@@ -123,7 +123,7 @@
                                 <li>
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/a4.jpg">
+                                            <img alt="image" class="img-circle" src="{{url('img/a4.jpg')}}">
                                         </a>
                                         <div class="media-body ">
                                             <small class="pull-right text-navy">5h ago</small>
@@ -136,7 +136,7 @@
                                 <li>
                                     <div class="dropdown-messages-box">
                                         <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="img/profile.jpg">
+                                            <img alt="image" class="img-circle" src="{{url('img/profile.jpg')}}">
                                         </a>
                                         <div class="media-body ">
                                             <small class="pull-right">23h ago</small>
@@ -339,7 +339,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a1.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a1.jpg')}}">
 
                                         <div class="m-t-xs">
                                             <i class="fa fa-star text-warning"></i>
@@ -357,7 +357,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a2.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a2.jpg')}}">
                                     </div>
                                     <div class="media-body">
                                         The point of using Lorem Ipsum is that it has a more-or-less normal.
@@ -369,7 +369,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a3.jpg')}}">
 
                                         <div class="m-t-xs">
                                             <i class="fa fa-star text-warning"></i>
@@ -387,7 +387,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a4.jpg')}}">
                                     </div>
 
                                     <div class="media-body">
@@ -400,7 +400,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a8.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a8.jpg')}}">
                                     </div>
                                     <div class="media-body">
 
@@ -413,7 +413,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a7.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a7.jpg')}}">
                                     </div>
                                     <div class="media-body">
                                         Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
@@ -425,7 +425,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a3.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a3.jpg')}}">
 
                                         <div class="m-t-xs">
                                             <i class="fa fa-star text-warning"></i>
@@ -443,7 +443,7 @@
                             <div class="sidebar-message">
                                 <a href="#">
                                     <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="img/a4.jpg">
+                                        <img alt="image" class="img-circle message-avatar" src="{{url('img/a4.jpg')}}">
                                     </div>
                                     <div class="media-body">
                                         Uncover many web sites still in their infancy. Various versions have.
@@ -831,14 +831,29 @@
     <script src="{{ asset('assets/js/plugins/dataTables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
+    <!-- layer -->
+    <script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script>
+
     <!-- jqGrid -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
-
+        
+    <!-- jsTree -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+
+    <!-- jqValidate -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/localization/messages_zh.min.js') }}"></script>
+    
+    <!-- toastr -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
+
+    <!-- bootstrap-treeView -->
+    <script src="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.js') }}" type="text/javascript"></script>
+
     <!-- sweetalert -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
-
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
@@ -874,7 +889,20 @@
             }
         } );
         //初始化toastr
-        
+        window.toastr.options = {
+           "closeButton": true,
+           "debug": false,
+           "positionClass": "toast-top-center",
+           "onclick": null,
+           "showDuration": "1000",
+           "hideDuration": "1000",
+           "timeOut": "3000",
+           "extendedTimeOut": "1000",
+           "showEasing": "swing",
+           "hideEasing": "linear",
+           "showMethod": "fadeIn",
+           "hideMethod": "fadeOut"
+        };
 
         $(document).ready(function() {
             
