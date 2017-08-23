@@ -1,3 +1,10 @@
+.span-icon-right{
+    text-align: right;
+    float: right;
+}
+.span-i-icon-right{
+    margin-left: 8px;
+}
 .full-height-ibox{
 	margin-bottom: 0px;
 	height: 100%;

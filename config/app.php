@@ -249,7 +249,6 @@ return [
         'Active' => HieuLe\Active\Facades\Active::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-
     ],
 
 ];
