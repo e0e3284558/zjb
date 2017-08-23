@@ -43,3 +43,10 @@
         </li>
     </ul>
 </li>
+
+<li class="{{ active_class(if_query('app_groups','assets')) }}">
+    <a href="javascript:;"><i class="fa fa-group"></i> <span class="nav-label">资产管理</span> <span class="fa arrow"></span></a>
+    <ul class="nav nav-second-level collapse">
+        <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AssetCategoryController@index'))}}"><a href="{{ url('asset_category?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 资产类别</a></li>
+    </ul>
+</li>

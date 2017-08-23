@@ -27,7 +27,8 @@
         "watson/validating": "^3.0",
         "webpatser/laravel-uuid": "^2.0",
         "yajra/laravel-datatables-oracle": "^7.5",
-        "zizaco/entrust": "5.2.x-dev"
+        "zizaco/entrust": "5.2.x-dev",
+        "maatwebsite/excel": "~2.1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.4",
@@ -41,7 +42,10 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [
+            "app/Helpers/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

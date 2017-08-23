@@ -23,6 +23,9 @@
 
     <!-- jqGrid style-->
     <link href="{{ asset('assets/js/plugins/jqGrid/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet">
+    
+    <!-- jsTree style-->
+    <link href="{{ asset('assets/js/plugins/jsTree/themes/default/style.min.css') }}" rel="stylesheet">
 
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
@@ -804,13 +807,10 @@
         </div>
     </div>
 
-    
-
-
-    <!-- Custom and plugin javascript -->
-    <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
+    <!-- pace -->
     <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
-
+    <!-- blockui -->
+    <script src="{{ asset('assets/js/plugins/blockui/jquery.blockUI.js') }}" type="text/javascript"></script>
     <!-- Toastr -->
     <script src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}" type="text/javascript"></script>
     <!-- dataTables -->
@@ -823,6 +823,13 @@
     <!-- jqGrid -->
     <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
     <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+
+    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/custom.js') }}" type="text/javascript"></script>
+    
 
     <script type="text/javascript">
         //初始化datatables
@@ -856,6 +863,7 @@
         
 
         $(document).ready(function() {
+            
         });
     </script>
 
