@@ -2,7 +2,7 @@
     <a href="{{ url('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">控制面板</span></a>
 </li>
 <li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index'))}}">
-    <a href="javascript:;"><i class="fa fa-group "></i> <span class="nav-label">报修分类</span> <span
+    <a href="javascript:;"><i class="fa fa-pied-piper-alt "></i> <span class="nav-label">报修分类</span> <span
                 class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index'))}}"><a
