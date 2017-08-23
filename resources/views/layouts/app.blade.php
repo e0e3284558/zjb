@@ -821,10 +821,16 @@
     <script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script>
 
     <!-- jqGrid -->
-    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
-
-    <script type="text/ecmascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+        
+    <!-- jsTree -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+    
+    <!-- jqValidate -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/localization/messages_zh.min.js') }}"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
