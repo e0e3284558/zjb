@@ -16,11 +16,11 @@ class CreateClassifiesTable extends Migration
         Schema::create('classifies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->default('')->comment('分类名称');
-            $table->string('comment')->default('')->comment('分类备注');
+            $table->string('comment')->nullable()->comment('分类备注');
             $table->integer('org_id')->default(0)->comment('公司id');
-            $table->string('icon')->default('')->comment('图标');
+            $table->string('icon')->nullable()->comment('图标');
             $table->integer('sorting')->default(0)->comment('排序');
-            $table->timestamp('deleted_at')->nullable()->comment('软删除');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

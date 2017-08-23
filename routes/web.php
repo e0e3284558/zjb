@@ -19,6 +19,7 @@ Route::get('/', function () {
 //--------------------------------------------------------------------------
 
 Auth::routes();
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 //--------------------------------------------------------------------------
 //认证路由结束
@@ -36,10 +37,10 @@ Route::get('/home', 'Portal\IndexController@index')->name('home');
 
 //用户模块路由开始
 //-------------------------------------------------------------------------
-Route::group(['prefix' => 'users','namespace' => 'User'], function () {
+Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], function () {
     Route::get('index', 'DefaultController@index')->name('users.index');
-    Route::get('unit', 'OrganizationController@unit')->name('users.unit');
-    Route::get('orgs', 'OrganizationController@index')->name('users.orgs');
+    Route::get('unit', 'DepartmentController@unit')->name('users.unit');
+    Route::get('departments', 'DepartmentController@index')->name('users.departments');
     Route::get('groups', 'GroupsController@index')->name('users.groups');
 });
 //-------------------------------------------------------------------------

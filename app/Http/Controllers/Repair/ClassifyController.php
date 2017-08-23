@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Http\Requests\ClassifyRequest;
+use App\Models\Repair\Classify;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,8 +16,8 @@ class ClassifyController extends Controller
      */
     public function index()
     {
-        //
-        return view('repair.classify.index');
+        $data=Classify::where('org_id',0)->OrderBy('sorting','desc')->get();
+        return view('repair.classify.index',compact('data'));
     }
 
     /**
@@ -26,6 +28,7 @@ class ClassifyController extends Controller
     public function create()
     {
         //
+        return  response()->view('repair.classify.add');
     }
 
     /**
@@ -34,9 +37,14 @@ class ClassifyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClassifyRequest $request)
     {
-        //
+        //批量保存用户提交的数据
+        if(Classify::create($request->except('_token'))){
+            return  redirect('repair/classify')->with('success', '创建成功');
+        }else{
+            return  redirect('repair/classify')->with('error', '创建失败');
+        }
     }
 
     /**
@@ -58,7 +66,8 @@ class ClassifyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data=Classify::where('id',$id)->first();
+        return  response()->view('repair.classify.edit',compact('data'));
     }
 
     /**
@@ -68,9 +77,14 @@ class ClassifyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ClassifyRequest $request, $id)
     {
-        //
+        //修改分类信息
+        if(Classify::where('id',$id)->update($request->except('_token','_method'))){
+            return  redirect('repair/classify')->with('success', '编辑成功');
+        }else{
+            return  redirect('repair/classify')->with('error', '编辑失败，请稍候重试');
+        }
     }
 
     /**
@@ -81,6 +95,17 @@ class ClassifyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //获取id删除该条数据
+        $info = Classify::where('id', $id)->delete();
+        if ($info) {
+            return response()->json([
+                'message' => '删除成功',
+                'status' => 'success'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error'
+            ]);
+        }
     }
 }
