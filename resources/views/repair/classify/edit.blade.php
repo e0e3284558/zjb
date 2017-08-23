@@ -65,6 +65,9 @@
                     <li>
                         <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                         <button type="submit" class="btn btn-success">编辑</button>
+                        <button type="button" class="btn btn-warning" onclick="add('{{url('repair/classify/create')}}')">
+                            取消
+                        </button>
                     </li>
                 </form>
             </div>
