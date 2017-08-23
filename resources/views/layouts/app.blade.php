@@ -27,6 +27,9 @@
     <!-- jsTree style-->
     <link href="{{ asset('assets/js/plugins/jsTree/themes/default/style.min.css') }}" rel="stylesheet">
 
+    <!-- toastr style-->
+    <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -831,6 +834,9 @@
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/localization/messages_zh.min.js') }}"></script>
+    
+    <!-- toastr -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
@@ -866,7 +872,20 @@
             }
         } );
         //初始化toastr
-        
+        window.toastr.options = {
+           "closeButton": true,
+           "debug": false,
+           "positionClass": "toast-top-center",
+           "onclick": null,
+           "showDuration": "1000",
+           "hideDuration": "1000",
+           "timeOut": "3000",
+           "extendedTimeOut": "1000",
+           "showEasing": "swing",
+           "hideEasing": "linear",
+           "showMethod": "fadeIn",
+           "hideMethod": "fadeOut"
+        };
 
         $(document).ready(function() {
             
