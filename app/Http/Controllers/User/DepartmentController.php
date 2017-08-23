@@ -23,7 +23,7 @@ class DepartmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function unit(){
-        echo 'unit';
+        echo arr2str([1,2,3,4]);
         exit;
     }
 
