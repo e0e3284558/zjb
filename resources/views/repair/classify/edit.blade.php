@@ -28,12 +28,13 @@
             </p>
 
             <div class="dd" id="nestable2">
-                <form action="{{url('repair/classify/'.$data->id)}}" method="post">
+                <form class="form-horizontal" action="{{url('repair/classify/'.$data->id)}}" method="post">
                     {{csrf_field()}}
                     {{method_field('PUT')}}
                     <li class="dd-item">
-                        <div class="dd-handle ">
-                            <label>分类名称<i>*</i></label>
+
+                        <div class="dd-handle form-group">
+                            <label class="control-label">分类名称<span class="required">*</span></label>
                             <input type="text" class="form-control" name="name" value="{{$data->name}}"
                                    placeholder="分类名称">
                         </div>
@@ -48,7 +49,7 @@
                     </li>
 
                     <li class="dd-item">
-                        <div class="dd-handle ">
+                        <div class="dd-handle hide">
                             <label>分类图标</label>
                             <input type="text" class="form-control" name="icon" value="{{$data->icon}}"
                                    placeholder="分类图标">
@@ -65,6 +66,9 @@
                     <li>
                         <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                         <button type="submit" class="btn btn-success">编辑</button>
+                        <button type="button" class="btn btn-warning" onclick="add('{{url('repair/classify/create')}}')">
+                            取消
+                        </button>
                     </li>
                 </form>
             </div>

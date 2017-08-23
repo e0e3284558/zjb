@@ -35,10 +35,6 @@
                         <p class="m-b-lg">
                             在这就办云平台的系统上，拥有者丰富的可读可选可编辑的分类列表，您可以根据您要的方式进行定制，我们的使命是提供更高效的后勤保障系统。
                         </p>
-                        <div class="dd" id="nestable2">
-                            <button class="btn btn-success" onclick="add('{{url('repair/classify/create')}}')">创建一个新分类
-                            </button>
-                        </div>
 
                         <div class="dd" id="nestable2">
                             <ol class="dd-list">
@@ -91,7 +87,7 @@
                             </p>
 
                             <div class="dd" id="nestable2">
-                                <form action="{{url('repair/classify')}}" method="post">
+                                <form  class="form-horizontal"  action="{{url('repair/classify')}}" method="post">
                                     {{csrf_field()}}
                                     <li class="dd-item">
                                         <div class="dd-handle ">
@@ -107,16 +103,16 @@
                                         </div>
                                     </li>
 
-                                    <li class="dd-item">
+                                    <li class="dd-item  hide">
                                         <div class="dd-handle ">
                                             <label>分类图标</label>
-                                            <input type="text" class="form-control"value="" name="icon" placeholder="分类图标">
+                                            <input type="text" class="form-control" value="fa fa-cogs" disabled name="icon" placeholder="分类图标">
                                         </div>
                                     </li>
                                     <li class="dd-item">
                                         <div class="dd-handle ">
                                             <label>分类排序</label>
-                                            <input type="number" class="form-control" value="0" name="sorting"
+                                            <input type="number" class="form-control" value="0"   name="sorting"
                                                    placeholder="分类排序">
                                         </div>
                                     </li>
