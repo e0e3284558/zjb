@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Asset;
 
-use App\Models\Asset\AssetCategory;
+use App\Models\Asset\Area;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Webpatser\Uuid\Uuid;
 
-class AssetCategoryController extends Controller
+class AreaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +17,14 @@ class AssetCategoryController extends Controller
      */
     public function index()
     {
-        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get()->toArray();
+        $list = Area::where("org_id",Auth::user()->org_id)->get()->toArray();
 
         foreach ($list as $k=>$v){
             $list[$k]['text'] = $v['name'];
             $list[$k]['nodeId'] = $v['id'];
         }
         $tree = list_to_tree($list, 'id', 'pid', 'nodes', "0");
-        return view("asset.asset_category.index",compact("tree"));
+        return view("asset.area.index",compact("tree"));
     }
 
     /**
@@ -33,17 +34,13 @@ class AssetCategoryController extends Controller
      */
     public function create()
     {
-        return response()->view("asset.asset_category.add");
+        return response()->view("asset.area.add");
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Http\Response
-     */
     public function add($id){
-        if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
-            $info = AssetCategory::find($id);
-            return response()->view("asset.asset_category.add_son",compact("info"));
+        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
+            $info = Area::find($id);
+            return response()->view("asset.area.add_son",compact("info"));
         }
     }
 
@@ -56,33 +53,34 @@ class AssetCategoryController extends Controller
     public function store(Request $request)
     {
         $arr = [
-            'category_code' => "13124",
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,
+            'uid' => Uuid::generate()->string,
+            'remarks' => $request->remarks,
             'created_at' => date("Y-m-d H:i:s")
         ];
         if($request->pid){
             $arr['pid'] = $request->pid;
             $org_id = Auth::user()->org_id;
-            $arr['path'] = AssetCategory::where('org_id',$org_id)->where("id",$request->pid)->value("path");
+            $arr['path'] = Area::where('org_id',$org_id)->where("id",$request->pid)->value("path");
             $arr['path'] .= $request->pid.",";
         }else{
-            $arr['pid'] = 0;
+            $arr['pid'] = "0";
             $arr['path'] = "";
         }
-        $info = AssetCategory::insertGetId($arr);
+        $info = Area::insertGetId($arr);
         if($info){
-            $arr = [
+            $message = [
                 'code'=>1,
                 'message'=>'添加成功'
             ];
         }else{
-            $arr = [
+            $message = [
                 'code'=>0,
                 'message'=>'添加失败'
             ];
         }
-        return response()->json($arr);
+        return response()->json($message);
     }
 
     /**
@@ -93,8 +91,7 @@ class AssetCategoryController extends Controller
      */
     public function show($id)
     {
-        $info = AssetCategory::find($id);
-        return response()->view("asset.asset_category.edit",compact('info'));
+        //
     }
 
     /**
@@ -105,8 +102,14 @@ class AssetCategoryController extends Controller
      */
     public function edit($id)
     {
-        $info = AssetCategory::find($id);
-        return response()->view("asset.asset_category.edit",compact('info'));
+        $info = Area::find($id);
+
+        if($info->pid=="0"){
+            return response()->view("asset.area.edit",compact('info'));
+        }else{
+            $parent_info = Area::where("id",$info->pid)->where("org_id",Auth::user()->org_id)->first();
+            return response()->view('asset.area.edit',compact("info","parent_info"));
+        }
     }
 
     /**
@@ -118,8 +121,8 @@ class AssetCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
-            $info = AssetCategory::where("id",$id)->update($request->except("_token","_method"));
+        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
+            $info = Area::where("id",$id)->update($request->except("_token","_method"));
             if($info){
                 $arr = [
                     'code'=>1,
@@ -143,20 +146,20 @@ class AssetCategoryController extends Controller
      */
     public function destroy($id)
     {
-        if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
-            $list = AssetCategory::where("pid",$id)->first();
+        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
+            $list = Area::where("pid",$id)->where("org_id",Auth::user()->org_id)->first();
 
             if($list!=null){
                 $arr = [
                     'code'=>0,
-                    'message'=>'此类别下还有类别'
+                    'message'=>'此场地下还有场地'
                 ];
             }else{
                 //判断此类别下还有资产
                 /*if(){
 
                 }*/
-                $info = AssetCategory::where("id",$id)->delete();
+                $info = Area::where("id",$id)->delete();
                 if($info){
                     $arr = [
                         'code'=>1,
@@ -169,26 +172,4 @@ class AssetCategoryController extends Controller
             return redirect("home");
         }
     }
-
-
-    /**
-     * @param $id
-     * @return string
-     */
-    public function find($id){
-        $list = AssetCategory::where("pid",$id)->first();
-        if($list){
-            $message = [
-                'code'=>1,
-                'message' => '还有子类'
-            ];
-        }else{
-            $message = [
-                'code'=>0,
-                'message' => '没有子类'
-            ];
-        }
-        return response()->json($message);
-    }
-
 }

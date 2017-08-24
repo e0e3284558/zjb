@@ -30,7 +30,8 @@
     <!-- toastr style-->
     <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
-    <!-- toastr style-->
+
+    <!-- icheck style-->
     <link href="{{ asset('assets/js/plugins/icheck/skins/minimal/_all.css') }}" rel="stylesheet">
 
     <!-- select2 style-->
@@ -39,6 +40,19 @@
     
     <!-- chosen style-->
     <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
+
+    <!-- bootstrap-treeView -->
+    <link href="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.css') }}" rel="stylesheet">
+
+    <!--sweetalert style-->
+    <link href="{{asset('assets/js/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet">
+
+    <!-- webuploader -->
+    <link href="{{asset('assets/js/plugins/webuploader/webuploader.css')}}" rel="stylesheet">
+
+    <!-- bootstrap-datepicker -->
+    <link href="{{asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
+
 
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
@@ -49,11 +63,13 @@
     <!-- Custom -->
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
+
     <!-- Mainly scripts -->
     <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/metisMenu/jquery.metisMenu.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+
 
 </head>
 <body  class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
@@ -820,6 +836,33 @@
         </div>
     </div>
 
+    {{--弹出层--}}
+    <!-- Large modal -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="loading" class="ibox-content"  >
+                    <div class="spiner-example">
+                        <div class="sk-spinner sk-spinner-circle">
+                            <div class="sk-circle1 sk-circle"></div>
+                            <div class="sk-circle2 sk-circle"></div>
+                            <div class="sk-circle3 sk-circle"></div>
+                            <div class="sk-circle4 sk-circle"></div>
+                            <div class="sk-circle5 sk-circle"></div>
+                            <div class="sk-circle6 sk-circle"></div>
+                            <div class="sk-circle7 sk-circle"></div>
+                            <div class="sk-circle8 sk-circle"></div>
+                            <div class="sk-circle9 sk-circle"></div>
+                            <div class="sk-circle10 sk-circle"></div>
+                            <div class="sk-circle11 sk-circle"></div>
+                            <div class="sk-circle12 sk-circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- pace -->
     <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
     <!-- blockui -->
@@ -839,7 +882,7 @@
         
     <!-- jsTree -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
-    
+
     <!-- jqValidate -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
@@ -847,6 +890,7 @@
     
     <!-- toastr -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
+
 
     <!-- icheck -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/icheck/icheck.min.js') }}"></script>
@@ -858,6 +902,19 @@
 
     <!-- chosen -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/chosen/chosen.jquery.min.js') }}"></script>
+
+    <!-- bootstrap-treeView -->
+    <script src="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.js') }}" type="text/javascript"></script>
+
+    <!-- sweetalert -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+    <!-- webuploader -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/webuploader/webuploader.js')}}"></script>
+
+    <!-- bootstrap-datepicker -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
