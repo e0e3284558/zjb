@@ -63,6 +63,7 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
 Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     //资产分类
     Route::get('asset_category/add_son/{id}','AssetCategoryController@add');
+    Route::get('asset_category/find/{id}','AssetCategoryController@find');
     Route::resource('asset_category','AssetCategoryController');
 
     Route::get('area/add_son/{id}','AreaController@add');
@@ -70,6 +71,10 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
 
     //其他报修项
     Route::resource('other_asset','OtherAssetController');
+
+    //附件信息
+    Route::post("upload/uploadFile","UploadController@uploadFile");
+    Route::resource("upload","UploadController");
 });
 //-------------------------------------------------------------------------
 //资产管理模块路由开始

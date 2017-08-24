@@ -13,14 +13,14 @@ class CreateAssetFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('other_assets', function (Blueprint $table) {
+        Schema::create('asset_files', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer("asset_id")->default(0);                                     //资产id
-            $table->integer("file_id")->default(0);                                      //附件id
+            $table->integer("asset_id")->default(0)->comment("资产id");                   //资产id
+            $table->integer("file_id")->default(0)->comment("附件id");                    //附件id
             $table->integer('org_id')->default(0)->comment("所属公司");                   //公司id
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['name','uid']);
+            $table->index(['org_id','asset_id','file_id']);
         });
     }
 

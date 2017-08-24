@@ -35,5 +35,6 @@
         <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AssetCategoryController@index'))}}"><a href="{{ url('asset_category?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 资产类别</a></li>
         <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AreaController@index'))}}"><a href="{{ url('area?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 场地管理</a></li>
         <li class="{{ active_class(if_action('App\Http\Controllers\Asset\OtherAssetController@index'))}}"><a href="{{ url('other_asset?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 其他报修项</a></li>
+        <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AssetController@index'))}}"><a href="{{ url('asset?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 资产管理</a></li>
     </ul>
 </li>

@@ -170,4 +170,25 @@ class AssetCategoryController extends Controller
         }
     }
 
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function find($id){
+        $list = AssetCategory::where("pid",$id)->first();
+        if($list){
+            $message = [
+                'code'=>1,
+                'message' => '还有子类'
+            ];
+        }else{
+            $message = [
+                'code'=>0,
+                'message' => '没有子类'
+            ];
+        }
+        return response()->json($message);
+    }
+
 }
