@@ -1,4 +1,4 @@
-<div class="ibox float-e-margins full-height-ibox">
+<div class="ibox float-e-margins ">
     <div class="ibox-title">
         <h5>部门添加</h5>
         <div class="ibox-tools pull-right">
@@ -40,7 +40,7 @@
             <div class="form-actions border-top right">
                 {{ csrf_field() }}
                 <button type="submit" class="btn btn-success">保存</button>
-                <button type="reset" class="btn btn-default">取消</button>
+                <button type="reset" class="btn btn-default" id="cannel">取消</button>
             </div>
         </form>
         <script type="text/javascript">
@@ -115,7 +115,7 @@
                             success: function(data, textStatus, xhr) {
                                 if(data.status){
                                     toastr.success(data.message);
-                                    // forms.reset();
+                                    $('#cannel').click();
                                     //重新载入左侧树形菜单
                                     $('#departments-tree').jstree('refresh');
 
