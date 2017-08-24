@@ -39,8 +39,18 @@ Route::get('/home', 'Portal\IndexController@index')->name('home');
 //-------------------------------------------------------------------------
 Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], function () {
     Route::get('index', 'DefaultController@index')->name('users.index');
+    
     Route::get('unit', 'DepartmentController@unit')->name('users.unit');
+    
+
     Route::get('departments', 'DepartmentController@index')->name('users.departments');
+    Route::get('departments/create', 'DepartmentController@create')->name('users.departments.create');
+    Route::post('departments', 'DepartmentController@store')->name('users.departments.store');
+    Route::get('departments/{id}/edit', 'DepartmentController@edit')->name('users.departments.edit');
+    Route::put('departments/{id}', 'DepartmentController@update')->name('users.departments.update');
+    Route::delete('departments/{id}', 'DepartmentController@destroy')->name('users.departments.destroy');
+
+
     Route::get('groups', 'GroupsController@index')->name('users.groups');
 });
 //-------------------------------------------------------------------------
@@ -62,38 +72,20 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
 //资产管理模块路由开始
 //-------------------------------------------------------------------------
 Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
+    //资产分类
+    Route::get('asset_category/add_son/{id}','AssetCategoryController@add');
+    Route::get('asset_category/find/{id}','AssetCategoryController@find');
+    Route::resource('asset_category','AssetCategoryController');
 
-    Route::get("Address/export","AddresssController@export");
-    Route::get("Address/model","AddresssController@model");
-    Route::get("Address/import","AddresssController@import");
-    Route::post("Address/lead","AddresssController@lead");
-    Route::get("Address/add/{id}","AddresssController@add");
-    Route::resource("Address","AddresssController");
+    Route::get('area/add_son/{id}','AreaController@add');
+    Route::resource('area','AreaController');
 
     //其他报修项
-    ROute::resource("otherAsset","OtherAssetController");
+    Route::resource('other_asset','OtherAssetController');
 
-    Route::get("AssetType/create/{id}","AssetTypesController@create");
-    Route::resource("AssetType","AssetTypesController");
-    //资产入库管理
-    Route::get("asset/excelTemplate","AssetsController@ExcelTemplate");
-    //导出资产
-    Route::get("asset/export","AssetsController@export");
-    Route::get("asset/addImport","AssetsController@addImport");
-    Route::post("asset/import","AssetsController@import");
-    Route::get("asset/showImg/{img_id}","AssetsController@showImg");
-    Route::get("asset/download/{id}","AssetsController@download");
-    Route::resource("asset","AssetsController");
-
-    //公司/部门管理
-    Route::get("org/create/{id}","OrgsController@create");
-    Route::resource("org","OrgsController");
-
-    //文件信息
-    Route::resource("files","FileController");
+    //附件信息
     Route::post("upload/uploadFile","UploadController@uploadFile");
     Route::resource("upload","UploadController");
-
 });
 //-------------------------------------------------------------------------
 //资产管理模块路由开始

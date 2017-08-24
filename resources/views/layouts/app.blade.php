@@ -30,6 +30,30 @@
     <!-- toastr style-->
     <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
+
+    <!-- icheck style-->
+    <link href="{{ asset('assets/js/plugins/icheck/skins/minimal/_all.css') }}" rel="stylesheet">
+
+    <!-- select2 style-->
+    <link href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet"> -->
+    
+    <!-- chosen style-->
+    <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
+
+    <!-- bootstrap-treeView -->
+    <link href="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.css') }}" rel="stylesheet">
+
+    <!--sweetalert style-->
+    <link href="{{asset('assets/js/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet">
+
+    <!-- webuploader -->
+    <link href="{{asset('assets/js/plugins/webuploader/webuploader.css')}}" rel="stylesheet">
+
+    <!-- bootstrap-datepicker -->
+    <link href="{{asset('assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
+
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -39,11 +63,13 @@
     <!-- Custom -->
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
+
     <!-- Mainly scripts -->
     <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/metisMenu/jquery.metisMenu.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
+
 
 </head>
 <body class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
@@ -823,131 +849,158 @@
     </div>
 </div>
 
-<!-- pace -->
-<script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
-<!-- blockui -->
-<script src="{{ asset('assets/js/plugins/blockui/jquery.blockUI.js') }}" type="text/javascript"></script>
-<!-- Toastr -->
-<script src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}" type="text/javascript"></script>
-<!-- dataTables -->
-<script src="{{ asset('assets/js/plugins/dataTables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}"
-        type="text/javascript"></script>
 
-<!-- layer -->
-<script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script>
+    {{--弹出层--}}
+    <!-- Large modal -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="loading" class="ibox-content"  >
+                    <div class="spiner-example">
+                        <div class="sk-spinner sk-spinner-circle">
+                            <div class="sk-circle1 sk-circle"></div>
+                            <div class="sk-circle2 sk-circle"></div>
+                            <div class="sk-circle3 sk-circle"></div>
+                            <div class="sk-circle4 sk-circle"></div>
+                            <div class="sk-circle5 sk-circle"></div>
+                            <div class="sk-circle6 sk-circle"></div>
+                            <div class="sk-circle7 sk-circle"></div>
+                            <div class="sk-circle8 sk-circle"></div>
+                            <div class="sk-circle9 sk-circle"></div>
+                            <div class="sk-circle10 sk-circle"></div>
+                            <div class="sk-circle11 sk-circle"></div>
+                            <div class="sk-circle12 sk-circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!-- jqGrid -->
-<script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+    <!-- pace -->
+    <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
+    <!-- blockui -->
+    <script src="{{ asset('assets/js/plugins/blockui/jquery.blockUI.js') }}" type="text/javascript"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}" type="text/javascript"></script>
+    <!-- dataTables -->
+    <script src="{{ asset('assets/js/plugins/dataTables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
-<!-- jsTree -->
-<script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+    <!-- layer -->
+    <script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script>
 
-<!-- jqValidate -->
-<script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
-<script type="text/javascript"
-        src="{{ asset('assets/js/plugins/jqueryValidate/localization/messages_zh.min.js') }}"></script>
+    <!-- jqGrid -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
+        
+    <!-- jsTree -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
 
-<!-- toastr -->
-<script type="text/javascript" src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
+    <!-- jqValidate -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/localization/messages_zh.min.js') }}"></script>
+    
+    <!-- toastr -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
 
-<!-- Custom and plugin javascript -->
-<script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/js/custom.js') }}" type="text/javascript"></script>
+
+    <!-- icheck -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/icheck/icheck.min.js') }}"></script>
+
+    <!-- select2 -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/i18n/zh-CN.js') }}"></script>
+    
+
+    <!-- chosen -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/chosen/chosen.jquery.min.js') }}"></script>
+
+    <!-- bootstrap-treeView -->
+    <script src="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.js') }}" type="text/javascript"></script>
+
+    <!-- sweetalert -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
+    <!-- webuploader -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/webuploader/webuploader.js')}}"></script>
+
+    <!-- bootstrap-datepicker -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 
 
-<script type="text/javascript">
-    //初始化datatables
-    $.extend($.fn.dataTable.defaults, {
-        'language': {
-            "sProcessing": "处理中...",
-            "sLengthMenu": "显示 _MENU_ 项结果",
-            "sZeroRecords": "没有匹配结果",
-            "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-            "sInfoPostFix": "",
-            "sSearch": "搜索:",
-            "sUrl": "",
-            "sEmptyTable": "表中数据为空",
-            "sLoadingRecords": "载入中...",
-            "sInfoThousands": ",",
-            "oPaginate": {
-                "sFirst": "首页",
-                "sPrevious": "上页",
-                "sNext": "下页",
-                "sLast": "末页"
-            },
-            "oAria": {
-                "sSortAscending": ": 以升序排列此列",
-                "sSortDescending": ": 以降序排列此列"
+    <!-- Custom and plugin javascript -->
+    <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/custom.js') }}" type="text/javascript"></script>
+    
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        //初始化datatables
+        $.extend( $.fn.dataTable.defaults, {
+            'language':{
+                "sProcessing":   "处理中...",
+                "sLengthMenu":   "显示 _MENU_ 项结果",
+                "sZeroRecords":  "没有匹配结果",
+                "sInfo":         "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty":    "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix":  "",
+                "sSearch":       "搜索:",
+                "sUrl":          "",
+                "sEmptyTable":     "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands":  ",",
+                "oPaginate": {
+                    "sFirst":    "首页",
+                    "sPrevious": "上页",
+                    "sNext":     "下页",
+                    "sLast":     "末页"
+                },
+                "oAria": {
+                    "sSortAscending":  ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
+        } );
+        //初始化toastr
+        window.toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "progressBar": true,
+            "preventDuplicates": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "1000",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        // $.fn.select2.defaults.set( "theme", "bootstrap" );
+
+        $(document).ready(function() {
+            
+        });
+    </script>
+
+    <script type="text/javascript">
+        // Config box
+        if (localStorageSupport){
+            localStorage.setItem("fixedfooter",'on');
+            localStorage.setItem("fixedsidebar",'on');
+            localStorage.setItem("fixednavbar",'off');
+            localStorage.setItem("fixednavbar2",'off');
         }
-    });
-    //初始化toastr
-    window.toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "progressBar": true,
-        "preventDuplicates": false,
-        "positionClass": "toast-top-right",
-        "onclick": null,
-        "showDuration": "1000",
-        "hideDuration": "1000",
-        "timeOut": "3000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    };
 
-    $(document).ready(function () {
-
-    });
-</script>
-
-<script type="text/javascript">
-    // Config box
-    if (localStorageSupport) {
-        localStorage.setItem("fixedfooter", 'on');
-        localStorage.setItem("fixedsidebar", 'on');
-        localStorage.setItem("fixednavbar", 'off');
-        localStorage.setItem("fixednavbar2", 'off');
-    }
-
-    // Enable/disable fixed top navbar
-    $('#fixednavbar').click(function () {
-        if ($('#fixednavbar').is(':checked')) {
-            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
-            $("body").removeClass('boxed-layout');
-            $("body").addClass('fixed-nav');
-            $('#boxedlayout').prop('checked', false);
-
-            if (localStorageSupport) {
-                localStorage.setItem("boxedlayout", 'off');
-            }
-
-            if (localStorageSupport) {
-                localStorage.setItem("fixednavbar", 'on');
-            }
-        } else {
-            $(".navbar-fixed-top").removeClass('navbar-fixed-top').addClass('navbar-static-top');
-            $("body").removeClass('fixed-nav');
-            $("body").removeClass('fixed-nav-basic');
-            $('#fixednavbar2').prop('checked', false);
-
-            if (localStorageSupport) {
-                localStorage.setItem("fixednavbar", 'off');
-            }
-
-            if (localStorageSupport) {
-                localStorage.setItem("fixednavbar2", 'off');
-            }
-        }
-    });
 
     // Enable/disable fixed top navbar
     $('#fixednavbar2').click(function () {

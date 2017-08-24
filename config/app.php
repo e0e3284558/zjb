@@ -180,7 +180,10 @@ return [
         Propaganistas\LaravelPhone\PhoneServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Vinkla\Hashids\HashidsServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
+        Baum\Providers\BaumServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Former\FormerServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -248,7 +251,7 @@ return [
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
         'Active' => HieuLe\Active\Facades\Active::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'Former' => Former\Facades\Former::class,
     ],
 
 ];
