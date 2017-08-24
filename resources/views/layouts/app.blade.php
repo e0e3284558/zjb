@@ -17,13 +17,13 @@
 
     <!-- Toastr style -->
     <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
-    
+
     <!-- Datatables style -->
     <link href="{{ asset('assets/js/plugins/dataTables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- jqGrid style-->
     <link href="{{ asset('assets/js/plugins/jqGrid/css/ui.jqgrid-bootstrap.css') }}" rel="stylesheet">
-    
+
     <!-- jsTree style-->
     <link href="{{ asset('assets/js/plugins/jsTree/themes/default/style.min.css') }}" rel="stylesheet">
 
@@ -74,186 +74,191 @@
 
 
 </head>
-<body  class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
-    <div id="wrapper">
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav metismenu" id="side-menu">
-                    <li class="nav-header">
-                        <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" src="{{ asset('assets/img/profile_small.jpg') }}" />
+<body class="pace-done fixed-sidebar skin-1 fixed-nav fixed-nav-basic">
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="{{ asset('assets/img/profile_small.jpg') }}"/>
                              </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">zhejiuban</strong>
-                             </span> <span class="text-muted text-xs block">单位管理员 <b class="caret"></b></span> </span> </a>
-                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a href="profile.html">个人资料</a></li>
-                                <li><a href="contacts.html">修改密码</a></li>
-                                <li><a href="mailbox.html">设置中心</a></li>
-                                <li class="divider"></li>
-                                <li><a href="login.html">退出</a></li>
-                            </ul>
-                        </div>
-                        <div class="logo-element">
-                            这就办
-                        </div>
-                    </li>
-                    @include('layouts.menu')
-                </ul>
-
-            </div>
-        </nav>
-
-        <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom">
-                <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                        <form role="search" class="navbar-form-custom" action="search_results.html">
-                            <div class="form-group">
-                                <input type="text" placeholder="搜索" class="form-control" name="top-search" id="top-search">
-                            </div>
-                        </form>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong
+                                            class="font-bold">zhejiuban</strong>
+                             </span> <span class="text-muted text-xs block">单位管理员 <b class="caret"></b></span> </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="profile.html">个人资料</a></li>
+                            <li><a href="contacts.html">修改密码</a></li>
+                            <li><a href="mailbox.html">设置中心</a></li>
+                            <li class="divider"></li>
+                            <li><a href="login.html">退出</a></li>
+                        </ul>
                     </div>
-                    <ul class="nav navbar-top-links navbar-right">
-                        <li>
-                            <span class="m-r-sm text-muted welcome-message"></span>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="{{url('img/a7.jpg')}}">
-                                        </a>
-                                        <div class="media-body">
-                                            <small class="pull-right">46h ago</small>
-                                            <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                                            <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="{{url('img/a4.jpg')}}">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="pull-right text-navy">5h ago</small>
-                                            <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                            <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="{{url('img/profile.jpg')}}">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="pull-right">23h ago</small>
-                                            <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                            <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="mailbox.html">
-                                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                    <a href="mailbox.html">
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="profile.html">
-                                        <div>
-                                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                            <span class="pull-right text-muted small">12 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="grid_options.html">
-                                        <div>
-                                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="notifications.html">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
+                    <div class="logo-element">
+                        这就办
+                    </div>
+                </li>
+                @include('layouts.menu')
+            </ul>
 
+        </div>
+    </nav>
 
-                        <li>
-                            <a href="{{ route('logout') }}">
-                                <i class="fa fa-power-off"></i> 退出
-                            </a>
-                        </li>
-                        <li>
-                            <a class="right-sidebar-toggle">
-                                <i class="fa fa-tasks"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            @yield('breadcrumb')
-            @yield('content')
-            <div class="footer fixed">
-                <!-- <div class="pull-right">
-                    <strong></strong>
-                </div> -->
-                <div>
-                    <strong>Copyright</strong> 安徽这就办信息技术有限责任公司 &copy; 2017
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
+                    <form role="search" class="navbar-form-custom" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="搜索" class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
                 </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message"></span>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="{{url('img/a7.jpg')}}">
+                                    </a>
+                                    <div class="media-body">
+                                        <small class="pull-right">46h ago</small>
+                                        <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>.
+                                        <br>
+                                        <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="{{url('img/a4.jpg')}}">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right text-navy">5h ago</small>
+                                        <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica
+                                            Smith</strong>. <br>
+                                        <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="{{url('img/profile.jpg')}}">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right">23h ago</small>
+                                        <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                        <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="mailbox.html">
+                                        <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="mailbox.html">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="profile.html">
+                                    <div>
+                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                        <span class="pull-right text-muted small">12 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="grid_options.html">
+                                    <div>
+                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="notifications.html">
+                                        <strong>See All Alerts</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="{{ route('logout') }}">
+                            <i class="fa fa-power-off"></i> 退出
+                        </a>
+                    </li>
+                    <li>
+                        <a class="right-sidebar-toggle">
+                            <i class="fa fa-tasks"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        @yield('breadcrumb')
+        @yield('content')
+        <div class="footer fixed">
+            <!-- <div class="pull-right">
+                <strong></strong>
+            </div> -->
+            <div>
+                <strong>Copyright</strong> 安徽这就办信息技术有限责任公司 &copy; 2017
             </div>
         </div>
+
         <div id="right-sidebar" class="animated">
             <div class="sidebar-container">
 
                 <ul class="nav nav-tabs navs-3">
 
                     <li class="active"><a data-toggle="tab" href="#tab-1">
-                        Notes
-                    </a></li>
+                            Notes
+                        </a></li>
                     <li><a data-toggle="tab" href="#tab-2">
-                        Projects
-                    </a></li>
+                            Projects
+                        </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-3">
-                        <i class="fa fa-gear"></i>
-                    </a></li>
+                            <i class="fa fa-gear"></i>
+                        </a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -262,7 +267,7 @@
                     <div id="tab-1" class="tab-pane active">
 
                         <div class="sidebar-title">
-                            <h3> <i class="fa fa-comments-o"></i> Latest Notes</h3>
+                            <h3><i class="fa fa-comments-o"></i> Latest Notes</h3>
                             <small><i class="fa fa-tim"></i> You have 10 new message.</small>
                         </div>
 
@@ -310,7 +315,8 @@
                                         </div>
                                     </div>
                                     <div class="media-body">
-                                        Mevolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                                        Mevolved over the years, sometimes by accident, sometimes on purpose (injected
+                                        humour and the like).
                                         <br>
                                         <small class="text-muted">Yesterday 1:10 pm</small>
                                     </div>
@@ -348,7 +354,8 @@
                                         <img alt="image" class="img-circle message-avatar" src="{{url('img/a7.jpg')}}">
                                     </div>
                                     <div class="media-body">
-                                        Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                                        Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes
+                                        from a line in section 1.10.32.
                                         <br>
                                         <small class="text-muted">Yesterday 2:45 pm</small>
                                     </div>
@@ -391,7 +398,7 @@
                     <div id="tab-2" class="tab-pane">
 
                         <div class="sidebar-title">
-                            <h3> <i class="fa fa-cube"></i> Latest projects</h3>
+                            <h3><i class="fa fa-cube"></i> Latest projects</h3>
                             <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
                         </div>
 
@@ -502,9 +509,9 @@
                         </div>
 
                         <div class="setings-item">
-                    <span>
-                        Show notifications
-                    </span>
+                        <span>
+                            Show notifications
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example">
@@ -516,12 +523,13 @@
                             </div>
                         </div>
                         <div class="setings-item">
-                    <span>
-                        Disable Chat
-                    </span>
+                        <span>
+                            Disable Chat
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="collapsemenu" checked class="onoffswitch-checkbox" id="example2">
+                                    <input type="checkbox" name="collapsemenu" checked class="onoffswitch-checkbox"
+                                           id="example2">
                                     <label class="onoffswitch-label" for="example2">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -530,9 +538,9 @@
                             </div>
                         </div>
                         <div class="setings-item">
-                    <span>
-                        Enable history
-                    </span>
+                        <span>
+                            Enable history
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example3">
@@ -544,9 +552,9 @@
                             </div>
                         </div>
                         <div class="setings-item">
-                    <span>
-                        Show charts
-                    </span>
+                        <span>
+                            Show charts
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example4">
@@ -558,12 +566,13 @@
                             </div>
                         </div>
                         <div class="setings-item">
-                    <span>
-                        Offline users
-                    </span>
+                        <span>
+                            Offline users
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox" id="example5">
+                                    <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox"
+                                           id="example5">
                                     <label class="onoffswitch-label" for="example5">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -572,12 +581,13 @@
                             </div>
                         </div>
                         <div class="setings-item">
-                    <span>
-                        Global search
-                    </span>
+                        <span>
+                            Global search
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox" id="example6">
+                                    <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox"
+                                           id="example6">
                                     <label class="onoffswitch-label" for="example6">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -586,9 +596,9 @@
                             </div>
                         </div>
                         <div class="setings-item">
-                    <span>
-                        Update everyday
-                    </span>
+                        <span>
+                            Update everyday
+                        </span>
                             <div class="switch">
                                 <div class="onoffswitch">
                                     <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example7">
@@ -604,7 +614,8 @@
                             <h4>Settings</h4>
                             <div class="small">
                                 I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                And typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                                And typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since
+                                the 1500s.
                                 Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
                             </div>
                         </div>
@@ -615,7 +626,7 @@
             </div>
         </div>
     </div>
-   
+
     <!-- Large modal -->
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">

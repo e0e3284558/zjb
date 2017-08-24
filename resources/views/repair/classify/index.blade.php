@@ -21,7 +21,7 @@
         <div class="col-lg-2">
         </div>
     </div>
-    @endsection
+@endsection
 @section('content')
     <div class="wrapper wrapper-content wrapper-content2 animated fadeInRight">
         <div class="row">
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-6" id="edit">
+            <div class="col-lg-6" id="create">
                 <div class="ibox">
                     <div class="ibox-title">
                         <h5>分类操作</h5>
@@ -64,55 +64,63 @@
                     <div class="ibox-content">
                         <p class="m-b-lg">
                             简单、快速的操作将大幅提升您的工作效率，点击左侧分类栏目即可实现快速编辑操作。
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        @if(session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
+                            @if (count($errors) > 0)
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        @foreach ($errors->all() as $error)
+                                        toastr.error('{{$error}}');
+                                        @endforeach
+                                    });
+                                </script>
                             @endif
+
+                            @if (session('success'))
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        toastr.success('{{session('success') }}');
+                                    });
+                                </script>
+                             @endif
+                            @if (session('error'))
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        toastr.warning('{{session('error') }}');
+                                    });
+                                </script>
+                             @endif
+
                             </p>
 
                             <div class="dd" id="nestable2">
-                                <form  class="form-horizontal"  action="{{url('repair/classify')}}" method="post">
+                                <form class="form-horizontal" action="{{url('repair/classify')}}" method="post">
                                     {{csrf_field()}}
                                     <li class="dd-item">
                                         <div class="dd-handle ">
                                             <label>分类名称<i>*</i></label>
-                                            <input type="text" class="form-control" value="" name="name" placeholder="分类名称">
+                                            <input type="text" required maxlength="20" class="form-control" value=""
+                                                   name="name" placeholder="分类名称">
                                         </div>
                                     </li>
 
                                     <li class="dd-item">
                                         <div class="dd-handle ">
                                             <label>分类备注</label>
-                                            <input type="text" class="form-control" value="" name="comment" placeholder="分类备注">
+                                            <input type="text" class="form-control" value="" name="comment"
+                                                   placeholder="分类备注">
                                         </div>
                                     </li>
 
                                     <li class="dd-item  hide">
                                         <div class="dd-handle ">
                                             <label>分类图标</label>
-                                            <input type="text" class="form-control" value="fa fa-cogs" disabled name="icon" placeholder="分类图标">
+                                            <input type="text" class="form-control" value="fa fa-cogs"
+                                                   name="icon" placeholder="分类图标">
                                         </div>
                                     </li>
                                     <li class="dd-item">
                                         <div class="dd-handle ">
                                             <label>分类排序</label>
-                                            <input type="number" class="form-control" value="0"   name="sorting"
+                                            <input type="number" class="form-control" value="0" name="sorting"
                                                    placeholder="分类排序">
                                         </div>
                                     </li>
@@ -128,6 +136,19 @@
         </div>
     </div>
     <script>
+        /*字段验证*/
+        $(document).ready(function () {
+            $(".form-horizontal").validate(
+                {
+                    submitHandler: function () {
+                        return true;
+                    }
+                }
+            );
+
+        });
+
+
         /*创建*/
         function add(url) {
             $.ajax({

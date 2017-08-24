@@ -5,25 +5,29 @@
     <div class="ibox-content">
         <p class="m-b-lg">
             简单、快速的操作将大幅提升您的工作效率，点击左侧分类栏目即可实现快速编辑操作。
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            @if (count($errors) > 0)
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        @foreach ($errors->all() as $error)
+                        toastr.error('{{$error}}');
+                        @endforeach
+                    });
+                </script>
+            @endif
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
+            @if (session('success'))
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        toastr.success('{{session('success') }}');
+                    });
+                </script>
+            @endif
+            @if (session('error'))
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        toastr.warning('{{session('error') }}');
+                    });
+                </script>
             @endif
             </p>
 
@@ -33,7 +37,7 @@
                     {{method_field('PUT')}}
                     <li class="dd-item">
 
-                        <div class="dd-handle form-group">
+                        <div class="dd-handle">
                             <label class="control-label">分类名称<span class="required">*</span></label>
                             <input type="text" class="form-control" name="name" value="{{$data->name}}"
                                    placeholder="分类名称">
