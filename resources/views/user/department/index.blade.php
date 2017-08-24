@@ -51,13 +51,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$('body').addClass('full-height-layout');
-    $.get('{{ url("users/departments/create") }}', {}, function(data){
-        $('#dep-form-wrapper').html(data);
-      });
+    
 	$('#departments-tree').jstree({
-        "themes" : {
-            "responsive": false
-        },
         'core' : {
             'force_text' : true,
             "check_callback" : true, 
@@ -92,10 +87,15 @@ $(document).ready(function() {
       $('#departments-tree').jstree('open_all');
     });
     $('#departments-tree').on('changed.jstree',function (e,data) {
-      var link = $('#' + data.selected).find('a').attr('href');
-      $.get(link, {}, function(data){
+      if(data.node != undefined){
+        var link = data.node.a_attr.href;
+        $.get(link, {}, function(data){
+            $('#dep-form-wrapper').html(data);
+          });
+      }
+    });
+    $.get('{{ url("users/departments/create") }}', {}, function(data){
         $('#dep-form-wrapper').html(data);
-      });
     });
 } );
 </script>

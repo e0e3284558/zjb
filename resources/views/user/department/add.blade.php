@@ -37,9 +37,9 @@
                     <label class="radio-inline i-checks"> <input type="radio" class="" name="status" value="0"> 不可用 </label>
                 </div>
             </div>
-            <div class="form-actions border-top right">
+            <div class="form-actions border-top ">
                 {{ csrf_field() }}
-                <button type="submit" class="btn btn-success">保存</button>
+                <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
                 <button type="reset" class="btn btn-default" id="cannel">取消</button>
             </div>
         </form>
@@ -52,6 +52,7 @@
                     width:'100%'
                 });
                 var forms = $('#dep-form');
+                var l = $("button[type='submit']").ladda();
                 forms.validate({
                     errorElement: 'span', //default input error message container
                     errorClass: 'help-block', // default input error message class
@@ -105,19 +106,21 @@
                             url: forms.attr('action'),
                             type: 'POST',
                             dataType: 'json',
-                            data: $("#dep-form").serialize(),
+                            data: forms.serialize(),
                             beforeSend: function(){
-                                zjb.blockUI();
+                                // zjb.blockUI();
+                                l.ladda('start');
                             },
                             complete: function(xhr, textStatus) {
-                                zjb.unblockUI();
+                                // zjb.unblockUI();
+                                l.ladda('stop');
                             },
                             success: function(data, textStatus, xhr) {
                                 if(data.status){
                                     toastr.success(data.message);
                                     $('#cannel').click();
                                     //重新载入左侧树形菜单
-                                    $('#departments-tree').jstree('refresh');
+                                    $('#departments-tree').jstree(true).refresh();
 
                                 }else{
                                    toastr.error(data.message); 

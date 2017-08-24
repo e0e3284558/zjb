@@ -86,7 +86,6 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentRequest $request)
     {
-//        dump($request->all());
         $department = new Department;
         $department->name = $request->name;
         $department->status = $request->status;
@@ -131,8 +130,30 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department,$id)
     {
-        dump($id);
-        //判断是否有子部门
-        //删除
+        $result = [
+            'status'=>1,
+            'message'=>'操作成功',
+            'data'=>'',
+            'url'=>'',
+        ];
+        $dp = $department->find($id);
+        if($dp){
+            //判断是否有子部门
+            if($department->where(['parent_id'=>$id])->get()->toArray()){
+                $result['status'] = 0;
+                $result['message'] = '存在子部门信息不能删除';
+            }else{
+                //检测是否包含其他数据如部门用户
+                //删除
+                if(!$dp->delete()){
+                    $result['status'] = 0;
+                    $result['message'] = '删除失败';
+                }
+            }
+        }else{
+            $result['status'] = 0;
+            $result['message'] = '操作的信息不存在';
+        }
+        return response()->json($result);
     }
 }
