@@ -1,12 +1,15 @@
 <li class="{{ active_class(if_route('home') || if_query('app_groups',null)) }}">
     <a href="{{ url('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">控制面板</span></a>
 </li>
-<li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index'))}}">
+<li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index') || if_route('service_worker.index'))}}">
     <a href="javascript:;"><i class="fa fa-pied-piper-alt "></i> <span class="nav-label">报修分类</span> <span
                 class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index'))}}"><a
                     href="{{ url('repair/classify') }}"><i class="fa fa-angle-right"></i> 分类列表</a>
+        </li>
+        <li class="{{ active_class(if_route('service_worker.index'))}}"><a
+                    href="{{ url('repair/service_worker') }}"><i class="fa fa-angle-right"></i> 维修工列表</a>
         </li>
     </ul>
 </li>
