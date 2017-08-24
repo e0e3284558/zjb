@@ -14,9 +14,23 @@
         <input type="hidden" name="id" value="{{$info->id}}" >
         <div class="box-body">
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="firstname1">类别名称<span style=" color:red">*</span></label>
+                <label class="col-sm-3 control-label" for="firstname1">场地名称<span style=" color:red">*</span></label>
                 <div class="col-sm-8">
                     <input type="text" name="name" value="{{$info->name}}" class="form-control" placeholder="区域名称">
+                </div>
+            </div>
+            @if(!empty($parent_info))
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="firstname1">父级场地</label>
+                    <div class="col-sm-8">
+                        <input disabled type="text" value="{{$parent_info->name}}" class="form-control">
+                    </div>
+                </div>
+            @endif
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="firstname1">备注</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" name="remarks" cols="4" style="resize: none;" placeholder="添加备注">{{$info->remarks}}</textarea>
                 </div>
             </div>
         </div>
@@ -66,7 +80,7 @@
             submitHandler: function () {
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('asset_category/'.$info->id)}}",
+                    url:"{{url('area/'.$info->id)}}",
                     data:$('#signupForm1').serialize(),
                     type:"post",
                     dataType:"json",
@@ -124,7 +138,7 @@
             //发异步删除数据
             $.ajax({
                 type:"post",
-                url:'{{url('asset_category')}}'+'/'+id,
+                url:'{{url('area')}}'+'/'+id,
                 data:{
                     "_token":'{{csrf_token()}}',
                     '_method':'delete'
@@ -153,7 +167,7 @@
     /*加载添加视图*/
     function adds(id) {
         $.ajax({
-            url:'{{url('asset_category/add_son')}}/'+id,
+            url:'{{url('area/add_son')}}/'+id,
             type:"get",
             success:function (data) {
                 $("#right_content").html(data);

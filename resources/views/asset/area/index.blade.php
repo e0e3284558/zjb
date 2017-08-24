@@ -29,7 +29,7 @@
                 <div class="ibox-title">
                     <h5>
                         <h3 class="h3">
-                            <a class="btn btn-success" onclick="add('添加','{{url('asset_category/create')}}')"  id="create" >
+                            <a class="btn btn-success" onclick="add('添加','{{url('area/create')}}')"  id="create" >
                                 <i class="fa  fa-plus"></i> 新增
                             </a>
                             <a class="btn btn-default" id="import">
@@ -96,7 +96,7 @@
             $('#tree').on('nodeSelected', function(event,data) {
                 // 事件代码...
                 $.ajax({
-                    url:'{{url('asset_category')}}'+'/'+data.id,
+                    url:'{{url('area')}}/'+data.id+"/edit",
                     type:"get",
                     data:{},
                     success:function (data) {

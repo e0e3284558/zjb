@@ -23,7 +23,7 @@ class AssetCategoryController extends Controller
             $list[$k]['nodeId'] = $v['id'];
         }
         $tree = list_to_tree($list, 'id', 'pid', 'nodes', "0");
-        return view("asset_category.index",compact("tree"));
+        return view("asset.asset_category.index",compact("tree"));
     }
 
     /**
@@ -33,7 +33,7 @@ class AssetCategoryController extends Controller
      */
     public function create()
     {
-        return response()->view("asset_category.add");
+        return response()->view("asset.asset_category.add");
     }
 
     /**
@@ -43,7 +43,7 @@ class AssetCategoryController extends Controller
     public function add($id){
         if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
             $info = AssetCategory::find($id);
-            return response()->view("asset_category.add_son",compact("info"));
+            return response()->view("asset.asset_category.add_son",compact("info"));
         }
     }
 
@@ -94,7 +94,7 @@ class AssetCategoryController extends Controller
     public function show($id)
     {
         $info = AssetCategory::find($id);
-        return response()->view("asset_category.edit",compact('info'));
+        return response()->view("asset.asset_category.edit",compact('info'));
     }
 
     /**
@@ -106,7 +106,7 @@ class AssetCategoryController extends Controller
     public function edit($id)
     {
         $info = AssetCategory::find($id);
-        return response()->view("asset_category.edit",compact('info'));
+        return response()->view("asset.asset_category.edit",compact('info'));
     }
 
     /**

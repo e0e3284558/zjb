@@ -1,6 +1,3 @@
-<div class="modal-header">
-    <h4 class="modal-title" id="myModalLabel">添加子类</h4>
-</div>
 <!-- form start -->
 <form id="signupForm1" class="form-horizontal ibox-content" method="post" >
     <div class="sk-spinner sk-spinner-double-bounce">
@@ -9,19 +6,18 @@
     </div>
     <div class="modal-body">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <input type="hidden" name="pid" value="{{$info->id}}">
         <div class="box-body">
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="firstname1">类别名称<span style=" color:red">*</span></label>
+                <label class="col-sm-3 control-label" for="firstname1">场地名称<span style=" color:red">*</span></label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="区域名称" />
+                    <input type="text" class="form-control" id="name" name="name" placeholder="场地名称" />
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="firstname1">父级</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" disabled name="pid" value="{{$info->name}}" />
-                </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="firstname1">备注</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" name="remarks" cols="5" style="resize: none;" placeholder="添加备注"></textarea>
             </div>
         </div>
     </div>
@@ -31,15 +27,16 @@
 </form>
 
 <script type="text/javascript">
+    $.validator.setDefaults( {
 
+    } );
     $( document ).ready( function () {
-
         $( "#signupForm1" ).validate( {
             rules: {
-                name: "required",
+                name: "required"
             },
             messages: {
-                name: "请输出区域名称",
+                name: "请输出场地名称"
             },
             errorElement: "em",
             errorPlacement: function ( error, element ) {
@@ -74,7 +71,7 @@
             submitHandler: function () {
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('asset_category')}}",
+                    url:"{{url('area')}}",
                     data:$('#signupForm1').serialize(),
                     type:"post",
                     dataType:"json",
@@ -93,7 +90,6 @@
                             }
                             swal("",arr.substring(0,arr.length-1), "error");
                         }
-
                     },
                     complete:function () {
                         zjb.unblockUI();

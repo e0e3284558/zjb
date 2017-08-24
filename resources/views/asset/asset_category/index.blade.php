@@ -96,7 +96,7 @@
             $('#tree').on('nodeSelected', function(event,data) {
                 // 事件代码...
                 $.ajax({
-                    url:'{{url('asset_category')}}'+'/'+data.id,
+                    url:'{{url('asset_category')}}'+'/'+data.id+"/edit",
                     type:"get",
                     data:{},
                     success:function (data) {
@@ -125,7 +125,6 @@
             $.ajax({
                 "url":url,
                 success:function (data) {
-//                    $(".modal-content").html(data);
                     $("#right_content").html(data);
                 }
             })

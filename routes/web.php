@@ -65,7 +65,11 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     Route::get('asset_category/add_son/{id}','AssetCategoryController@add');
     Route::resource('asset_category','AssetCategoryController');
 
+    Route::get('area/add_son/{id}','AreaController@add');
     Route::resource('area','AreaController');
+
+    //其他报修项
+    Route::resource('other_asset','OtherAssetController');
 });
 //-------------------------------------------------------------------------
 //资产管理模块路由开始
