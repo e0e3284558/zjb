@@ -39,8 +39,18 @@ Route::get('/home', 'Portal\IndexController@index')->name('home');
 //-------------------------------------------------------------------------
 Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], function () {
     Route::get('index', 'DefaultController@index')->name('users.index');
+    
     Route::get('unit', 'DepartmentController@unit')->name('users.unit');
+    
+
     Route::get('departments', 'DepartmentController@index')->name('users.departments');
+    Route::get('departments/create', 'DepartmentController@create')->name('users.departments.create');
+    Route::post('departments', 'DepartmentController@store')->name('users.departments.store');
+    Route::get('departments/{id}/edit', 'DepartmentController@edit')->name('users.departments.edit');
+    Route::put('departments/{id}', 'DepartmentController@update')->name('users.departments.update');
+    Route::delete('departments/{id}', 'DepartmentController@destroy')->name('users.departments.destroy');
+
+
     Route::get('groups', 'GroupsController@index')->name('users.groups');
 });
 //-------------------------------------------------------------------------

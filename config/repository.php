@@ -230,7 +230,7 @@ return [
         'rootNamespace' => 'App\\',
         'stubsOverridePath' => app_path(),
         'paths'         => [
-            'models'       => 'Entities',
+            'models'       => 'Models',
             'repositories' => 'Repositories',
             'interfaces'   => 'Repositories',
             'transformers' => 'Transformers',

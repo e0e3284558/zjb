@@ -30,6 +30,16 @@
     <!-- toastr style-->
     <link href="{{ asset('assets/js/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
+    <!-- toastr style-->
+    <link href="{{ asset('assets/js/plugins/icheck/skins/minimal/_all.css') }}" rel="stylesheet">
+
+    <!-- select2 style-->
+    <link href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet"> -->
+    
+    <!-- chosen style-->
+    <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -838,12 +848,28 @@
     <!-- toastr -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/toastr/toastr.min.js') }}"></script>
 
+    <!-- icheck -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/icheck/icheck.min.js') }}"></script>
+
+    <!-- select2 -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/i18n/zh-CN.js') }}"></script>
+    
+
+    <!-- chosen -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/chosen/chosen.jquery.min.js') }}"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/custom.js') }}" type="text/javascript"></script>
     
 
     <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         //初始化datatables
         $.extend( $.fn.dataTable.defaults, {
             'language':{
@@ -873,19 +899,22 @@
         } );
         //初始化toastr
         window.toastr.options = {
-           "closeButton": true,
-           "debug": false,
-           "positionClass": "toast-top-center",
-           "onclick": null,
-           "showDuration": "1000",
-           "hideDuration": "1000",
-           "timeOut": "3000",
-           "extendedTimeOut": "1000",
-           "showEasing": "swing",
-           "hideEasing": "linear",
-           "showMethod": "fadeIn",
-           "hideMethod": "fadeOut"
+            "closeButton": true,
+            "debug": false,
+            "progressBar": true,
+            "preventDuplicates": false,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": "1000",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
         };
+        // $.fn.select2.defaults.set( "theme", "bootstrap" );
 
         $(document).ready(function() {
             
