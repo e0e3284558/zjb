@@ -181,6 +181,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Vinkla\Hashids\HashidsServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -249,6 +250,7 @@ return [
         'Active' => HieuLe\Active\Facades\Active::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];

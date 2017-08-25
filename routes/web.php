@@ -72,6 +72,10 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     //其他报修项
     Route::resource('other_asset','OtherAssetController');
 
+    //资产管理
+    Route::get('asset/show_img/{file_id}','AssetController@show_img');
+    Route::resource('asset','AssetController');
+
     //附件信息
     Route::post("upload/uploadFile","UploadController@uploadFile");
     Route::resource("upload","UploadController");

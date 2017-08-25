@@ -56,7 +56,7 @@ class AreaController extends Controller
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,
             'uid' => Uuid::generate()->string,
-            'remarks' => $request->remarks,
+            'remarks' => $request->remarks?$request->remarks:'',
             'created_at' => date("Y-m-d H:i:s")
         ];
         if($request->pid){

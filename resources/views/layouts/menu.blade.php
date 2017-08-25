@@ -32,9 +32,9 @@
 <li class="{{ active_class(if_query('app_groups','asset')) }}">
     <a href="javascript:;"><i class="fa fa-group"></i> <span class="nav-label">资产管理</span> <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AssetCategoryController@index'))}}"><a href="{{ url('asset_category?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 资产类别</a></li>
-        <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AreaController@index'))}}"><a href="{{ url('area?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 场地管理</a></li>
-        <li class="{{ active_class(if_action('App\Http\Controllers\Asset\OtherAssetController@index'))}}"><a href="{{ url('other_asset?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 其他报修项</a></li>
-        <li class="{{ active_class(if_action('App\Http\Controllers\Asset\AssetController@index'))}}"><a href="{{ url('asset?app_groups=asset') }}"><i class="fa fa-angle-right"></i> 资产管理</a></li>
+        <li class="{{ active_class(if_route('asset_category.index') && if_query('app_groups','asset')) }}"><a href="{{ route('asset_category.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产类别</a></li>
+        <li class="{{ active_class(if_route('area.index') && if_query('app_groups','asset')) }}"><a href="{{ route('area.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 场地管理</a></li>
+        <li class="{{ active_class(if_route('other_asset.index') && if_query('app_groups','asset')) }}"><a href="{{ route('other_asset.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 其他报修项</a></li>
+        <li class="{{ active_class(if_route('asset.index') && if_query('app_groups','asset')) }}"><a href="{{ route('asset.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产管理</a></li>
     </ul>
 </li>
