@@ -25,28 +25,22 @@
 @section('content')
     <div class="wrapper wrapper-content wrapper-content2 animated fadeInRight">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="ibox ">
                     <div class="ibox-title">
                         <h5>分类列表</h5>
                     </div>
                     <div class="ibox-content">
-
-                        <p class="m-b-lg">
-                            在这就办云平台的系统上，拥有者丰富的可读可选可编辑的分类列表，您可以根据您要的方式进行定制，我们的使命是提供更高效的后勤保障系统。
-                        </p>
-
                         <div class="dd" id="nestable2">
                             <ol class="dd-list">
+                                <li >
+                                    <button class="btn btn-primary" onclick="add('{{url("repair/service_worker/create")}}')">添加维修工</button>
+                                </li>
                                 @foreach($data as $v)
-                                    <li class="dd-item">
+                                    <li class="dd-item" onclick="serviceWorker('{{$v->id}}')">
                                         <div class="dd-handle" title="{{$v->comment}}">
-                                            <span class="label label-info"><i
-                                                        class="{{$v->icon}}"></i></span>{{$v->name}}
-                                            <span class="span-icon-right">
-                                    <i class="fa fa-edit"
-                                       onclick="edit('{{url('repair/classify/'.$v->id.'/edit')}}')"></i>
-                                    <i class="fa fa-times span-i-icon-right" onclick="del({{$v->id}})"></i></span>
+                                            <span class="label label-info"><i class="{{$v->icon}}"></i></span>
+                                            {{$v->name}}
                                         </div>
                                     </li>
                                 @endforeach
@@ -56,7 +50,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-8" id="create">
+            <div class="col-lg-9" id="create">
                 <div class="ibox">
                     <div class="ibox-title">
                         <h5>维修工列表</h5>
@@ -89,7 +83,7 @@
                                 </script>
                             @endif
                             <br>
-                            <button class="btn btn-primary" onclick="add('{{url("repair/service_worker/create")}}')">添加维修工</button>
+
                         </p>
 
                         <div class="dd" id="nestable2">
@@ -105,6 +99,18 @@
 <script>
     /*创建*/
     function add(url) {
+        $.ajax({
+            "url": url,
+            "type": 'get',
+            success: function (data) {
+                $("#create").html(data);
+            }
+        })
+    }
+
+    /*更新所选分类的维修工*/
+    function serviceWorker(id) {
+        url='{{url('repair/service_worker')}}/'+id;
         $.ajax({
             "url": url,
             "type": 'get',
