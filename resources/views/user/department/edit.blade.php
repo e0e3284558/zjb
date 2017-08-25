@@ -1,8 +1,6 @@
-<div class="ibox float-e-margins full-height-ibox">
+<div class="ibox float-e-margins ">
     <div class="ibox-title">
         <h5>部门编辑</h5>
-        <div class="ibox-tools pull-right">
-        </div>
     </div>
     <div class="ibox-content margin-padding-0 relative-ibox-content">
         <div class="full-height-scroll">
@@ -13,7 +11,7 @@
                 </label>
                 <div>
                     <select name="parent_id" class="form-control">
-                        {!! department_select($department->id) !!}
+                        {!! department_select($department->parent_id) !!}
                     </select>
                 </div>
             </div>
@@ -37,11 +35,12 @@
                     <label class="radio-inline i-checks"> <input type="radio" class="" name="status" value="0" {{ $department->status ? '' : 'checked' }}> 不可用 </label>
                 </div>
             </div>
-            <div class="form-actions border-top right">
+            <div class="form-actions border-top ">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
-                <button type="submit" class="btn btn-success">保存</button>
-                <button type="button" class="btn btn-danger" id="delete">删除</button>
+                <input type="hidden" name="id" value="{{ $department->id }}">
+                <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
+                <button type="button" class="btn btn-danger ladda-button" id="delete" data-style="expand-left">删除</button>
                 <button type="button" class="btn btn-default" id="cannel">取消</button>
             </div>
         </form>
@@ -54,44 +53,78 @@
                     width:'100%'
                 });
                 var forms = $('#dep-form');
+                var l = $("button[type='submit']").ladda();
                 $('#cannel').click(function(){
-                    $.get('{{ url("users/departments/create") }}', {}, function(data){
-                        $('#dep-form-wrapper').html(data);
-                    });
+                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/create") }}',{},false);
                 });
                 $('#delete').click(function(){
-                    jQuery.ajax({
-                        url: forms.attr('action'),
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            '_method':'DELETE'
-                        },
-                        beforeSend: function(){
-                            zjb.blockUI();
-                        },
-                        complete: function(xhr, textStatus) {
-                            zjb.unblockUI();
-                        },
-                        success: function(data, textStatus, xhr) {
-                            if(data.status){
-                                toastr.success(data.message);
-                                //重新载入左侧树形菜单
-                                $('#departments-tree').jstree(true).refresh();
-                            }else{
-                               toastr.error(data.message); 
+                    var dl = $("#delete").ladda();
+                    swal({
+                      title: "确定要删除吗?",
+                      text: "",
+                      type: "warning",
+                      showCancelButton: true,
+                      cancelButtonText:'取消',
+                      confirmButtonText: "确定",
+                      closeOnConfirm: false
+                    },
+                    function(){
+                        swal.close();
+                        jQuery.ajax({
+                            url: forms.attr('action'),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                '_method':'DELETE'
+                            },
+                            beforeSend: function(){
+                                // zjb.blockUI();
+                                dl.ladda('start');
+                                $('.form-actions button').attr({'disabled':'disabled'});
+                            },
+                            complete: function(xhr, textStatus) {
+                                // zjb.unblockUI();
+                                dl.ladda('stop');
+                                $('.form-actions button').removeAttr('disabled');
+                            },
+                            success: function(data, textStatus, xhr) {
+                                if(data.status){
+                                    toastr.success(data.message);
+                                    // swal({
+                                    //   title: data.message,
+                                    //   text: "",
+                                    //   type: 'success',
+                                    //   timer: 1000,
+                                    //   confirmButtonText: "确定"
+                                    // });
+                                    $('#cannel').click();
+                                    //重新载入左侧树形菜单
+                                    $('#departments-tree').jstree(true).refresh();
+                                }else{
+                                    // swal({
+                                    //   title: data.message,
+                                    //   text: "",
+                                    //   type: 'error',
+                                    //   timer: 2000,
+                                    //   confirmButtonText: "确定"
+                                    // });
+                                    toastr.error(data.message,'警告'); 
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                                if(xhr.status == 422 && textStatus =='error'){
+                                    $.each(xhr.responseJSON,function(i,v){
+                                        toastr.error(v[0],'警告');
+                                    });
+                                }else{
+                                    toastr.error('请求出错，稍后重试','警告');
+                                }
                             }
-                        },
-                        error: function(xhr, textStatus, errorThrown) {
-                            if(xhr.status == 422 && textStatus =='error'){
-                                $.each(xhr.responseJSON,function(i,v){
-                                    toastr.error(v[0]);
-                                });
-                            }else{
-                                toastr.error('请求出错，稍后重试');
-                            }
-                        }
+                        });  
+
                     });
+
+                    
                 });
                 forms.validate({
                     errorElement: 'span', //default input error message container
@@ -148,29 +181,30 @@
                             dataType: 'json',
                             data: $("#dep-form").serialize(),
                             beforeSend: function(){
-                                zjb.blockUI();
+                                // zjb.blockUI();
+                                l.ladda('start');
                             },
                             complete: function(xhr, textStatus) {
-                                zjb.unblockUI();
+                                // zjb.unblockUI();
+                                l.ladda('stop');
                             },
                             success: function(data, textStatus, xhr) {
-                                console.log(data);
                                 if(data.status){
                                     toastr.success(data.message);
                                     //重新载入左侧树形菜单
                                     $('#departments-tree').jstree(true).refresh();
-
+                                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/".$department->id."/edit") }}',{},false);
                                 }else{
-                                   toastr.error(data.message); 
+                                   toastr.error(data.message,'警告'); 
                                 }
                             },
                             error: function(xhr, textStatus, errorThrown) {
                                 if(xhr.status == 422 && textStatus =='error'){
                                     $.each(xhr.responseJSON,function(i,v){
-                                        toastr.error(v[0]);
+                                        toastr.error(v[0],'警告');
                                     });
                                 }else{
-                                    toastr.error('请求出错，稍后重试');
+                                    toastr.error('请求出错，稍后重试','警告');
                                 }
                             }
                         });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Requests\DepartmentRequest;
 use App\Models\User\Department;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -70,7 +71,6 @@ class DepartmentController extends Controller
             return response()->json($tempData);
         }
 //        $list = Department::getSpaceTreeData();
-
         return view('user.department.index');
     }
 
@@ -86,17 +86,22 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentRequest $request)
     {
-//        dump($request->all());
         $department = new Department;
         $department->name = $request->name;
         $department->status = $request->status;
         $department->parent_id = $request->parent_id;
         $department->org_id = auth()->user()->org_id;
-        $department->save();
-        return response()->json([
-            'status' => 1, 'message' => '添加成功',
-            'data' => $department->toArray(), 'url' => url('users/departments?tree=1&select=' . $department->id)
-        ]);
+        if($department->save()){
+            return response()->json([
+                'status' => 1, 'message' => '添加成功',
+                'data' => $department->toArray(), 'url' => url('users/departments?tree=1&select=' . $department->id)
+            ]);
+        }else{
+            return response()->json([
+                'status' => 0, 'message' => '保存失败',
+                'data' => null, 'url' => ''
+            ]);
+        }
     }
 
     /**
@@ -118,9 +123,23 @@ class DepartmentController extends Controller
      * @param  \App\Models\User\Department $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $department)
+    public function update(DepartmentRequest $request, Department $department, $id)
     {
-        dump(Input::all());
+        $dep = $department->findOrFail($id);
+        $dep->name = $request->name;
+        $dep->parent_id = $request->parent_id;
+        $dep->status = $request->status;
+        if($dep->save()){
+            return response()->json([
+                'status' => 1, 'message' => '编辑成功',
+                'data' => $dep->toArray(), 'url' => url('users/departments?tree=1&select=' . $id)
+            ]);
+        }else{
+            return response()->json([
+                'status' => 0, 'message' => '编辑失败',
+                'data' => null, 'url' => ''
+            ]);
+        }
     }
 
     /**
@@ -131,8 +150,36 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department,$id)
     {
-        dump($id);
-        //判断是否有子部门
-        //删除
+        $result = [
+            'status'=>1,
+            'message'=>'操作成功',
+            'data'=>'',
+            'url'=>'',
+        ];
+        $dp = $department->find($id);
+        if($dp){
+            $flag = 1;
+            //判断是否有子部门
+            if($department->where(['parent_id'=>$id])->first()){
+                $result['status'] = 0;
+                $result['message'] = '存在子部门信息不能删除';
+                $flag = 0;
+            }
+            //检测是否包含其他数据如部门用户
+            if(User::where('department_id',$id)->first()){
+                $result['status'] = 0;
+                $result['message'] = '该部门存在用户关联数据不能删除';
+                $flag = 0;
+            }
+            //删除
+            if($flag && !$dp->delete()){
+                $result['status'] = 0;
+                $result['message'] = '删除失败';
+            }
+        }else{
+            $result['status'] = 0;
+            $result['message'] = '操作的信息不存在';
+        }
+        return response()->json($result);
     }
 }

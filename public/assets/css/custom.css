@@ -32,6 +32,7 @@
 	left: 0;
 	width: 100%;
 	background-color: #fff;
+	padding: 10px 20px 5px 20px;
 }
 .f5-bg{
 	background-color: #f5f5f5;
@@ -41,7 +42,6 @@
 }
 .form-actions.right{
 	text-align: right;
-	padding: 10px 20px 5px 20px;
 }
 .form-actions.center{
 	text-align: center;

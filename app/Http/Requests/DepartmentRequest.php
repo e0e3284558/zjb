@@ -24,11 +24,32 @@ class DepartmentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'=>'bail|required',
-            'parent_id'=>'bail|required',
-            'status'=>'bail|required',
-        ];
+        switch ($this->method()){
+            case 'GET':
+            case 'DELETE':
+            {
+                return [];
+            }
+            case 'POST':
+            {
+                return [
+                    'name'=>'bail|required',
+                    'parent_id'=>'bail|required',
+                    'status'=>'bail|required',
+                ];
+            }
+            case 'PUT':
+            case 'PATCH':
+            {
+                return [
+                    'name'=>'bail|required',
+                    'parent_id'=>'bail|required|different:id',
+                    'status'=>'bail|required',
+                ];
+            }
+            default:break;
+        }
+
     }
 
     /**
@@ -41,6 +62,7 @@ class DepartmentRequest extends FormRequest
         return [
             'name.required' => '请输入部门名称',
             'parent_id.required' => '请选择上级部门',
+            'parent_id.different'=> '上级部门不能为自身',
             'status.required' => '请选择部门状态',
         ];
     }

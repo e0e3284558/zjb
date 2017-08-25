@@ -1,8 +1,6 @@
-<div class="ibox float-e-margins ">
+<div class="ibox float-e-margins">
     <div class="ibox-title">
         <h5>部门添加</h5>
-        <div class="ibox-tools pull-right">
-        </div>
     </div>
     <div class="ibox-content margin-padding-0 relative-ibox-content">
         <div class="full-height-scroll">
@@ -37,9 +35,9 @@
                     <label class="radio-inline i-checks"> <input type="radio" class="" name="status" value="0"> 不可用 </label>
                 </div>
             </div>
-            <div class="form-actions border-top right">
+            <div class="form-actions border-top ">
                 {{ csrf_field() }}
-                <button type="submit" class="btn btn-success">保存</button>
+                <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
                 <button type="reset" class="btn btn-default" id="cannel">取消</button>
             </div>
         </form>
@@ -52,6 +50,7 @@
                     width:'100%'
                 });
                 var forms = $('#dep-form');
+                var l = $("button[type='submit']").ladda();
                 forms.validate({
                     errorElement: 'span', //default input error message container
                     errorClass: 'help-block', // default input error message class
@@ -105,31 +104,34 @@
                             url: forms.attr('action'),
                             type: 'POST',
                             dataType: 'json',
-                            data: $("#dep-form").serialize(),
+                            data: forms.serialize(),
                             beforeSend: function(){
-                                zjb.blockUI();
+                                // zjb.blockUI();
+                                l.ladda('start');
                             },
                             complete: function(xhr, textStatus) {
-                                zjb.unblockUI();
+                                // zjb.unblockUI();
+                                l.ladda('stop');
                             },
                             success: function(data, textStatus, xhr) {
                                 if(data.status){
                                     toastr.success(data.message);
-                                    $('#cannel').click();
                                     //重新载入左侧树形菜单
-                                    $('#departments-tree').jstree('refresh');
-
+                                    $('#departments-tree').jstree(true).refresh();
+                                    $.get('{{ url("users/departments/create") }}', {}, function(data){
+                                        $('#dep-form-wrapper').html(data);
+                                    });
                                 }else{
-                                   toastr.error(data.message); 
+                                   toastr.error(data.message,'警告'); 
                                 }
                             },
                             error: function(xhr, textStatus, errorThrown) {
                                 if(xhr.status == 422 && textStatus =='error'){
                                     $.each(xhr.responseJSON,function(i,v){
-                                        toastr.error(v[0]);
+                                        toastr.error(v[0],'警告');
                                     });
                                 }else{
-                                    toastr.error('请求出错，稍后重试');
+                                    toastr.error('请求出错，稍后重试','警告');
                                 }
                             }
                         });
