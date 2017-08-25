@@ -23,7 +23,7 @@ class CreateAssetCategoriesTable extends Migration
             $table->integer("org_id")->default(0)->comment("所属公司id");
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['name', 'pid','org_id']);
+            $table->index(['name', 'pid', 'org_id']);
         });
     }
 
@@ -34,6 +34,6 @@ class CreateAssetCategoriesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('asset_categories');
     }
 }

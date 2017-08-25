@@ -13,7 +13,7 @@
 	height:calc(100% - 49px);
 }
 .full-height-wrapper{
-	padding: 15px;
+	padding: 20px;
 }
 .skin-1 .wrapper-content2 {
   padding: 30px 15px;
@@ -21,3 +21,30 @@
 .fh-column-w{
 	width: 340px;
 }
+.icheckbox_minimal-blue, .iradio_minimal-blue{
+	margin-top: -3px;
+}
+.margin-padding-0{margin: 0px;padding: 0;}
+.relative-ibox-content{position: relative;}
+.relative-ibox-content .form-actions{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #fff;
+	padding: 10px 20px 5px 20px;
+}
+.f5-bg{
+	background-color: #f5f5f5;
+}
+.padding-20{
+	padding:20px;
+}
+.form-actions.right{
+	text-align: right;
+}
+.form-actions.center{
+	text-align: center;
+	padding: 10px 20px 5px 20px;
+}
+.relative-ibox-content form{padding-bottom: 55px;}

@@ -176,3 +176,35 @@ if (!function_exists('list_sort_by')) {
         return false;
     }
 }
+if (!function_exists('formatTreeData')) {
+    function formatTreeData($data, $id = "id", $parent_id = "parent_id", $root = 0, $space = '&nbsp;&nbsp;|--&nbsp;', $level = 0)
+    {
+        $arr = array();
+        if ($data) {
+            foreach ($data as $v) {
+                if ($v[$parent_id] == $root) {
+                    $v['level'] = $level + 1;
+                    $v['space'] = $root != 0 ? str_repeat($space, $level) : '' . str_repeat($space, $level);
+                    $arr[] = $v;
+                    $arr = array_merge($arr, formatTreeData($data, $id, $parent_id, $v[$id], $space, $level + 1));
+                }
+            }
+        }
+        return $arr;
+    }
+}
+if (!function_exists('department_select')) {
+    function department_select($selected = 0)
+    {
+        $list = \App\Models\User\Department::getSpaceTreeData();
+        $str = '<option value="0">顶级部门</option>';
+        if ($list) {
+            foreach ($list as $key => $val) {
+                $str .= '<option value="' . $val['id'] . '" '
+                    . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
+                    . $val['space'] . $val['name'] . '</option>';
+            }
+        }
+        return $str;
+    }
+}

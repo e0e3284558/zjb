@@ -182,6 +182,10 @@ return [
         Vinkla\Hashids\HashidsServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Baum\Providers\BaumServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Former\FormerServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -251,6 +255,7 @@ return [
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+        'Former' => Former\Facades\Former::class,
     ],
 
 ];
