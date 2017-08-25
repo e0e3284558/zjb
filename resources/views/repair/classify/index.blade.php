@@ -155,7 +155,7 @@
                 "url": url,
                 "type": 'get',
                 success: function (data) {
-                    $("#edit").html(data);
+                    $("#create").html(data);
                 }
             })
         }
@@ -166,7 +166,7 @@
                 "url": url,
                 "type": 'get',
                 success: function (data) {
-                    $("#edit").html(data);
+                    $("#create").html(data);
                 }
             })
         }

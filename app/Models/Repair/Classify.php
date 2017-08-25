@@ -15,4 +15,10 @@ class Classify extends Model
      */
     protected $dates = ['deleted_at'];
     protected $fillable=['id','name','comment','icon','sorting','org_id'];
+
+    public function serviceWorker()
+    {
+        return $this->belongsToMany('App\Models\Repair\ServiceWorker');
+    }
+
 }

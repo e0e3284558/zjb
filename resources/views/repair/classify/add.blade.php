@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <div class="ibox" >
     <div class="ibox-title">
         <h5>分类操作</h5>
