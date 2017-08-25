@@ -7,26 +7,26 @@
         <tbody>
             <tr role="row">
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">资产类别</label></td>
-                <td><input type="text" value="{{$info->type_id}}" disabled name="type_id" class="form-control" id="inputEmail3"></td>
+                <td>{{$info->category_id}}</td>
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">资产名称</label></td>
-                <td><input type="text" value="{{$info->name}}" disabled name="name" class="form-control" id="inputEmail3"></td>
+                <td>{{$info->name}}</td>
             </tr>
 
             <tr role="row">
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">所属公司</label></td>
-                <td><input type="text" value="{{$info->org_id}}" disabled name="owned_org_id" class="form-control pull-right" id="datepicker"></td>
+                <td>{{$info->org_id}}</td>
             </tr>
             <tr role="row">
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">备注</label></td>
-                <td colspan="5" ><textarea class="form-control" disabled name="descr" rows="1" style="resize: none;">{{$info->descr}}</textarea></td>
+                <td colspan="5" >{{$info->remarks}}</td>
             </tr>
             <tr role="row" >
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">图片</label></td>
                 <td colspan="5" >
-                    @if($info->img)
-                        <img id="image" src="{{$info->img}}" style="height: 100px;">
+                    @if($info->img_path)
+                        <img id="image" src="{{$info->img_path}}" style="height: 100px;">
                     @else
-                        <img id="image" src="{{url('img/nopicture.jpg')}}" style="height: 100px;" >
+                        <img id="image" src="{{url('uploads/imgs/nopicture.jpg')}}" style="height: 100px;" >
                     @endif
                 </td>
             </tr>
