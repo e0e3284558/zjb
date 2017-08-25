@@ -1,8 +1,6 @@
 <div class="ibox float-e-margins ">
     <div class="ibox-title">
         <h5>部门编辑</h5>
-        <div class="ibox-tools pull-right">
-        </div>
     </div>
     <div class="ibox-content margin-padding-0 relative-ibox-content">
         <div class="full-height-scroll">
@@ -13,7 +11,7 @@
                 </label>
                 <div>
                     <select name="parent_id" class="form-control">
-                        {!! department_select($department->id) !!}
+                        {!! department_select($department->parent_id) !!}
                     </select>
                 </div>
             </div>
@@ -40,6 +38,7 @@
             <div class="form-actions border-top ">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
+                <input type="hidden" name="id" value="{{ $department->id }}">
                 <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
                 <button type="button" class="btn btn-danger ladda-button" id="delete" data-style="expand-left">删除</button>
                 <button type="button" class="btn btn-default" id="cannel">取消</button>
@@ -56,9 +55,7 @@
                 var forms = $('#dep-form');
                 var l = $("button[type='submit']").ladda();
                 $('#cannel').click(function(){
-                    $.get('{{ url("users/departments/create") }}', {}, function(data){
-                        $('#dep-form-wrapper').html(data);
-                    });
+                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/create") }}',{},false);
                 });
                 $('#delete').click(function(){
                     var dl = $("#delete").ladda();
@@ -111,16 +108,16 @@
                                     //   timer: 2000,
                                     //   confirmButtonText: "确定"
                                     // });
-                                    toastr.error(data.message); 
+                                    toastr.error(data.message,'警告'); 
                                 }
                             },
                             error: function(xhr, textStatus, errorThrown) {
                                 if(xhr.status == 422 && textStatus =='error'){
                                     $.each(xhr.responseJSON,function(i,v){
-                                        toastr.error(v[0]);
+                                        toastr.error(v[0],'警告');
                                     });
                                 }else{
-                                    toastr.error('请求出错，稍后重试');
+                                    toastr.error('请求出错，稍后重试','警告');
                                 }
                             }
                         });  
@@ -196,18 +193,18 @@
                                     toastr.success(data.message);
                                     //重新载入左侧树形菜单
                                     $('#departments-tree').jstree(true).refresh();
-
+                                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/".$department->id."/edit") }}',{},false);
                                 }else{
-                                   toastr.error(data.message); 
+                                   toastr.error(data.message,'警告'); 
                                 }
                             },
                             error: function(xhr, textStatus, errorThrown) {
                                 if(xhr.status == 422 && textStatus =='error'){
                                     $.each(xhr.responseJSON,function(i,v){
-                                        toastr.error(v[0]);
+                                        toastr.error(v[0],'警告');
                                     });
                                 }else{
-                                    toastr.error('请求出错，稍后重试');
+                                    toastr.error('请求出错，稍后重试','警告');
                                 }
                             }
                         });

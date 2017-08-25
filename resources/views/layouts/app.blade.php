@@ -652,7 +652,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <!-- pace -->
     <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
     <!-- blockui -->
@@ -711,6 +711,16 @@
     <script type="text/javascript" src="{{asset('assets/js/plugins/ladda/ladda.jquery.min.js')}}"></script>
 
     <!-- Custom and plugin javascript -->
+    <script type="text/javascript">
+        // Config box
+        // if (localStorageSupport){
+        //     localStorage.setItem("fixedfooter",'on');
+        //     localStorage.setItem("fixedsidebar",'on');
+        //     localStorage.setItem("fixednavbar",'off');
+        //     localStorage.setItem("fixednavbar2",'off');
+        // }
+    </script>
+    
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/custom.js') }}" type="text/javascript"></script>
     
@@ -770,16 +780,6 @@
         $(document).ready(function() {
             
         });
-    </script>
-
-    <script type="text/javascript">
-        // Config box
-        if (localStorageSupport){
-            localStorage.setItem("fixedfooter",'on');
-            localStorage.setItem("fixedsidebar",'on');
-            localStorage.setItem("fixednavbar",'off');
-            localStorage.setItem("fixednavbar2",'off');
-        }
     </script>
 </body>
 </html>
