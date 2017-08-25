@@ -180,8 +180,6 @@ return [
         Propaganistas\LaravelPhone\PhoneServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
         Vinkla\Hashids\HashidsServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
-        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Baum\Providers\BaumServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Former\FormerServiceProvider::class,
@@ -253,8 +251,6 @@ return [
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
         'Active' => HieuLe\Active\Facades\Active::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Former' => Former\Facades\Former::class,
     ],
 
