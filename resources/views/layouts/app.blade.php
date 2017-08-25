@@ -626,7 +626,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <!-- Large modal -->
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
@@ -678,7 +678,7 @@
             </div>
         </div>
     </div>
-</div>
+
     <!-- pace -->
     <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
     <!-- blockui -->
