@@ -106,7 +106,6 @@
                             dataType: 'json',
                             data: forms.serialize(),
                             beforeSend: function(){
-                                // zjb.blockUI();
                                 l.ladda('start');
                             },
                             complete: function(xhr, textStatus) {

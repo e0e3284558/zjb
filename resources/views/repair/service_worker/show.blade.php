@@ -11,6 +11,7 @@
 
         <div class="dd " id="nestable2">
             <div class="row gray-bg">
+                <p></p>
                 @foreach($data as $v)
                     <div class="col-lg-4">
                         <div class="contact-box center-version">

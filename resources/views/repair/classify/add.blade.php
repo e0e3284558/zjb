@@ -5,7 +5,6 @@
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            简单、快速的操作将大幅提升您的工作效率，点击左侧分类栏目即可实现快速编辑操作。
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -29,26 +28,29 @@
             </p>
 
             <div class="dd" id="nestable2">
-                <form action="{{url('repair/classify')}}" method="post">
+                <form class="form-horizontal" action="{{url('repair/classify')}}" method="post">
                     {{csrf_field()}}
                     <li class="dd-item">
                         <div class="dd-handle ">
                             <label>分类名称<i>*</i></label>
-                            <input type="text" class="form-control" value=""  name="name" placeholder="分类名称">
+                            <input type="text" required maxlength="20" class="form-control" value=""
+                                   name="name" placeholder="分类名称">
                         </div>
                     </li>
 
                     <li class="dd-item">
                         <div class="dd-handle ">
                             <label>分类备注</label>
-                            <input type="text" class="form-control" value=""  name="comment" placeholder="分类备注">
+                            <input type="text" class="form-control" value="" name="comment"
+                                   placeholder="分类备注">
                         </div>
                     </li>
 
-                    <li class="dd-item">
+                    <li class="dd-item  hide">
                         <div class="dd-handle ">
                             <label>分类图标</label>
-                            <input type="text" class="form-control" value="" name="icon" placeholder="分类图标">
+                            <input type="text" class="form-control" value="fa fa-cogs"
+                                   name="icon" placeholder="分类图标">
                         </div>
                     </li>
                     <li class="dd-item">

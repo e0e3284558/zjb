@@ -6,7 +6,6 @@
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            简单、快速的操作将大幅提升您的工作效率，点击左侧分类栏目即可实现快速编辑操作。
             @if (count($errors) > 0)
                 <script type="text/javascript">
                     $(document).ready(function () {
@@ -38,14 +37,12 @@
                     {{csrf_field()}}
                     {{method_field('PUT')}}
                     <li class="dd-item">
-
                         <div class="dd-handle">
-                            <label class="control-label">分类名称<span class="required">*</span></label>
+                            <label>分类名称<i>*</i></label>
                             <input type="text" class="form-control" name="name" value="{{$data->name}}"
                                    placeholder="分类名称">
                         </div>
                     </li>
-
                     <li class="dd-item">
                         <div class="dd-handle ">
                             <label>分类备注</label>
@@ -54,8 +51,8 @@
                         </div>
                     </li>
 
-                    <li class="dd-item">
-                        <div class="dd-handle hide">
+                    <li class="dd-item hide">
+                        <div class="dd-handle">
                             <label>分类图标</label>
                             <input type="text" class="form-control" name="icon" value="{{$data->icon}}"
                                    placeholder="分类图标">
