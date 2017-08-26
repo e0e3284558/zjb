@@ -1,61 +1,24 @@
-<style>
-    .form-group{
-        overflow: auto;
-    }
-</style>
+
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="myModalLabel">资产信息修改</h4>
 </div>
-<form id="signupForm1" class="form-horizontal ibox-content" method="post" >
+<div class="modal-body">
+    <form id="signupForm1" class="form-horizontal" method="post" >
 
-    <div class="sk-spinner sk-spinner-double-bounce">
-        <div class="sk-double-bounce1"></div>
-        <div class="sk-double-bounce2"></div>
-    </div>
-
-    <div class="modal-body">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <input type="hidden" name="_method" value="PUT">
-        <div class="row">
-            <div class="col-sm-4">
+
+        <div class="row" >
+            <div class="col-md-4" >
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">资产条码</label>
                     <div class="col-sm-8">
                         <input type="text" name="asset_code" disabled value="{{$info->code}}" class="form-control" id="inputEmail3" placeholder="资产条码">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">规格型号</label>
-
-                    <div class="col-sm-8">
-                        <input type="text" name="spec" value="{{$info->spec}}" class="form-control" id="inputEmail3" placeholder="规格型号">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">金额</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="money" value="{{$info->money}}" class="form-control" id="inputEmail3" placeholder="金额">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">供应商</label>
-
-                    <div class="col-sm-8">
-                        <input type="text" name="supplier" value="{{$info->supplier}}" class="form-control" id="inputEmail3" placeholder="供应商">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">使用期限</label>
-
-                    <div class="col-sm-8">
-                        <input type="text" name="use_time" value="{{$info->use_time}}" class="form-control" id="inputEmail3" placeholder="使用期限">
-                    </div>
-                </div>
-
             </div>
-            <div class="col-sm-4" >
+            <div class="col-md-4" >
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
@@ -71,24 +34,30 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">SN号</label>
+            </div>
 
+            <div class="col-md-4" >
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">资产名称<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="SN_code" value="{{$info->SN_code}}" class="form-control" id="inputEmail3" placeholder="SN号">
+                        <input type="text" name="name" value="{{$info->name}}" class="form-control" id="inputEmail3" placeholder="资产名称">
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="row" >
+            <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">使用人</label>
-
+                    <label for="inputEmail3" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="user_id" value="{{$info->user_id}}" class="form-control" id="inputEmail3" placeholder="使用人">
+                        <input type="text" disabled name="buy_time" value="{{date("Y/m/d")}}" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
-
                     <div class="col-sm-8">
                         <select name="area_id" class="form-control">
                             @foreach($list4 as $v)
@@ -101,24 +70,57 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" disabled name="buy_time" value="{{date("Y/m/d")}}" class="form-control datepicker" data-date-end-date = "0d">
-                    </div>
-                </div>
-
-
             </div>
-            <div class="col-sm-4" >
+            <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">资产名称<span style="color:red;">*</span></label>
-
+                    <label for="inputEmail3" class="col-sm-4 control-label">金额</label>
                     <div class="col-sm-8">
-                        <input type="text" name="name" value="{{$info->name}}" class="form-control" id="inputEmail3" placeholder="资产名称">
+                        <input type="text" name="money" value="{{$info->money}}" class="form-control" id="inputEmail3" placeholder="金额">
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">使用期限</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="use_time" value="{{$info->use_time}}" class="form-control" id="inputEmail3" placeholder="使用期限">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">SN号</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" name="SN_code" value="{{$info->SN_code}}" class="form-control" id="inputEmail3" placeholder="SN号">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">使用人</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" name="user_name" value="{{$info->user_name}}" class="form-control" id="inputEmail3" placeholder="使用人">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-4 control-label">供应商</label>
+
+                    <div class="col-sm-8">
+                        <input type="text" name="supplier" value="{{$info->supplier}}" class="form-control" id="inputEmail3" placeholder="供应商">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">计量单位</label>
 
@@ -126,6 +128,8 @@
                         <input type="text" name="calculate" value="{{$info->calculate}}" class="form-control" id="inputEmail3" placeholder="计量单号">
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4">
                 <div class="form-group" style="position: relative;" >
                     <label for="inputEmail3" class="col-sm-4 control-label">使用部门</label>
 
@@ -142,28 +146,30 @@
                     </div>
                     <a class="" data-toggle="tooltip" data-placement="bottom" style="font-size:14px; text-decoration:underline; cursor:pointer; position:absolute; right:0px; top:8px;" title="" data-original-title="如果 &quot; 使用部门&quot; 和 &quot;使用人&quot; 为空，系统将自动设置资产状态为 &quot;闲置&quot;"><i class="fa fa-question-circle" style="margin-right:6px;"></i></a>
                 </div>
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-md-4" >
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">管理员</label>
-
                     <div class="col-sm-8">
                         <select name="admin_id" class="form-control">
                             @foreach($list3 as $v)
-                                @if($info->admin_id == $v->admin)
-                                    <option value="{{$v->id}}" selected>{{$v->name}}</option>
-                                @else
-                                    <option value="{{$v->id}}">{{$v->name}}</option>
-                                @endif
+                                <option value="{{$v->id}}">{{$v->name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-4" >
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">来源</label>
                     <div class="col-sm-8">
                         <select name="source_id" class="form-control">
                             @foreach($list5 as $v)
-                                @if($info->source_id == $v->source_id)
-                                    <option value="{{$v->id}}" selected >{{$v->name}}</option>
+                                @if($v->id == $info->source_id)
+                                    <option selected value="{{$v->id}}">{{$v->name}}</option>
                                 @else
                                     <option value="{{$v->id}}">{{$v->name}}</option>
                                 @endif
@@ -171,49 +177,59 @@
                         </select>
                     </div>
                 </div>
-
             </div>
-            <div class="col-sm-6" >
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">资产信息备注</label>
 
-                    <div class="col-sm-8">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" >{{$info->remarks}}</textarea>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-8" >
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">备注</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ...">{{$info->remarks}}</textarea>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4" >
+            <div class="col-md-4" >
                 <div class="form-group">
                     <label for="Comment" class="col-sm-4 control-label">照片</label>
                     <div class="col-sm-8">
                         <!--dom结构部分-->
                         <div id="uploader-demo">
-{{--                            @if($img_path)--}}
-                                {{--<img id="thumb_img" src="{{$img_path}}" alt="" width="130px" height="100px">--}}
-                            {{--@else--}}
-                                <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" width="130px" height="100px">
-                            {{--@endif--}}
+                            @if($info->img_path)
+                                <img id="thumb_img" src="{{url($info->img_path)}}" alt="" width="160px" height="120px">
+                            @else
+                                <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" width="160px" height="120px">
+                            @endif
                             <!--用来存放item-->
                             <div id="fileList" class="uploader-list"></div>
                             <div id="filePicker">选择图片</div>
-                            <input type="hidden" id="upload_id" name="img" value="{{$info->img}}">
+                                <input type="hidden" name="file_id" id="upload_id" value="">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-primary">保存</button>
-    </div>
-</form>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+    <button type="button" class="btn btn-success" id="submitAssetsForm">保存</button>
+</div>
+
 
 <script type="text/javascript">
 
     $( document ).ready( function () {
 
-        $( "#signupForm1" ).validate( {
+        var assets_form = $( "#signupForm1" );
+        var errorInfo = $('.alert-danger', assets_form);
+        $('#submitAssetsForm').click(function () {
+            assets_form.submit();
+        });
+        assets_form.validate( {
             rules: {
                 type_id:"required",
                 name:"required",
@@ -278,7 +294,7 @@
                 //表单验证之后ajax上传数据
                 $.ajax({
                     url:"{{url('asset/'.$info->id)}}",
-                    data:$('#signupForm1').serialize(),
+                    data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {
@@ -359,32 +375,6 @@
             }
         })
     }
-</script>
-
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    var uploader = WebUploader.create({
-        // 选完文件后，是否自动上传。
-        auto: true,
-        // swf文件路径
-        swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',
-        // 文件接收服务端。
-        server: '{{url('upload/uploadFile')}}',
-        formData: {"_token": "{{ csrf_token() }}"},
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: '#filePicker1',
-        // 只允许选择word文档文件。
-        accept: {
-            title: 'Images',
-            extensions: 'doc,docx',
-            mimeTypes: '*'
-        }
-    });
-    uploader.on('uploadSuccess', function (file, response) {
-        $('#fileList1').attr('value',response.old_name);
-        $('#files').attr('value', response.id);
-    });
 </script>
 
 <script>

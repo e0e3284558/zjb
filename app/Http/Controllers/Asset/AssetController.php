@@ -64,6 +64,7 @@ class AssetController extends Controller
             //图片
             if($asset_file = AssetFile::where("asset_id",$value->id)->first()){
                 $list[$key]['img_path'] = File::where("id",$asset_file->file_id)->value("path");
+                $list[$key]['file_id'] = $asset_file->file_id;
             }
         }
         return view("asset.asset.index",compact("list"));
@@ -105,16 +106,22 @@ class AssetController extends Controller
     {
         $code = date("dHis").rand("10000","99999");
         $request->offsetSet("code",$code);
-        $arr = $request->except("_token","img");
+        $arr = $request->except("_token","img","file_id");
 
         $arr['asset_uid'] = Uuid::generate()->string;
         QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/qrcodes/'.$arr['asset_uid'].'.png'));
         $arr['created_at'] = date("Y-m-d H:i:s");
         $arr['asset_status_id'] = "1";
-
-//        dd($arr);
-
         $info = Asset::insertGetId($arr);
+
+        $file_arr = [
+            'asset_id' => $info,
+            'file_id' => $request->file_id,
+            'org_id' => Auth::user()->org_id
+        ];
+
+        AssetFile::insert($file_arr);
+
         if($info){
             $message = [
                 'code'=>1,
@@ -137,7 +144,30 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        //
+        $info = Asset::find($id);
+        //资产类别
+        $info->category_id = AssetCategory::where("id",$info->category_id)->value("name");
+        //使用部门
+        $info->use_department_id = Department::where("id",$info->department_id)->value("name");
+        //管理员
+        $info->admin_id = User::where("id",$info->admin_id)->value("name");
+        //所在场地
+        $arr = Area::where("id",$info->area_id)->value("path");
+        $arr = explode(",",$arr);
+        $str = "";
+        foreach ($arr as $v){
+            $str .= Area::where("id",$v)->value("name")."/";
+        }
+        $str .= Area::where("id",$info->area_id)->value("name");
+        $info->area_id = trim($str,"/");
+        //来源
+        $info->source_id = Source::where("id",$info->source_id)->value("name");
+        //所属公司
+        $info->org_id = Org::where("id",$info->org_id)->value("name");
+        //图片
+        $file_id = AssetFile::where("id",$info->id)->value("file_id");
+        $info->img_path = File::where("id",$file_id)->value("path");
+        return response()->view("asset.asset.show",compact('info'));
     }
 
     /**
@@ -166,6 +196,9 @@ class AssetController extends Controller
             $list6 = Department::where("org_id",Auth::user()->org_id)->get();
             //公司
             $org_id = Auth::user()->org_id;
+            //图片
+            $file_id = AssetFile::where("id",$info->id)->value("file_id");
+            $info->img_path = File::where("id",$file_id)->value("path");
             return response()->view("asset.asset.edit", compact("info","img_path", "list1", "list2", "list3", "list4", "list5","list6"));
         }else{
             return redirect("home");
@@ -182,8 +215,22 @@ class AssetController extends Controller
     public function update(Request $request, $id)
     {
         if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
-            $arr = $request->except("_token","_method");
+            $arr = $request->except("_token","_method",'file_id');
             $info = Asset::where("id",$id)->update($arr);
+
+            if($request->file_id){
+
+                if($info = AssetFile::where("asset_id",$id)->first()){
+                    AssetFile::where("asset_id",$id)->delete();
+                }
+                $file_arr = [
+                    'asset_id' => $id,
+                    'file_id' => $request->file_id,
+                    'org_id' => Auth::user()->org_id
+                ];
+                AssetFile::insert($file_arr);
+            }
+
             if($info){
                 $message = [
                     'code' => 1,
@@ -211,6 +258,9 @@ class AssetController extends Controller
         if(Auth::user()->org_id == Asset::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
                 $info = Asset::where("id", $v)->delete();
+                if($infos = AssetFile::where("id",$v)->first()){
+                    AssetFile::where("asset_id",$v)->delete();
+                }
                 if($info){
                     $message = [
                         'code' => 1,

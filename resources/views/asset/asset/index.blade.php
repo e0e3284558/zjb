@@ -22,137 +22,89 @@
 @endsection
 @section("content")
     {{--资产入库--}}
-<div class="row" >
-    <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>
-                    <h3 class="h3">
-                        <button type="button" onclick="adds('增加','{{url('asset/create')}}')" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
-                            <i class="fa  fa-plus"></i> 增加
-                        </button>
+<div class="wrapper wrapper-content ">
+    <div class="row" >
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        <h3 class="h3">
+                            <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
 
-                        <div class="dropdown inline">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <i class="fa  fa-plus"></i> 处理
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="drop1">
-                                <li><a href="#" data-bind="click:showAddUseDialog">资产领用</a></li>
-                                <li><a href="#" data-bind="click:showAddBorrowDialog">资产借用</a></li>
-                                <li><a href="#" data-bind="click:showAddAssetTransfer">资产调拨</a></li>
-                                <li><a href="#" data-bind="click:showAddOtherDialog">实物信息变更</a></li>
-                                <li><a href="#" data-bind="click:showAddFinanceDialog">财务信息变更</a></li>
-                                <li><a href="#" data-bind="click:showAddRepairDialog">维修信息登记</a></li>
-                                <li><a href="#" data-bind="click:showAddClearDialog">清理报废</a></li>
-                            </ul>
-                        </div>
+                            <div class="dropdown inline">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-pencil"></i> 编辑
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    <li><a href="javascript:;" id="edit" onclick="edit()" data-toggle="modal" data-target=".bs-example-modal-lg">修改</a></li>
 
-                        <div class="dropdown inline">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-pencil"></i> 编辑
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="javascript:;" id="edit" onclick="edit()" data-toggle="modal" data-target=".bs-example-modal-lg">修改</a></li>
+                                    <li><a href="#" id="dlt" onclick="dlt()" >删除</a></li>
+                                    <li class="line" style="border-bottom: solid 1px #ddd; margin: 4px;"></li>
+                                    <li><a href="#" id="edit" data-bind="click:showCustomDialog">管理自定义属性</a></li>
+                                </ul>
+                            </div>
+                        </h3>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
 
-                                <li><a href="#" id="dlt" onclick="dlt()" >删除</a></li>
-                                <li class="line" style="border-bottom: solid 1px #ddd; margin: 4px;"></li>
-                                <li><a href="#" id="edit" data-bind="click:showCustomDialog">管理自定义属性</a></li>
-                            </ul>
-                        </div>
-                        <div class="dropdown inline">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-sign-in"></i> 导入/导出
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="{{url('asset/ExcelTemplate')}}">下载导入模板</a></li>
-                                <li><a href="javascript:;" onclick="add('批量导入资产','{{url('asset/addImport')}}','600','300')"  id="import" data-bind="click:showImportDialog">批量导入资产</a></li>
-                                <li class="line" style="border-bottom: solid 1px #ddd; margin: 4px;"></li>
-                                <li><a href="{{url('asset/export')}}" id="export">导出资产</a></li>
-                                <li><a href="###" data-bind="click:exportAssetLogs">导出资产及单据<i class="fa fa-download" style="margin-left: 10px;margin-right: 0px;color: #3c8dbc;"></i></a></li>
-                            </ul>
-                        </div>
-                        <a class="btn btn-default" id="edit" data-bind="click:showCopyDialog">
-                            <i class="fa fa-copy"></i> 复制
-                        </a>
-                        <div class="dropdown inline">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <i class="fa fa-print"></i> 打印
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="#" id="printBarcode" data-bind="click:printBarcode">打印资产标签</a></li>
-                                <li><a href="#" id="print" data-bind="click:printAssetCard">打印资产卡片</a></li>
-                                <li><a href="#" id="print" data-bind="click:printAsset">打印入库单</a></li>
-                            </ul>
-                        </div>
-                        <a class="btn btn-default" id="changeDetail" data-bind="click:showChangeDetailDialog">
-                            <i class="fa fa-reorder"></i> 查看处理记录
-                        </a>
-                    </h3>
-                </h5>
-            </div>
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <table style="width: 2930px;" class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
-                            <thead>
-                                <tr role="row">
-                                    <th><input type="checkbox" name="checkAll" id="all" ></th>
-                                    <th>资产条码</th>
-                                    <th>图片</th>
-                                    <th>资产名称</th>
-                                    <th>资产类别</th>
-                                    <th>规格型号</th>
-                                    <th>SN号</th>
-                                    <th>计量单位</th>
-                                    <th>金额</th>
-                                    {{--<th>使用公司</th>--}}
-                                    <th>使用部门</th>
-                                    <th>使用人</th>
-                                    <th>区域</th>
-                                    {{--<th>存放地点</th>--}}
-                                    <th>管理员</th>
-                                    <th>所属公司</th>
-                                    <th>所属部门</th>
-                                    <th>购入时间</th>
-                                    <th>使用期限(月)</th>
-                                    <th>来源</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($list as $value)
-                                    <tr role="row" class="odd">
-                                        <td role="gridcell">
-                                            <input type="checkbox" name="id" value="{{$value->id}}">
-                                        </td>
-                                        <td>{{$value->code}}</td>
-                                        <td>
-                                            @if($value->img_path)
-                                                <img src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;">
-                                            @endif
-                                        </td>
-                                        <td><span class="color1" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
-                                        <td>{{$value->category_id}}</td>
-                                        <td>{{$value->spec}}</td>
-                                        <td>{{$value->SN_code}}</td>
-                                        <td>{{$value->calculate}}</td>
-                                        <td>{{$value->money}}</td>
-                                        <td>{{$value->use_department_id}}</td>
-                                        <td>{{$value->user_id}}</td>
-                                        <td>{{$value->area_id}}</td>
-                                        <td>{{$value->admin_id}}</td>
-                                        <td>{{$value->org_id}}</td>
-                                        <td>{{$value->department_id}}</td>
-                                        <td>{{$value->buy_time}}</td>
-                                        <td>{{$value->use_time}}</td>
-                                        <td>{{$value->source_id}}</td>
+                            <table style="min-width: 2200px" class="table table-striped  table-bordered" >
+                                <thead>
+                                    <tr role="row">
+                                        <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
+                                        <th>资产条码</th>
+                                        <th>图片</th>
+                                        <th>资产名称</th>
+                                        <th>资产类别</th>
+                                        <th>规格型号</th>
+                                        <th>SN号</th>
+                                        <th>计量单位</th>
+                                        <th>金额</th>
+                                        <th>使用部门</th>
+                                        <th>使用人</th>
+                                        <th>区域</th>
+                                        <th>管理员</th>
+                                        <th>所属公司</th>
+                                        <th>所属部门</th>
+                                        <th>购入时间</th>
+                                        <th>使用期限(月)</th>
+                                        <th>来源</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach($list as $value)
+                                        <tr role="row">
+                                            <td role="gridcell">
+                                                <input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">
+                                            </td>
+                                            <td>{{$value->code}}</td>
+                                            <td>
+                                                @if($value->img_path)
+                                                    <img onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;" data-toggle="modal" data-target=".bs-example-modal-md">
+                                                @endif
+                                            </td>
+                                            <td><span class="color1" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
+                                            <td>{{$value->category_id}}</td>
+                                            <td>{{$value->spec}}</td>
+                                            <td>{{$value->SN_code}}</td>
+                                            <td>{{$value->calculate}}</td>
+                                            <td>{{$value->money}}</td>
+                                            <td>{{$value->use_department_id}}</td>
+                                            <td>{{$value->user_id}}</td>
+                                            <td>{{$value->area_id}}</td>
+                                            <td>{{$value->admin_id}}</td>
+                                            <td>{{$value->org_id}}</td>
+                                            <td>{{$value->department_id}}</td>
+                                            <td>{{$value->buy_time}}</td>
+                                            <td>{{$value->use_time}}</td>
+                                            <td>{{$value->source_id}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
                     </div>
                 </div>
             </div>
@@ -160,17 +112,20 @@
     </div>
 </div>
 
-
     <script type="text/javascript" >
 
-        $("#all").click(function(){
-            if(this.checked){
-                $("table :checkbox").prop("checked", true);
-            }else{
-                $("table :checkbox").prop("checked", false);
-            }
+        $("document").ready(function () {
+            $('.i-checks,#all').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue'
+            });
+            $('#all').on('ifChecked ifUnchecked', function(event){
+                if(event.type == 'ifChecked'){
+                    $('.i-checks').iCheck('check');
+                }else{
+                    $('.i-checks').iCheck('uncheck');
+                }
+            });
         });
-
         function str(message) {
             var messages = "<div class='modal-header'>" +
                 "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
@@ -279,17 +234,6 @@
             })
         }
         /*加载添加视图*/
-        function adds(title,url) {
-            $.ajax({
-                "url":url,
-                "data":{},
-                "type":"get",
-                "dataType":"html",
-                success:function (data) {
-                    $(".modal-content").html(data);
-                }
-            })
-        }
 
         function edits (url,status) {
             $.ajax({

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -147,24 +148,28 @@ class AssetCategoryController extends Controller
             $list = AssetCategory::where("pid",$id)->first();
 
             if($list!=null){
-                $arr = [
+                $message = [
                     'code'=>0,
-                    'message'=>'此类别下还有类别'
+                    'message'=>'此类别下还有子类别'
                 ];
             }else{
                 //判断此类别下还有资产
-                /*if(){
-
-                }*/
-                $info = AssetCategory::where("id",$id)->delete();
-                if($info){
-                    $arr = [
-                        'code'=>1,
-                        'message'=>'删除成功'
+                if($info = Asset::where("category_id",$id)->first()){
+                    $message = [
+                        'code'=>0,
+                        'message'=>'此类别下还有资产，不能删除'
                     ];
+                }else{
+                    $info = AssetCategory::where("id",$id)->delete();
+                    if($info){
+                        $message = [
+                            'code'=>1,
+                            'message'=>'删除成功'
+                        ];
+                    }
                 }
             }
-            return response()->json($arr);
+            return response()->json($message);
         }else{
             return redirect("home");
         }

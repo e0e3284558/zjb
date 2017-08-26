@@ -19,7 +19,8 @@ class ServiceWorkerController extends Controller
     public function index()
     {
         $data = Classify::where('org_id', 0)->OrderBy('sorting', 'desc')->get();
-        return view('repair.service_worker.index', compact('data'));
+        $serviceWorker=ServiceWorker::get();
+        return view('repair.service_worker.index', compact('data','serviceWorker'));
     }
 
     /**

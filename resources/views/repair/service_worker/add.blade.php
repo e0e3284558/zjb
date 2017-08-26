@@ -104,10 +104,45 @@
         $(".form-horizontal").validate(
             {
                 submitHandler: function () {
-                    return true;
+                    /*ajax提交*/
+                    submitHandler: function (form) {
+                        jQuery.ajax({
+                            url: forms.attr('action'),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: forms.serialize(),
+                            beforeSend: function(){
+                                l.ladda('start');
+                            },
+                            complete: function(xhr, textStatus) {
+                                l.ladda('stop');
+                            },
+                            success: function(data, textStatus, xhr) {
+                                if(data.status){
+                                    toastr.success(data.message);
+                                    $.get('{{ url("repair/service_worker/create") }}', {}, function(data){
+                                        $('#dep-form-wrapper').html(data);
+                                    });
+                                }else{
+                                    toastr.error(data.message,'警告');
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                                if(xhr.status == 422 && textStatus =='error'){
+                                    $.each(xhr.responseJSON,function(i,v){
+                                        toastr.error(v[0],'警告');
+                                    });
+                                }else{
+                                    toastr.error('请求出错，稍后重试','警告');
+                                }
+                            }
+                        });
+                        return false;
+                    }
                 }
             }
         );
     });
+
 
 </script>
