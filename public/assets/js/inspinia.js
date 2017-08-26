@@ -109,13 +109,6 @@ $(document).ready(function () {
 
     });
 
-    // Tooltips demo
-    $('.tooltip-demo').tooltip({
-        selector: "[data-toggle=tooltip]",
-        container: "body"
-    });
-
-
     // Full height of sidebar
     function fix_height() {
         var heightWithoutNavbar = $("body > #wrapper").height() - 61;
@@ -142,7 +135,7 @@ $(document).ready(function () {
 
     }
 
-    // fix_height();
+    fix_height();
 
     // Fixed Sidebar
     $(window).bind("load", function () {
@@ -165,17 +158,12 @@ $(document).ready(function () {
 
     $(window).bind("load resize scroll", function () {
         if (!$("body").hasClass('body-small')) {
-            // fix_height();
+            fix_height();
         }
     });
 
-    $("[data-toggle=popover]")
-        .popover();
 
     // Add slimscroll to element
-    $('.full-height-scroll').slimscroll({
-        height: '100%'
-    })
 });
 
 

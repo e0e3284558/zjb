@@ -1,16 +1,15 @@
-<div class="ibox float-e-margins ">
+<div class="ibox">
     <div class="ibox-title">
         <h5>部门编辑</h5>
     </div>
     <div class="ibox-content margin-padding-0 relative-ibox-content">
-        <div class="full-height-scroll">
 		<form action="{{ url('users/departments/'.$department->id) }}" class="padding-20" method="post" id="dep-form">
             <div class="form-group">
                 <label class="control-label">
                     上级部门
                 </label>
                 <div>
-                    <select name="parent_id" class="form-control">
+                    <select name="parent_id" class="form-control select2">
                         {!! department_select($department->parent_id) !!}
                     </select>
                 </div>
@@ -31,8 +30,8 @@
                     状态
                 </label>
                 <div>
-                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="" value="1" {{ $department->status ? 'checked' : '' }}> 可用 </label>
-                    <label class="radio-inline i-checks"> <input type="radio" class="" name="status" value="0" {{ $department->status ? '' : 'checked' }}> 不可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="icheck" value="1" {{ $department->status ? 'checked' : '' }}> 可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0" {{ $department->status ? '' : 'checked' }}> 不可用 </label>
                 </div>
             </div>
             <div class="form-actions border-top ">
@@ -46,16 +45,10 @@
         </form>
         <script type="text/javascript">
             $(document).ready(function() {
-                $('.i-checks').iCheck({
-                    radioClass: 'iradio_minimal-blue'
-                });
-                $('select').chosen({
-                    width:'100%'
-                });
                 var forms = $('#dep-form');
                 var l = $("button[type='submit']").ladda();
                 $('#cannel').click(function(){
-                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/create") }}',{},false);
+                    zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("users/departments/create") }}',{},false);
                 });
                 $('#delete').click(function(){
                     var dl = $("#delete").ladda();
@@ -123,8 +116,6 @@
                         });  
 
                     });
-
-                    
                 });
                 forms.validate({
                     errorElement: 'span', //default input error message container
@@ -213,6 +204,5 @@
                 });
             });
         </script>
-        </div>
     </div>
 </div>

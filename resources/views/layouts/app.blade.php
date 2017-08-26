@@ -36,7 +36,7 @@
 
     <!-- select2 style-->
     <link href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
-    <!-- <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet"> -->
+    <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet">
     
     <!-- chosen style-->
     <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
@@ -798,7 +798,6 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-        // $.fn.select2.defaults.set( "theme", "bootstrap" );
 
         $(document).ready(function() {
             
