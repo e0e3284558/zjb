@@ -19,8 +19,7 @@ class CreateOtherAssetsTable extends Migration
             $table->string("name");                                                     //场地名称
             $table->uuid("uid");                                                        //唯一识别号
             $table->string("category_id")->default(0);                                  //资产类别
-            $table->integer("asset_file_id")->default(0)->comment("资产的附件图片");     //图片
-            $table->string("remarks")->default('');                                     //备注
+            $table->string("remarks")->nullable();                                     //备注
             $table->integer('org_id')->default(0)->comment("所属公司");                  //公司id
             $table->softDeletes();
             $table->timestamps();

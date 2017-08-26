@@ -22,35 +22,37 @@
     </div>
 @endsection
 @section("content")
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content  wrapper-content2 animated fadeInRight">
     <div class="row">
         <div class="col-lg-6">
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5>
-                        <h3 class="h3">
-                            <a class="btn btn-success" onclick="add('添加','{{url('asset_category/create')}}')"  id="create" >
-                                <i class="fa  fa-plus"></i> 新增
-                            </a>
-                            <a class="btn btn-default" id="import">
-                                <i class="fa fa-sign-in"></i> 导入数据
-                            </a>
-                            <a href="{{url('asset_category/export')}}" class="btn btn-default" id="export">
-                                <i class="fa fa-sign-out"></i> 导出EXCEL
-                            </a>
-                            <a class="btn" disabled="">
-                        <span class="overlay" id="loading" style="display:none">
-                            <i class="fa fa-refresh fa-spin"></i>
-                        </span>
-                            </a>
-                        </h3>
+                        资产类别
                     </h5>
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content relative-ibox-content">
 
+                        <a class="btn btn-success" onclick="add('添加','{{url('asset_category/create')}}')"  id="create" >
+                            <i class="fa  fa-plus"></i> 新增
+                        </a>
+                        <a class="btn btn-default" id="import">
+                            <i class="fa fa-sign-in"></i> 导入数据
+                        </a>
+                        <a href="{{url('asset_category/export')}}" class="btn btn-default" id="export">
+                            <i class="fa fa-sign-out"></i> 导出EXCEL
+                        </a>
+                        <a class="btn" disabled="">
+                                <span class="overlay" id="loading" style="display:none">
+                                    <i class="fa fa-refresh fa-spin"></i>
+                                </span>
+                        </a>
+                    <hr>
+                  <div class="full-height-scroll" style="height:500px;">
                     <div class="dd" id="nestable">
                         <div id="tree" style="height: 370px;"></div>
                     </div>
+                  </div>
 
                 </div>
             </div>

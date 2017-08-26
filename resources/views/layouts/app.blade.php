@@ -628,7 +628,7 @@
     </div>
 </div>
     <!-- Large modal -->
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal fade bs-example-modal-lg" id="asset_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div id="loading" class="ibox-content"  >
@@ -794,7 +794,9 @@
         // $.fn.select2.defaults.set( "theme", "bootstrap" );
 
         $(document).ready(function() {
-            
+            $('body').on('hidden.bs.modal','#asset_modal',function(e){
+                $(this).removeData("bs.modal");
+            });
         });
     </script>
 

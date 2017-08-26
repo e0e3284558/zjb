@@ -11,7 +11,6 @@
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">资产名称</label></td>
                 <td>{{$info->name}}</td>
             </tr>
-
             <tr role="row">
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">所属公司</label></td>
                 <td>{{$info->org_id}}</td>
@@ -20,19 +19,9 @@
                 <td class="td-bg" ><label for="inputEmail3" class="control-label">备注</label></td>
                 <td colspan="5" >{{$info->remarks}}</td>
             </tr>
-            <tr role="row" >
-                <td class="td-bg" ><label for="inputEmail3" class="control-label">图片</label></td>
-                <td colspan="5" >
-                    @if($info->img_path)
-                        <img id="image" src="{{$info->img_path}}" style="height: 100px;">
-                    @else
-                        <img id="image" src="{{url('uploads/imgs/nopicture.jpg')}}" style="height: 100px;" >
-                    @endif
-                </td>
-            </tr>
         </tbody>
     </table>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+    <button type="button" class="btn btn-success" data-dismiss="modal">确认</button>
 </div>

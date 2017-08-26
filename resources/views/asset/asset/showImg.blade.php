@@ -3,8 +3,8 @@
     <h4 class="modal-title" id="myModalLabel">图片</h4>
 </div>
 <div class="modal-body" style="overflow-y: auto;max-height: 470px;" >
-    <img src="{{$info->path}}" alt="" style="width: 530px;" >
+    <img src="{{$info->path}}" alt="" style="width: 500px;" >
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+    <button type="button" class="btn btn-success" data-dismiss="modal">确认</button>
 </div>

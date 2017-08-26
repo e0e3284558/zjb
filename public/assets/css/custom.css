@@ -48,3 +48,10 @@
 	padding: 10px 20px 5px 20px;
 }
 .relative-ibox-content form{padding-bottom: 55px;}
+.required{
+	color: #ff0000;}
+.pt20{
+	padding-top:20px;}
+.display-hide{
+	display: none;
+}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Asset;
 
 use App\Models\Asset\Area;
+use App\Models\Asset\Asset;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -150,24 +151,29 @@ class AreaController extends Controller
             $list = Area::where("pid",$id)->where("org_id",Auth::user()->org_id)->first();
 
             if($list!=null){
-                $arr = [
+                $message = [
                     'code'=>0,
-                    'message'=>'此场地下还有场地'
+                    'message'=>'此场地下还有场地，不能删除'
                 ];
             }else{
                 //判断此类别下还有资产
-                /*if(){
-
-                }*/
-                $info = Area::where("id",$id)->delete();
-                if($info){
-                    $arr = [
-                        'code'=>1,
-                        'message'=>'删除成功'
+                if($list = Asset::where('area_id',$id)->first()){
+                    $message = [
+                        'code'=>0,
+                        'message'=>'此场地下还有资产，不能删除'
                     ];
+                }else{
+                    $info = Area::where("id",$id)->delete();
+                    if($info){
+                        $message = [
+                            'code'=>1,
+                            'message'=>'删除成功'
+                        ];
+                    }
                 }
+
             }
-            return response()->json($arr);
+            return response()->json($message);
         }else{
             return redirect("home");
         }
