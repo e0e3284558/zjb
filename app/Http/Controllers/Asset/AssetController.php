@@ -258,8 +258,8 @@ class AssetController extends Controller
         if(Auth::user()->org_id == Asset::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
                 $info = Asset::where("id", $v)->delete();
-                if($infos = AssetFile::where("id",$id)->first()){
-                    AssetFile::where("asset_id",$id)->delete();
+                if($infos = AssetFile::where("id",$v)->first()){
+                    AssetFile::where("asset_id",$v)->delete();
                 }
                 if($info){
                     $message = [
