@@ -19,8 +19,8 @@ class ServiceWorkerController extends Controller
     public function index()
     {
         $data = Classify::where('org_id', 0)->OrderBy('sorting', 'desc')->get();
-        $serviceWorker=ServiceWorker::get();
-        return view('repair.service_worker.index', compact('data','serviceWorker'));
+        $serviceWorker = ServiceWorker::get();
+        return view('repair.service_worker.index', compact('data', 'serviceWorker'));
     }
 
     /**
@@ -51,11 +51,16 @@ class ServiceWorkerController extends Controller
         if ($serviceWorker->save()) {
             //将tag数据存入到中间表post_tag中
             if ($serviceWorker->classify()->sync($request->classify)) {
-                return redirect('repair/service_worker')->with('success', '创建成功');
+                return response()->json([
+                    'status' => 1, 'message' => '添加成功',
+                    'data' => $serviceWorker->toArray()
+                ]);
             }
-
         } else {
-            return redirect('repair/service_worker')->with('error', '创建失败');
+            return response()->json([
+                'status' => 0, 'message' => '保存失败',
+                'data' => null, 'url' => ''
+            ]);
         }
 
     }
@@ -130,8 +135,8 @@ class ServiceWorkerController extends Controller
      */
     public function destroy($id)
     {
-        if (ServiceWorker::where('id',$id)->delete()){
-            if (DB::table('classify_service_worker')->where('service_worker_id', $id)->delete()){
+        if (ServiceWorker::where('id', $id)->delete()) {
+            if (DB::table('classify_service_worker')->where('service_worker_id', $id)->delete()) {
                 return response()->json([
                     'message' => '删除成功',
                     'status' => 'success'

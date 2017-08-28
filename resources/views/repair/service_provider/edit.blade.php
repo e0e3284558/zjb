@@ -1,74 +1,58 @@
 <div class="ibox">
     <div class="ibox-title">
-        <h5>添加维修工</h5>
+        <h5>添加服务商</h5>
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            输入维修工的基本信息，并且设置维修工登录该系统的帐号及初始密码。
-
+            输入服务商的基本信息。
         </p>
 
         <div class="dd" id="nestable2">
-            <form class="form-horizontal" action="{{url('repair/service_worker')}}" method="post">
+            <form class="form-horizontal" action="{{url('repair/service_provider/'.$data->id)}}" method="post">
                 {{csrf_field()}}
+                {{method_field('PUT')}}
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>帐号<i>*</i></label>
-                        <input type="text" id="username" class="form-control"
-                               value="{{old('username')}}"
-                               name="username" placeholder="维修工帐号">
-                    </div>
-                </li>
-
-                <li class="dd-item">
-                    <div class="dd-handle ">
-                        <label>密码<i>*</i></label>
-                        <input type="password" class="form-control"
-                               value="{{old('password')}}"
-                               name="password" placeholder="维修工密码">
-                    </div>
-                </li>
-
-                <li class="dd-item">
-                    <div class="dd-handle ">
-                        <label>维修工姓名<i>*</i></label>
+                        <label>服务商名称<i>*</i></label>
                         <input type="text" class="form-control"
-                               value="{{old('name')}}"
-                               name="name" placeholder="维修工姓名">
+                               value="{{$data->name}}"
+                               name="name" placeholder="服务商名称">
+                    </div>
+                </li>
+                <li class="dd-item">
+                    <div class="dd-handle ">
+                        <label>负责人姓名<i>*</i></label>
+                        <input type="text" class="form-control"
+                               value="{{$data->user}}"
+                               name="user" placeholder="负责人姓名">
                     </div>
                 </li>
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工电话<i>*</i></label>
-                        <input type="text" class="form-control"
-                               value="{{old('tel')}}" name="tel"
-                               placeholder="维修工电话号码">
+                        <label>负责人电话<i>*</i></label>
+                        <input type="number" class="form-control"
+                               value="{{$data->tel}}" name="tel"
+                               placeholder="负责人电话">
                     </div>
                 </li>
+
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工照片</label>
+                        <label>服务商logo</label> <br>
+                        <img  class="img-circle-a" src="/img/logo.png" alt="">
                         <input type="hidden" name="upload_id" value="">
-                        <button class="btn" type="button">点击上传</button>
+                        <br>
+                        <button class="btn" type="button">更新logo</button>
                     </div>
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工维修种类</label>
-                        @foreach($data as $k=>$v)
-                            <label class="checkbox-inline i-checkbox">
-                                <input type="checkbox" name="classify[]"
-                                       <?php if (old("classify[$k]")) {
-                                           echo 'checked';
-                                       }
-                                       ?> value="{{$v->id}}"> {{$v->name}}
-                            </label>
-                        @endforeach
+                        <label>服务商简介</label>
+                        <textarea name="comment" id="" cols="120" rows="3">{!! $data->comment !!}</textarea>
                     </div>
                 </li>
                 <li>
-                    <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                     <button type="submit" class="btn btn-success">添加</button>
                 </li>
             </form>
@@ -86,22 +70,22 @@
         forms.validate(
             {
                 rules: {
-                    username: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 20
-                    },
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 20
-                    },
                     name: {
-                        required: true
+                        required: true,
+                        minlength: 2,
+                        maxlength: 40
+                    },
+                    user: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 20
                     },
                     tel: {
                         required: true,
                         phoneUS: true
+                    },
+                    comment: {
+                        maxlength:2000
                     }
                 },
                 /*ajax提交*/
@@ -121,7 +105,7 @@
                         success: function (data, textStatus, xhr) {
                             if (data.status) {
                                 toastr.success(data.message);
-                                zjb.backUrl('{{url('repair/service_worker')}}', 1000);
+                                zjb.backUrl('{{url('repair/service_provider')}}', 1000);
                             } else {
                                 toastr.error(data.message, '警告');
                             }
