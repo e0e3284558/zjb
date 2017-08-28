@@ -1,6 +1,3 @@
-<a style="float: right;" href="javascript:;" onclick="dlt('{{$info->id}}')" >删除</a>
-<a style="float: right;margin: 0px 10px;" href="javascript:;" onclick="adds('{{$info->id}}')" >添加子类</a>
-<h4 class="modal-title" id="myModalLabel">编辑类别信息</h4>
 <div class="pt20"></div>
 <form id="signupForm1" class="form-horizontal" method="post" >
     <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -27,9 +24,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-8 control-label" ></label>
-        <div class="col-sm-2">
-            <button type="submit" class="btn btn-success">保存</button>
+        <label class="col-sm-3 control-label" ></label>
+        <div class="col-sm-8">
+            <a style="margin: 0 5px;" class="btn btn-default pull-right" onclick="adds('{{$info->id}}')" >添加子类</a>
+            <a style="margin: 0 5px;" class="btn btn-danger pull-right" onclick="dlt('{{$info->id}}')" >删除</a>
+            <button style="margin: 0 5px;" type="submit" class="btn btn-success pull-right">保存</button>
         </div>
     </div>
 </form>

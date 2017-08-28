@@ -3,20 +3,20 @@
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="form-group">
         <label class="col-sm-3 control-label" for="name">场地名称<span class="required">*</span></label>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <input type="text" class="form-control" id="name" name="name" placeholder="场地名称" />
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label" for="remarks">备注</label>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <textarea class="form-control" name="remarks" cols="5" style="resize: none;" placeholder="添加备注"></textarea>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-8 control-label" ></label>
-        <div class="col-sm-2">
-            <button type="submit" class="btn btn-success">保存</button>
+        <label class="col-sm-3 control-label" ></label>
+        <div class="col-sm-8">
+            <button type="submit" class="btn btn-success pull-right">保存</button>
         </div>
     </div>
 </form>

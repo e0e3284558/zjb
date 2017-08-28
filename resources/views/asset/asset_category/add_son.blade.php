@@ -1,23 +1,24 @@
 <h4 class="modal-title" id="myModalLabel">添加子类</h4>
+<div class="pt20" ></div>
 <form id="signupForm1" class="form-horizontal" method="post" >
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <input type="hidden" name="pid" value="{{$info->id}}">
     <div class="form-group">
         <label class="col-sm-3 control-label" for="name">类别名称<span class="required">*</span></label>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <input type="text" class="form-control" id="name" name="name" placeholder="区域名称" />
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label" for="pid">父级</label>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <input type="text" class="form-control" disabled name="pid" value="{{$info->name}}" />
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label" ></label>
-        <div class="col-sm-7">
-            <button type="submit" class="btn btn-success">保存</button>
+        <div class="col-sm-8">
+            <button type="submit" class="btn btn-success pull-right">保存</button>
         </div>
     </div>
 </form>
