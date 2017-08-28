@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-<div class="fh-breadcrumb">
+<div class="fh-breadcrumb full-height-layout-on">
 	<div class="fh-column fh-column-w">
 	    <div class="full-height-scroll">
 	    	<div class="full-height-wrapper">
@@ -37,9 +37,9 @@
     </div>
     <div class="full-height">
         <div class="full-height-scroll white-bg border-left ">
-            <div class="full-height-wrapper full-height">
-                <div class="row full-height">
-                	<div class="col-lg-12 full-height" id="dep-form-wrapper">
+            <div class="full-height-wrapper">
+                <div class="row">
+                	<div class="col-lg-12" id="dep-form-wrapper">
 		                
             		</div>
                 </div>	
@@ -50,8 +50,6 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('body').addClass('full-height-layout');
-    
 	$('#departments-tree').jstree({
         'core' : {
             'force_text' : true,
@@ -89,14 +87,10 @@ $(document).ready(function() {
     $('#departments-tree').on('changed.jstree',function (e,data) {
       if(data.node != undefined){
         var link = data.node.a_attr.href;
-        $.get(link, {}, function(data){
-            $('#dep-form-wrapper').html(data);
-          });
+        zjb.ajaxGetHtml('#dep-form-wrapper',link);
       }
     });
-    $.get('{{ url("users/departments/create") }}', {}, function(data){
-        $('#dep-form-wrapper').html(data);
-    });
+    zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("users/departments/create") }}');
 } );
 </script>
 @endsection

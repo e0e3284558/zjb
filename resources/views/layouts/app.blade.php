@@ -36,7 +36,7 @@
 
     <!-- select2 style-->
     <link href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
-    <!-- <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet"> -->
+    <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet">
     
     <!-- chosen style-->
     <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
@@ -628,7 +628,7 @@
     </div>
 </div>
     <!-- Large modal -->
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal fade bs-example-modal-lg" id="asset_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div id="loading" class="ibox-content"  >
@@ -798,10 +798,11 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-        // $.fn.select2.defaults.set( "theme", "bootstrap" );
 
         $(document).ready(function() {
-            
+            $('body').on('hidden.bs.modal','#asset_modal',function(e){
+                $(this).removeData("bs.modal");
+            });
         });
     </script>
 </body>

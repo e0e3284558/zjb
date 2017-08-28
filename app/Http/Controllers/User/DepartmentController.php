@@ -27,8 +27,7 @@ class DepartmentController extends Controller
      */
     public function unit()
     {
-        echo arr2str([1, 2, 3, 4]);
-        exit;
+        return view('user.department.unit');
     }
 
     /**

@@ -1,5 +1,73 @@
 var zjb = function(){
+    // Handles Bootstrap switches
+    var handleBootstrapSwitch = function() {
+        if (!$().bootstrapSwitch) {
+            return;
+        }
+        $('.make-switch').bootstrapSwitch();
+    };
 
+    // Handles Bootstrap confirmations
+    var handleBootstrapConfirmation = function() {
+        if (!$().confirmation) {
+            return;
+        }
+        $('[data-toggle=confirmation]').confirmation({ btnOkClass: 'btn btn-sm btn-success', btnCancelClass: 'btn btn-sm btn-danger'});
+    }
+    var handleTooltips = function() {
+        // global tooltips
+        $('.tooltips').tooltip();
+    };
+    var handleiCheck = function() {
+        if (!$().iCheck) {
+            return;
+        }
+
+        $('.icheck').each(function() {
+            var checkboxClass = $(this).attr('data-checkbox') ? $(this).attr('data-checkbox') : 'icheckbox_minimal-blue';
+            var radioClass = $(this).attr('data-radio') ? $(this).attr('data-radio') : 'iradio_minimal-blue';
+
+            if (checkboxClass.indexOf('_line') > -1 || radioClass.indexOf('_line') > -1) {
+                $(this).iCheck({
+                    checkboxClass: checkboxClass,
+                    radioClass: radioClass,
+                    insert: '<div class="icheck_line-icon"></div>' + $(this).attr("data-label")
+                });
+            } else {
+                $(this).iCheck({
+                    checkboxClass: checkboxClass,
+                    radioClass: radioClass
+                });
+            }
+        });
+    };
+    // Handle Select2 Dropdowns
+    var handleSelect2 = function() {
+        if ($().select2) {
+            $.fn.select2.defaults.set("theme", "bootstrap");
+            $('.select2').select2({
+                width: 'auto' 
+            });
+        }
+    };
+    // Handles scrollable contents using jQuery SlimScroll plugin.
+    var handleScrollers = function() {
+        zjb.initSlimScroll('.scroller');
+        zjb.initSlimScroll('.full-height-scroll');
+    };
+    var lastPopedPopover;
+
+    var handlePopovers = function() {
+        $('.popovers').popover();
+
+        // close last displayed popover
+
+        $(document).on('click.bs.popover.data-api', function(e) {
+            if (lastPopedPopover) {
+                lastPopedPopover.popover('hide');
+            }
+        });
+    };
     var handleReloadHtml = function(){
         $('body').on('click', 'a[data-toggle="relaodHtml"],button[data-toggle="relaodHtml"]', function(e) {
             e.preventDefault();
@@ -12,10 +80,34 @@ var zjb = function(){
             }
         });
     };
-
+    var handleFullHeight = function(){
+        if($(".full-height-layout-on").length > 0){
+            $('body').addClass('full-height-layout');
+        }
+    }
+    
 	return {
+        //main function to initiate core javascript
         init:function (){
+            handleScrollers();
+            handleBootstrapSwitch();
+            handleBootstrapConfirmation();
+            handleiCheck();
+            handleSelect2();
+            handleTooltips();
+            handlePopovers();
             handleReloadHtml();
+            handleFullHeight();
+        },
+        //main function to initiate core javascript after ajax complete
+        initAjax:function (){
+            handleBootstrapSwitch();
+            handleBootstrapConfirmation();
+            handleiCheck();
+            handleSelect2();
+            handleTooltips();
+            handlePopovers();
+            handleScrollers();
         },
 		//返回某个url页面
 	    backUrl: function (url,time) {
@@ -126,7 +218,7 @@ var zjb = function(){
         },
         /*ajax加载页面*/
         ajaxGetHtml: function(el, url, query, isLoading, callback, errorCallback){
-            var loading = isLoading == false ? false : true;
+            var loading = isLoading ? true : false;
             jQuery.ajax({
                 url: url,
                 type: 'GET',
@@ -141,10 +233,11 @@ var zjb = function(){
                 complete: function (xhr, textStatus) {
                     //called when complete
                     if(loading){ zjb.unblockUI(el?el:''); }
+                    zjb.initAjax();
                 },
                 success: function (data, textStatus, xhr) {
                     //called when successful
-                    el.html(data);
+                    $(el).html(data);
                     if (callback instanceof Function) {
                         callback();
                     }
@@ -158,7 +251,84 @@ var zjb = function(){
                     }
                 }
             });
-        }
+        },
+        initSlimScroll: function(el) {
+            if (!$().slimScroll) {
+                return;
+            }
+
+            $(el).each(function() {
+                if ($(this).attr("data-initialized")) {
+                    return; // exit
+                }
+
+                var height = '100%';
+
+                if ($(this).attr("data-height")) {
+                    height = $(this).attr("data-height");
+                }
+
+                $(this).slimScroll({
+                    allowPageScroll: true, // allow page scroll when the element scroll is ended
+                    size: '7px',
+                    color: ($(this).attr("data-handle-color") ? $(this).attr("data-handle-color") : 'rgb(0, 0, 0)'),
+                    wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
+                    railColor: ($(this).attr("data-rail-color") ? $(this).attr("data-rail-color") : '#eaeaea'),
+                    position: 'right',
+                    height: height,
+                    alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
+                    railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
+                    disableFadeOut: true
+                });
+
+                $(this).attr("data-initialized", "1");
+            });
+        },
+
+        destroySlimScroll: function(el) {
+            if (!$().slimScroll) {
+                return;
+            }
+
+            $(el).each(function() {
+                if ($(this).attr("data-initialized") === "1") { // destroy existing instance before updating the height
+                    $(this).removeAttr("data-initialized");
+                    $(this).removeAttr("style");
+
+                    var attrList = {};
+
+                    // store the custom attribures so later we will reassign.
+                    if ($(this).attr("data-handle-color")) {
+                        attrList["data-handle-color"] = $(this).attr("data-handle-color");
+                    }
+                    if ($(this).attr("data-wrapper-class")) {
+                        attrList["data-wrapper-class"] = $(this).attr("data-wrapper-class");
+                    }
+                    if ($(this).attr("data-rail-color")) {
+                        attrList["data-rail-color"] = $(this).attr("data-rail-color");
+                    }
+                    if ($(this).attr("data-always-visible")) {
+                        attrList["data-always-visible"] = $(this).attr("data-always-visible");
+                    }
+                    if ($(this).attr("data-rail-visible")) {
+                        attrList["data-rail-visible"] = $(this).attr("data-rail-visible");
+                    }
+
+                    $(this).slimScroll({
+                        wrapperClass: ($(this).attr("data-wrapper-class") ? $(this).attr("data-wrapper-class") : 'slimScrollDiv'),
+                        destroy: true
+                    });
+
+                    var the = $(this);
+
+                    // reassign custom attributes
+                    $.each(attrList, function(key, value) {
+                        the.attr(key, value);
+                    });
+
+                }
+            });
+        },
 	}
 }();
 jQuery(document).ready(function() {    

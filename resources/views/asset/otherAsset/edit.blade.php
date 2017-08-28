@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">资产新增</h4>
+    <h4 class="modal-title" id="myModalLabel">其他报修项新增</h4>
 </div>
 <form id="signupForm1" class="form-horizontal ibox-content" method="post" enctype="multipart/form-data" >
     <div class="sk-spinner sk-spinner-double-bounce">
@@ -10,68 +10,38 @@
     <div class="modal-body">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <input type="hidden" name="_method" value="PUT">
-        <div class="row">
-            <div class="col-sm-6" >
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-3 control-label">资产类别<span style="color:red;">*</span></label>
-                    <div class="col-sm-9">
-                        <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control">
-                            <option value=""></option>
-                            @foreach($list as $value)
-                                @if($info->category_id == $value->id)
-                                    <option selected value="{{$value->id}}">{{$value->name}}</option>
-                                @else
-                                    <option value="{{$value->id}}">{{$value->name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">资产类别<span style="color:red;">*</span></label>
+            <div class="col-sm-8">
+                <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control">
+                    <option value=""></option>
+                    @foreach($list as $value)
+                        @if($info->category_id == $value->id)
+                            <option selected value="{{$value->id}}">{{$value->name}}</option>
+                        @else
+                            <option value="{{$value->id}}">{{$value->name}}</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
-            <div class="col-sm-6" >
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-3 control-label">资产名称<span style="color:red;">*</span></label>
-
-                    <div class="col-sm-9">
-                        <input type="text" name="name" class="form-control" id="inputEmail3" value="{{$info->name}}">
-                    </div>
-                </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">资产名称<span style="color:red;">*</span></label>
+            <div class="col-sm-8">
+                <input type="text" name="name" class="form-control" id="inputEmail3" value="{{$info->name}}">
             </div>
-            <div class="col-sm-8" >
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">备注</label>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">备注</label>
 
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ...">{{$info->remarks}}</textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4" >
-                <div class="form-group">
-                    <label for="Comment" class="col-sm-4 control-label">照片</label>
-                    <div class="col-sm-8">
-
-                        <!--dom结构部分-->
-                        <div id="uploader-demo">
-                            @if($file)
-                                <img id="thumb_img" src="{{$file->path}}" alt="" width="160px" height="120px">
-                            @else
-                                <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" width="160px" height="120px">
-                            @endif
-                            <!--用来存放item-->
-                            <div id="fileList" class="uploader-list"></div>
-                            <div id="filePicker">选择图片</div>
-                            <input type="hidden" id="upload_id" name="img" value="{{$file->id}}">
-                        </div>
-
-                    </div>
-                </div>
+            <div class="col-sm-8">
+                <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ...">{{$info->remarks}}</textarea>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-primary">保存</button>
+        <button type="submit" class="btn btn-success">保存</button>
     </div>
 </form>
 <script type="text/javascript">
@@ -92,39 +62,38 @@
                 category_id:"资产类别不能为空",
                 name:"资产名称不能为空"
             },
-            errorElement: "em",
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
             errorPlacement: function ( error, element ) {
-                // Add the `help-block` class to the error element
-                error.addClass( "help-block" );
-
-                // Add `has-feedback` class to the parent div.form-group
-                // in order to add icons to inputs
-                element.parents( ".col-sm-8" ).addClass( "has-feedback" );
-
-                if ( element.prop( "type" ) === "checkbox" ) {
-                    error.insertAfter( element.parent( "label" ) );
+                if (element.parent(".input-group").length > 0) {
+                    error.insertAfter(element.parent(".input-group"));
+                } else if (element.attr("data-error-container")) {
+                    error.appendTo(element.attr("data-error-container"));
+                } else if (element.parents('.radio-list').length > 0) {
+                    error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+                } else if (element.parents('.radio-inline').length > 0) {
+                    error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+                } else if (element.parents('.checkbox-list').length > 0) {
+                    error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+                } else if (element.parents('.checkbox-inline').length > 0) {
+                    error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
                 } else {
-                    error.insertAfter( element );
-                }
-
-                // Add the span element, if doesn't exists, and apply the icon classes to it.
-                if ( !element.next( "span" )[ 0 ] ) {
-                    $( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+                    error.insertAfter(element); // for other inputs, just perform default behavior
                 }
             },
-            success: function ( label, element ) {
-                // Add the span element, if doesn't exists, and apply the icon classes to it.
-                if ( !$( element ).next( "span" )[ 0 ] ) {
-                    $( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
-                }
+            highlight: function (element) { // hightlight error inputs
+                $(element)
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
             },
-            highlight: function ( element, errorClass, validClass ) {
-                $( element ).parents( ".col-sm-8" ).addClass( "has-error" ).removeClass( "has-success" );
-                $( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+            unhighlight: function (element) { // revert the change done by hightlight
+                $(element)
+                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
             },
-            unhighlight: function ( element, errorClass, validClass ) {
-                $( element ).parents( ".col-sm-8" ).addClass( "has-success" ).removeClass( "has-error" );
-                $( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+            success: function (label) {
+                label
+                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
             },
             submitHandler: function () {
                 //表单验证之后ajax上传数据
@@ -210,30 +179,4 @@
             }
         })
     }
-</script>
-
-<script>
-    // 初始化Web Uploader
-    var uploader = WebUploader.create({
-        // 选完文件后，是否自动上传。
-        auto: true,
-        // swf文件路径
-        swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',
-        // 文件接收服务端。
-        server: '{{url('upload/uploadFile')}}',
-        formData: {"_token": "{{ csrf_token() }}"},
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: '#filePicker',
-        // 只允许选择图片文件。
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/*'
-        }
-    });
-    uploader.on('uploadSuccess', function (file, response) {
-        $('#thumb_img').attr('src', '/' + response.path);
-        $('#upload_id').attr('value', response.id);
-    });
 </script>

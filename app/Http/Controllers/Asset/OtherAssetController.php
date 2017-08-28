@@ -27,11 +27,6 @@ class OtherAssetController extends Controller
             //资产类别
             $list[$k]['category_id'] = AssetCategory::where("id",$v->category_id)->where("org_id",Auth::user()->org_id)->value("name");
             $list[$k]['org_id'] = Org::where("id",$v->org_id)->value("name");
-            if($file = AssetFile::where("asset_id",$v->id)->first()){
-                $list[$k]['img_path'] = File::where("id",$file->id)->value("path");
-                $list[$k]['file_id'] = $file->id;
-            }
-//            $file_id = AssetFile::where("asset_id",$v->id)->value("file_id");
         }
         return view("asset.otherAsset.index",compact('list'));
     }
@@ -60,20 +55,11 @@ class OtherAssetController extends Controller
             'name' => $request->name,
             'uid' => Uuid::generate()->string,
             'category_id' => $request->category_id,
-            'asset_file_id' => 0,
             'remarks' => $request->remarks,
             'org_id' => Auth::user()->org_id
         ];
 
         $asset_id = OtherAsset::insertGetId($arr);
-
-        $list = [
-            'asset_id' => $asset_id,
-            'file_id' => $request->img,
-            'org_id' => Auth::user()->org_id
-        ];
-
-        AssetFile::insertGetId($list);
 
         $message = [
             'code' => 1,
@@ -92,15 +78,9 @@ class OtherAssetController extends Controller
      */
     public function show($id)
     {
-//        dd($id);
         $info = OtherAsset::where("id",$id)->first();
         //类别
         $info->category_id = AssetCategory::where("id",$info->category_id)->where("org_id",Auth::user()->org_id)->value("name");
-//        $info->img = Upload::where("id",$info->img)->value("path");
-        if($list = AssetFile::where("asset_id",$info->id)->first()){
-            $info->img_path = File::where("id",$list->file_id)->value("path");
-
-        }
         $info->org_id = Org::where("id",$info->org_id)->value("name");
 
         return response()->view("asset.otherAsset.show",compact('info'));
