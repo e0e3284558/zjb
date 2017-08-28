@@ -22,9 +22,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-8 control-label" ></label>
-        <div class="col-sm-2">
-            <button type="submit" class="btn btn-success">保存</button>
+        <label class="col-sm-3 control-label" ></label>
+        <div class="col-sm-8">
+            <button type="submit" class="btn btn-success pull-right">保存</button>
         </div>
     </div>
 </form>
