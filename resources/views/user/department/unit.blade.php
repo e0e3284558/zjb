@@ -65,18 +65,9 @@
 			    </div>
 			    <div class="ibox-content margin-padding-0">
 			    	<div class="scroller">
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
-			    		s <br><br><br><br><br><br><br><br><br>
+			    		<div class="full-height-wrapper">
+			    			asdfasd
+			    		</div>
 			    	</div>
 			    </div>
 		  	</div>
