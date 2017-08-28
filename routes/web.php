@@ -41,6 +41,7 @@ Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], f
     Route::get('index', 'DefaultController@index')->name('users.index');
     
     Route::get('unit', 'DepartmentController@unit')->name('users.unit');
+    Route::post('unit', 'DepartmentController@unit')->name('users.unit_edit');
     
 
     Route::get('departments', 'DepartmentController@index')->name('users.departments');

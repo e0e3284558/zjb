@@ -4,10 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Requests\DepartmentRequest;
 use App\Models\User\Department;
+use App\Models\User\Org;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Validator;
 
 class DepartmentController extends Controller
 {
@@ -25,10 +27,59 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function unit()
+    public function unit(Request $request)
     {
-        return view('user.department.unit');
+        if($request->method() == 'POST'){
+            //表单验证
+            $rules = [
+                'name'=>'bail|required',
+                'short_name'=>'bail|required',
+                'contacts'=>'bail|required',
+                'contacts_tel'=>'bail|required'
+            ];
+            $message = [
+                'name.required'=>'请填写单位全称',
+                'short_name.required'=>'请填写单位简称',
+                'contacts.required'=>'请填写单位联系人姓名',
+                'contacts_tel.required'=>'请填写单位联系电话',
+            ];
+            $data = Input::all();
+            $validator = Validator::make($data,$rules,$message);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(),422);
+            }else{
+                //编辑数据
+                $unit = Org::userUint()->first();
+                if($unit){
+                    $unit->name = $data['name'];
+                    $unit->short_name = $data['short_name'];
+                    $unit->describe = $data['describe'];
+                    $unit->contacts = $data['contacts'];
+                    $unit->contacts_tel = $data['contacts_tel'];
+                    $unit->contacts_postion = $data['contacts_postion'];
+                    $unit->contacts_email = $data['contacts_email'];
+                    if($unit->save()){
+                        return response()->json([
+                            'status'=>1,'message'=>'保存成功',
+                            'data'=>$unit->toArray(),'url'=>''
+                        ]);
+                    }else{
+                        return response()->json([
+                            'status'=>0,'message'=>'保存失败'
+                        ]);
+                    }
+                }else{
+                    return response()->json([
+                        'status'=>0,'message'=>'无效参数'
+                    ]);
+                }
+            }
+        }else{
+            $unit = Org::userUint()->first();
+            return view('user.department.unit',['unit'=>$unit]);
+        }
     }
+
 
     /**
      * 单位组织机构信息

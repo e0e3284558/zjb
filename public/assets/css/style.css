@@ -7826,9 +7826,9 @@ body.skin-1 {
 .skin-1 .profile-element {
   text-align: center;
 }
-.skin-1 .img-circle {
+/*.skin-1 .img-circle {
   border-radius: 5px;
-}
+}*/
 .skin-1 .navbar-default .nav > li > a:hover,
 .skin-1 .navbar-default .nav > li > a:focus {
   background: #3a4459;

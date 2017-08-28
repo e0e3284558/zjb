@@ -702,6 +702,7 @@
     <!-- jqValidate -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods.min.js') }}"></script>
+     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/additional-methods-custom.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/localization/messages_zh.min.js') }}"></script>
     
     <!-- toastr -->
@@ -726,7 +727,7 @@
     <script type="text/javascript" src="{{ asset('assets/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
 
     <!-- webuploader -->
-    <script type="text/javascript" src="{{asset('assets/js/plugins/webuploader/webuploader.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/plugins/webuploader/webuploader.min.js')}}"></script>
 
     <!-- bootstrap-datepicker -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
