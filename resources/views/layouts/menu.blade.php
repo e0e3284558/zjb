@@ -1,18 +1,27 @@
 <li class="{{ active_class(if_route('home') || if_query('app_groups',null)) }}">
     <a href="{{ url('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">控制面板</span></a>
 </li>
-<li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index') || if_route('service_worker.index'))}}">
+
+
+
+<li class="{{ active_class(if_route('classify.index') || if_route('service_worker.index') || if_route('service_provider.index'))}}">
     <a href="javascript:;"><i class="fa fa-wrench"></i> <span class="nav-label">报修分类</span> <span
                 class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
-        <li class="{{ active_class(if_action('App\Http\Controllers\Repair\ClassifyController@index'))}}"><a
+        <li class="{{ active_class(if_route('classify.index'))}}"><a
                     href="{{ url('repair/classify') }}"><i class="fa fa-angle-right"></i> 分类列表</a>
         </li>
         <li class="{{ active_class(if_route('service_worker.index'))}}"><a
                     href="{{ url('repair/service_worker') }}"><i class="fa fa-angle-right"></i> 维修工列表</a>
         </li>
+        <li class="{{ active_class(if_route('service_provider.index'))}}"><a
+                    href="{{ url('repair/service_provider') }}"><i class="fa fa-angle-right"></i> 服务商管理</a>
+        </li>
     </ul>
 </li>
+
+
+
 <li class="{{ active_class(if_query('app_groups','users')) }}">
     <a href="javascript:;"><i class="fa fa-sitemap"></i> <span class="nav-label">用户管理</span> <span
                 class="fa arrow"></span></a>
@@ -31,6 +40,8 @@
         </li>
     </ul>
 </li>
+
+
 
 <li class="{{ active_class(if_query('app_groups','asset')) }}">
     <a href="javascript:;"><i class="fa fa-credit-card"></i> <span class="nav-label">资产管理</span> <span class="fa arrow"></span></a>
