@@ -212,8 +212,11 @@ if (!function_exists('department_select')) {
 /**
  * 随机返回一个Class样式
  */
-function randomClass(){
-    $arr=['btn-primary','btn-success','btn-info','btn-warning','btn-danger'];
-    $a=array_random($arr);
-    return $a;
+if (!function_exists('randomClass')) {
+    function randomClass()
+    {
+        $arr = ['btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger'];
+        $a = array_random($arr);
+        return $a;
+    }
 }
