@@ -170,7 +170,7 @@
                             url: forms.attr('action'),
                             type: 'POST',
                             dataType: 'json',
-                            data: $("#dep-form").serialize(),
+                            data: forms.serialize(),
                             beforeSend: function(){
                                 // zjb.blockUI();
                                 l.ladda('start');

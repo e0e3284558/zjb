@@ -45,29 +45,46 @@ class AssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $list = Asset::where("org_id",Auth::user()->org_id)->orderBy("id","desc")->get();
-        foreach ($list as $key=>$value){
-            $list[$key]['category_id'] = AssetCategory::where("id",$value->category_id)->value("name");
-            $list[$key]['use_org_id'] = Org::where("id",$value->use_org_id)->value("name");
-            $list[$key]['admin_id'] = User::where("id",$value->admin_id)->value("name");
-            //所属公司
-            $list[$key]['org_id'] = Org::where("id",$value->org_id)->value("name");
-            //来源
-            $list[$key]['source_id'] = Source::where("id",$value->source_id)->value("name");
-            //所在位置
-            $list[$key]['area_id'] = Area::where("id",$value->area_id)->value("name");
-            //所属部门
-            $list[$key]['department_id'] = Department::where("id",$value->department_id)->value("name");
-            $list[$key]['use_department_id'] = Department::where("id",$value->use_department_id)->value("name");
-            //图片
-            if($asset_file = AssetFile::where("asset_id",$value->id)->first()){
-                $list[$key]['img_path'] = File::where("id",$asset_file->file_id)->value("path");
-                $list[$key]['file_id'] = $asset_file->file_id;
-            }
+        $map = [
+            ['org_id','=',Auth::user()->org_id]
+        ];
+        if($request->category_id){
+            $map[] = ['category_id','=',$request->category_id];
         }
-        return view("asset.asset.index",compact("list"));
+        if($request->name){
+            $map[] = ['name','like','%'.$request->name.'%'];
+        }
+        $list = Asset::where($map)->orderBy("id","desc")->paginate(1);
+        foreach ($list as $key=>$value){
+            $list[$key]['category_id'] = $value->category->name;
+            $list[$key]['use_org_id'] = $value->org->name;
+            $list[$key]['admin_id'] = $value->user->name;
+            //所属公司
+            $list[$key]['org_id'] = $value->org->name;
+            //来源
+            $list[$key]['source_id'] = $value->source->name;
+            //所在位置
+            $str = (Area::where("id",$value->area_id)->value("path")).$value->area_id;
+            $arr = explode(",",$str);
+            foreach ($arr as $k=>$v){
+                $list[$key]['area'] .= Area::where("id",$v)->value("name")." / ";
+            }
+            $list[$key]['area'] = rtrim($list[$key]['area']," /");
+            //所属部门
+            $list[$key]['department_id'] = $value->department->name;
+
+            $list[$key]['use_department_id'] = $value->department->name;
+            //图片
+            $list[$key]['file'] = Asset::find($value->id)->file()->first();
+            $list[$key]['img_path'] = $list[$key]['file']["path"];
+            $list[$key]['file_id'] = $list[$key]['file']['id'];
+        }
+        //资产类别
+        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
+        return view("asset.asset.index",compact("list","category_list"));
     }
 
     /**
@@ -77,22 +94,20 @@ class AssetController extends Controller
      */
     public function create()
     {
+        $org_id = Auth::user()->org_id;
         //资产类别
         $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",Auth::user()->org_id)->orderBy("paths")->get();
-
         $list1 = $this->test($list1);
         //所属公司
-        $list2 = Org::where("id",Auth::user()->org_id)->get();
+        $list2 = Org::where("id",$org_id)->get();
         //管理员
-        $list3 = User::where("org_id",Auth::user()->org_id)->get();
+        $list3 = User::where("org_id",$org_id)->get();
         //场地
-        $list4 = Area::where("org_id",Auth::user()->org_id)->get();
+        $list4 = Area::where("org_id",$org_id)->get();
         //来源
-        $list5 = Source::where("org_id",Auth::user()->org_id)->get();
+        $list5 = Source::where("org_id",$org_id)->get();
         //所属部门
-        $list6 = Department::where("org_id",Auth::user()->org_id)->get();
-        //公司
-        $org_id = Auth::user()->org_id;
+        $list6 = Department::where("org_id",$org_id)->get();
         return response()->view("asset.asset.add",compact("list1","list2","list3","list4","list5","list6","org_id"));
     }
 
@@ -151,22 +166,23 @@ class AssetController extends Controller
         $info->use_department_id = Department::where("id",$info->department_id)->value("name");
         //管理员
         $info->admin_id = User::where("id",$info->admin_id)->value("name");
-        //所在场地
-        $arr = Area::where("id",$info->area_id)->value("path");
+
+        //所在位置
+        $arr = (Area::where("id",$info->area_id)->value("path")).$info->area_id;
         $arr = explode(",",$arr);
         $str = "";
-        foreach ($arr as $v){
-            $str .= Area::where("id",$v)->value("name")."/";
+        foreach ($arr as $k=>$v){
+            $str .= Area::where("id",$v)->value("name")." / ";
         }
-        $str .= Area::where("id",$info->area_id)->value("name");
-        $info->area_id = trim($str,"/");
+        $info->area_id = trim($str," / ");
         //来源
         $info->source_id = Source::where("id",$info->source_id)->value("name");
         //所属公司
         $info->org_id = Org::where("id",$info->org_id)->value("name");
         //图片
-        $file_id = AssetFile::where("id",$info->id)->value("file_id");
-        $info->img_path = File::where("id",$file_id)->value("path");
+        $file = Asset::find($info->id)->file()->first();
+
+        $info->img_path = $file["path"];
         return response()->view("asset.asset.show",compact('info'));
     }
 
@@ -180,25 +196,29 @@ class AssetController extends Controller
     {
         if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
             $info = Asset::where("id", $id)->first();
+
+            //公司
+            $org_id = Auth::user()->org_id;
+
             //资产类别
-            $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->orderBy("paths")->get();
+            $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",$org_id)->orderBy("paths")->get();
 
             $list1 = $this->test($list1);
             //所属公司
-            $list2 = Org::where("id", Auth::user()->org_id)->get();
+            $list2 = Org::where("id", $org_id)->get();
             //管理员
-            $list3 = User::where("org_id", Auth::user()->org_id)->get();
+            $list3 = User::where("org_id", $org_id)->get();
             //区域
-            $list4 = Area::where("org_id",Auth::user()->org_id)->get();
+            $list4 = Area::where("org_id",$org_id)->get();
             //来源
-            $list5 = Source::where("org_id",Auth::user()->org_id)->get();
+            $list5 = Source::where("org_id",$org_id)->get();
             //使用部门
-            $list6 = Department::where("org_id",Auth::user()->org_id)->get();
-            //公司
-            $org_id = Auth::user()->org_id;
+            $list6 = Department::where("org_id",$org_id)->get();
             //图片
-            $file_id = AssetFile::where("id",$info->id)->value("file_id");
-            $info->img_path = File::where("id",$file_id)->value("path");
+            $file = Asset::find($info->id)->file()->first();
+            $info->img_path = $file->path;
+            $file_id = $file->id;
+
             return response()->view("asset.asset.edit", compact("info","img_path", "list1", "list2", "list3", "list4", "list5","list6"));
         }else{
             return redirect("home");

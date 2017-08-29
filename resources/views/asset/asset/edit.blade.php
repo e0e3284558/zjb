@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select name="category_id" onchange="finds(this.value)" id="type_sel" class="form-control">
+                        <select name="category_id" onchange="finds(this.value)" id="type_sel" class="form-control select2">
                             <option value=""></option>
                             @foreach($list1 as $value)
                                 @if($info->category_id==$value->id)
@@ -59,7 +59,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select name="area_id" class="form-control">
+                        <select name="area_id" class="form-control select2">
                             @foreach($list4 as $v)
                                 @if($info->category_id==$v->id)
                                     <option value="{{$v->id}}" selected >{{$v->name}}</option>
@@ -132,9 +132,8 @@
             <div class="col-md-4">
                 <div class="form-group" style="position: relative;" >
                     <label for="inputEmail3" class="col-sm-4 control-label">使用部门</label>
-
                     <div class="col-sm-8">
-                        <select id="use_department_id" name="use_department_id" class="form-control">
+                        <select id="use_department_id" name="use_department_id" class="form-control select2">
                             @foreach($list6 as $v)
                                 @if($v->id== $info->use_department_id)
                                     <option selected value="{{$v->id}}">{{$v->name}}</option>
@@ -144,7 +143,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <a class="" data-toggle="tooltip" data-placement="bottom" style="font-size:14px; text-decoration:underline; cursor:pointer; position:absolute; right:0px; top:8px;" title="" data-original-title="如果 &quot; 使用部门&quot; 和 &quot;使用人&quot; 为空，系统将自动设置资产状态为 &quot;闲置&quot;"><i class="fa fa-question-circle" style="margin-right:6px;"></i></a>
                 </div>
             </div>
         </div>
@@ -154,7 +152,7 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">管理员</label>
                     <div class="col-sm-8">
-                        <select name="admin_id" class="form-control">
+                        <select name="admin_id" class="form-control select2">
                             @foreach($list3 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
                             @endforeach
@@ -223,7 +221,7 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
-
+        zjb.initAjax();
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
         $('#submitAssetsForm').click(function () {
