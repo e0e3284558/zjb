@@ -216,7 +216,7 @@
             format: 'yyyy/mm/dd',
             autoclose:true
         });
-        zjb.initAjax();
+        zjb.initAjax()
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
         $('#submitAssetsForm').click(function () {
