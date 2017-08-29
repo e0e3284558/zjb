@@ -20,16 +20,29 @@ class OtherAssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $list = OtherAsset::where("org_id",Auth::user()->org_id)->get();
+        $map = [
+            ['org_id','=',Auth::user()->org_id]
+        ];
+        if($request->category_id){
+            $map[] = ['category_id','=',$request->category_id];
+        }
+        if($request->name){
+            $map[] = ['name','like','%'.$request->name.'%'];
+        }
+        $list = OtherAsset::where($map)->paginate(1);
         foreach ($list as $k=>$v){
             //资产类别
-            $list[$k]['category_id'] = AssetCategory::where("id",$v->category_id)->where("org_id",Auth::user()->org_id)->value("name");
-            $list[$k]['org_id'] = Org::where("id",$v->org_id)->value("name");
+            $list[$k]['category_id'] = $v->category->name;
+            $list[$k]['org_id'] = $v->org->name;
         }
-        return view("asset.otherAsset.index",compact('list'));
+        //资产类别
+        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
+        return view("asset.otherAsset.index",compact('list','category_list'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -97,12 +110,12 @@ class OtherAssetController extends Controller
         if(Auth::user()->org_id == OtherAsset::where("id",$id)->value("org_id")) {
             $info = OtherAsset::where("id", $id)->first();
             //图片
-            $file_id = AssetFile::where("asset_id",$info->id)->value("file_id");
-            $file = File::where("id",$file_id)->first();
+//            $file_id = AssetFile::where("asset_id",$info->id)->value("file_id");
+//            $file = File::where("id",$file_id)->first();
             //资产类别
             $list = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->orderBy("paths")->get();
 
-            return response()->view("asset.otherAsset.edit", compact("info","file", "list"));
+            return response()->view("asset.otherAsset.edit", compact("info", "list"));
         }else{
             return redirect("home");
         }

@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AssetCategory extends Model
 {
-    //
+    public function org()
+    {
+        return $this->belongsTo('App\Models\User\Org');
+    }
 }

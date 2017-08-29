@@ -75,12 +75,15 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     //资产分类
     Route::get('asset_category/add_son/{id}','AssetCategoryController@add');
     Route::get('asset_category/find/{id}','AssetCategoryController@find');
+    Route::get('asset_category/export','AssetCategoryController@export');
     Route::resource('asset_category','AssetCategoryController');
 
     Route::get('area/add_son/{id}','AreaController@add');
+    Route::get('area/export','AreaController@export');
     Route::resource('area','AreaController');
 
     //其他报修项
+//    Route::get('other_asset/slt','OtherAssetController@slt');
     Route::resource('other_asset','OtherAssetController');
 
     //资产管理

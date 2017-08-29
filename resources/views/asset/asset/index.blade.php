@@ -27,29 +27,45 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>
-                        <h3 class="h3">
-                            <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
-
-                            <div class="dropdown inline">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-pencil"></i> 编辑
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a href="javascript:;" id="edit" onclick="edit()" data-toggle="modal" data-target=".bs-example-modal-lg">修改</a></li>
-
-                                    <li><a href="#" id="dlt" onclick="dlt()" >删除</a></li>
-                                    <li class="line" style="border-bottom: solid 1px #ddd; margin: 4px;"></li>
-                                    <li><a href="#" id="edit" data-bind="click:showCustomDialog">管理自定义属性</a></li>
-                                </ul>
-                            </div>
-                        </h3>
-                    </h5>
+                    <h3 class="h3">
+                        <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
+                        <button type="button" onclick="edit()" href="javascript:;" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">
+                            <i class="fa  fa-wrench"></i> 修改
+                        </button>
+                        <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
+                            <i class="fa  fa-trash-o"></i> 删除
+                        </button>
+                    </h3>
                 </div>
                 <div class="ibox-content">
-                    <div class="table-responsive">
+                    <!-- 搜索 -->
+                    <form action="{{url('asset')}}" method="get" id="forms" >
+                        <input type="hidden" name="app_groups" value="asset">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <div class="row m-b-xs m-t-xs">
+                            <div class="col-md-6" ></div>
+                            <div class="col-md-3" >
+                                <div class="form-group" >
+                                    <select name="category_id" class="form-control select2">
+                                        <option value="">请选择资产类别查询</option>
+                                        @foreach($category_list as $k=>$v)
+                                            <option value="{{$v->id}}">{{$v->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" name="name" placeholder="按照资产名称查找" class="input-md form-control">
+                                    <span class="input-group-btn">
+                                        <button  type="submit" class="btn btn-md btn-success"> 查找</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
 
+                    <div class="table-responsive">
                             <table style="min-width: 2200px" class="table table-striped  table-bordered" >
                                 <thead>
                                     <tr role="row">
@@ -82,10 +98,10 @@
                                             <td>{{$value->code}}</td>
                                             <td>
                                                 @if($value->img_path)
-                                                    <img onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;" data-toggle="modal" data-target=".bs-example-modal-md">
+                                                    <img class="cursor_pointer" onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;" data-toggle="modal" data-target=".bs-example-modal-md">
                                                 @endif
                                             </td>
-                                            <td><span class="color1" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
+                                            <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
                                             <td>{{$value->category_id}}</td>
                                             <td>{{$value->spec}}</td>
                                             <td>{{$value->SN_code}}</td>
@@ -93,7 +109,7 @@
                                             <td>{{$value->money}}</td>
                                             <td>{{$value->use_department_id}}</td>
                                             <td>{{$value->user_id}}</td>
-                                            <td>{{$value->area_id}}</td>
+                                            <td>{{$value->area}}</td>
                                             <td>{{$value->admin_id}}</td>
                                             <td>{{$value->org_id}}</td>
                                             <td>{{$value->department_id}}</td>
@@ -106,6 +122,9 @@
                             </table>
 
                     </div>
+
+                    {{ $list->links() }}
+
                 </div>
             </div>
         </div>

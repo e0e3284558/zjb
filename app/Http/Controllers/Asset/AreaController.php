@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Webpatser\Uuid\Uuid;
 
+use Excel;
+
 class AreaController extends Controller
 {
     /**
@@ -178,4 +180,48 @@ class AreaController extends Controller
             return redirect("home");
         }
     }
+
+
+    /**
+     * 场地管理  数据导出
+     */
+    public function export(){
+
+        $list = Area::where("org_id",Auth::user()->org_id)->get();
+        $cellData = [
+            ['场地名称','父类别','备注','所属公司'],
+        ];
+        $arr = [];
+        foreach ($list as $key=>$value){
+            $arr['name'] = $value->name;
+            //所在位置
+            $arr['path'] = "";
+            $str = $value->path.$value->area_id;
+            $str = explode(",",$str);
+            foreach ($str as $k=>$v){
+                $arr['path'] .= Area::where("id",$v)->value("name")." / ";
+            }
+            $arr['path'] = rtrim($arr['path']," /");
+            $arr['remarks'] = $value->remarks;
+            $arr['org_id'] = $value->org->name;
+            array_push($cellData,$arr);
+        }
+        Excel::create('场地信息管理'.date("Ymd"),function($excel) use ($cellData){
+            $excel->sheet('score', function($sheet) use ($cellData){
+                $sheet->setPageMargin(array(
+                    0.25, 0.30, 0.25, 0.30
+                ));
+                $sheet->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40,'D' => 40
+                ));
+                $sheet->cells('A1:D1', function($row) {
+                    $row->setBackground('#cfcfcf');
+                });
+                $sheet->rows($cellData);
+            });
+        })->store('xlsx')->export('xlsx');
+        return ;
+    }
+
+
 }

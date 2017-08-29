@@ -13,7 +13,7 @@ class CreateAssetFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('asset_files', function (Blueprint $table) {
+        Schema::create('asset_file', function (Blueprint $table) {
             $table->increments('id');
             $table->integer("asset_id")->default(0)->comment("资产id");                   //资产id
             $table->integer("file_id")->default(0)->comment("附件id");                    //附件id

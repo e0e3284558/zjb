@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="category_id" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select name="category_id" data-error-container="#error-block" onchange="find(this.value)" id="category_id" class="form-control">
+                        <select class="form-control select2" name="category_id" data-error-container="#error-block" onchange="find(this.value)" id="category_id">
                             <option value="">请选择</option>
                             @foreach($list1 as $value)
                                 <option value="{{$value->id}}">{{$value->name}}</option>
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label for="area_id" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select name="area_id" class="form-control" data-error-container="#error-block">
+                        <select name="area_id" class="form-control select2" data-error-container="#error-block">
                             <option value="">请选择</option>
                             @foreach($list4 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
@@ -122,7 +122,7 @@
                 <div class="form-group" style="position: relative;" >
                     <label for="department_id" class="col-sm-4 control-label">所属部门</label>
                     <div class="col-sm-8">
-                        <select id="department_id" data-error-container="#error-block" name="department_id" class="form-control">
+                        <select id="department_id" data-error-container="#error-block" name="department_id" class="form-control select2">
                             <option value="">请选择</option>
                             @foreach($list6 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
@@ -138,7 +138,7 @@
                 <div class="form-group">
                     <label for="admin_id" class="col-sm-4 control-label">管理员</label>
                     <div class="col-sm-8">
-                        <select name="admin_id" class="form-control">
+                        <select name="admin_id" class="form-control select2">
                             @foreach($list3 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
                             @endforeach
@@ -150,7 +150,7 @@
                 <div class="form-group">
                     <label for="source_id" class="col-sm-4 control-label">来源</label>
                     <div class="col-sm-8">
-                        <select name="source_id" class="form-control">
+                        <select name="source_id" class="form-control select2">
                             @foreach($list5 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
                             @endforeach
@@ -162,7 +162,7 @@
                 <div class="form-group" style="position: relative;" >
                     <label for="use_department_id" class="col-sm-4 control-label">使用部门</label>
                     <div class="col-sm-8">
-                        <select id="use_department_id" name="use_department_id" class="form-control">
+                        <select id="use_department_id" name="use_department_id" class="form-control select2">
                             <option value="">请选择</option>
                             @foreach($list6 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
@@ -216,6 +216,7 @@
             format: 'yyyy/mm/dd',
             autoclose:true
         });
+        zjb.initAjax();
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
         $('#submitAssetsForm').click(function () {

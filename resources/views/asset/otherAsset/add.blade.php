@@ -8,10 +8,10 @@
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <div class="row">
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label">资产类别<span class="required">*</span></label>
+                <label class="col-sm-2 control-label">资产类别<span class="required">*</span></label>
                 <div class="col-sm-8">
-                    <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control">
-                        <option value=""></option>
+                    <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2 ">
+                        <option value="">请选择</option>
                         @foreach($list as $value)
                             <option value="{{$value->id}}">{{$value->name}}</option>
                         @endforeach
@@ -19,15 +19,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label">资产名称<span class="required">*</span></label>
-
+                <label class="col-sm-2 control-label">资产名称<span class="required">*</span></label>
                 <div class="col-sm-8">
                     <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="资产名称">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label">备注</label>
-
+                <label class="col-sm-2 control-label">备注</label>
                 <div class="col-sm-8">
                     <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                 </div>
@@ -48,6 +46,8 @@
             format: 'yyyy/mm/dd',
             autoclose:true
         });
+
+        zjb.initAjax();
         
         $( "#signupForm1" ).validate( {
             rules: {
