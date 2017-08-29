@@ -11,7 +11,7 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <label>帐号<i>*</i></label>
-                        <input type="text"  class="form-control"
+                        <input type="text" class="form-control"
                                value="{{$data->username}}" name="username"
                                placeholder="维修工帐号">
                     </div>
@@ -20,7 +20,7 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <label>密码<i>*</i></label>
-                        <input type="password"  class="form-control" value="" name="password"
+                        <input type="password" class="form-control" value="" name="password"
                                placeholder="如果不更改密码，则不需填写">
                     </div>
                 </li>
@@ -59,6 +59,20 @@
                                        value="{{$v->id}}"/> {{$v->name}}
                             </label>
                         @endforeach
+                    </div>
+                </li>
+                <li class="dd-item">
+                    <div class="dd-handle ">
+                        <label>所属服务商</label>
+                        <div>
+                            @foreach($serviceProvider as $v)
+                                <label class="radio-inline i-checks">
+                                    <input type="radio" name="serviceProvider" class="icheck"
+                                           @if($v->id==$service_provider_id) checked @endif
+                                           value="{{$v->id}}">{{$v->name}}
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
                 </li>
                 <li>

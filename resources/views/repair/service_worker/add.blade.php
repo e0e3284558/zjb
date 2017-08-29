@@ -57,7 +57,7 @@
                     <div class="dd-handle ">
                         <label>维修工维修种类</label>
                         @foreach($data as $k=>$v)
-                            <label class="checkbox-inline i-checkbox">
+                            <label class="checkbox-inline icheck">
                                 <input type="checkbox" name="classify[]"
                                        <?php if (old("classify[$k]")) {
                                            echo 'checked';
@@ -67,6 +67,20 @@
                         @endforeach
                     </div>
                 </li>
+                <li class="dd-item">
+                    <div class="dd-handle ">
+                        <label>所属服务商</label>
+                        <div>
+                            @foreach($serviceProvider as $v)
+                                <label class="radio-inline i-checks">
+                                    <input type="radio" name="serviceProvider" class="icheck" value="{{$v->id}}">{{$v->name}}
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </li>
+
+
                 <li>
                     <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                     <button type="submit" class="btn btn-success">添加</button>
@@ -77,9 +91,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('.i-checkbox').iCheck({
-            checkboxClass: 'icheckbox_minimal-blue'
-        });
+        zjb.initAjax();
         var l = $("button[type='submit']").ladda();
         var forms = $(".form-horizontal");
         /*字段验证*/
