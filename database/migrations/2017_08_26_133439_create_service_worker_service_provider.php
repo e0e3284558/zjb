@@ -13,7 +13,7 @@ class CreateServiceWorkerServiceProvider extends Migration
      */
     public function up()
     {
-        Schema::create('service_worker_service_provider', function (Blueprint $table) {
+        Schema::create('service_provider_service_worker', function (Blueprint $table) {
             $table->integer('service_worker_id')->unsigned();
             $table->integer('service_provider_id')->unsigned();
             $table->boolean('status')->default(0)->comment('内部服务商|0，外部服务商|1');

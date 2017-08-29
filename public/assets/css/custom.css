@@ -158,6 +158,12 @@
 .display-hide{
 	display: none;
 }
+<<<<<<< HEAD
+.cursor_pointer{
+    color: #1c84c6;
+    cursor: pointer;
+}
+=======
 .btn-circle-sm{
   line-height: 32px;
   text-align: center;
@@ -6046,3 +6052,4 @@ Custom color buttons
 .border-right-before-purple-soft:before,
 .border-right-after-purple-soft:after {
   border-right-color: #8877a9 !important; }
+>>>>>>> 1d033b9e47d821db24cbd2a82025ae4b5b3fbc91

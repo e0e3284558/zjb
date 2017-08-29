@@ -42,7 +42,7 @@
                                 <a class="btn btn-default" id="import">
                                     <i class="fa fa-sign-in"></i> 导入数据
                                 </a>
-                                <a href="{{url('asset_category/export')}}" class="btn btn-default" id="export">
+                                <a href="{{url('area/export')}}" class="btn btn-default" id="export">
                                     <i class="fa fa-sign-out"></i> 导出EXCEL
                                 </a>
                                 <a class="btn" disabled="">

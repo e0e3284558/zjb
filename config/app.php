@@ -194,6 +194,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ],
 
     /*
@@ -252,6 +254,7 @@ return [
         'Active' => HieuLe\Active\Facades\Active::class,
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Former' => Former\Facades\Former::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

@@ -27,23 +27,30 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h3 class="h3">
+                    <h3>
                         <a type="button" href="{{url('other_asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">
                             <i class="fa  fa-plus"></i> 增加
                         </a>
 
-                        <div class="dropdown inline">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-pencil"></i> 编辑
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="javascript:;" id="edit" onclick="edit()" data-toggle="modal" data-target=".bs-example-modal-lg">修改</a></li>
-                                <li><a href="#" id="dlt" onclick="dlt()" >删除</a></li>
-                                <li class="line" style="border-bottom: solid 1px #ddd; margin: 4px;"></li>
-                                <li><a href="#" id="edit" data-bind="click:showCustomDialog">管理自定义属性</a></li>
-                            </ul>
-                        </div>
+                        {{--<div class="dropdown inline">--}}
+                            {{--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                {{--<i class="fa fa-pencil"></i> 编辑--}}
+                                {{--<span class="caret"></span>--}}
+                            {{--</button>--}}
+                            {{--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">--}}
+                                {{--<li><a href="javascript:;" id="edit" onclick="edit()" data-toggle="modal" data-target=".bs-example-modal-lg">修改</a></li>--}}
+                                {{--<li><a href="#" id="dlt" onclick="dlt()" >删除</a></li>--}}
+                            {{--</ul>--}}
+                        {{--</div>--}}
+
+                        <button type="button" onclick="edit()" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">
+                            <i class="fa  fa-wrench"></i> 修改
+                        </button>
+
+                        <button type="button" onclick="dlt()" class="btn btn-danger">
+                            <i class="fa  fa-trash-o"></i> 删除
+                        </button>
+
                         <div class="dropdown inline">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-sign-in"></i> 导入/导出
@@ -58,11 +65,39 @@
                             </ul>
                         </div>
                     </h3>
+
                 </div>
                 <div class="ibox-content">
+                    <!-- 搜索 -->
+                    <form action="{{url('other_asset')}}" method="get" id="forms" >
+                        <input type="hidden" name="app_groups" value="asset">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <div class="row m-b-xs m-t-xs">
+                            <div class="col-md-6" ></div>
+                            <div class="col-md-3" >
+                                <div class="form-group" >
+                                    <select name="category_id" class="form-control select2">
+                                        <option value="">请选择查询</option>
+                                        @foreach($category_list as $k=>$v)
+                                            <option value="{{$v->id}}">{{$v->name}}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" name="name" placeholder="按照报修项名称查找" class="input-md form-control">
+                                    <span class="input-group-btn">
+                                        <button  type="submit" class="btn btn-md btn-success"> 查找</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive">
                         <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                            <table style="width: 1000px;" class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
+                            <table style="width: 100%;" class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
                                 <thead>
                                     <tr role="row">
                                         <th><input type="checkbox" name="checkAll" id="all" ></th>
@@ -76,7 +111,7 @@
                                         <tr>
                                         <td><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
                                         <td>{{$v->category_id}}</td>
-                                        <td><span class="color1" onclick="show('{{$v->name}}','{{url('other_asset')}}/{{$v->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$v->name}}</span></td>
+                                        <td><span class="cursor_pointer" href="{{url('other_asset')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$v->name}}</span></td>
                                         <td>{{$v->org_id}}</td>
                                         </tr>
                                     @endforeach
@@ -84,6 +119,7 @@
                             </table>
                         </div>
                     </div>
+                    {{ $list->links() }}
                 </div>
             </div>
         </div>
@@ -127,11 +163,22 @@
             return messages;
         }
 
+
+        {{--function slt() {--}}
+            {{--$.ajax({--}}
+                {{--url:'{{url('other_asset')}}/slt',--}}
+                {{--data:$('#forms').serialize(),--}}
+                {{--type:"post",--}}
+                {{--dataType:"",--}}
+                {{--success:function (data) {--}}
+                    {{--$(".modal-content").html(data);--}}
+                {{--}--}}
+            {{--})--}}
+        {{--}--}}
+
         function edit() {
             if($("tbody input[type='checkbox']:checked").length == 1){
-
                 var id = $("tbody input[type='checkbox']:checked").val();
-
                 $.ajax({
                     url:'{{url('other_asset')}}/'+id+"/edit",
                     success:function (data) {
@@ -195,98 +242,6 @@
                 $(".modal-content").html(str("请选择资产"));
             }
         }
-
-
-        function show_img(object,url) {
-            $.ajax({
-                url:url,
-                success:function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
-        }
-
-        function show(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
-                }
-            })
-        }
-        /*加载添加视图*/
-        function adds(title,url) {
-            $.ajax({
-                "url":url,
-                "data":{},
-                "type":"get",
-                "dataType":"html",
-                beforeSend:function () {
-                    zjb.blockUI();
-                },
-                success:function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
-                },
-                complete:function () {
-                    zjb.unblockUI();
-                },
-            })
-        }
-
-        function edits (url,status) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".modal-content").html(data);
-                }
-            })
-        }
-
-        /*删除*/
-        function del(obj,id,status){
-            if(status!="闲置"){
-                alert('此物品已经处在非闲置时期，不能进行删除!');
-                return false;
-            }
-
-            swal({
-                title: "确认要删除吗？",
-                text: "",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "是的, 确认删除!",
-                closeOnConfirm: false
-            },
-            function(){
-                //发异步删除数据
-                $.ajax({
-                    type: "post",
-                    url: '{{url('asset')}}'+'/'+id,
-                    data: {
-                        "_token": '{{csrf_token()}}',
-                        '_method': 'delete'
-                    },
-                    dataType:"json",
-                    success: function (data) {
-                        if(data.code==1){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                $(obj).parents("tr").remove();
-                                window.location.reload();
-                            });
-                        }else{
-                            swal("", data.message, "error");
-                        }
-                    }
-                });
-            });
-        }
-
     </script>
 
 @endsection

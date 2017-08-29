@@ -13,8 +13,8 @@
         <div class="form-group">
             <label for="inputEmail3" class="col-sm-2 control-label">资产类别<span style="color:red;">*</span></label>
             <div class="col-sm-8">
-                <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control">
-                    <option value=""></option>
+                <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2">
+                    <option value="">请选择</option>
                     @foreach($list as $value)
                         @if($info->category_id == $value->id)
                             <option selected value="{{$value->id}}">{{$value->name}}</option>
@@ -52,7 +52,7 @@
             format: 'yyyy/mm/dd',
             autoclose:true
         });
-        
+        zjb.initAjax();
         $( "#signupForm1" ).validate( {
             rules: {
                 category_id:"required",

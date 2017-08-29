@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Asset;
 
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
+use App\Models\User\Org;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+
+use Excel;
 
 class AssetCategoryController extends Controller
 {
@@ -194,6 +197,40 @@ class AssetCategoryController extends Controller
             ];
         }
         return response()->json($message);
+    }
+
+    /**
+     * 导出资产类别  数据
+     */
+    public function export(){
+
+        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $cellData = [
+            ['资产类别名称','父类别','所属公司'],
+        ];
+        $arr = [];
+        foreach ($list as $key=>$value){
+            $arr['name'] = $value->name;
+            $arr['path'] = $value->path;
+            $arr['org_id'] = $value->org->name;
+            array_push($cellData,$arr);
+        }
+
+        Excel::create('资产分类'.date("Ymd"),function($excel) use ($cellData){
+            $excel->sheet('score', function($sheet) use ($cellData){
+                $sheet->setPageMargin(array(
+                    0.25, 0.30, 0.25, 0.30
+                ));
+                $sheet->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40
+                ));
+                $sheet->cells('A1:C1', function($row) {
+                    $row->setBackground('#cfcfcf');
+                });
+                $sheet->rows($cellData);
+            });
+        })->store('xls')->export('xls');
+        return ;
     }
 
 }
