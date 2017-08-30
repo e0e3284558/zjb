@@ -212,11 +212,59 @@ if (!function_exists('department_select')) {
 /**
  * 随机返回一个Class样式
  */
+
 if (!function_exists('randomClass')) {
     function randomClass()
     {
         $arr = ['btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger'];
         $a = array_random($arr);
         return $a;
+    }
+
+}
+function random_color()
+{
+    $arr = ['blue', 'green', 'red', 'yellow', 'orange'];
+    $a = array_random($arr);
+    return $a;
+}
+
+
+/**
+ * 获取图片路径
+ * @param $id
+ * @return string
+ */
+function get_img_path($id)
+{
+    $path = \App\Models\Asset\File::find($id);
+    if (!empty($path)) {
+        return $path->path;
+    } else {
+        return 'img/nopicture.jpg';
+    }
+}
+
+/**
+ * 公司img返回缩略图或文字图标
+ */
+function img_circle($id, $name)
+{
+    if ($id != null) {
+        return '<img class="img-circle img-md" src="' . get_img_path($id) . '">';
+    } else {
+        return '<button class="btn blue img-circle img-md" type="button"> ' . mb_substr($name, 2, 2) . ' </button>';
+    }
+}
+
+/**
+ * 头像返回缩略图或文字图标
+ */
+function avatar_circle($img_path, $name)
+{
+    if ($img_path != null) {
+        return '<img class="img-circle img-md" src="' . $img_path . '">';
+    } else {
+        return '<button class="btn '. random_color().' img-circle img-md" type="button"> <span style="font-size: 36px">' . mb_substr($name, 0, 1) . '</span> </button>';
     }
 }

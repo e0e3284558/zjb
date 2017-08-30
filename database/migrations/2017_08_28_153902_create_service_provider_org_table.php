@@ -13,7 +13,7 @@ class CreateServiceProviderOrgTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_provider_org', function (Blueprint $table) {
+        Schema::create('org_service_provider', function (Blueprint $table) {
             $table->integer('org_id')->unsigned();
             $table->integer('service_provider_id')->unsigned();
             $table->boolean('status')->default(0)->comment('内部服务商|0，外部服务商|1');

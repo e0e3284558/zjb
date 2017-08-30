@@ -20,7 +20,8 @@ class ServiceWorkerController extends Controller
     public function index()
     {
         $data = Classify::where('org_id', 0)->OrderBy('sorting', 'desc')->get();
-        $serviceWorker = ServiceWorker::get();
+
+        $serviceWorker = ServiceWorker::with('service_provider')->OrderBy('id', 'desc')->get();
         return view('repair.service_worker.index', compact('data', 'serviceWorker'));
     }
 
@@ -51,7 +52,7 @@ class ServiceWorkerController extends Controller
         $serviceWorker->tel = $request->tel;
         $serviceWorker->upload_id = $request->upload_id;
         if ($serviceWorker->save()) {
-            //将tag数据存入到中间表post_tag中
+            //将serviceWorker数据存入到中间表serviceWorker_service_provider中
             if ($serviceWorker->classify()->sync($request->classify) && $serviceWorker->service_provider()->sync($request->serviceProvider)) {
                 return response()->json([
                     'status' => 1, 'message' => '添加成功',
@@ -94,8 +95,8 @@ class ServiceWorkerController extends Controller
         $data = ServiceWorker::find($id);
         // 根据维修工id获取所在服务商信息
         $service_provider_id = DB::table('service_provider_service_worker')
-                                    ->where('service_worker_id', $data->id)
-                                    ->value('service_provider_id');
+            ->where('service_worker_id', $data->id)
+            ->value('service_provider_id');
         // 读取所有分类信息
         $classifies = Classify::get();
         // 读取维修工与分类关联信息
@@ -105,7 +106,7 @@ class ServiceWorkerController extends Controller
         }
         $serviceProvider = ServiceProvider::get();
         return response()->view('repair.service_worker.edit',
-            compact('data', 'ids', 'classifies', 'service_provider_id','serviceProvider')
+            compact('data', 'ids', 'classifies', 'service_provider_id', 'serviceProvider')
         );
     }
 
@@ -127,13 +128,17 @@ class ServiceWorkerController extends Controller
         if ($serviceWorker->save()) {
             //将tag数据存入到中间表post_tag中
             if ($serviceWorker->classify()->sync($request->classify) && $serviceWorker->service_provider()->sync($request->serviceProvider)) {
-                return redirect('repair/service_worker')->with('success', '更新成功');
+                return response()->json([
+                    'status' => 1, 'message' => '更新成功',
+                    'data' => $serviceWorker->toArray()
+                ]);
             }
-
         } else {
-            return redirect('repair/service_worker')->with('error', '更新失败');
+            return response()->json([
+                'status' => 0, 'message' => '更新失败',
+                'data' => null, 'url' => ''
+            ]);
         }
-
     }
 
     /**

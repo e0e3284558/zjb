@@ -71,11 +71,12 @@
                     <div class="dd-handle ">
                         <label>所属服务商</label>
                         <div>
-                            @foreach($serviceProvider as $v)
-                                <label class="radio-inline i-checks">
-                                    <input type="radio" name="serviceProvider" class="icheck" value="{{$v->id}}">{{$v->name}}
-                                </label>
-                            @endforeach
+                            <select name="serviceProvider"  class="form-control select2 ">
+                                <option value="">请选择服务商</option>
+                                @foreach($serviceProvider as $v)
+                                    <option value="{{$v->id}}">{{$v->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </li>

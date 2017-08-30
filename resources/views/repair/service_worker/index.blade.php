@@ -74,7 +74,7 @@
 
                                     <address class="m-t-md">
                                         <strong><i class="fa fa-phone"></i> {{$v-> tel}}</strong><br>
-                                        <p><i class="fa fa-map-marker"></i> 安徽省芜湖市弋江区</p>
+                                        <p><i class="fa fa-map-marker"></i> {{@$v->service_provider[0]->name}}</p>
                                     </address>
 
                                 </a>
@@ -91,11 +91,8 @@
                                 </div>
                             </div>
                         </div>
-
                     @endforeach
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -114,46 +111,45 @@
             })
         }
 
-            /*创建*/
-            function add(url) {
-                $.ajax({
-                    "url": url,
-                    "type": 'get',
-                    success: function (data) {
-                        $("#create").html(data);
+        /*创建*/
+        function add(url) {
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $("#create").html(data);
+                }
+            })
+        }
+
+        /*编辑*/
+        function edit(url) {
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $("#create").html(data);
+                }
+            })
+        }
+
+
+        /*删除*/
+        function del(id) {
+            layer.confirm('确认要删除吗？', function () {
+                //发异步删除数据
+                $.post("{{url('repair/service_worker/')}}/" + id, {
+                    '_method': 'delete',
+                    '_token': "{{csrf_token()}}"
+                }, function (data) {
+                    if (data.status == 'success') {
+                        layer.msg(data.message, {icon: 6});
+                        window.location.reload();
+                    } else {
+                        layer.msg('删除失败', {icon: 5});
                     }
-                })
-            }
-
-            /*编辑*/
-            function edit(url) {
-                $.ajax({
-                    "url": url,
-                    "type": 'get',
-                    success: function (data) {
-                        $("#create").html(data);
-                    }
-                })
-            }
-
-
-            /*删除*/
-            function del(id) {
-                layer.confirm('确认要删除吗？', function () {
-                    //发异步删除数据
-                    $.post("{{url('repair/service_worker/')}}/" + id, {
-                        '_method': 'delete',
-                        '_token': "{{csrf_token()}}"
-                    }, function (data) {
-                        if (data.status == 'success') {
-                            layer.msg(data.message, {icon: 6});
-                            window.location.reload();
-                        } else {
-                            layer.msg('删除失败', {icon: 5});
-                        }
-                    });
                 });
-            }
-
+            });
+        }
     </script>
 @endsection
