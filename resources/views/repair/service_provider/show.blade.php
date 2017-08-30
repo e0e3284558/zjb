@@ -8,7 +8,21 @@
                 </div>
                 <dl class="dl-horizontal">
                     <dt>所属:</dt>
-                    <dd><span class="label label-primary">外包公司</span></dd>
+                    <dd>
+                        <span class="label label-primary">
+                            <?php
+                            if ($data->org->toArray() !== []) {
+                                foreach ($data->org as $v) {
+                                    if ($v->pivot->status == 0) {
+                                        echo '内部服务商';
+                                    }
+                                }
+                            } else {
+                                echo '外部服务商';
+                            }
+                            ?>
+                        </span>
+                    </dd>
                 </dl>
             </div>
         </div>
@@ -19,11 +33,11 @@
                     <dt>服务商负责人:</dt>
                     <dd>{{$data->user}}</dd>
                     <dt> &nbsp;</dt>
-                    <dd>  &nbsp; </dd>
+                    <dd> &nbsp;</dd>
                     <dt>服务商电话:</dt>
                     <dd>{{$data->tel}}</dd>
                     <dt> &nbsp;</dt>
-                    <dd>  &nbsp; </dd>
+                    <dd> &nbsp;</dd>
                     <dt>服务商传真:</dt>
                     <dd>{{$data->tel}}</dd>
                 </dl>
@@ -150,7 +164,7 @@
 
     /*更新所选分类的维修工*/
     function edit(id) {
-        url = '{{url('repair/service_provider')}}/' + id+'/edit';
+        url = '{{url('repair/service_provider')}}/' + id + '/edit';
         $.ajax({
             "url": url,
             "type": 'get',
