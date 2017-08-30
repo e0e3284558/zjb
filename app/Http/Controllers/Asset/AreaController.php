@@ -206,7 +206,7 @@ class AreaController extends Controller
             $arr['org_id'] = $value->org->name;
             array_push($cellData,$arr);
         }
-        Excel::create('场地信息管理'.date("Ymd"),function($excel) use ($cellData){
+        Excel::create('场地列表_'.date("YmdHis"),function($excel) use ($cellData){
             $excel->sheet('score', function($sheet) use ($cellData){
                 $sheet->setPageMargin(array(
                     0.25, 0.30, 0.25, 0.30
@@ -219,7 +219,7 @@ class AreaController extends Controller
                 });
                 $sheet->rows($cellData);
             });
-        })->store('xlsx')->export('xlsx');
+        })->export('xlsx');
 
 
 

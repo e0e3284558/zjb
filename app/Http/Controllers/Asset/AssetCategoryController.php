@@ -216,7 +216,7 @@ class AssetCategoryController extends Controller
             array_push($cellData,$arr);
         }
 
-        Excel::create('资产分类'.date("Ymd"),function($excel) use ($cellData){
+        Excel::create('资产分类_'.date("YmdHis"),function($excel) use ($cellData){
             $excel->sheet('score', function($sheet) use ($cellData){
                 $sheet->setPageMargin(array(
                     0.25, 0.30, 0.25, 0.30
@@ -229,7 +229,7 @@ class AssetCategoryController extends Controller
                 });
                 $sheet->rows($cellData);
             });
-        })->store('xls')->export('xls');
+        })->export('xls');
         return ;
     }
 

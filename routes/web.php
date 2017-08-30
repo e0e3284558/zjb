@@ -87,11 +87,12 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     Route::resource('area','AreaController');
 
     //其他报修项
-//    Route::get('other_asset/slt','OtherAssetController@slt');
     Route::resource('other_asset','OtherAssetController');
 
     //资产管理
     Route::get('asset/show_img/{file_id}','AssetController@show_img');
+    Route::get('asset/add_copy/{id}','AssetController@add_copy');
+    Route::post('asset/copy','AssetController@copy');
     Route::resource('asset','AssetController');
 
     //附件信息
