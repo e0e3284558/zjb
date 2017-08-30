@@ -731,6 +731,7 @@
 
     <!-- bootstrap-datepicker -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js')}}"></script>
 
     <!-- ladda -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/ladda/spin.min.js')}}"></script>

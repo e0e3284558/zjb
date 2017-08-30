@@ -31,7 +31,7 @@ class OtherAssetController extends Controller
         if($request->name){
             $map[] = ['name','like','%'.$request->name.'%'];
         }
-        $list = OtherAsset::where($map)->paginate(1);
+        $list = OtherAsset::where($map)->get();
         foreach ($list as $k=>$v){
             //资产类别
             $list[$k]['category_id'] = $v->category->name;
@@ -39,7 +39,7 @@ class OtherAssetController extends Controller
         }
         //资产类别
         $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
+//        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
         return view("asset.otherAsset.index",compact('list','category_list'));
     }
 
@@ -51,8 +51,8 @@ class OtherAssetController extends Controller
      */
     public function create()
     {
-        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        return response()->view("asset.otherAsset.add",compact("list"));
+        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        return response()->view("asset.otherAsset.add",compact("category_list"));
     }
 
     /**

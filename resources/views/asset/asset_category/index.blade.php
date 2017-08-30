@@ -33,6 +33,16 @@
                         <div class="ibox-content margin-padding-0">
                             <div class="ibox-content-wrapper">
                                 <div class="scroller">
+                                    <div class="input-group" style="padding: 5px 10px;">
+                                        <span class="input-group-addon" >
+                                            类别搜索：
+                                        </span>
+                                        <input type="input" class="input-md form-control" id="input-search" placeholder="搜索">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-md btn-success" id="btn-search">查找</button>
+                                            <button type="button" class="btn btn-md btn-danger" id="btn-clear-search">清空</button>
+                                        </span>
+                                    </div>
                                     <div id="tree" class="full-height-wrapper" ></div>
                                 </div>
                             </div>
@@ -87,7 +97,7 @@
                 var data = {!! json_encode($tree) !!};
                 return data;
             }
-            $('#tree').treeview({
+            var $searchableTree = $('#tree').treeview({
                 data: getTree(),         // data is not optional
                 levels: 5,
                 multiSelect: false,
@@ -105,6 +115,19 @@
                         $("#right_content").html(data);
                     }
                 })
+            });
+
+            var search = function(e) {
+                var pattern = $('#input-search').val();
+                var results = $searchableTree.treeview('search', [ pattern ]);
+            };
+
+            $('#btn-search').on('click', search);
+
+            $('#btn-clear-search').on('click', function (e) {
+                $searchableTree.treeview('clearSearch');
+                $('#input-search').val('');
+                $('#search-output').html('');
             });
         })
 

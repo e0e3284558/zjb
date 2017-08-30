@@ -329,6 +329,9 @@ var zjb = function(){
                 }
             });
         },
+        imageUpload: function(){
+            
+        }
 	}
 }();
 jQuery(document).ready(function() {    

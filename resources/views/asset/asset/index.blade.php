@@ -30,7 +30,7 @@
                     <h3 class="h3">
                         <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
                         <button type="button" onclick="edit()" href="javascript:;" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">
-                            <i class="fa  fa-wrench"></i> 修改
+                            <i class="fa fa-pencil"></i> 修改
                         </button>
                         <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
                             <i class="fa  fa-trash-o"></i> 删除
