@@ -13,7 +13,7 @@
                     href="{{ url('repair/service_worker?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 维修工管理</a>
         </li>
         <li class="{{ active_class(if_route('service_provider.index'))}}"><a
-                    href="{{ url('repair/service_provider') }}"><i class="fa fa-angle-right"></i> 服务商管理</a>
+                    href="{{ url('repair/service_provider?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 服务商管理</a>
         </li>
     </ul>
 </li>

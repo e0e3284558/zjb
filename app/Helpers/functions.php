@@ -268,3 +268,10 @@ function avatar_circle($img_path, $name)
         return '<button class="btn '. random_color().' img-circle img-md" type="button"> <span style="font-size: 36px">' . mb_substr($name, 0, 1) . '</span> </button>';
     }
 }
+
+/**
+ * @param $id
+ */
+function id_to_img($id){
+return \App\Models\File\File::find($id)->value('path');
+}

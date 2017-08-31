@@ -61,7 +61,7 @@ Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], f
 
 //报修模块路由开始
 //-------------------------------------------------------------------------
-Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
+Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth'], function () {
     //报修分类
     Route::resource('classify', 'ClassifyController');
     //维修工管理

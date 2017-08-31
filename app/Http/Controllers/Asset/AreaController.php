@@ -92,7 +92,6 @@ class AreaController extends Controller
         });
         $img->save(public_path('uploads/qrcodes/'.$arr['uid'].'.png'));
 
-        dd($img);
         $info = Area::insertGetId($arr);
         if($info){
             $message = [

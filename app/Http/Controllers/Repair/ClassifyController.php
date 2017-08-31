@@ -6,6 +6,7 @@ use App\Http\Requests\ClassifyRequest;
 use App\Models\Repair\Classify;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ClassifyController extends Controller
 {
@@ -16,7 +17,7 @@ class ClassifyController extends Controller
      */
     public function index()
     {
-        $data=Classify::where('org_id',0)->OrderBy('sorting','desc')->get();
+        $data=Classify::where('org_id',Auth::user()->org_id)->OrderBy('sorting','desc')->get();
         return view('repair.classify.index',compact('data'));
     }
 
