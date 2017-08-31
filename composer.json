@@ -9,6 +9,7 @@
         "anahkiasen/former": "^4.1",
         "barryvdh/laravel-ide-helper": "^2.4",
         "baum/baum": "~1.1",
+        "doctrine/dbal": "^2.6",
         "edvinaskrucas/notification": "5.*",
         "geoip2/geoip2": "~2.0",
         "greggilbert/recaptcha": "dev-master",

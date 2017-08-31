@@ -1,10 +1,10 @@
 .fh-breadcrumb-m{margin: 0;}
 .span-icon-right{
-    text-align: right;
-    float: right;
+  text-align: right;
+  float: right;
 }
 .span-i-icon-right{
-    margin-left: 8px;
+  margin-left: 8px;
 }
 .full-height-ibox{
 	margin-bottom: 0px;
@@ -20,7 +20,7 @@
 	padding: 20px;
 }
 .skin-1 .wrapper-content2 {
-  padding: 30px 15px;
+  padding: 20px 5px;
 }
 .fh-column-w{
 	width: 340px;
@@ -158,12 +158,10 @@
 .display-hide{
 	display: none;
 }
-<<<<<<< HEAD
 .cursor_pointer{
     color: #1c84c6;
     cursor: pointer;
 }
-=======
 .btn-circle-sm{
   line-height: 32px;
   text-align: center;
@@ -6052,4 +6050,80 @@ Custom color buttons
 .border-right-before-purple-soft:before,
 .border-right-after-purple-soft:after {
   border-right-color: #8877a9 !important; }
->>>>>>> 1d033b9e47d821db24cbd2a82025ae4b5b3fbc91
+
+.skin-1 .btn-upload .webuploader-pick{
+  background: #0e9aef;
+  padding: 6px 10px;
+}
+.skin-1 .btn-upload .pickers{display: inline-block;}
+.skin-1 .btn-upload .webuploader-pick-hover {
+  background: #0c87d2;
+}
+.skin-1 .multi-file-upload .file-item,
+.skin-1 .multi-file-upload .webuploader-container,
+.skin-1 .multi-image-upload .file-item,
+.skin-1 .multi-image-upload .webuploader-container{width: 168px;height: 108px;}
+
+.skin-1 .multi-file-upload .uploader-picker,
+.skin-1 .multi-image-upload .uploader-picker{border: 1px dashed #3598dc;}
+.skin-1 .multi-file-upload .webuploader-container label,
+.skin-1 .multi-image-upload .webuploader-container label
+{margin-bottom: 0;}
+.skin-1 .multi-file-upload .webuploader-pick,
+.skin-1 .multi-image-upload .webuploader-pick{
+  width: 100%;height: 100%;
+  background: #fafafa;
+  color: #676a6c;
+  padding-top: 20px;
+}
+.skin-1 .file-item .file-delete,
+.skin-1 .file-item .file-cannel{padding: 2px 5px 0 0;}
+.skin-1 .file-item .file-info{padding: 0px 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.skin-1 .file-item .file-state{padding: 3px;}
+
+.skin-1 .multi-image-upload .file-item{position: relative;}
+.skin-1 .multi-image-upload .file-item .file-item-bg{
+  position: absolute;
+  top: 0;left: 0;
+  padding: 5px;
+  width: 100%;
+}
+.skin-1 .multi-image-upload .file-item .file-preview{
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+.skin-1 .multi-image-upload .file-item .file-preview span.preview{
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.skin-1 .multi-image-upload .file-item .file-preview span.preview img{
+  display: inline-block;
+  max-width: 100%;
+  max-height: 96px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.skin-1 .multi-image-upload-lg .webuploader-container,
+.skin-1 .multi-image-upload-lg .file-item{
+  width: 200px;height: 150px;
+}
+.skin-1 .multi-image-upload-lg .webuploader-container .webuploader-pick{
+  padding-top: 40px;
+}  
+.skin-1 .multi-image-upload-lg .file-item .file-preview span.preview img{
+  max-height: 138px;
+}
+.skin-1 .multi-image-upload-lg .file-item .file-progress{padding-top: 20px;}
+
+
+
+

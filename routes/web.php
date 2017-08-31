@@ -61,7 +61,7 @@ Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], f
 
 //报修模块路由开始
 //-------------------------------------------------------------------------
-Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
+Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth'], function () {
     //报修分类
     Route::resource('classify', 'ClassifyController');
     //维修工管理
@@ -100,3 +100,17 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
 });
 //-------------------------------------------------------------------------
 //资产管理模块路由开始
+
+
+//文件管理模块路由开始
+//-------------------------------------------------------------------------
+
+Route::group(['prefix' => 'file','namespace' => 'File','middleware'=>'auth'], function () {
+    Route::post('image_upload','DefaultController@imageUpload')->name('image.upload');
+    Route::post('file_upload','DefaultController@fileUpload')->name('file.upload');
+    Route::post('video_upload','DefaultController@videoUpload')->name('video.upload');
+    Route::post('asset_file_upload','DefaultController@assetFileUpload')->name('asset.file.upload');
+});
+
+//-------------------------------------------------------------------------
+//文件管理模块路由结束
