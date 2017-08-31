@@ -16,20 +16,6 @@
                 </script>
             @endif
 
-            @if (session('success'))
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        toastr.success('{{session('success') }}');
-                    });
-                </script>
-            @endif
-            @if (session('error'))
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        toastr.warning('{{session('error') }}');
-                    });
-                </script>
-            @endif
             </p>
 
             <div class="dd" id="nestable2">
@@ -67,7 +53,6 @@
                         </div>
                     </li>
                     <li>
-                        <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                         <button type="submit" class="btn btn-success">编辑</button>
                         <button type="button" class="btn btn-warning" onclick="add('{{url('repair/classify/create')}}')">
                             取消

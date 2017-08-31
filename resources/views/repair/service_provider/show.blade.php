@@ -46,26 +46,13 @@
                 <dl class="dl-horizontal">
                     <dt>服务商成员:</dt>
                     <dd class="project-people">
-                        <a href=""><img alt="image" class="img-circle" src="/img/a3.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a1.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a2.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a4.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a5.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a3.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a1.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a2.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a4.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a5.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a3.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a1.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a2.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a4.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a5.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a3.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a1.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a2.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a4.jpg"></a>
-                        <a href=""><img alt="image" class="img-circle" src="/img/a5.jpg"></a>
+                        @foreach($serviceWorker as $j)
+                            @if($j['upload_id'])
+                                {!! avatar_circle($j['upload_id']) !!}
+                            @else
+                                {!! avatar_circle(null,$j['name'] )!!}
+                            @endif
+                        @endforeach
                     </dd>
                 </dl>
             </div>

@@ -4,6 +4,7 @@ namespace App\Models\Repair;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class ServiceProvider extends Model
 {
@@ -22,4 +23,7 @@ class ServiceProvider extends Model
     {
         return $this->belongsToMany('App\Models\User\Org')->withPivot('status');
     }
+
+
+
 }

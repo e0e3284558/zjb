@@ -1,5 +1,5 @@
 <meta charset="UTF-8">
-<div class="ibox" >
+<div class="ibox">
     <div class="ibox-title">
         <h5>分类操作</h5>
     </div>
@@ -12,17 +12,6 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-            </div>
-        @endif
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
             </div>
             @endif
             </p>
@@ -61,7 +50,7 @@
                         </div>
                     </li>
                     <li>
-                        <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
+                        <input type="hidden" name="org_id" value="{{\Auth::user()->org_id}}">
                         <button type="submit" class="btn btn-success">添加</button>
                     </li>
                 </form>

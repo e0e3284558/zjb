@@ -83,7 +83,7 @@
 
 
                 <li>
-                    <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
+                    <input type="hidden" name="org_id" value="{{Auth::user()->org_id}}">
                     <button type="submit" class="btn btn-success">添加</button>
                 </li>
             </form>

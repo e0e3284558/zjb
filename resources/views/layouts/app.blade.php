@@ -85,7 +85,7 @@
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong
-                                            class="font-bold">zhejiuban</strong>
+                                            class="font-bold">{{Auth::user()->name}}</strong>
                              </span> <span class="text-muted text-xs block">单位管理员 <b class="caret"></b></span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">

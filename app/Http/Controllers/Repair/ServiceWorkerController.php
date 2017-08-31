@@ -8,6 +8,7 @@ use App\Models\Repair\ServiceProvider;
 use App\Models\Repair\ServiceWorker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ServiceWorkerController extends Controller
@@ -19,9 +20,12 @@ class ServiceWorkerController extends Controller
      */
     public function index()
     {
-        $data = Classify::where('org_id', 0)->OrderBy('sorting', 'desc')->get();
+        $data = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        foreach ($data as $v) {
+            $serviceWorker[] = $v->serviceWorker()->get();
+        }
+//        dd($serviceWorker);
 
-        $serviceWorker = ServiceWorker::with('service_provider')->OrderBy('id', 'desc')->get();
         return view('repair.service_worker.index', compact('data', 'serviceWorker'));
     }
 
@@ -32,8 +36,18 @@ class ServiceWorkerController extends Controller
      */
     public function create()
     {
-        $data = Classify::where('org_id', 0)->OrderBy('sorting', 'desc')->get();
-        $serviceProvider = ServiceProvider::get();
+        $data = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $serviceProvider = ServiceProvider::with('org')->get();
+        $my_Provider = [];
+        //只获取当前公司已拥有的服务商
+        foreach ($serviceProvider as $v) {
+            if (!collect($v->org)->isEmpty()) {
+                if ($v->org !== null && ($v->org[0]->id) == Auth::user()->org_id) {
+                    $my_Provider[] = $v;
+                }
+            }
+        }
+        $serviceProvider=$my_Provider;
         return response()->view('repair.service_worker.add', compact('data', 'serviceProvider'));
     }
 
@@ -98,7 +112,7 @@ class ServiceWorkerController extends Controller
             ->where('service_worker_id', $data->id)
             ->value('service_provider_id');
         // 读取所有分类信息
-        $classifies = Classify::get();
+        $classifies = Classify::where('org_id', Auth::user()->org_id)->get();
         // 读取维修工与分类关联信息
         $serviceWorkerClassify = $data->classify->toArray();
         foreach ($serviceWorkerClassify as $k => $v) {
