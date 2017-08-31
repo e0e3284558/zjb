@@ -67,63 +67,61 @@
                     </form>
 
                     <div class="table-responsive">
-                            <table style="min-width: 2200px" class="table table-striped  table-bordered" >
-                                <thead>
+                        <table style="min-width: 2200px" class="table table-striped  table-bordered" >
+                            <thead>
+                                <tr role="row">
+                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
+                                    <th>资产条码</th>
+                                    <th>图片</th>
+                                    <th>资产名称</th>
+                                    <th>资产类别</th>
+                                    <th>规格型号</th>
+                                    <th>SN号</th>
+                                    <th>计量单位</th>
+                                    <th>金额</th>
+                                    <th>使用部门</th>
+                                    <th>使用人</th>
+                                    <th>区域</th>
+                                    <th>管理员</th>
+                                    <th>所属公司</th>
+                                    <th>所属部门</th>
+                                    <th>购入时间</th>
+                                    <th>使用期限(月)</th>
+                                    <th>来源</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($list as $value)
                                     <tr role="row">
-                                        <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
-                                        <th>资产条码</th>
-                                        <th>图片</th>
-                                        <th>资产名称</th>
-                                        <th>资产类别</th>
-                                        <th>规格型号</th>
-                                        <th>SN号</th>
-                                        <th>计量单位</th>
-                                        <th>金额</th>
-                                        <th>使用部门</th>
-                                        <th>使用人</th>
-                                        <th>区域</th>
-                                        <th>管理员</th>
-                                        <th>所属公司</th>
-                                        <th>所属部门</th>
-                                        <th>购入时间</th>
-                                        <th>使用期限(月)</th>
-                                        <th>来源</th>
+                                        <td role="gridcell">
+                                            <input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">
+                                        </td>
+                                        <td>{{$value->code}}</td>
+                                        <td>
+                                            @if($value->img_path)
+                                                <img class="cursor_pointer" onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;" data-toggle="modal" data-target=".bs-example-modal-md">
+                                            @endif
+                                        </td>
+                                        <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
+                                        <td>{{$value->category_id}}</td>
+                                        <td>{{$value->spec}}</td>
+                                        <td>{{$value->SN_code}}</td>
+                                        <td>{{$value->calculate}}</td>
+                                        <td>{{$value->money}}</td>
+                                        <td>{{$value->use_department_id}}</td>
+                                        <td>{{$value->user_id}}</td>
+                                        <td>{{$value->area}}</td>
+                                        <td>{{$value->admin_id}}</td>
+                                        <td>{{$value->org_id}}</td>
+                                        <td>{{$value->department_id}}</td>
+                                        <td>{{$value->buy_time}}</td>
+                                        <td>{{$value->use_time}}</td>
+                                        <td>{{$value->source_id}}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($list as $value)
-                                        <tr role="row">
-                                            <td role="gridcell">
-                                                <input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">
-                                            </td>
-                                            <td>{{$value->code}}</td>
-                                            <td>
-                                                @if($value->img_path)
-                                                    <img class="cursor_pointer" onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;" data-toggle="modal" data-target=".bs-example-modal-md">
-                                                @endif
-                                            </td>
-                                            <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
-                                            <td>{{$value->category_id}}</td>
-                                            <td>{{$value->spec}}</td>
-                                            <td>{{$value->SN_code}}</td>
-                                            <td>{{$value->calculate}}</td>
-                                            <td>{{$value->money}}</td>
-                                            <td>{{$value->use_department_id}}</td>
-                                            <td>{{$value->user_id}}</td>
-                                            <td>{{$value->area}}</td>
-                                            <td>{{$value->admin_id}}</td>
-                                            <td>{{$value->org_id}}</td>
-                                            <td>{{$value->department_id}}</td>
-                                            <td>{{$value->buy_time}}</td>
-                                            <td>{{$value->use_time}}</td>
-                                            <td>{{$value->source_id}}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-
                     {{ $list->links() }}
 
                 </div>
@@ -160,9 +158,9 @@
             var messages = "<div class='modal-header'>" +
                 "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
                 "<span aria-hidden='true'>&times;</span></button> </div> " +
-                "<div class='modal-body'>" +
-                message +
-                "</div><div class='modal-footer'> <button type='button' class='btn btn-primary' data-dismiss='modal'>确定</button> <button type='submit' class='btn btn-primary'>保存</button></div>"
+                "<div class='modal-body'>" + message + "</div><div class='modal-footer'> " +
+                "<button type='button' class='btn btn-primary' data-dismiss='modal'>确定</button> " +
+                "<button type='submit' class='btn btn-primary'>保存</button></div>"
             return messages;
         }
 

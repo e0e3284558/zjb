@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Asset;
 
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
+use App\Models\User\Org;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+
+use Intervention\Image\ImageManager;
 use Webpatser\Uuid\Uuid;
-
+use QrCode;
 use Excel;
-
 class AreaController extends Controller
 {
     /**
@@ -71,6 +73,26 @@ class AreaController extends Controller
             $arr['pid'] = "0";
             $arr['path'] = "";
         }
+        $org_name = Org::where("id",$arr['org_id'])->value("name");
+        QrCode::encoding("UTF-8")->format('png')->size("300")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("5")->generate($arr['uid'],public_path('uploads/qrcodes/'.$arr['uid'].'.png'));
+        //在二维码上添加信息   场地信息  公司名称
+        $manager = new ImageManager();
+        $img = $manager->make(public_path('uploads/qrcodes/'.$arr['uid'].'.png'));
+        $img->text('场地名称：'.$arr['name'],10,270,function ($font){
+            $font->file('uploads/msyh.ttc');
+            $font->size(14);
+            $font->color('#000');
+//            $font->align('center');
+        });
+        $img->text('公司名称：'.$org_name,10,290,function ($font){
+            $font->file('uploads/msyh.ttc');
+            $font->size(14);
+            $font->color('#000');
+//            $font->align('center');
+        });
+        $img->save(public_path('uploads/qrcodes/'.$arr['uid'].'.png'));
+
+        dd($img);
         $info = Area::insertGetId($arr);
         if($info){
             $message = [
@@ -124,8 +146,33 @@ class AreaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
-            $info = Area::where("id",$id)->update($request->except("_token","_method"));
+        $user_org = Auth::user()->org_id;
+        $info = Area::find($id);
+        if($user_org == $info->org_id){
+            $result = Area::where("id",$id)->update($request->except("_token","_method"));
+
+            $info = Area::find($id);
+            $org_name = Org::where("id",$user_org)->value("name");
+            //删除原来的二维码图片
+            unlink(public_path('uploads/qrcodes/'.$info->uid.'.png'));
+            QrCode::encoding("UTF-8")->format('png')->size("300")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("6")->generate($info->uid,public_path('uploads/qrcodes/'.$info->uid.'.png'));
+            //在二维码上添加信息   场地信息  公司名称
+            $manager = new ImageManager();
+            $img = $manager->make(public_path('uploads/qrcodes/'.$info->uid.'.png'));
+            $img->text('场地名称：'.$info->name,10,270,function ($font){
+                $font->file('uploads/msyh.ttc');
+                $font->size(14);
+                $font->color('#000');
+//                $font->align('center');
+            });
+            $img->text('公司名称：'.$org_name,10,290,function ($font){
+                $font->file('uploads/msyh.ttc');
+                $font->size(14);
+                $font->color('#000');
+//                $font->align('center');
+            });
+            $img->save(public_path('uploads/qrcodes/'.$info->uid.'.png'));
+
             if($info){
                 $arr = [
                     'code'=>1,
