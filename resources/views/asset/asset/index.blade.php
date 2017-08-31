@@ -6,11 +6,9 @@
                 <li>
                     <a href="{{ route('home') }}">控制面板</a>
                 </li>
-
                 <li>
                     <a href="javascript:;">资产管理</a>
                 </li>
-
                 <li class="active">
                     <strong>资产入库</strong>
                 </li>
@@ -35,6 +33,9 @@
                         <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
                             <i class="fa  fa-trash-o"></i> 删除
                         </button>
+                        <a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">
+                            <i class="fa fa-copy"></i> 复制
+                        </a>
                     </h3>
                 </div>
                 <div class="ibox-content">
@@ -165,6 +166,25 @@
             return messages;
         }
 
+        function copy() {
+            if($("tbody input[type='checkbox']:checked").length == 1){
+
+                var id = $("tbody input[type='checkbox']:checked").val();
+                $.ajax({
+                    url:'{{url('asset/add_copy')}}'+"/"+id,
+                    type:"get",
+                    success:function (data) {
+                        $(".modal-content").html(data);
+                    }
+                })
+
+            }else if($("tbody input[type='checkbox']:checked").length == 0){
+                $(".modal-content").html(str("请选择要复制的资产"));
+            }else{
+                $(".modal-content").html(str("每次只能复制一条资产"));
+            }
+        }
+
         function edit() {
             if($("tbody input[type='checkbox']:checked").length == 1){
 
@@ -200,7 +220,8 @@
                         type: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "是的, 确认删除!",
+                        cancelButtonText: "取消",
+                        confirmButtonText: "确认",
                         closeOnConfirm: false
                     },
                     function(){
@@ -251,61 +272,6 @@
                     $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
-        }
-        /*加载添加视图*/
-
-        function edits (url,status) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".modal-content").html(data);
-                }
-            })
-        }
-
-        /*删除*/
-        function del(obj,id,status){
-            if(status!="闲置"){
-                alert('此物品已经处在非闲置时期，不能进行删除!');
-                return false;
-            }
-
-            swal({
-                title: "确认要删除吗？",
-                text: "",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "是的, 确认删除!",
-                closeOnConfirm: false
-            },
-            function(){
-                //发异步删除数据
-                $.ajax({
-                    type: "post",
-                    url: '{{url('asset')}}'+'/'+id,
-                    data: {
-                        "_token": '{{csrf_token()}}',
-                        '_method': 'delete'
-                    },
-                    dataType:"json",
-                    success: function (data) {
-                        if(data.code==1){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                $(obj).parents("tr").remove();
-                                window.location.reload();
-                            });
-                        }else{
-                            swal("", data.message, "error");
-                        }
-                    }
-                });
-            });
         }
 
     </script>

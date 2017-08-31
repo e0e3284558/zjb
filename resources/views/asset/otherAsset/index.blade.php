@@ -79,7 +79,7 @@
                         <div class="scroller">
                             <div id="right_content" class="full-height-wrapper">
 
-                                <form id="signupForm1" class="form-horizontal" method="post" enctype="multipart/form-data" >
+                                <form id="signupForm1" class="form-horizontal">
                                     <div class="alert alert-danger display-hide" id="error-block">
                                         <button class="close" data-close="alert"></button>
                                         请更正下列输入错误：
@@ -135,9 +135,6 @@
         zjb.initAjax();
         var otherAssets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', otherAssets_form);
-        $('#submitAssetsForm').click(function () {
-            otherAssets_form.submit();
-        });
         otherAssets_form.validate( {
             rules: {
                 category_id:"required",

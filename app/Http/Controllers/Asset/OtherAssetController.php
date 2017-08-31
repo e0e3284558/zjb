@@ -71,16 +71,13 @@ class OtherAssetController extends Controller
             'remarks' => $request->remarks,
             'org_id' => Auth::user()->org_id
         ];
-
         $asset_id = OtherAsset::insertGetId($arr);
 
         $message = [
             'code' => 1,
             'message' => '添加成功'
         ];
-
         return response()->json($message);
-
     }
 
     /**
