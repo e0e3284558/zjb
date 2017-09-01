@@ -69,10 +69,13 @@
                                 </div>
                             </div>
                             <div class="col-sm-3">
-                                <div class="input-group"><input type="text" placeholder="搜索"
-                                                                class="input-sm form-control"> <span
-                                            class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span></div>
+                                <div class="input-group">
+                                    <input type="text" placeholder="搜索" class="input-sm form-control" id="search">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                onclick="search()"> 搜索</button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -96,7 +99,7 @@
                                         <td>{{$v->department->name}}</td>
                                         <td>{{$v->created_at}}</td>
                                         <td>
-                                            <button class="btn btn-warning"
+                                            <button class="btn btn-primary"
                                                     onclick="edit('编辑用户信息','{{url("users/default/$v->id/edit")}}')"
                                                     data-toggle="modal" data-target=".bs-example-modal-lg">编辑
                                             </button>
@@ -130,6 +133,28 @@
 
                 }
             })
+        }
+
+        //添加用户
+        function search() {
+            var v = $("#search").val();
+
+            if (v != '') {
+                $.ajax({
+                    "url": '{{url('users/default/search')}}/' + v,
+                    success: function (data) {
+                        $("#userList").html(data);
+                    }
+                })
+            } else {
+                $.ajax({
+                    "url": '{{url('users/default/*')}}',
+                    success: function (data) {
+                        $("#userList").html(data);
+                    }
+                })
+            }
+
         }
 
         function change(id) {

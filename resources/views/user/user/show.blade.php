@@ -27,7 +27,11 @@
                         <div class="col-sm-5 m-b-xs">
                             <select class="form-control  inline" onchange="change(this.value)">
                                 <option value="*">所有部门</option>
-                                {!! department_select($id) !!}
+                                @if(isset($id))
+                                    {!! department_select($id) !!}
+                                @else
+                                    {!! department_select('',1) !!}
+                                @endif
                             </select>
                         </div>
                         <div class="col-sm-4 m-b-xs">
@@ -44,9 +48,10 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group"><input type="text" placeholder="搜索"
-                                                            class="input-sm form-control"> <span
+                                                            class="input-sm form-control"
+                                id="search"> <span
                                         class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span></div>
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="search()"> 搜索</button> </span></div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -70,7 +75,7 @@
                                     <td>{{$v->department->name}}</td>
                                     <td>{{$v->created_at}}</td>
                                     <td>
-                                        <button class="btn btn-warning"
+                                        <button class="btn btn-primary"
                                                 onclick="edit('编辑用户信息','{{url("users/default/$v->id/edit")}}')"
                                                 data-toggle="modal" data-target=".bs-example-modal-lg">编辑
                                         </button>

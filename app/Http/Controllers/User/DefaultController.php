@@ -72,6 +72,15 @@ class DefaultController extends Controller
         return  response()->view('user.user.show', compact('data','id'));
     }
 
+    public function search($value)
+    {
+        if ($value){
+            $data = User::where('name','like', "$value%")->with('department')->get();
+            return  response()->view('user.user.show', compact('data'));
+        }
+
+    }
+
     public function edit($id)
     {
         $data = User::find($id);
