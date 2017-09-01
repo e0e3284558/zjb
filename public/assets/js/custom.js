@@ -546,19 +546,23 @@ var zjb = function(){
             });
             //未上传取消文件
             $('#'+pickers+'-file-list').on('click', ".file-cannel a", function(){
-                uploaders.removeFile( $(this).data('file-id'),true);
-                $('#'+pickers+'-file-list').find('#'+$(this).data('file-id')).remove();
+                var $fileid = $(this).data('file-id');
+                if(uploaders.getFile($fileid) != undefined){
+                    uploaders.removeFile( $fileid,true);
+                }
+                $('#'+pickers+'-file-list').find('#'+$fileid).remove();
                 if (options.fileCannel instanceof Function) {
-                    options.fileCannel($(this).data('file-id'));
+                    options.fileCannel($fileid);
                 }
             });
             $('#'+pickers+'-file-list').on('click', ".file-delete a", function(){
-                if(uploaders.getFile($(this).data('file-id')) != undefined){
-                    uploaders.removeFile( $(this).data('file-id'),true);
+                var $fileid = $(this).data('file-id');
+                if(uploaders.getFile($fileid) != undefined){
+                    uploaders.removeFile( $fileid,true);
                 }
-                $('#'+pickers+'-file-list').find('#'+$(this).data('file-id')).remove();
+                $('#'+pickers+'-file-list').find('#'+$fileid).remove();
                 if (options.fileDelete instanceof Function) {
-                    options.fileDelete($(this).data('file-id'));
+                    options.fileDelete($fileid);
                 }
             });
         },
