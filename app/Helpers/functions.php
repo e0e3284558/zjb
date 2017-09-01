@@ -197,9 +197,9 @@ if (!function_exists('department_select')) {
     function department_select($selected = 0, $type = 0)
     {
         $list = \App\Models\User\Department::getSpaceTreeData();
-        if($type == 1){
+        if ($type == 1) {
             $str = '<option value="">请选择部门</option>';
-        }else{
+        } else {
             $str = '<option value="0">顶级部门</option>';
         }
 
@@ -227,26 +227,28 @@ if (!function_exists('randomClass')) {
     }
 
 }
-function random_color()
-{
-    $arr = ['blue', 'green', 'red', 'yellow', 'orange'];
-    $a = array_random($arr);
-    return $a;
+if (!function_exists('random_color')) {
+    function random_color()
+    {
+        $arr = ['blue', 'green', 'red', 'yellow', 'orange'];
+        $a = array_random($arr);
+        return $a;
+    }
 }
-
-
 /**
  * 获取图片路径
  * @param $id
  * @return string
  */
-function get_img_path($id)
-{
-    $path = \App\Models\Asset\File::find($id);
-    if (!empty($path)) {
-        return $path->path;
-    } else {
-        return 'img/nopicture.jpg';
+if (!function_exists('get_img_path')) {
+    function get_img_path($id)
+    {
+        $path = \App\Models\File\File::find($id);
+        if (!empty($path)) {
+            return $path->path;
+        } else {
+            return asset('img/nopicture.jpg');
+        }
     }
 }
 
@@ -270,16 +272,18 @@ function avatar_circle($img_path, $name)
     if ($img_path != null) {
         return '<img class="img-circle img-md" src="' . $img_path . '">';
     } else {
-        return '<button class="btn '. random_color().' img-circle img-md" type="button"> <span style="font-size: 36px">' . mb_substr($name, 0, 1) . '</span> </button>';
+        return '<button class="btn ' . random_color() . ' img-circle img-md" type="button"> <span style="font-size: 36px">' . mb_substr($name, 0, 1) . '</span> </button>';
     }
 }
 
 /**
  * @param $id
  */
-function id_to_img($id){
-return \App\Models\File\File::find($id)->value('path');
+function id_to_img($id)
+{
+    return \App\Models\File\File::find($id)->value('path');
 }
+
 /**
  * 获取当前登录用户信息
  */
@@ -298,14 +302,15 @@ if (!function_exists('get_current_login_user_info')) {
 if (!function_exists('get_current_login_user_org_id')) {
     function get_current_login_user_org_id($guard = 'web')
     {
-        return get_current_login_user_info('org_id',$guard);
+        return get_current_login_user_info('org_id', $guard);
     }
 }
 /**
  * 获取客户端ip地址
  */
-if(!function_exists('get_client_ip')){
-    function get_client_ip(){
+if (!function_exists('get_client_ip')) {
+    function get_client_ip()
+    {
         return request()->ip();
     }
 }
