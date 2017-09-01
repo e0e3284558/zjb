@@ -11,6 +11,7 @@ use App\Models\Asset\Source;
 use App\Models\User\Department;
 use App\Models\User\Org;
 use App\Models\User\User;
+use Intervention\Image\ImageManager;
 use QrCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -124,18 +125,21 @@ class AssetController extends Controller
         $arr = $request->except("_token","img","file_id");
 
         $arr['asset_uid'] = Uuid::generate()->string;
-        QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/qrcodes/'.$arr['asset_uid'].'.png'));
+        QrCode::format('png')->size("100")->margin(0)->merge('/public/uploads/qrcodes/logo.png', .3)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
+
         $arr['created_at'] = date("Y-m-d H:i:s");
         $arr['asset_status_id'] = "1";
         $info = Asset::insertGetId($arr);
 
-        $file_arr = [
-            'asset_id' => $info,
-            'file_id' => $request->file_id,
-            'org_id' => Auth::user()->org_id
-        ];
+        if($request->file_id){
+            $file_arr = [
+                'asset_id' => $info,
+                'file_id' => $request->file_id,
+                'org_id' => Auth::user()->org_id
+            ];
 
-        AssetFile::insert($file_arr);
+            AssetFile::insert($file_arr);
+        }
 
         if($info){
             $message = [

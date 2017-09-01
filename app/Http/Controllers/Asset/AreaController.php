@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Asset;
 
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
+use App\Models\User\Org;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+
+use Intervention\Image\ImageManager;
+use PDF;
 use Webpatser\Uuid\Uuid;
-
+use QrCode;
 use Excel;
-
 class AreaController extends Controller
 {
     /**
@@ -71,6 +76,8 @@ class AreaController extends Controller
             $arr['pid'] = "0";
             $arr['path'] = "";
         }
+        QrCode::encoding("UTF-8")->format('png')->size("100")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("0")->generate($arr['uid'],public_path('uploads/area/'.$arr['uid'].'.png'));
+
         $info = Area::insertGetId($arr);
         if($info){
             $message = [
@@ -106,12 +113,12 @@ class AreaController extends Controller
     public function edit($id)
     {
         $info = Area::find($id);
-
+        $org = Org::find(Auth::user()->org_id);
         if($info->pid=="0"){
-            return response()->view("asset.area.edit",compact('info'));
+            return response()->view("asset.area.edit",compact('info','org'));
         }else{
             $parent_info = Area::where("id",$info->pid)->where("org_id",Auth::user()->org_id)->first();
-            return response()->view('asset.area.edit',compact("info","parent_info"));
+            return response()->view('asset.area.edit',compact("info","parent_info",'org'));
         }
     }
 
@@ -124,8 +131,14 @@ class AreaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
-            $info = Area::where("id",$id)->update($request->except("_token","_method"));
+        $user_org = Auth::user()->org_id;
+        $info = Area::find($id);
+        if($user_org == $info->org_id){
+            $info = Area::find($id);
+            //删除原来的二维码图片
+            unlink(public_path('uploads/qrcodes/'.$info->uid.'.png'));
+            QrCode::encoding("UTF-8")->format('png')->size("300")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("6")->generate($info->uid,public_path('uploads/qrcodes/'.$info->uid.'.png'));
+
             if($info){
                 $arr = [
                     'code'=>1,
@@ -151,7 +164,6 @@ class AreaController extends Controller
     {
         if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
             $list = Area::where("pid",$id)->where("org_id",Auth::user()->org_id)->first();
-
             if($list!=null){
                 $message = [
                     'code'=>0,
@@ -224,6 +236,11 @@ class AreaController extends Controller
 
 
         return ;
+    }
+
+
+    public function prints(){
+
     }
 
 

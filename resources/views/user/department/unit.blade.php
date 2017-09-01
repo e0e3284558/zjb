@@ -43,6 +43,7 @@
 					 	<div class="form-group">
 					 		<label class="col-md-3 control-label"></label>
 					 		<div class="col-md-7">
+					 			<div id="logo-show">
 					 			@if ($unit->logo)
 							  		<img src="{{ asset($unit->logo) }}" class="img-circle img-md">
 								@else
@@ -50,8 +51,12 @@
 									{{$unit->short_name}}
 									</div>  
 								@endif
-								<button class="btn blue m-t"><i class="fa fa-upload"></i> 更换logo</button>
-					 			<span>logo仅支持 JPG、PNG 格式，文件最大2 MB。</span>
+								</div>
+								<p><input type="hidden" name="logo" value=""></p>
+								<div id="single-upload" class="btn-upload ">
+			                        <div id="single-upload-picker" class="pickers tooltips" data-toggle="tooltip" data-placement="bottom" data-original-title="logo仅支持 JPG、PNG、GIF 格式，文件最大2 MB。"><i class="fa fa-upload"></i> 更换logo</div>
+			                        <div id="single-upload-file-list"></div>
+			                    </div> 
 					 		</div>
 					 	</div>
 					 	<div class="hr-line-dashed"></div>
@@ -124,6 +129,35 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
+		zjb.singleImageUpload({
+            uploader:'singleUpload',
+            picker:'single-upload',
+            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+            server: '{{ route("image.upload") }}',
+            formData: {
+                '_token':'{{ csrf_token() }}'
+            },
+            errorMsgHiddenTime:2000,
+            uploadComplete:function(file){
+                //上传完成触发时间
+            },
+            uploadError:function(file){
+                //上传出错触发时间
+            },
+            uploadSuccess:function(file,response){
+                //上传完成触发时间
+                $img = $('#logo-show').find('img');
+                if(!$img.length){
+                	$img = $('#logo-show').html('<img src="'+response.data.path+'" class="img-circle img-md">');
+                }else{
+                	$img.attr({'src':response.data.path});
+                }
+                $('input[name="logo"]').val(response.data.path);
+                window.setTimeout(function () {
+                	$('#'+file.id).remove();
+                }, 2000);
+            }
+        });
 		var forms = $('#unit');
 		var l = $('#submit').ladda();
 		forms.validate({

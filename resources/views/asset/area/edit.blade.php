@@ -31,6 +31,16 @@
             <button style="margin: 0 5px;" type="submit" class="btn btn-success pull-right">保存</button>
         </div>
     </div>
+    <div class="form-group" >
+        <label class="col-sm-3 control-label" >场地标签</label>
+        <div class="col-sm-8">
+            <div style="text-align: center" >
+                <img src="uploads/area/{{$info['uid']}}.png" alt="">
+                <p>场地名称：{{$info->name}}</p>
+                <p>所在公司：{{$org->name}}</p>
+            </div>
+        </div>
+    </div>
 </form>
 
 <script type="text/javascript">
@@ -160,6 +170,18 @@
             });
         });
 
+    }
+
+
+    //打印
+    function prints() {
+        $.ajax({
+            url:'{{url('area/prints')}}',
+            type:"get",
+            /*success:function (data) {
+                $("#right_content").html(data);
+            }*/
+        })
     }
 
 
