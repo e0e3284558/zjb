@@ -83,6 +83,7 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     Route::resource('asset_category','AssetCategoryController');
 
     Route::get('area/add_son/{id}','AreaController@add');
+    Route::get('area/prints','AreaController@prints');
     Route::get('area/export','AreaController@export');
     Route::resource('area','AreaController');
 
