@@ -125,35 +125,21 @@ class AssetController extends Controller
         $arr = $request->except("_token","img","file_id");
 
         $arr['asset_uid'] = Uuid::generate()->string;
-        $org = Org::find(Auth::user()->org_id);
-        QrCode::format('png')->size("300")->margin(5)->merge('/public/uploads/qrcodes/logo.png', .3)->generate($arr['asset_uid'],public_path('uploads/qrcodes/'.$arr['asset_uid'].'.png'));
-
-        //在二维码上添加信息   场地信息  公司名称
-        $manager = new ImageManager();
-        $img = $manager->make(public_path('uploads/qrcodes/'.$arr['asset_uid'].'.png'));
-        $img->text('资产名称：'.$arr['name'],10,270,function ($font){
-            $font->file('uploads/msyh.ttc');
-            $font->size(14);
-            $font->color('#000');
-        });
-        $img->text('公司名称：'.$org->name,10,290,function ($font){
-            $font->file('uploads/msyh.ttc');
-            $font->size(14);
-            $font->color('#000');
-        });
-        $img->save(public_path('uploads/qrcodes/'.$arr['asset_uid'].'.png'));
+        QrCode::format('png')->size("100")->margin(0)->merge('/public/uploads/qrcodes/logo.png', .3)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
 
         $arr['created_at'] = date("Y-m-d H:i:s");
         $arr['asset_status_id'] = "1";
         $info = Asset::insertGetId($arr);
 
-        $file_arr = [
-            'asset_id' => $info,
-            'file_id' => $request->file_id,
-            'org_id' => Auth::user()->org_id
-        ];
+        if($request->file_id){
+            $file_arr = [
+                'asset_id' => $info,
+                'file_id' => $request->file_id,
+                'org_id' => Auth::user()->org_id
+            ];
 
-        AssetFile::insert($file_arr);
+            AssetFile::insert($file_arr);
+        }
 
         if($info){
             $message = [
@@ -253,28 +239,6 @@ class AssetController extends Controller
     {
         if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
             $arr = $request->except("_token","_method",'file_id');
-            $info = Asset::find($id);
-            if($request->name != $info->name){
-                $org = Org::find(Auth::user()->org_id);
-                //删除原来的二维码图片
-                unlink(public_path('uploads/qrcodes/'.$info->asset_uid.'.png'));
-                QrCode::format('png')->size("300")->margin(5)->merge('/public/uploads/qrcodes/logo.png', .3)->generate($info->asset_uid,public_path('uploads/qrcodes/'.$info->asset_uid.'.png'));
-
-                //在二维码上添加信息   场地信息  公司名称
-                $manager = new ImageManager();
-                $img = $manager->make(public_path('uploads/qrcodes/'.$info->asset_uid.'.png'));
-                $img->text('资产名称：'.$request->name,10,270,function ($font){
-                    $font->file('uploads/msyh.ttc');
-                    $font->size(14);
-                    $font->color('#000');
-                });
-                $img->text('公司名称：'.$org->name,10,290,function ($font){
-                    $font->file('uploads/msyh.ttc');
-                    $font->size(14);
-                    $font->color('#000');
-                });
-                $img->save(public_path('uploads/qrcodes/'.$info->asset_uid.'.png'));
-            }
             $info = Asset::where("id",$id)->update($arr);
 
             if($request->file_id){

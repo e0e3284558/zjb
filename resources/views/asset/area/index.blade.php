@@ -57,6 +57,18 @@
                                 <a href="{{url('area/export')}}" class="btn btn-default" id="export">
                                     <i class="fa fa-sign-out"></i> 导出EXCEL
                                 </a>
+
+                                <div class="dropup inline">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-print"></i>打印
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li><a href="#" id="printBarcode" onclick="prints()" >打印资产标签</a></li>
+                                        <li><a href="#" id="print" >打印资产卡片</a></li>
+                                        <li><a href="#" id="print" >打印入库单</a></li>
+                                    </ul>
+                                </div>
                                 <a class="btn" disabled="">
                                 <span class="overlay" id="loading" style="display:none">
                                     <i class="fa fa-refresh fa-spin"></i>
@@ -131,66 +143,12 @@
 
     <script type="text/javascript" >
 
-        function show(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".modal-content").html(data);
-
-                }
-            })
-        }
         /*加载添加视图*/
         function add(title,url) {
             $.ajax({
                 "url":url,
                 success:function (data) {
-//                    $(".modal-content").html(data);
                     $("#right_content").html(data);
-                }
-            })
-        }
-
-        function edit(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".modal-content").html(data);
-                }
-            })
-        }
-
-
-        /*删除*/
-        function del(obj,id){
-            var s = confirm('确认要删除吗？')
-            if(s){
-                //发异步删除数据
-                $.ajax({
-                    type:"post",
-                    url:'{{url('Address')}}'+'/'+id,
-                    data:{
-                        "_token":'{{csrf_token()}}',
-                        '_method':'delete'
-                    },
-                    success:
-                        function (data) {
-                            if(data!=null){
-                                alert(data);
-                                $(obj).parents("tr").remove();
-                            }
-                        }
-                });
-            }
-        }
-
-
-        function lead() {
-            $.ajax({
-                url:'{{url('Address/import')}}',
-                type:"get",
-                success:function (data) {
-                    $(".modal-content").html(data);
                 }
             })
         }

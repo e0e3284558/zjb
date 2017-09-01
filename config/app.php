@@ -196,6 +196,7 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+
     ],
 
     /*
@@ -255,6 +256,7 @@ return [
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Former' => Former\Facades\Former::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
     ],
 
 ];
