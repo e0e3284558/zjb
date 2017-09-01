@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','tel','avatar','org_id','department_id','is_org_admin',
     ];
 
     /**
@@ -26,4 +26,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * 获取与用户关联的部门
+     */
+    public function department()
+    {
+        return $this->belongsTo('App\Models\User\Department');
+    }
 }

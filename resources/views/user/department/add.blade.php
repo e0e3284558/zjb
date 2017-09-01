@@ -9,7 +9,7 @@
                     上级部门
                 </label>
                 <div>
-                    <select name="parent_id" class="form-control select2">
+                    <select name="department_id" class="form-control select2">
                         {!! department_select() !!}
                     </select> 
                 </div>

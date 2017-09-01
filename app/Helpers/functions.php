@@ -194,10 +194,15 @@ if (!function_exists('formatTreeData')) {
     }
 }
 if (!function_exists('department_select')) {
-    function department_select($selected = 0)
+    function department_select($selected = 0, $type = 0)
     {
         $list = \App\Models\User\Department::getSpaceTreeData();
-        $str = '<option value="0">顶级部门</option>';
+        if($type == 1){
+            $str = '<option value="">请选择部门</option>';
+        }else{
+            $str = '<option value="0">顶级部门</option>';
+        }
+
         if ($list) {
             foreach ($list as $key => $val) {
                 $str .= '<option value="' . $val['id'] . '" '
