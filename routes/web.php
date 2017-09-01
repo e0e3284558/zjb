@@ -102,3 +102,17 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
 });
 //-------------------------------------------------------------------------
 //资产管理模块路由开始
+
+
+//文件管理模块路由开始
+//-------------------------------------------------------------------------
+
+Route::group(['prefix' => 'file','namespace' => 'File','middleware'=>'auth'], function () {
+    Route::post('image_upload','DefaultController@imageUpload')->name('image.upload');
+    Route::post('file_upload','DefaultController@fileUpload')->name('file.upload');
+    Route::post('video_upload','DefaultController@videoUpload')->name('video.upload');
+    Route::post('asset_file_upload','DefaultController@assetFileUpload')->name('asset.file.upload');
+});
+
+//-------------------------------------------------------------------------
+//文件管理模块路由结束

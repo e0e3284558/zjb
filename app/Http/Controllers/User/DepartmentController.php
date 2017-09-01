@@ -53,6 +53,7 @@ class DepartmentController extends Controller
                 if($unit){
                     $unit->name = $data['name'];
                     $unit->short_name = $data['short_name'];
+                    $unit->logo = $data['logo'];
                     $unit->describe = $data['describe'];
                     $unit->contacts = $data['contacts'];
                     $unit->contacts_tel = $data['contacts_tel'];

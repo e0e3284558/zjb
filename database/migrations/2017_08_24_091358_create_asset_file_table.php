@@ -20,7 +20,9 @@ class CreateAssetFileTable extends Migration
             $table->integer('org_id')->default(0)->comment("所属公司");                   //公司id
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['org_id','asset_id','file_id']);
+            $table->index('org_id');
+            $table->index('asset_id');
+            $table->index('file_id');
         });
     }
 

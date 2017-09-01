@@ -110,9 +110,7 @@
                                     toastr.success(data.message);
                                     //重新载入左侧树形菜单
                                     $('#departments-tree').jstree(true).refresh();
-                                    $.get('{{ url("users/departments/create") }}', {}, function(data){
-                                        $('#dep-form-wrapper').html(data);
-                                    });
+                                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/create") }}',{},false);
                                 }else{
                                    toastr.error(data.message,'警告'); 
                                 }

@@ -275,3 +275,33 @@ function avatar_circle($img_path, $name)
 function id_to_img($id){
 return \App\Models\File\File::find($id)->value('path');
 }
+/**
+ * 获取当前登录用户信息
+ */
+if (!function_exists('get_current_login_user_info')) {
+    function get_current_login_user_info($field = 'id', $guard = 'web')
+    {
+        if ($field === true) {
+            return auth($guard)->user();
+        }
+        return auth($guard)->user()->$field;
+    }
+}
+/**
+ * 获取当前登录用户所属单位id
+ */
+if (!function_exists('get_current_login_user_org_id')) {
+    function get_current_login_user_org_id($guard = 'web')
+    {
+        return get_current_login_user_info('org_id',$guard);
+    }
+}
+/**
+ * 获取客户端ip地址
+ */
+if(!function_exists('get_client_ip')){
+    function get_client_ip(){
+        return request()->ip();
+    }
+}
+
