@@ -42,6 +42,7 @@ Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], f
     Route::get('default/create', 'DefaultController@create')->name('users.create');
     Route::post('default/store', 'DefaultController@store')->name('users.store');
     Route::get('default/{id}', 'DefaultController@show')->name('users.show');
+    Route::get('default/search/{value}', 'DefaultController@search')->name('users.show');
     Route::get('default/{id}/edit', 'DefaultController@edit')->name('users.edit');
     Route::put('default/{id}', 'DefaultController@update')->name('users.update');
     Route::delete('default/{id}', 'DefaultController@destroy')->name('users.destroy');
