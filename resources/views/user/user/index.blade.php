@@ -151,6 +151,7 @@
                     "url": '{{url('users/default/*')}}',
                     success: function (data) {
                         $("#userList").html(data);
+                        alert(1);
                     }
                 })
             }
