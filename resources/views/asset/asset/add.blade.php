@@ -188,17 +188,18 @@
                 <div class="form-group">
                     <label for="Comment" class="col-sm-4 control-label">照片</label>
                     <div class="col-sm-8">
-                        <!--dom结构部分-->
-                        <div id="uploader-demo">
-                            <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" width="160px" height="120px">
-                            <!--用来存放item-->
-                            <div id="fileList" class="uploader-list"></div>
-                            <div id="filePicker">选择图片</div>
-                            <input type="hidden" id="upload_id" name="file_id" value="">
+                        <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" class="img-lg">
+                        <input type="hidden" id="upload_id" name="file_id" value="">
+                        <div id="single-upload" class="btn-upload m-t-xs">
+                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
+                            <div id="single-upload-file-list"></div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
             <input type="hidden" name="org_id" value="{{$org_id}}">
         </div>
     </form>
@@ -210,13 +211,37 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
+
+
+        zjb.singleImageUpload({
+            uploader:'singleUpload',
+            picker:'single-upload',
+            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+            server: '{{ route("image.upload") }}',
+            formData: {
+                '_token':'{{ csrf_token() }}'
+            },
+            errorMsgHiddenTime:2000,
+
+            uploadSuccess:function(file,response){
+                //上传完成触发时间
+                $('#upload_id').val(response.data.id);
+                $('#thumb_img').attr({src:response.data.url});
+                window.setTimeout(function () {
+                    $('#'+file.id).remove();
+                }, 2000);
+            }
+        });
+
+
+
         //$('select').chosen({width:'100%'});
         $('.datepicker').datepicker({
             language: "zh-CN",
             format: 'yyyy/mm/dd',
             autoclose:true
         });
-        zjb.initAjax()
+        zjb.initAjax();
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
         $('#submitAssetsForm').click(function () {
@@ -354,26 +379,26 @@
 
 <script type="text/javascript" >
     // 初始化Web Uploader
-    var uploader = WebUploader.create({
-        // 选完文件后，是否自动上传。
-        auto: true,
-        // swf文件路径
-        swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',
-        // 文件接收服务端。
-        server: '{{url('upload/uploadFile')}}',
-        formData: {"_token": "{{ csrf_token() }}"},
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: '#filePicker',
-        // 只允许选择图片文件。
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行
-        }
-    });
-    uploader.on('uploadSuccess', function (file, response) {
-        $('#thumb_img').attr('src', '/' + response.path);
-        $('#upload_id').attr('value', response.id);
-    });
+    {{--var uploader = WebUploader.create({--}}
+        {{--// 选完文件后，是否自动上传。--}}
+        {{--auto: true,--}}
+        {{--// swf文件路径--}}
+        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
+        {{--// 文件接收服务端。--}}
+        {{--server: '{{url('upload/uploadFile')}}',--}}
+        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
+        {{--// 选择文件的按钮。可选。--}}
+        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
+        {{--pick: '#filePicker',--}}
+        {{--// 只允许选择图片文件。--}}
+        {{--accept: {--}}
+            {{--title: 'Images',--}}
+            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
+            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
+        {{--}--}}
+    {{--});--}}
+    {{--uploader.on('uploadSuccess', function (file, response) {--}}
+        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
+        {{--$('#upload_id').attr('value', response.id);--}}
+    {{--});--}}
 </script>
