@@ -83,7 +83,7 @@
 
 
                 <li>
-                    <input type="hidden" name="org_id" value="{{Auth::user()->org_id}}">
+                    <input type="hidden" name="org_id" value="{{Auth::user()->or}}">
                     <button type="submit" class="btn btn-success">添加</button>
                 </li>
             </form>

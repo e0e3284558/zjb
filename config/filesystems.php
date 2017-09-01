@@ -58,16 +58,19 @@ return [
         'image' => [
             'driver' => 'local',
             'root' => public_path('uploads/image'),
+            'base_path'=> 'uploads/image',
             'url' => env('APP_URL').'/uploads/image',
         ],
         'file' => [
             'driver' => 'local',
             'root' => public_path('uploads/file'),
+            'base_path'=> 'uploads/file',
             'url' => env('APP_URL').'/uploads/file',
         ],
         'video' => [
             'driver' => 'local',
             'root' => public_path('uploads/video'),
+            'base_path'=> 'uploads/video',
             'url' => env('APP_URL').'/uploads/video',
         ],
 

@@ -148,9 +148,9 @@
                 //上传完成触发时间
                 $img = $('#logo-show').find('img');
                 if(!$img.length){
-                	$img = $('#logo-show').html('<img src="'+response.data.path+'" class="img-circle img-md">');
+                	$img = $('#logo-show').html('<img src="'+response.data.url+'" class="img-circle img-md">');
                 }else{
-                	$img.attr({'src':response.data.path});
+                	$img.attr({'src':response.data.url});
                 }
                 $('input[name="logo"]').val(response.data.path);
                 window.setTimeout(function () {

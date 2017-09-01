@@ -20,9 +20,10 @@ class DefaultController extends Controller
     {
         //上传验证
         $rule = [
-            'file' => 'bail|image|max:2048'
+            'file' => 'bail|required|image|max:2048'
         ];
         $message = [
+            'file.required' => '请选择上传文件',
             'file.image' => '上传文件必须是图片',
             'file.max' => '上传图片大小不能大于2M',
         ];
@@ -35,8 +36,9 @@ class DefaultController extends Controller
             //上传图片
             $upload_file = $file['file'];
             if ($upload_file->isValid()) {
+                $image_upload_config = config('filesystems.disks.image');
                 //设置保存目录
-                $save_path = $this->upload_folder . '/' . date("Ym", time())
+                $save_path = date("Ym", time())
                     . '/' . date("d", time());
                 //文件的扩展名
                 $ext = $upload_file->getClientOriginalExtension();
@@ -44,9 +46,9 @@ class DefaultController extends Controller
                 //设置保存文件名
                 $save_name = $uniqid . '.' . $ext;
                 //文件转存
-                $upload_file->move(public_path() . '/'
+                $new_file = $upload_file->move($image_upload_config['root'] . '/'
                     . $save_path, $save_name);
-                $path = $save_path . '/' . $save_name;
+                $path = $image_upload_config['base_path'] . '/' . $save_path . '/' . $save_name;
                 //数据库保存上传文件信息
                 $file_info = new FileModel();
                 $file_info->type = $upload_file->getClientMimeType();
@@ -55,9 +57,9 @@ class DefaultController extends Controller
                 $file_info->width = 0;
                 $file_info->height = 0;
                 $file_info->suffix = $ext;
-                $file_info->file_path = public_path() . '/' . $path;
-                $file_info->path = '/' . $path;
-                $file_info->url = config('app.url') . '/' . $path;
+                $file_info->file_path =  $new_file->getRealPath();
+                $file_info->path = $path;
+                $file_info->url = asset($path);
                 $file_info->size = $upload_file->getClientSize();
                 $file_info->org_id = get_current_login_user_org_id();
                 $file_info->ip = $request->ip();
@@ -75,7 +77,7 @@ class DefaultController extends Controller
                 }
             } else {
                 self::setStatus(0);
-                self::setMessage($upload_file->getErrorMessage());
+                self::setMessage('上传失败！请联系管理员');
             }
         }
         return response()->json(self::getMessageResult());
@@ -108,7 +110,7 @@ class DefaultController extends Controller
                 $uniqid = uniqid();
                 //设置保存文件名
                 $save_name = $uniqid . '.' . $ext;
-                $bool = $disk->putFile($save_path,$upload_file);
+                $bool = $disk->putFileAs($save_path,$upload_file,$save_name);
                 dump($bool);
 
 //
