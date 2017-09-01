@@ -39,10 +39,14 @@
                                     </button>
                                 </li>
                                 @foreach($data as $v)
-                                    <li class="dd-item" onclick="serviceProvider('{{$v->id}}')">
-                                        <div class="dd-handle" title="{{$v->comment}}">
-                                            <img alt="member" class="img-circle-a" src="/img/a1.jpg">
-                                            {{$v->name}}
+                                    <li class="dd-item" onclick="serviceProvider('{{$v['id']}}')">
+                                        <div class="dd-handle" title="{{$v['comment']}}">
+                                            @if($v['logo_id'])
+                                                {!! img_circle($v['logo_id']) !!}
+                                            @else
+                                                {!! img_circle(null,$v['name']) !!}
+                                            @endif
+                                            {{$v['name']}}
                                         </div>
                                     </li>
                                 @endforeach
@@ -56,50 +60,59 @@
 
                 <div class="row gray-bg">
 
-                    {{--@foreach($serviceWorker as $v)--}}
-
-                    <div class="ibox">
-                        <div class="ibox-title  center-version " style="height: 80px">
+                    @foreach($data as $k=>$v)
+                        <div class="ibox">
+                            <div class="ibox-title  center-version " style="height: 80px">
                             <span class="pull-left">
-                                <a><img class=" img-circle-a" src="/img/a1.jpg"></a>
+                                @if($v['logo_id'])
+                                    {!! img_circle($v['logo_id']) !!}
+                                @else
+                                    {!! img_circle(null,$v['name']) !!}
+                                @endif
                             </span>
-                            <h5 style="padding:15px 0 0 10px">安徽这就办信息技术有限责任公司</h5>
+                                <h5 style="padding:15px 0 0 10px">{{$v['name']}}</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="team-members">
+                                    @if(isset($service_worker[$k]))
+                                        @foreach($service_worker[$k] as $img)
+                                            @foreach($img as $a)
+                                                @if($a['upload_id']!==null)
+                                                    {!! avatar_circle($a['upload_id']) !!}
+                                                @else
+                                                    {!! avatar_circle(null,$a['name'] )!!}
+                                                @endif
+                                            @endforeach
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <h4>有关这支团队的信息</h4>
+                                <p>
+                                    {{$v['comment']}}
+                                </p>
+                                <div>
+                                    <span>好评率</span>
+                                    <div class="stat-percent">99%</div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 99%;" class="progress-bar"></div>
+                                    </div>
+                                </div>
+                                <div class="row  m-t-sm">
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">总维修次数</div>
+                                        12
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="font-bold">为本单位维修次数</div>
+                                        5
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="ibox-content">
-                            <div class="team-members">
-                                <a href="#"><img alt="member" class="img-circle" src="/img/a1.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="/img/a2.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="/img/a3.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="/img/a5.jpg"></a>
-                                <a href="#"><img alt="member" class="img-circle" src="/img/a6.jpg"></a>
-                            </div>
-                            <h4>有关这支团队的信息</h4>
-                            <p>
-                                安徽这就办信息技术有限责任公司，这就办也是公司主 要的企业文化，秉承服务至上的原则，公司名称突出了客户对维修服务的要 求，也代表公司的服务理念。
-                            </p>
-                            <div>
-                                <span>好评率</span>
-                                <div class="stat-percent">48%</div>
-                                <div class="progress progress-mini">
-                                    <div style="width: 99%;" class="progress-bar"></div>
-                                </div>
-                            </div>
-                            <div class="row  m-t-sm">
-                                <div class="col-sm-4">
-                                    <div class="font-bold">总维修次数</div>
-                                    12
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="font-bold">为本单位维修次数</div>
-                                    4th
-                                </div>
 
-                            </div>
-
-                        </div>
-                    </div>
-
-                    {{--@endforeach--}}
+                    @endforeach
                 </div>
             </div>
         </div>

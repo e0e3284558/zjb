@@ -1,45 +1,40 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">其他报修项新增</h4>
-</div>
-
 <form id="signupForm1" class="form-horizontal" method="post" enctype="multipart/form-data" >
-    <div class="modal-body">
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <div class="row">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">资产类别<span class="required">*</span></label>
-                <div class="col-sm-8">
-                    <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2 ">
-                        <option value="">请选择</option>
-                        @foreach($list as $value)
-                            <option value="{{$value->id}}">{{$value->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
+    <div class="alert alert-danger display-hide" id="error-block">
+        <button class="close" data-close="alert"></button>
+        请更正下列输入错误：
+    </div>
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">资产类别<span class="required">*</span></label>
+            <div class="col-sm-8">
+                <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2 " data-error-container="#error-block">
+                    <option value="">请选择</option>
+                    @foreach($category_list as $value)
+                        <option value="{{$value->id}}">{{$value->name}}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">资产名称<span class="required">*</span></label>
-                <div class="col-sm-8">
-                    <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="资产名称">
-                </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">资产名称<span class="required">*</span></label>
+            <div class="col-sm-8">
+                <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="资产名称" data-error-container="#error-block">
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">备注</label>
-                <div class="col-sm-8">
-                    <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
-                </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-8">
+                <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-success">保存</button>
+    <div class="col-md-offset-10">
+        <button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>
     </div>
 </form>
 
 <script type="text/javascript">
-
     $( document ).ready( function () {
         $('.datepicker').datepicker({
             language: "zh-CN",
@@ -48,8 +43,12 @@
         });
 
         zjb.initAjax();
-        
-        $( "#signupForm1" ).validate( {
+        var otherAssets_form = $( "#signupForm1" );
+        var errorInfo = $('.alert-danger', otherAssets_form);
+        $('#submitAssetsForm').click(function () {
+            otherAssets_form.submit();
+        });
+        otherAssets_form.validate( {
             rules: {
                 category_id:"required",
                 name:"required"
@@ -62,6 +61,9 @@
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             ignore: "",
+            invalidHandler: function(error,validator){
+                errorInfo.show();
+            },
             errorPlacement: function ( error, element ) {
                 if (element.parent(".input-group").length > 0) {
                     error.insertAfter(element.parent(".input-group"));
@@ -95,7 +97,7 @@
                 //表单验证之后ajax上传数据
                 $.ajax({
                     url:"{{url('other_asset')}}",
-                    data:$('#signupForm1').serialize(),
+                    data:otherAssets_form.serialize(),
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {
@@ -136,44 +138,3 @@
         } );
     } );
 </script>
-
-<script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
-    //查看是否还有子部门
-    function seldep(id) {
-        $.ajax({
-            "url":'{{url('asset/sel')}}'+"/"+id,
-            "type":"get",
-            'data':{id:id},
-            'dataType':"json",
-            success:function (data) {
-                var select = $("#use_department_id");
-                if(data.length>0){
-                    select.append("<option value=''>请选择</option>");
-                    //遍历
-                    for (var i = 0; i < data.length; i++) {
-                        //把遍历出来数据添加到option
-                        info = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                        //把当前info数据添加到创建的select
-                        select.append(info);
-                    }
-                }
-            }
-        })
-    }
-</script>
-

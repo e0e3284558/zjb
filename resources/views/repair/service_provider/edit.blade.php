@@ -1,10 +1,10 @@
 <div class="ibox">
     <div class="ibox-title">
-        <h5>添加服务商</h5>
+        <h5>修改服务商</h5>
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            输入服务商的基本信息。
+            修改服务商的基本信息。
         </p>
 
         <div class="dd" id="nestable2">
@@ -40,7 +40,11 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <label>服务商logo</label> <br>
-                        <img  class="img-circle-a" src="/img/logo.png" alt="">
+                        @if ($data->img!==null)
+                            <img class="img-circle-a" src=" {{id_to_img($data->img)}}" alt="">
+                        @else
+                            <label>暂无Logo，请点击上传</label>
+                        @endif
                         <input type="hidden" name="upload_id" value="">
                         <br>
                         <button class="btn" type="button">更新logo</button>
@@ -85,7 +89,7 @@
                         phoneUS: true
                     },
                     comment: {
-                        maxlength:2000
+                        maxlength: 2000
                     }
                 },
                 /*ajax提交*/

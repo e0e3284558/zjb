@@ -65,23 +65,26 @@
                     <div class="dd-handle ">
                         <label>所属服务商</label>
                         <div>
-                            @foreach($serviceProvider as $v)
-                                <label class="radio-inline i-checks">
-                                    <input type="radio" name="serviceProvider" class="icheck"
-                                           @if($v->id==$service_provider_id) checked @endif
-                                           value="{{$v->id}}">{{$v->name}}
-                                </label>
-                            @endforeach
+
+                            <select name="serviceProvider" id="type_id" class="form-control select2 ">
+                                @if(!$service_provider_id)
+                                    <option selected value="0">请选择服务商</option>
+                                @endif
+                                @foreach($serviceProvider as $v)
+                                    @if($service_provider_id == $v->id)
+                                        <option selected value="{{$v->id}}">{{$v->name}}</option>
+                                    @else
+                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </li>
                 <li>
                     <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                     <button type="submit" class="btn btn-success">编辑</button>
-                    <button type="button" class="btn btn-warning"
-                            onclick="add('{{url('repair/service_worker/')}}')">
-                        取消
-                    </button>
+
                 </li>
             </form>
         </div>

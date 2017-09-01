@@ -323,7 +323,7 @@
                 uploader:'multiupload',
                 picker:'multi-upload',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-                server: '{{ route("image.upload") }}',
+                server: '{{ route("file.upload") }}',
                 formData: {
                     '_token':'{{ csrf_token() }}'
                 },

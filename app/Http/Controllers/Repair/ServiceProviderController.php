@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Repair;
 
 use App\Models\Repair\ServiceProvider;
+use App\Models\Repair\ServiceWorker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ServiceProviderController extends Controller
 {
@@ -15,8 +18,26 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
-        $data=ServiceProvider::get();
-        return view('repair.service_provider.index',compact('data'));
+        $data = [];
+        $serviceProvider = ServiceProvider::with('org')->get()->toArray();
+        foreach ($serviceProvider as $a) {
+            if (($a['org'])) {
+                if ($a['org'][0]['id'] == Auth::user()->org_id) {
+                    $data[] = $a;
+                }
+            }
+        }
+        $data = collect($data);
+        //获取服务商下面的维修工
+        foreach ($data as $k => $v) {
+            $worker_id = DB::table('service_provider_service_worker')
+                ->where('service_provider_id', $v['id'])->get();
+            foreach ($worker_id as $value) {
+                $service_worker[$k][] = ServiceWorker::where('id', $value->service_worker_id)->get()->toArray();
+
+            }
+        }
+        return view('repair.service_provider.index', compact('data', 'service_worker'));
     }
 
     /**
@@ -32,15 +53,26 @@ class ServiceProviderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        if (ServiceProvider::create($request->except('_token'))) {
-            return response()->json([
-                'status' => 1, 'message' => '添加成功'
-            ]);
+        $serviceProvider = new ServiceProvider;
+        $serviceProvider->name = $request->name;
+        $serviceProvider->comment = $request->comment;
+        $serviceProvider->user = $request->user;
+        $serviceProvider->tel = $request->tel;
+        $serviceProvider->logo_id = $request->logo_id;
+        $serviceProvider->upload_id = $request->upload_id;
+        $serviceProvider->created_at = date('Y-m-d H:i:s');
+
+        if ($serviceProvider->save()) {
+            if ($serviceProvider->org()->sync(Auth::user()->org_id)) {
+                return response()->json([
+                    'status' => 1, 'message' => '添加成功'
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 0, 'message' => '保存失败',
@@ -53,42 +85,43 @@ class ServiceProviderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $data=ServiceProvider::find($id);
-        return response()->view('repair.service_provider.show',compact('data'));
+        $data = ServiceProvider::find($id);
+        $serviceWorker=$data->service_worker()->get();
+        return response()->view('repair.service_provider.show', compact('data','serviceWorker'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $data=ServiceProvider::find($id);
-        return response()->view('repair.service_provider.edit',compact('data'));
+        $data = ServiceProvider::find($id);
+        return response()->view('repair.service_provider.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         //修改服务商信息
-        if(ServiceProvider::where('id',$id)->update($request->except('_token','_method','id'))){
+        if (ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id'))) {
             return response()->json([
                 'status' => 1, 'message' => '更新成功'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 0, 'message' => '更新失败',
                 'data' => null, 'url' => ''
@@ -99,7 +132,7 @@ class ServiceProviderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -216,7 +216,7 @@
             format: 'yyyy/mm/dd',
             autoclose:true
         });
-        zjb.initAjax();
+        zjb.initAjax()
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
         $('#submitAssetsForm').click(function () {
@@ -369,7 +369,7 @@
         accept: {
             title: 'Images',
             extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/*'
+            mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行
         }
     });
     uploader.on('uploadSuccess', function (file, response) {

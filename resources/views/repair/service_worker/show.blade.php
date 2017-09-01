@@ -5,8 +5,8 @@
 
                 <a href="profile.html">
 
-                    @if($k%2==0)
-                        <img alt="image" class="img-circle" src="{{url('img/a1.jpg')}}">
+                    @if($v->upload_id!==null)
+                        <img alt="image" class="img-circle" src="{{id_to_img($v->upload_id)}}">
                     @else
                         <button class="btn btn-circle btn-lg {{randomClass()}}"
                                 type="button">{{mb_substr($v->name,0,1)}}</button>
