@@ -48,7 +48,7 @@
                     <dd class="project-people">
                         @foreach($serviceWorker as $j)
                             @if($j['upload_id'])
-                                {!! avatar_circle($j['upload_id']) !!}
+                                {!! avatar_circle($j['upload_id'],'') !!}
                             @else
                                 {!! avatar_circle(null,$j['name'] )!!}
                             @endif

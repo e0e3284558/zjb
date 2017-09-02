@@ -138,7 +138,6 @@
         //添加用户
         function search() {
             var v = $("#search").val();
-
             if (v != '') {
                 $.ajax({
                     "url": '{{url('users/default/search')}}/' + v,

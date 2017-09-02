@@ -73,8 +73,9 @@
 
                                         <a href="profile.html">
 
-                                            @if($v->upload_id)
-                                                <img alt="image" class="img-circle m-t-xs img-responsive" src="">
+                                            @if($v->upload_id!==null)
+                                                <img alt="image" class="img-circle m-t-xs img-responsive center-block"
+                                                     src="{{get_img_path($v->upload_id)}}">
                                             @else
                                                 <button class="btn btn-circle btn-lg {{randomClass()}}"
                                                         type="button">{{mb_substr($v->name,0,1)}}</button>

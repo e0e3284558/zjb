@@ -91,8 +91,8 @@ class ServiceProviderController extends Controller
     public function show($id)
     {
         $data = ServiceProvider::find($id);
-        $serviceWorker=$data->service_worker()->get();
-        return response()->view('repair.service_provider.show', compact('data','serviceWorker'));
+        $serviceWorker = $data->service_worker()->get();
+        return response()->view('repair.service_provider.show', compact('data', 'serviceWorker'));
     }
 
     /**
@@ -116,8 +116,9 @@ class ServiceProviderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $res=ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id',''));
         //修改服务商信息
-        if (ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id'))) {
+        if ($res) {
             return response()->json([
                 'status' => 1, 'message' => '更新成功'
             ]);

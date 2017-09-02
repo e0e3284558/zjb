@@ -45,8 +45,12 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <label>维修工照片</label>
-                        {{--<img src="{{$v->upload_id}}" alt="">--}}
-                        <button class="btn">点击上传并更新</button>
+                        <img id="thumb_img" src="{{ get_img_path($data->upload_id) }}" alt="" class="img-lg">
+                        <input type="hidden" id="upload_id" name="upload_id" value="">
+                        <div id="single-upload" class="btn-upload m-t-xs">
+                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 更新图片</div>
+                            <div id="single-upload-file-list"></div>
+                        </div>
                     </div>
                 </li>
                 <li class="dd-item">
@@ -92,6 +96,28 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        zjb.singleImageUpload({
+            uploader: 'singleUpload',
+            picker: 'single-upload',
+            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+            server: '{{ route("image.upload") }}',
+            formData: {
+                '_token': '{{ csrf_token() }}'
+            },
+            errorMsgHiddenTime: 2000,
+
+            uploadSuccess: function (file, response) {
+                //上传完成触发时间
+                $('#upload_id').val(response.data.id);
+                $('#thumb_img').attr({src: response.data.url});
+                window.setTimeout(function () {
+                    $('#' + file.id).remove();
+                }, 2000);
+            }
+        });
+
+
+
         $('.i-checkbox').iCheck({
             checkboxClass: 'icheckbox_minimal-blue'
         });
