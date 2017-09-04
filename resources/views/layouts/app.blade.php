@@ -39,7 +39,7 @@
     <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet">
     
     <!-- chosen style-->
-    <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet"> -->
 
     <!-- bootstrap-treeView -->
     <link href="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.css') }}" rel="stylesheet">
@@ -627,57 +627,8 @@
         </div>
     </div>
 </div>
-    <!-- Large modal -->
-    <div class="modal fade bs-example-modal-lg" id="asset_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div id="loading" class="ibox-content"  >
-                    <div class="spiner-example">
-                        <div class="sk-spinner sk-spinner-circle">
-                            <div class="sk-circle1 sk-circle"></div>
-                            <div class="sk-circle2 sk-circle"></div>
-                            <div class="sk-circle3 sk-circle"></div>
-                            <div class="sk-circle4 sk-circle"></div>
-                            <div class="sk-circle5 sk-circle"></div>
-                            <div class="sk-circle6 sk-circle"></div>
-                            <div class="sk-circle7 sk-circle"></div>
-                            <div class="sk-circle8 sk-circle"></div>
-                            <div class="sk-circle9 sk-circle"></div>
-                            <div class="sk-circle10 sk-circle"></div>
-                            <div class="sk-circle11 sk-circle"></div>
-                            <div class="sk-circle12 sk-circle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- asset md-modal -->
-    <div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div id="loading" class="ibox-content"  >
-                    <div class="spiner-example">
-                        <div class="sk-spinner sk-spinner-circle">
-                            <div class="sk-circle1 sk-circle"></div>
-                            <div class="sk-circle2 sk-circle"></div>
-                            <div class="sk-circle3 sk-circle"></div>
-                            <div class="sk-circle4 sk-circle"></div>
-                            <div class="sk-circle5 sk-circle"></div>
-                            <div class="sk-circle6 sk-circle"></div>
-                            <div class="sk-circle7 sk-circle"></div>
-                            <div class="sk-circle8 sk-circle"></div>
-                            <div class="sk-circle9 sk-circle"></div>
-                            <div class="sk-circle10 sk-circle"></div>
-                            <div class="sk-circle11 sk-circle"></div>
-                            <div class="sk-circle12 sk-circle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
+    @include('layouts._modal')
 
     <!-- pace -->
     <script src="{{ asset('assets/js/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
@@ -718,7 +669,7 @@
     
 
     <!-- chosen -->
-    <script type="text/javascript" src="{{ asset('assets/js/plugins/chosen/chosen.jquery.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ asset('assets/js/plugins/chosen/chosen.jquery.min.js') }}"></script> -->
 
     <!-- bootstrap-treeView -->
     <script src="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.js') }}" type="text/javascript"></script>
@@ -802,9 +753,7 @@
         };
 
         $(document).ready(function() {
-            $('body').on('hidden.bs.modal','#asset_modal',function(e){
-                $(this).removeData("bs.modal");
-            });
+          
         });
     </script>
 </body>

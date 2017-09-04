@@ -256,6 +256,7 @@ return [
         'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Former' => Former\Facades\Former::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 
