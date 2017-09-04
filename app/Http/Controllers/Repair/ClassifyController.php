@@ -41,10 +41,16 @@ class ClassifyController extends Controller
     public function store(ClassifyRequest $request)
     {
         //批量保存用户提交的数据
-        if(Classify::create($request->except('_token'))){
-            return  redirect('repair/classify')->with('success', '创建成功');
+        if($classify=Classify::create($request->except('_token'))){
+            return response()->json([
+                'status' => 1, 'message' => '添加成功',
+                'data' => $classify->toArray()
+            ]);
         }else{
-            return  redirect('repair/classify')->with('error', '创建失败');
+            return response()->json([
+                'status' => 0, 'message' => '保存失败',
+                'data' => null, 'url' => ''
+            ]);
         }
     }
 
@@ -81,10 +87,16 @@ class ClassifyController extends Controller
     public function update(ClassifyRequest $request, $id)
     {
         //修改分类信息
-        if(Classify::where('id',$id)->update($request->except('_token','_method'))){
-            return  redirect('repair/classify')->with('success', '编辑成功');
+        if($classify=Classify::where('id',$id)->update($request->except('_token','_method'))){
+            return response()->json([
+                'status' => 1, 'message' => '修改成功',
+                'data' => '修改成功'
+            ]);
         }else{
-            return  redirect('repair/classify')->with('error', '编辑失败，请稍候重试');
+            return response()->json([
+                'status' => 0, 'message' => '修改失败',
+                'data' => null, 'url' => ''
+            ]);
         }
     }
 

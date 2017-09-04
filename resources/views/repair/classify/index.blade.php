@@ -61,17 +61,7 @@
         </div>
     </div>
     <script>
-        /*字段验证*/
-        $(document).ready(function () {
-            $(".form-horizontal").validate(
-                {
-                    submitHandler: function () {
-                        return true;
-                    }
-                }
-            );
 
-        });
 
 
         /*创建*/
