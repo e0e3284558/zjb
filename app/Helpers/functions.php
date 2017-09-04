@@ -244,9 +244,9 @@ if (!function_exists('random_color')) {
 if (!function_exists('get_img_path')) {
     function get_img_path($id)
     {
-        $path = \App\Models\File\File::find($id);
+        $path = App\Models\File\File::find($id);
         if (!empty($path)) {
-            return $path->path;
+            return url("$path->path");
         } else {
             return asset('img/nopicture.jpg');
         }

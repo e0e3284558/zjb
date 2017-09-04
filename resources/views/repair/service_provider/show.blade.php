@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="m-b-md">
+                    <a href="#" class="btn btn-white btn-xs pull-right" onclick="del({{$data->id}})">移除该服务商</a>
                     <a href="#" class="btn btn-white btn-xs pull-right" onclick="edit({{$data->id}})">修改服务商信息</a>
                     <h2>{{$data->name}}</h2>
                 </div>
@@ -159,5 +160,46 @@
                 $("#create").html(data);
             }
         })
+    }
+
+    /*删除*/
+    function del(id) {
+
+        swal({
+                title: "确认要移除该服务商吗？",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                cancelButtonText: "取消",
+                confirmButtonText: "确认",
+                closeOnConfirm: false
+            },
+            function () {
+                //发异步删除数据
+                $.ajax({
+                    type: "post",
+                    url: '{{url('repair/service_provider')}}/' + id,
+                    data: {
+                        "_token": '{{csrf_token()}}',
+                        '_method': 'delete'
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 1) {
+                            swal({
+                                title: "",
+                                text: data.message,
+                                type: "success",
+                                timer: 1000,
+                            }, function () {
+                                window.location.reload();
+                            });
+                        } else {
+                            swal("", data.message, "error");
+                        }
+                    }
+                });
+            });
     }
 </script>
