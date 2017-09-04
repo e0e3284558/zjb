@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Repair;
 
 use App\Http\Requests\ServiceWorkerRequest;
+use App\Models\File\File;
 use App\Models\Repair\Classify;
 use App\Models\Repair\ServiceProvider;
 use App\Models\Repair\ServiceWorker;
@@ -20,6 +21,7 @@ class ServiceWorkerController extends Controller
      */
     public function index()
     {
+
         $data = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
         foreach ($data as $v) {
             $serviceWorker[] = $v->serviceWorker()->get();
@@ -166,13 +168,13 @@ class ServiceWorkerController extends Controller
         if (ServiceWorker::where('id', $id)->delete()) {
             if (DB::table('classify_service_worker')->where('service_worker_id', $id)->delete()) {
                 return response()->json([
-                    'message' => '删除成功',
-                    'status' => 'success'
+                    'code' => 1,
+                    'message' => '删除成功'
                 ]);
             } else {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => '删除失败，请稍后重试',
+                    'code' => 0,
+                    'message' => '删除失败'
                 ]);
             }
         }

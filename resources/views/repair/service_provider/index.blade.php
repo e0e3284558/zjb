@@ -42,7 +42,7 @@
                                     <li class="dd-item" onclick="serviceProvider('{{$v['id']}}')">
                                         <div class="dd-handle" title="{{$v['comment']}}">
                                             @if($v['logo_id'])
-                                                {!! img_circle($v['logo_id']) !!}
+                                                {!! img_circle($v['logo_id'],'') !!}
                                             @else
                                                 {!! img_circle(null,$v['name']) !!}
                                             @endif
@@ -65,7 +65,7 @@
                             <div class="ibox-title  center-version " style="height: 80px">
                             <span class="pull-left">
                                 @if($v['logo_id'])
-                                    {!! img_circle($v['logo_id']) !!}
+                                    {!! img_circle($v['logo_id'],'') !!}
                                 @else
                                     {!! img_circle(null,$v['name']) !!}
                                 @endif
@@ -78,7 +78,7 @@
                                         @foreach($service_worker[$k] as $img)
                                             @foreach($img as $a)
                                                 @if($a['upload_id']!==null)
-                                                    {!! avatar_circle($a['upload_id']) !!}
+                                                    {!! avatar_circle($a['upload_id'],'') !!}
                                                 @else
                                                     {!! avatar_circle(null,$a['name'] )!!}
                                                 @endif

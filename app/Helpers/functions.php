@@ -240,12 +240,13 @@ if (!function_exists('random_color')) {
  * @param $id
  * @return string
  */
+
 if (!function_exists('get_img_path')) {
     function get_img_path($id)
     {
-        $path = \App\Models\File\File::find($id);
+        $path = App\Models\File\File::find($id);
         if (!empty($path)) {
-            return $path->path;
+            return url("$path->path");
         } else {
             return asset('img/nopicture.jpg');
         }
@@ -269,8 +270,8 @@ function img_circle($id, $name)
  */
 function avatar_circle($img_path, $name)
 {
-    if ($img_path != null) {
-        return '<img class="img-circle img-md" src="' . $img_path . '">';
+    if ($img_path !== null) {
+        return '<img class="img-circle img-md" src="' . get_img_path($img_path) . '">';
     } else {
         return '<button class="btn ' . random_color() . ' img-circle img-md" type="button"> <span style="font-size: 36px">' . mb_substr($name, 0, 1) . '</span> </button>';
     }
