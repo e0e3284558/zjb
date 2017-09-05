@@ -9,7 +9,7 @@
                     上级部门
                 </label>
                 <div>
-                    <select name="department_id" class="form-control select2">
+                    <select name="parent_id" class="form-control select2">
                         {!! department_select() !!}
                     </select> 
                 </div>
@@ -34,9 +34,17 @@
                     <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0"> 不可用 </label>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label">
+                    排序
+                </label>
+                <div class="">
+                    <input type="number" placeholder="排序" name="sort" value="0" class="form-control">
+                </div>
+            </div>
             <div class="form-actions border-top ">
                 {{ csrf_field() }}
-                <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
+                <button type="submit" class="btn btn-success blue ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
                 <button type="reset" class="btn btn-default" id="cannel">取消</button>
             </div>
         </form>

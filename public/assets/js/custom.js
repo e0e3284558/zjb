@@ -442,7 +442,8 @@ var zjb = function(){
             //     'swf':options.swf,//必须
             //     'server':options.server,//必须
             //     'formData':options.formData,
-            //     'fileNumLimit':options.fileNumLimit
+            //     'fileNumLimit':options.fileNumLimit,
+            //     'isAutoInsertInput':options.isAutoInsertInput,
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
@@ -452,6 +453,7 @@ var zjb = function(){
             options = $.extend(true, {}, options);
             var pickers = options.picker,
                 uploaders = options.uploader,
+                autoCreateInput = options.isAutoInsertInput ? options.isAutoInsertInput : true,
                 limit = options.fileNumLimit ? options.fileNumLimit : 50;
             uploaders = WebUploader.create({
                 // 选完文件后，是否自动上传。
@@ -515,13 +517,25 @@ var zjb = function(){
                     $state = $li.find('.file-state'),
                     $cannel = $li.find('.file-cannel'),
                     $cannelBtn = $cannel.find('a');
-                $percent.html('<i class="fa fa-check-circle-o font-blue fa-2x fa-fw"></i>');
-                $state.text(WebUploader.formatSize( file.size ));
-                $cannelBtn.html('<i class="fa fa-trash"></i>');
-                $cannel.removeClass('file-cannel').addClass('file-delete');
-                $cannelBtn.attr('data-response-info',JSON.stringify(response));
-                if (options.uploadSuccess instanceof Function) {
-                    options.uploadSuccess(file, response);
+                if(response.status == 1){
+                    $percent.html('<i class="fa fa-check-circle-o font-blue fa-2x fa-fw"></i>');
+                    $state.text(WebUploader.formatSize( file.size ));
+                    $cannelBtn.html('<i class="fa fa-trash"></i>');
+                    $cannel.removeClass('file-cannel').addClass('file-delete');
+                    $cannelBtn.attr('data-response-info',JSON.stringify(response));
+                    if(autoCreateInput){
+                        if(uploaders.option('fileNumLimit') == 1){
+                            $li.append('<input type="hidden" name="files" value="'+response.data.id+'">');
+                        }else{
+                            $li.append('<input type="hidden" name="files[]" value="'+response.data.id+'">');
+                        }
+                    }
+                    if (options.uploadSuccess instanceof Function) {
+                        options.uploadSuccess(file, response, uploaders);
+                    }
+                }else{
+                    $percent.html('<i class="fa fa-exclamation-circle font-red fa-2x fa-fw"></i>');
+                    $state.addClass('font-red').text(response.message);
                 }
             });
 
@@ -535,12 +549,12 @@ var zjb = function(){
                 }
                 $state.addClass('font-red').text('上传失败，稍后重试');
                 if (options.uploadError instanceof Function) {
-                    options.uploadError(file);
+                    options.uploadError(file, uploaders);
                 }
             });
             uploaders.on( 'uploadComplete', function( file ) {
                 if (options.uploadComplete instanceof Function) {
-                    options.uploadComplete(file);
+                    options.uploadComplete(file, uploaders);
                 }
                 uploaders.removeFile( file,true);
             });
@@ -552,7 +566,7 @@ var zjb = function(){
                 }
                 $('#'+pickers+'-file-list').find('#'+$fileid).remove();
                 if (options.fileCannel instanceof Function) {
-                    options.fileCannel($fileid);
+                    options.fileCannel($fileid, uploaders);
                 }
             });
             $('#'+pickers+'-file-list').on('click', ".file-delete a", function(){
@@ -562,7 +576,7 @@ var zjb = function(){
                 }
                 $('#'+pickers+'-file-list').find('#'+$fileid).remove();
                 if (options.fileDelete instanceof Function) {
-                    options.fileDelete($fileid);
+                    options.fileDelete($fileid, uploaders);
                 }
             });
         },
@@ -574,6 +588,7 @@ var zjb = function(){
             //     'server':options.server,//必须
             //     'formData':options.formData,
             //     'fileNumLimit':options.fileNumLimit
+            //     'isAutoInsertInput':options.isAutoInsertInput,
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
@@ -583,6 +598,7 @@ var zjb = function(){
             options = $.extend(true, {}, options);
             var pickers = options.picker,
                 uploaders = options.uploader,
+                autoCreateInput = options.isAutoInsertInput ? options.isAutoInsertInput : true,
                 limit = options.fileNumLimit ? options.fileNumLimit : 50;
             uploaders = WebUploader.create({
                 // 选完文件后，是否自动上传。
@@ -668,16 +684,28 @@ var zjb = function(){
                     $cannel = $li.find('.file-cannel'),
                     $cannelBtn = $cannel.find('a'),
                     $img = $li.find('img');
-                $info.hide();   
-                $percent.html('<i class="fa fa-check-circle-o font-blue fa-2x fa-fw"></i>').hide();
-                $state.text(WebUploader.formatSize( file.size )).hide();
-                $cannelBtn.html('<i class="fa fa-trash"></i>');
-                $cannel.removeClass('file-cannel').addClass('file-delete');
-                $cannelBtn.attr('data-response-info',JSON.stringify(response));
-                $img.removeClass('hide');
-                if (options.uploadSuccess instanceof Function) {
-                    options.uploadSuccess(file, response);
-                }
+                    if(response.status == 1){
+                        $info.hide();   
+                        $percent.html('<i class="fa fa-check-circle-o font-blue fa-2x fa-fw"></i>').hide();
+                        $state.text(WebUploader.formatSize( file.size )).hide();
+                        $cannelBtn.html('<i class="fa fa-trash"></i>');
+                        $cannel.removeClass('file-cannel').addClass('file-delete');
+                        $cannelBtn.attr('data-response-info',JSON.stringify(response));
+                        $img.removeClass('hide');
+                        if(autoCreateInput){
+                            if(uploaders.option('fileNumLimit') == 1){
+                                $li.append('<input type="hidden" name="images" value="'+response.data.id+'">');
+                            }else{
+                                $li.append('<input type="hidden" name="images[]" value="'+response.data.id+'">');
+                            }
+                        }
+                        if (options.uploadSuccess instanceof Function) {
+                            options.uploadSuccess(file, response, uploaders);
+                        }
+                    }else{
+                        $percent.html('<i class="fa fa-exclamation-circle font-red fa-2x fa-fw"></i>');
+                        $state.addClass('font-red').text(response.message);
+                    }
             });
 
             // 文件上传失败，显示上传出错。
@@ -690,13 +718,12 @@ var zjb = function(){
                 }
                 $state.addClass('font-red').text('上传失败，稍后重试');
                 if (options.uploadError instanceof Function) {
-                    options.uploadError(file);
+                    options.uploadError(file, uploaders);
                 }
-                alert(reason);
             });
             uploaders.on( 'uploadComplete', function( file ) {
                 if (options.uploadComplete instanceof Function) {
-                    options.uploadComplete(file);
+                    options.uploadComplete(file, uploaders);
                 }
                 uploaders.removeFile( file,true);
             });
@@ -708,7 +735,7 @@ var zjb = function(){
                 }
                 $('#'+pickers+'-file-list').find('#'+$fileid).remove();
                 if (options.fileCannel instanceof Function) {
-                    options.fileCannel($fileid);
+                    options.fileCannel($fileid, uploaders);
                 }
             });
             $('#'+pickers+'-file-list').on('click', ".file-delete a", function(){
@@ -718,7 +745,7 @@ var zjb = function(){
                 }
                 $('#'+pickers+'-file-list').find('#'+$fileid).remove();
                 if (options.fileDelete instanceof Function) {
-                    options.fileDelete($fileid);
+                    options.fileDelete($fileid, uploaders);
                 }
             });
         }
