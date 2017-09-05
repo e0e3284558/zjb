@@ -106,7 +106,8 @@
                             },
                             error: function(xhr, textStatus, errorThrown) {
                                 if(xhr.status == 422 && textStatus =='error'){
-                                    $.each(xhr.responseJSON,function(i,v){
+                                    _$error = xhr.responseJSON.errors;
+                                    $.each(_$error,function(i,v){
                                         toastr.error(v[0],'警告');
                                     });
                                 }else{
@@ -114,7 +115,6 @@
                                 }
                             }
                         });  
-
                     });
                 });
                 forms.validate({
@@ -191,7 +191,8 @@
                             },
                             error: function(xhr, textStatus, errorThrown) {
                                 if(xhr.status == 422 && textStatus =='error'){
-                                    $.each(xhr.responseJSON,function(i,v){
+                                    _$error = xhr.responseJSON.errors;
+                                    $.each(_$error,function(i,v){
                                         toastr.error(v[0],'警告');
                                     });
                                 }else{

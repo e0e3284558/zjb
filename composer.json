@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=5.6.4",
+        "php": ">=7.0.0",
         "anahkiasen/former": "^4.1",
         "barryvdh/laravel-ide-helper": "^2.4",
         "barryvdh/laravel-snappy": "^0.4.0",
@@ -22,6 +22,7 @@
         "intouch/laravel-newrelic": "~2.0",
         "jenssegers/date": "^3.2",
         "laracasts/flash": "^3.0",
+        "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "league/fractal": "^0.17.0",
@@ -40,6 +41,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.4",
+        "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "laracasts/generators": "dev-master as 1.1.4",
         "mockery/mockery": "0.9.*",
@@ -59,6 +61,12 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
         }
     },
     "scripts": {
