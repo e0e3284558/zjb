@@ -232,5 +232,4 @@ class AssetCategoryController extends Controller
         })->export('xls');
         return ;
     }
-
 }

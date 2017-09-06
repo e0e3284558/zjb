@@ -73,7 +73,7 @@ class DefaultController extends Controller
                     self::setMessage('上传成功');
                 } else {
                     self::setStatus(0);
-                    self::setMessage('上传失败，数据库保存出错');
+                    self::setMessage('上传失败');
                 }
             } else {
                 self::setStatus(0);
@@ -86,7 +86,6 @@ class DefaultController extends Controller
     //文件上传接口
     public function fileUpload(Request $request)
     {
-        $disk = Storage::disk('file');
         //上传验证
         $rule = [
             'file' => 'bail|max:2048'
@@ -103,47 +102,43 @@ class DefaultController extends Controller
             //上传图片
             $upload_file = $file['file'];
             if ($upload_file->isValid()) {
+                $disk = Storage::disk('file');
+                $file_upload_config = config('filesystems.disks.file');
                 //设置保存目录
-                $save_path =  date("Ym", time()) . '/' . date("d", time());
+                $save_path = date("Ym", time())
+                    . '/' . date("d", time());
                 //文件的扩展名
                 $ext = $upload_file->getClientOriginalExtension();
                 $uniqid = uniqid();
                 //设置保存文件名
                 $save_name = $uniqid . '.' . $ext;
+                $path = $file_upload_config['base_path'] . '/' . $save_path . '/' . $save_name;
+                //文件转存
                 $bool = $disk->putFileAs($save_path,$upload_file,$save_name);
-                dump($bool);
+                //数据库保存上传文件信息
+                $file_info = new FileModel();
+                $file_info->type = $upload_file->getClientMimeType();
+                $file_info->name = $save_name;
+                $file_info->old_name = $upload_file->getClientOriginalName();
+                $file_info->suffix = $ext;
+                $file_info->file_path = public_path() . '/' . $path;
+                $file_info->path = $path;
+                $file_info->url = asset($path);
+                $file_info->size = $upload_file->getClientSize();
+                $file_info->org_id = get_current_login_user_org_id();
+                $file_info->ip = $request->ip();
+                $file_info->user_id = get_current_login_user_info();
+                $file_info->upload_mode = 'file';
+                $file_info->uniqid = $uniqid;
 
-//
-//                //文件转存
-//                $upload_file->move(public_path() . '/'
-//                    . $save_path, $save_name);
-//                $path = $save_path . '/' . $save_name;
-//                //数据库保存上传文件信息
-//                $file_info = new FileModel();
-//                $file_info->type = $upload_file->getClientMimeType();
-//                $file_info->name = $save_name;
-//                $file_info->old_name = $upload_file->getClientOriginalName();
-//                $file_info->width = 0;
-//                $file_info->height = 0;
-//                $file_info->suffix = $ext;
-//                $file_info->file_path = public_path() . '/' . $path;
-//                $file_info->path = '/' . $path;
-//                $file_info->url = config('app.url') . '/' . $path;
-//                $file_info->size = $upload_file->getClientSize();
-//                $file_info->org_id = get_current_login_user_org_id();
-//                $file_info->ip = $request->ip();
-//                $file_info->user_id = get_current_login_user_info();
-//                $file_info->upload_mode = 'image';
-//                $file_info->uniqid = $uniqid;
-//
-//                if ($file_info->save()) {
-//                    self::setStatus(1);
-//                    self::setData($file_info->toArray());
-//                    self::setMessage('上传成功');
-//                } else {
-//                    self::setStatus(0);
-//                    self::setMessage('上传失败，数据库保存出错');
-//                }
+                if ($bool && $file_info->save()) {
+                    self::setStatus(1);
+                    self::setData($file_info->toArray());
+                    self::setMessage('上传成功');
+                } else {
+                    self::setStatus(0);
+                    self::setMessage('上传失败');
+                }
             } else {
                 self::setStatus(0);
                 self::setMessage($upload_file->getErrorMessage());

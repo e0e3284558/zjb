@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceProvider extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
     //
     protected $fillable=['name','user','tel','logo_id','upload_id','comment'];
 

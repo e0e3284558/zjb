@@ -73,8 +73,9 @@
 
                                         <a href="profile.html">
 
-                                            @if($v->upload_id)
-                                                <img alt="image" class="img-circle m-t-xs img-responsive" src="">
+                                            @if($v->upload_id!==null)
+                                                <img alt="image" class="img-circle m-t-xs img-responsive center-block"
+                                                     src="{{get_img_path($v->upload_id)}}">
                                             @else
                                                 <button class="btn btn-circle btn-lg {{randomClass()}}"
                                                         type="button">{{mb_substr($v->name,0,1)}}</button>
@@ -152,20 +153,43 @@
 
         /*删除*/
         function del(id) {
-            layer.confirm('确认要删除吗？', function () {
-                //发异步删除数据
-                $.post("{{url('repair/service_worker/')}}/" + id, {
-                    '_method': 'delete',
-                    '_token': "{{csrf_token()}}"
-                }, function (data) {
-                    if (data.status == 'success') {
-                        layer.msg(data.message, {icon: 6});
-                        window.location.reload();
-                    } else {
-                        layer.msg('删除失败', {icon: 5});
-                    }
+
+            swal({
+                    title: "确认要删除该分类吗？",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false
+                },
+                function () {
+                    //发异步删除数据
+                    $.ajax({
+                        type: "post",
+                        url: '{{url('repair/service_worker')}}/' + id,
+                        data: {
+                            "_token": '{{csrf_token()}}',
+                            '_method': 'delete'
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code == 1) {
+                                swal({
+                                    title: "",
+                                    text: data.message,
+                                    type: "success",
+                                    timer: 1000,
+                                }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                swal("", data.message, "error");
+                            }
+                        }
+                    });
                 });
-            });
         }
 
     </script>

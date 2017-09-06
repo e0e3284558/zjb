@@ -91,8 +91,8 @@ class ServiceProviderController extends Controller
     public function show($id)
     {
         $data = ServiceProvider::find($id);
-        $serviceWorker=$data->service_worker()->get();
-        return response()->view('repair.service_provider.show', compact('data','serviceWorker'));
+        $serviceWorker = $data->service_worker()->get();
+        return response()->view('repair.service_provider.show', compact('data', 'serviceWorker'));
     }
 
     /**
@@ -116,8 +116,9 @@ class ServiceProviderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $res = ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id', ''));
         //修改服务商信息
-        if (ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id'))) {
+        if ($res) {
             return response()->json([
                 'status' => 1, 'message' => '更新成功'
             ]);
@@ -137,6 +138,20 @@ class ServiceProviderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (DB::table('org_service_provider')
+                ->where('org_id', Auth::user()->org_id)
+                ->where('service_provider_id',$id)
+                ->delete()) {
+            return response()->json([
+                'code' => 1,
+                'message' => '移除成功'
+            ]);
+        } else {
+            return response()->json([
+                'code' => 0,
+                'message' => '移除失败，请稍候重试'
+            ]);
+        }
+
     }
 }

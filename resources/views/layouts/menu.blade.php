@@ -1,8 +1,8 @@
-<li class="{{ active_class(if_route('home') || if_query('app_groups',null)) }}">
+<li class="{{ active_class(if_route('home')) }}">
     <a href="{{ url('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">控制面板</span></a>
 </li>
 
-<li class="{{ active_class(if_query('app_groups','repair')) }}">
+<li class="{{ active_class(if_uri_pattern('repair/*')) }}">
     <a href="javascript:;"><i class="fa fa-wrench"></i> <span class="nav-label">报修管理</span> <span
                 class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
@@ -20,7 +20,7 @@
 
 
 
-<li class="{{ active_class(if_query('app_groups','users')) }}">
+<li class="{{ active_class(if_uri_pattern('users/*')) }}">
     <a href="javascript:;"><i class="fa fa-sitemap"></i> <span class="nav-label">用户管理</span> <span
                 class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
@@ -41,7 +41,7 @@
 
 
 
-<li class="{{ active_class(if_query('app_groups','asset')) }}">
+<li class="{{ active_class(if_uri_pattern('asset/*')) }}">
     <a href="javascript:;"><i class="fa fa-credit-card"></i> <span class="nav-label">资产管理</span> <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li class="{{ active_class(if_route('asset_category.index') && if_query('app_groups','asset')) }}"><a href="{{ route('asset_category.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产类别</a></li>

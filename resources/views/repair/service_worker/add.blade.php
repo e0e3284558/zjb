@@ -49,8 +49,12 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <label>维修工照片</label>
-                        <input type="hidden" name="upload_id" value="">
-                        <button class="btn" type="button">点击上传</button>
+                        <img id="thumb_img" src="{{url('img/noavatar.png')}}" alt="" class="img-lg">
+                        <input type="hidden" id="upload_id" name="upload_id" value="">
+                        <div id="single-upload" class="btn-upload m-t-xs">
+                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
+                            <div id="single-upload-file-list"></div>
+                        </div>
                     </div>
                 </li>
                 <li class="dd-item">
@@ -71,7 +75,7 @@
                     <div class="dd-handle ">
                         <label>所属服务商</label>
                         <div>
-                            <select name="serviceProvider"  class="form-control select2 ">
+                            <select name="serviceProvider" class="form-control select2 ">
                                 <option value="">请选择服务商</option>
                                 @foreach($serviceProvider as $v)
                                     <option value="{{$v->id}}">{{$v->name}}</option>
@@ -92,6 +96,27 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+        zjb.singleImageUpload({
+            uploader: 'singleUpload',
+            picker: 'single-upload',
+            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+            server: '{{ route("image.upload") }}',
+            formData: {
+                '_token': '{{ csrf_token() }}'
+            },
+            errorMsgHiddenTime: 2000,
+
+            uploadSuccess: function (file, response) {
+                //上传完成触发时间
+                $('#upload_id').val(response.data.id);
+                $('#thumb_img').attr({src: response.data.url});
+                window.setTimeout(function () {
+                    $('#' + file.id).remove();
+                }, 2000);
+            }
+        });
+
+
         zjb.initAjax();
         var l = $("button[type='submit']").ladda();
         var forms = $(".form-horizontal");

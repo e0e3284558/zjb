@@ -140,6 +140,7 @@ class DepartmentController extends Controller
         $department = new Department;
         $department->name = $request->name;
         $department->status = $request->status;
+        $department->sort = $request->sort;
         $department->parent_id = $request->parent_id;
         $department->org_id = auth()->user()->org_id;
         if($department->save()){
@@ -179,6 +180,7 @@ class DepartmentController extends Controller
         $dep = $department->findOrFail($id);
         $dep->name = $request->name;
         $dep->parent_id = $request->parent_id;
+        $dep->sort = $request->sort;
         $dep->status = $request->status;
         if($dep->save()){
             return response()->json([

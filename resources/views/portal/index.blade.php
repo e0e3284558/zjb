@@ -189,6 +189,18 @@
                         </div>
 
                     </div>
+                    单、多文件上传实例
+                    <div id="multi-upload-instance" class="clearfix multi-file-upload">
+
+                        <div id="multi-upload-instance-file-list" class="pull-left">
+                        </div>
+
+                        <div id="multi-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                            选择文件
+                        </div>
+
+                    </div>
 
                     单、多图预览上传
 
@@ -275,6 +287,15 @@
 
                     </div>
 
+                    <div id="image-upload-instance" class="clearfix multi-image-upload multi-image-upload-lg">
+                        <div id="image-upload-instance-file-list" class="pull-left"></div>
+                        <div id="image-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                            选择图片
+                        </div>
+
+                    </div>
+
                      
 
      <script type="text/javascript">
@@ -348,6 +369,26 @@
                     alert('fileDelete');
                 }
             });
+            //文件上传实例
+            zjb.fileUpload({
+                uploader:'multiUploadInstance',
+                picker:'multi-upload-instance',
+                swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+                server: '{{ route("file.upload") }}',
+                formData: {
+                    '_token':'{{ csrf_token() }}'
+                },
+                fileNumLimit:1,
+                uploadComplete:function(file,uploader){},
+                uploadError:function(file,uploader){},
+                uploadSuccess:function(file,response,uploader){
+                    // alert('success');
+                    console.log(response);
+                    console.log(uploader);
+                },
+                fileCannel:function(fileId,uploader){},
+                fileDelete:function(fileId,uploader){}
+            });
 
 
             zjb.imageUpload({
@@ -401,11 +442,22 @@
                 }
             });
 
-
-
-
-
-
+            //图片上传实例
+            zjb.imageUpload({
+                uploader:'imageUploadInstance',
+                picker:'image-upload-instance',
+                swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+                server: '{{ route("image.upload") }}',
+                formData: {
+                    '_token':'{{ csrf_token() }}'
+                },
+                fileNumLimit:10,
+                uploadComplete:function(file, uploader){},
+                uploadError:function(file, uploader){},
+                uploadSuccess:function(file,response, uploader){},
+                fileCannel:function(fileId, uploader){},
+                fileDelete:function(fileId, uploader){}
+            });
          });
      </script>
                 </div>
