@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d5d59f1de3fe7347d82ac7096316476",
+    "content-hash": "a2dd46091d73149f027ba7b2b2473722",
     "packages": [
         {
             "name": "anahkiasen/former",
@@ -3277,16 +3277,16 @@
         },
         {
             "name": "prettus/l5-repository",
-            "version": "2.6.20",
+            "version": "2.6.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andersao/l5-repository.git",
-                "reference": "41fd976226fe5c95ce693a1aeb2d29bbfdea58d3"
+                "reference": "c28699dbe0823bb7e5f93c4f292018dcc163d5bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/andersao/l5-repository/41fd976226fe5c95ce693a1aeb2d29bbfdea58d3.zip",
-                "reference": "41fd976226fe5c95ce693a1aeb2d29bbfdea58d3",
+                "url": "https://files.phpcomposer.com/files/andersao/l5-repository/c28699dbe0823bb7e5f93c4f292018dcc163d5bc.zip",
+                "reference": "c28699dbe0823bb7e5f93c4f292018dcc163d5bc",
                 "shasum": ""
             },
             "require": {
@@ -3333,7 +3333,7 @@
                 "model",
                 "repository"
             ],
-            "time": "2017-07-25T20:52:44+00:00"
+            "time": "2017-09-06T01:48:23+00:00"
         },
         {
             "name": "prettus/laravel-validation",
@@ -3964,16 +3964,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "f81348e6fa0194b75527043bcb859e84d06f49b4"
+                "reference": "bec6e19c7da4831040a9161ff7476505293063b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/f81348e6fa0194b75527043bcb859e84d06f49b4.zip",
-                "reference": "f81348e6fa0194b75527043bcb859e84d06f49b4",
+                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/bec6e19c7da4831040a9161ff7476505293063b8.zip",
+                "reference": "bec6e19c7da4831040a9161ff7476505293063b8",
                 "shasum": ""
             },
             "require": {
@@ -3986,7 +3986,7 @@
             "require-dev": {
                 "monolog/monolog": "^1.22",
                 "orchestra/testbench": "~3.4.2|~3.5.0",
-                "phpunit/phpunit": "^6.2"
+                "phpunit/phpunit": "^5.7|6.2"
             },
             "type": "library",
             "extra": {
@@ -4025,7 +4025,7 @@
                 "security",
                 "spatie"
             ],
-            "time": "2017-09-02T10:52:52+00:00"
+            "time": "2017-09-05T06:25:58+00:00"
         },
         {
             "name": "spatie/temporary-directory",
@@ -5315,16 +5315,16 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v8.0.1",
+            "version": "v8.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
-                "reference": "06ddfeac9a86a701d860070a2f19b1f6ebe6615d"
+                "reference": "b1fcc9be3403394791541ec839e1d89f3196e337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/yajra/laravel-datatables/06ddfeac9a86a701d860070a2f19b1f6ebe6615d.zip",
-                "reference": "06ddfeac9a86a701d860070a2f19b1f6ebe6615d",
+                "url": "https://files.phpcomposer.com/files/yajra/laravel-datatables/b1fcc9be3403394791541ec839e1d89f3196e337.zip",
+                "reference": "b1fcc9be3403394791541ec839e1d89f3196e337",
                 "shasum": ""
             },
             "require": {
@@ -5381,7 +5381,7 @@
                 "jquery",
                 "laravel"
             ],
-            "time": "2017-08-31T11:09:32+00:00"
+            "time": "2017-09-06T00:36:58+00:00"
         }
     ],
     "packages-dev": [
