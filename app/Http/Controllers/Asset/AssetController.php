@@ -48,8 +48,9 @@ class AssetController extends Controller
      */
     public function index(Request $request)
     {
+        $org_id = Auth::user()->org_id;
         $map = [
-            ['org_id','=',Auth::user()->org_id]
+            ['org_id','=',$org_id]
         ];
         if($request->category_id){
             $map[] = ['category_id','=',$request->category_id];
@@ -57,33 +58,16 @@ class AssetController extends Controller
         if($request->name){
             $map[] = ['name','like','%'.$request->name.'%'];
         }
-        $list = Asset::where($map)->orderBy("id","desc")->paginate(5);
-        foreach ($list as $key=>$value){
-            $list[$key]['category_id'] = $value->category->name;
-            $list[$key]['use_org_id'] = $value->org->name;
-            $list[$key]['admin_id'] = $value->user->name;
-            //所属公司
-            $list[$key]['org_id'] = $value->org->name;
-            //来源
-            $list[$key]['source_id'] = $value->source->name;
-            //所在位置
-            $str = (Area::where("id",$value->area_id)->value("path")).$value->area_id;
-            $arr = explode(",",$str);
-            foreach ($arr as $k=>$v){
-                $list[$key]['area'] .= Area::where("id",$v)->value("name")." / ";
-            }
-            $list[$key]['area'] = rtrim($list[$key]['area']," /");
-            //所属部门
-            $list[$key]['department_id'] = $value->department->name;
+        $list = Asset::with('category','org','user','admin','source','department','useDepartment','area')->where($map)->orderBy("id","desc")->paginate(5);
 
-            $list[$key]['use_department_id'] = $value->department->name;
+        foreach ($list as $key=>$value){
             //图片
             $list[$key]['file'] = Asset::find($value->id)->file()->first();
             $list[$key]['img_path'] = $list[$key]['file']["path"];
             $list[$key]['file_id'] = $list[$key]['file']['id'];
         }
         //资产类别
-        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $category_list = AssetCategory::where("org_id",$org_id)->get();
         $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
         return view("asset.asset.index",compact("list","category_list"));
     }
@@ -128,7 +112,7 @@ class AssetController extends Controller
         QrCode::format('png')->size("100")->margin(0)->merge('/public/uploads/qrcodes/logo.png', .3)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
 
         $arr['created_at'] = date("Y-m-d H:i:s");
-        $arr['asset_status_id'] = "1";
+//        $arr['asset_status_id'] = "1";
         $info = Asset::insertGetId($arr);
 
         if($request->file_id){
@@ -137,7 +121,6 @@ class AssetController extends Controller
                 'file_id' => $request->file_id,
                 'org_id' => Auth::user()->org_id
             ];
-
             AssetFile::insert($file_arr);
         }
 
@@ -163,29 +146,9 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        $info = Asset::find($id);
-        //资产类别
-        $info->category_id = AssetCategory::where("id",$info->category_id)->value("name");
-        //使用部门
-        $info->use_department_id = Department::where("id",$info->department_id)->value("name");
-        //管理员
-        $info->admin_id = User::where("id",$info->admin_id)->value("name");
-
-        //所在位置
-        $arr = (Area::where("id",$info->area_id)->value("path")).$info->area_id;
-        $arr = explode(",",$arr);
-        $str = "";
-        foreach ($arr as $k=>$v){
-            $str .= Area::where("id",$v)->value("name")." / ";
-        }
-        $info->area_id = trim($str," / ");
-        //来源
-        $info->source_id = Source::where("id",$info->source_id)->value("name");
-        //所属公司
-        $info->org_id = Org::where("id",$info->org_id)->value("name");
+        $info = Asset::with('category','org','user','admin','source','department','useDepartment','area')->find($id);
         //图片
         $file = Asset::find($info->id)->file()->first();
-
         $info->img_path = $file["path"];
         return response()->view("asset.asset.show",compact('info'));
     }
@@ -330,7 +293,7 @@ class AssetController extends Controller
                 $info['asset_uid'] = Uuid::generate()->string;
                 $info['created_at'] = date("Y-m-d H:i:s");
                 $asset_id = Asset::insertGetId($info);
-                QrCode::format('png')->size("100")->margin(0)->generate($info['asset_uid'],public_path('uploads/qrcodes/'.$info['asset_uid'].'.png'));
+                QrCode::format('png')->size("100")->margin(0)->generate($info['asset_uid'],public_path('uploads/asset/'.$info['asset_uid'].'.png'));
                 if($file){
                     $file_arr = [
                         'asset_id' => $asset_id,
