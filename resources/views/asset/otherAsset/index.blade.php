@@ -46,7 +46,7 @@
                                     @foreach($list as $k=>$v)
                                         <tr>
                                             <td><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
-                                            <td>{{$v->category_id}}</td>
+                                            <td>{{$v->category->name}}</td>
                                             <td><span class="cursor_pointer" href="{{url('other_asset')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$v->name}}</span></td>
                                             <td>{{$v->remarks}}</td>
                                         </tr>
@@ -66,6 +66,12 @@
                             <button type="button" onclick="dlt()" class="btn btn-danger">
                                 <i class="fa  fa-trash-o"></i> 删除
                             </button>
+                            <a class="btn btn-default" id="download" href="{{url('other_asset/downloadModel')}}">
+                                <i class="fa fa-sign-in"></i> 下载模板
+                            </a>
+                            <a class="btn btn-default" id="download" href="{{url('other_asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                <i class="fa fa-sign-in"></i> 导入其他报修项
+                            </a>
                         </div>
                     </div>
                 </div>

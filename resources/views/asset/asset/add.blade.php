@@ -74,7 +74,7 @@
 
         </div>
 
-        <div class="row" >
+        {{--<div class="row" >
             <div class="col-md-4" >
                 <div class="form-group">
                     <label for="use_time" class="col-sm-4 control-label">使用期限</label>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
 
         <div class="row" >
             <div class="col-md-4" >
@@ -233,9 +233,6 @@
             }
         });
 
-
-
-        //$('select').chosen({width:'100%'});
         $('.datepicker').datepicker({
             language: "zh-CN",
             format: 'yyyy/mm/dd',

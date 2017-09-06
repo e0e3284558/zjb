@@ -193,6 +193,22 @@ class AreaController extends Controller
         }
     }
 
+    //下载模板
+    function downloadModel(){
+        Excel::create('Filename', function($excel) {
+
+            // Our first sheet
+            $excel->sheet('sheet1', function($sheet) {
+
+            });
+
+            // Our second sheet
+            $excel->sheet('sheet2', function($sheet) {
+
+            });
+
+        })->export('xls');
+    }
 
     /**
      * 场地管理  数据导出
@@ -238,10 +254,6 @@ class AreaController extends Controller
         return ;
     }
 
-
-    public function prints(){
-
-    }
 
 
 }
