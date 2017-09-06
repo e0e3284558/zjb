@@ -75,6 +75,10 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
     Route::resource('service_worker', 'ServiceWorkerController');
     //服务商管理
     Route::resource('service_provider', 'ServiceProviderController');
+    //创建报修
+    Route::resource('create_repair', 'CreateRepairController');
+    //报修流程
+    Route::resource('process', 'ProcessController');
 });
 //-------------------------------------------------------------------------
 //报修模块路由结束

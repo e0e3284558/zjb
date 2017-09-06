@@ -15,6 +15,9 @@
         <li class="{{ active_class(if_route('service_provider.index'))}}"><a
                     href="{{ url('repair/service_provider?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 服务商管理</a>
         </li>
+        <li class="{{ active_class(if_route('create_repair.create'))}}"><a
+                    href="{{ url('repair/create_repair?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 服务商管理</a>
+        </li>
     </ul>
 </li>
 
