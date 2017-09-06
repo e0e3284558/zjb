@@ -29,6 +29,6 @@ class CreateOrgServiceProviderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_provider_org');
+        Schema::dropIfExists('org_service_provider');
     }
 }

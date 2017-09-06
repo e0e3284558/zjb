@@ -27,6 +27,6 @@ class CreateServiceProviderServiceWorker extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_worker_service_provider');
+        Schema::dropIfExists('service_provider_service_worker');
     }
 }
