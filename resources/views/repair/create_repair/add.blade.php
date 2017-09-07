@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>All form elements <small>With custom checbox and radion elements.</small></h5>
+                        <h5>创建一个报修 </h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -47,12 +47,30 @@
                     </div>
                     <div class="ibox-content">
                         <form method="get" class="form-horizontal">
-                            <div class="form-group"><label class="col-sm-2 control-label">Normal</label>
+                            <div class="form-group"><label class="col-sm-2 control-label">选择资产类型</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="account">
+                                        <?php
+                                                        
 
+                                        ?>
+                                        <option></option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
                                 <div class="col-sm-10"><input type="text" class="form-control"></div>
                             </div>
+                            <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
+                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                            </div>
+                            <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
+                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                            </div>
+
+
                             <div class="hr-line-dashed"></div>
-                           
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
                                     <button class="btn btn-white" type="submit">Cancel</button>

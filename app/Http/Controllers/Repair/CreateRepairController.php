@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Models\Asset\AssetCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CreateRepairController extends Controller
 {
@@ -25,7 +27,14 @@ class CreateRepairController extends Controller
      */
     public function create()
     {
-        return view('repair.create_repair.add');
+
+        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get()->toArray();
+        foreach ($list as $k=>$v){
+            $list[$k]['text'] = $v['name'];
+            $list[$k]['nodeId'] = $v['id'];
+        }
+        $classifies = list_to_tree($list, 'id', 'pid', 'nodes', "0");
+        return view('repair.create_repair.add',compact('classifies'));
     }
 
     /**

@@ -21,7 +21,6 @@ class AssetCategoryController extends Controller
     public function index()
     {
         $list = AssetCategory::where("org_id",Auth::user()->org_id)->get()->toArray();
-
         foreach ($list as $k=>$v){
             $list[$k]['text'] = $v['name'];
             $list[$k]['nodeId'] = $v['id'];

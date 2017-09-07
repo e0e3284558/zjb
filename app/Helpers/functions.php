@@ -316,3 +316,24 @@ if (!function_exists('get_client_ip')) {
     }
 }
 
+/**
+ * 循环输出下拉框并分类
+ */
+if (!function_exists('loop_Arr')) {
+    function loop_Arr($arr)
+    {
+        foreach($arr as $v)
+        {
+            if(is_array($v))
+            {
+                loopArr($v);
+            }else
+            {
+                echo $v."";
+            }
+        }
+    }
+}
+
+
+

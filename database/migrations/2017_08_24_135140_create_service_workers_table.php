@@ -18,7 +18,7 @@ class CreateServiceWorkersTable extends Migration
             $table->string('name')->nullable()->comment('维修工姓名');
             $table->string('username')->nullable()->comment('维修工帐号');
             $table->string('password')->nullable()->comment('维修工密码');
-            $table->integer('tel')->nullable()->comment('维修工手机号码');
+            $table->bigInteger('tel')->nullable()->comment('维修工手机号码');
             $table->integer('upload_id')->nullable()->comment('维修工照片');
             $table->string('comment')->nullable()->comment('维修工备注信息');
             $table->timestamps();
