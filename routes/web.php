@@ -77,12 +77,8 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
     Route::resource('service_provider', 'ServiceProviderController');
     //创建报修
     Route::resource('create_repair', 'CreateRepairController');
-<<<<<<< HEAD
-});
-Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
-=======
+
     Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
->>>>>>> 3fd5835116fe9da268b0f24b20c16ef0605ec0ca
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
     Route::resource('process', 'ProcessController');
