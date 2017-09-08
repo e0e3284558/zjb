@@ -394,16 +394,16 @@
         },
         {
             "name": "caouecs/laravel-lang",
-            "version": "3.0.35",
+            "version": "3.0.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/caouecs/Laravel-lang.git",
-                "reference": "7c4c87b366ee3a17860e9371f339e7158d560caf"
+                "reference": "fce0289a05fe35a6ba2d0625654efce6dd4fa553"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/caouecs/Laravel-lang/7c4c87b366ee3a17860e9371f339e7158d560caf.zip",
-                "reference": "7c4c87b366ee3a17860e9371f339e7158d560caf",
+                "url": "https://files.phpcomposer.com/files/caouecs/Laravel-lang/fce0289a05fe35a6ba2d0625654efce6dd4fa553.zip",
+                "reference": "fce0289a05fe35a6ba2d0625654efce6dd4fa553",
                 "shasum": ""
             },
             "require-dev": {
@@ -432,7 +432,7 @@
                 "laravel",
                 "lpm"
             ],
-            "time": "2017-06-09T08:16:13+00:00"
+            "time": "2017-09-05T11:25:47+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -2332,16 +2332,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.2",
+            "version": "v5.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "65da63c8ad4836e2bcddcff75becd49c71c5041c"
+                "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/laravel/framework/65da63c8ad4836e2bcddcff75becd49c71c5041c.zip",
-                "reference": "65da63c8ad4836e2bcddcff75becd49c71c5041c",
+                "url": "https://files.phpcomposer.com/files/laravel/framework/779a98d3b2ebed2128db1a668dcc10a65c9b01be.zip",
+                "reference": "779a98d3b2ebed2128db1a668dcc10a65c9b01be",
                 "shasum": ""
             },
             "require": {
@@ -2460,7 +2460,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-09-04T14:09:04+00:00"
+            "time": "2017-09-07T13:50:21+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -3851,16 +3851,16 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "e3fdf7a5f545c2d6fe3c349a4c58394d03ba1c9b"
+                "reference": "669045ff0d6f3d95bb076bbd6698fd31ee7decc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/db-dumper/e3fdf7a5f545c2d6fe3c349a4c58394d03ba1c9b.zip",
-                "reference": "e3fdf7a5f545c2d6fe3c349a4c58394d03ba1c9b",
+                "url": "https://files.phpcomposer.com/files/spatie/db-dumper/669045ff0d6f3d95bb076bbd6698fd31ee7decc5.zip",
+                "reference": "669045ff0d6f3d95bb076bbd6698fd31ee7decc5",
                 "shasum": ""
             },
             "require": {
@@ -3897,7 +3897,7 @@
                 "mysqldump",
                 "spatie"
             ],
-            "time": "2017-08-18T11:48:03+00:00"
+            "time": "2017-09-07T12:13:49+00:00"
         },
         {
             "name": "spatie/laravel-backup",
@@ -3974,16 +3974,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "bec6e19c7da4831040a9161ff7476505293063b8"
+                "reference": "2d19c6a8811c1fb9c534bbafb9c2a27209372a0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/bec6e19c7da4831040a9161ff7476505293063b8.zip",
-                "reference": "bec6e19c7da4831040a9161ff7476505293063b8",
+                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/2d19c6a8811c1fb9c534bbafb9c2a27209372a0c.zip",
+                "reference": "2d19c6a8811c1fb9c534bbafb9c2a27209372a0c",
                 "shasum": ""
             },
             "require": {
@@ -4035,7 +4035,7 @@
                 "security",
                 "spatie"
             ],
-            "time": "2017-09-05T06:25:58+00:00"
+            "time": "2017-09-07T17:37:25+00:00"
         },
         {
             "name": "spatie/temporary-directory",

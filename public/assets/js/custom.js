@@ -355,10 +355,10 @@ var zjb = function(){
             //     'swf':options.swf,//必须
             //     'server':options.server,//必须
             //     'formData':options.formData,
-            //     'errorMsgHiddenTime':options.errorMsgHiddenTime,
-            //     'isAutoInsertInput':options.isAutoInsertInput,
-            //     'storageInputName':options.storageInputName,
-            //     'isHiddenResult':options.isHiddenResult,
+            //     'errorMsgHiddenTime':options.errorMsgHiddenTime, #自动隐藏上传出错时间
+            //     'isAutoInsertInput':options.isAutoInsertInput,#是否自动追加上传成功后的input存储框
+            //     'storageInputName':options.storageInputName,#上传成功后的input存储框名称
+            //     'isHiddenResult':options.isHiddenResult,#是否隐藏上传成功后的提示信息
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
@@ -477,8 +477,8 @@ var zjb = function(){
             //     'server':options.server,//必须
             //     'formData':options.formData,
             //     'fileNumLimit':options.fileNumLimit,
-            //     'isAutoInsertInput':options.isAutoInsertInput,
-            //     'storageInputName':options.storageInputName,
+            //     'isAutoInsertInput':options.isAutoInsertInput,#是否自动追加上传成功后的input存储框
+            //     'storageInputName':options.storageInputName,#上传成功后的input存储框名称
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
@@ -624,8 +624,8 @@ var zjb = function(){
             //     'server':options.server,//必须
             //     'formData':options.formData,
             //     'fileNumLimit':options.fileNumLimit
-            //     'isAutoInsertInput':options.isAutoInsertInput,
-            //     'storageInputName':options.storageInputName,
+            //     'isAutoInsertInput':options.isAutoInsertInput,#是否自动追加上传成功后的input存储框
+            //     'storageInputName':options.storageInputName,#上传成功后的input存储框名称
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
