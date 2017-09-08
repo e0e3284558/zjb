@@ -28,7 +28,11 @@
 <div class="modal animated bounceInDown" id="testModal" role="dialog" aria-labelledby="testModalLabel">
     <div class="modal-dialog modal-md" aria-hidden="true" role="document">
         <div class="modal-content">
-			查询            
+			<div class="progress m-b-none">
+			  <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			    <span class="sr-only">100% Complete</span>
+			  </div>
+			</div>         
         </div>
     </div>
 </div>
@@ -42,7 +46,7 @@
  	<table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ route("users.groups") }}',page:true,limit:15,response:{countName: 'total'}}">
       <thead>
         <tr>
-          <th lay-data="{checkbox:true}"></th>
+          <th lay-data="{fixed:'left',checkbox:true}"></th>
           <th lay-data="{field:'id', width:80, sort: true}">ID</th>
           <th lay-data="{field:'email', width:80}">用户名</th>
           <th lay-data="{field:'name', width:177}">签名</th>
@@ -55,14 +59,14 @@
           <th lay-data="{field:'name', width:177}">签名</th>
           <th lay-data="{field:'name', width:177}">签名</th>
           <th lay-data="{field:'name', width:177}">签名</th>
-          <th lay-data="{fixed: 'right', width:150, align:'center', toolbar: '#barDemo'}"></th>
+          <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
         </tr>
       </thead>
     </table> 
     <script type="text/html" id="barDemo">
-	  <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
-	  <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
-	  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+	  <a class="btn blue btn-xs" lay-event="detail">查看</a>
+	  <a class="btn blue-madison btn-xs" lay-event="edit">编辑</a>
+	  <a class="btn red btn-xs" lay-event="del">删除</a>
 	</script>
     <script type="text/javascript">
     $(document).ready(function(){

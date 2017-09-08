@@ -94,6 +94,7 @@
                         <div id="single-upload-file-list"></div>
                     </div>
 
+                    单个图片按钮式上传成功信息自动隐藏
                     <div id="single-upload2" class="btn-upload">
                         <div id="single-upload2-picker"><i class="fa fa-upload"></i> 选择图片</div>
                         <div id="single-upload2-file-list"></div>
@@ -101,7 +102,7 @@
 
                     <hr>
 
-                    单、多文件上传
+                   <!--  单、多文件上传
 
                     <div id="multi-upload" class="clearfix multi-file-upload">
 
@@ -188,23 +189,29 @@
                             选择文件
                         </div>
 
-                    </div>
-                    单、多文件上传实例
-                    <div id="multi-upload-instance" class="clearfix multi-file-upload">
-
-                        <div id="multi-upload-instance-file-list" class="pull-left">
+                    </div> -->
+                    单文件上传实例
+                    <div id="single-file-upload-instance" class="clearfix multi-file-upload">
+                        <div id="single-file-upload-instance-file-list" class="pull-left">
                         </div>
-
-                        <div id="multi-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                        <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                            <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
                             选择文件
                         </div>
-
+                    </div>
+                    多文件上传实例
+                    <div id="multi-upload-instance" class="clearfix multi-file-upload">
+                        <div id="multi-upload-instance-file-list" class="pull-left">
+                        </div>
+                        <div id="multi-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                            <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                            选择文件
+                        </div>
                     </div>
 
-                    单、多图预览上传
+                    
 
-                    <div id="multi-image-upload" class="clearfix multi-image-upload">
+                    <!-- <div id="multi-image-upload" class="clearfix multi-image-upload">
 
                         <div id="multi-image-upload-file-list" class="pull-left">
                             <div class="file-item pull-left m-r-sm m-b-sm b-r-sm border-top-bottom border-left-right p-xxs">
@@ -235,10 +242,10 @@
                             选择图片
                         </div>
 
-                    </div>
+                    </div> -->
 
-
-                    <div id="multi-image2-upload" class="clearfix multi-image-upload multi-image-upload-lg">
+                    
+                    <!-- <div id="multi-image2-upload" class="clearfix multi-image-upload multi-image-upload-lg">
                         <div id="multi-image2-upload-file-list" class="pull-left">
                             <div class="file-item pull-left m-r-sm m-b-sm b-r-sm border-top-bottom border-left-right p-xxs">
                                 <div class="file-item-bg full-height">
@@ -284,22 +291,30 @@
                             <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
                             选择图片
                         </div>
-
-                    </div>
-
-                    <div id="image-upload-instance" class="clearfix multi-image-upload multi-image-upload-lg">
-                        <div id="image-upload-instance-file-list" class="pull-left"></div>
-                        <div id="image-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                    </div> -->
+                    单图上传实例
+                    <div id="single-image-upload-instance" class="clearfix multi-image-upload">
+                        <div id="single-image-upload-instance-file-list" class="pull-left"></div>
+                        <div id="single-image-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小2M以内">
+                            <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
                             选择图片
                         </div>
+                    </div>
 
+                    多图上传实例（大尺寸）
+                    <div id="image-upload-instance" class="clearfix multi-image-upload multi-image-upload-lg">
+                        <div id="image-upload-instance-file-list" class="pull-left"></div>
+                        <div id="image-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小2M以内">
+                            <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                            选择图片
+                        </div>
                     </div>
 
                      
 
      <script type="text/javascript">
          $(document).ready(function(){
+            //单按钮上传，不自动创建input存储框，不隐藏上传结果
             zjb.singleImageUpload({
                 uploader:'singleUpload',
                 picker:'single-upload',
@@ -309,18 +324,20 @@
                     '_token':'{{ csrf_token() }}'
                 },
                 errorMsgHiddenTime:2000,
-                uploadComplete:function(file){
+                isAutoInsertInput:false,//上传成功是否自动创建input存储区域
+                storageInputName:'image',//上传成功后input存储区域的name
+                isHiddenResult:false,
+                uploadComplete:function(file,uploader){
                     //上传完成触发时间
                 },
-                uploadError:function(file){
+                uploadError:function(file,uploader){
                     //上传出错触发时间
                 },
-                uploadSuccess:function(file,response){
+                uploadSuccess:function(file,response,uploader){
                     //上传完成触发时间
-                    
                 }
             });
-
+            //单按钮上传，自动创建input存储框，隐藏上传结果
             zjb.singleImageUpload({
                 uploader:'singleUpload2',
                 picker:'single-upload2',
@@ -330,46 +347,38 @@
                     '_token':'{{ csrf_token() }}'
                 },
                 errorMsgHiddenTime:2000,
-                uploadComplete:function(file){
+                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
+                storageInputName:'image',//上传成功后input存储区域的name
+                isHiddenResult:true,
+                uploadComplete:function(file,uploader){
                 },
-                uploadError:function(file){
+                uploadError:function(file,uploader){
                 },
-                uploadSuccess:function(file,response){
+                uploadSuccess:function(file,response,uploader){
                 }
             });
-
-
-
+            //单文件上传实例
             zjb.fileUpload({
-                uploader:'multiupload',
-                picker:'multi-upload',
+                uploader:'singleFileUploadInstance',
+                picker:'single-file-upload-instance',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("file.upload") }}',
                 formData: {
                     '_token':'{{ csrf_token() }}'
                 },
                 fileNumLimit:1,
-                uploadComplete:function(file){
-                    // alert('com');
-                },
-                uploadError:function(file){
-                    alert('error');
-                },
-                uploadSuccess:function(file,response){
-                    // alert('success');
+                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
+                storageInputName:'file',//上传成功后input存储区域的name
+                uploadComplete:function(file,uploader){},
+                uploadError:function(file,uploader){},
+                uploadSuccess:function(file,response,uploader){
                     console.log(response);
-
-
-
+                    console.log(uploader);
                 },
-                fileCannel:function(fileId){
-                    alert('cannel');
-                },
-                fileDelete:function(fileId){
-                    alert('fileDelete');
-                }
+                fileCannel:function(fileId,uploader){},
+                fileDelete:function(fileId,uploader){}
             });
-            //文件上传实例
+            //多文件上传实例
             zjb.fileUpload({
                 uploader:'multiUploadInstance',
                 picker:'multi-upload-instance',
@@ -378,11 +387,12 @@
                 formData: {
                     '_token':'{{ csrf_token() }}'
                 },
-                fileNumLimit:1,
+                fileNumLimit:10,
+                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
+                storageInputName:'files',//上传成功后input存储区域的name
                 uploadComplete:function(file,uploader){},
                 uploadError:function(file,uploader){},
                 uploadSuccess:function(file,response,uploader){
-                    // alert('success');
                     console.log(response);
                     console.log(uploader);
                 },
@@ -390,59 +400,29 @@
                 fileDelete:function(fileId,uploader){}
             });
 
-
+            //多图片上传实例
             zjb.imageUpload({
-                uploader:'multiImageUpload',
-                picker:'multi-image-upload',
+                uploader:'singleImageUploadInstance',
+                picker:'single-image-upload-instance',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("image.upload") }}',
                 formData: {
                     '_token':'{{ csrf_token() }}'
                 },
-                fileNumLimit:10,
-                uploadComplete:function(file){
-                    alert('com');
+                fileNumLimit:1,
+                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
+                storageInputName:'image',//上传成功后input存储区域的name
+                uploadComplete:function(file, uploader){},
+                uploadError:function(file, uploader){},
+                uploadSuccess:function(file,response, uploader){
+                    console.log(response);
+                    console.log(uploader);
                 },
-                uploadError:function(file){
-                    alert('error');
-                },
-                uploadSuccess:function(file,response){
-                    alert('success');
-                },
-                fileCannel:function(fileId){
-                    alert('cannel');
-                },
-                fileDelete:function(fileId){
-                    alert('fileDelete');
-                }
-            });
-            zjb.imageUpload({
-                uploader:'multiImageUpload2',
-                picker:'multi-image2-upload',
-                swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-                server: '{{ route("image.upload") }}',
-                formData: {
-                    // '_token':'{{ csrf_token() }}'
-                },
-                fileNumLimit:10,
-                uploadComplete:function(file){
-                    alert('com');
-                },
-                uploadError:function(file){
-                    alert('error');
-                },
-                uploadSuccess:function(file,response){
-                    alert('success');
-                },
-                fileCannel:function(fileId){
-                    alert('cannel');
-                },
-                fileDelete:function(fileId){
-                    alert('fileDelete');
-                }
+                fileCannel:function(fileId, uploader){},
+                fileDelete:function(fileId, uploader){}
             });
 
-            //图片上传实例
+            //多图片上传实例
             zjb.imageUpload({
                 uploader:'imageUploadInstance',
                 picker:'image-upload-instance',
@@ -452,9 +432,14 @@
                     '_token':'{{ csrf_token() }}'
                 },
                 fileNumLimit:10,
+                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
+                storageInputName:'images',//上传成功后input存储区域的name
                 uploadComplete:function(file, uploader){},
                 uploadError:function(file, uploader){},
-                uploadSuccess:function(file,response, uploader){},
+                uploadSuccess:function(file,response, uploader){
+                    console.log(response);
+                    console.log(uploader);
+                },
                 fileCannel:function(fileId, uploader){},
                 fileDelete:function(fileId, uploader){}
             });

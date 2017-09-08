@@ -20,12 +20,18 @@
                     href="{{ url('repair/create_repair/create?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
                 我要报修</a>
         </li>
+<<<<<<< HEAD
         @if(Auth::user()->is_org_admin)
             <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                         href="{{ url('repair/create_repair?app_groups=repair') }}"><i
                             class="fa fa-angle-right"></i> 待报修列表</a>
             </li>
         @endif
+=======
+        <li class="{{ active_class(if_route('process.index'))}}"><a
+                    href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 维修单列表</a>
+        </li>
+>>>>>>> 0eab9b4f8d2156fbfdc7e4d9c3395673adecccdb
     </ul>
 </li>
 
@@ -50,9 +56,15 @@
 </li>
 
 
+<<<<<<< HEAD
 <li class="{{ active_class(if_uri_pattern('asset/*')) }}">
     <a href="javascript:;"><i class="fa fa-credit-card"></i> <span class="nav-label">资产管理</span> <span
                 class="fa arrow"></span></a>
+=======
+
+<li class="{{ active_class(if_uri_pattern('asset/*') || if_query('app_groups','asset')) }}">
+    <a href="javascript:;"><i class="fa fa-credit-card"></i> <span class="nav-label">资产管理</span> <span class="fa arrow"></span></a>
+>>>>>>> 0eab9b4f8d2156fbfdc7e4d9c3395673adecccdb
     <ul class="nav nav-second-level collapse">
         <li class="{{ active_class(if_route('asset_category.index') && if_query('app_groups','asset')) }}"><a
                     href="{{ route('asset_category.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i>

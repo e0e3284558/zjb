@@ -138,6 +138,8 @@
                 '_token':'{{ csrf_token() }}'
             },
             errorMsgHiddenTime:2000,
+            isAutoInsertInput:false,//上传成功是否自动创建input存储区域
+            isHiddenResult:true,
             uploadComplete:function(file){
                 //上传完成触发时间
             },

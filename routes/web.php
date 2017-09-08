@@ -77,8 +77,10 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
     Route::resource('service_provider', 'ServiceProviderController');
     //创建报修
     Route::resource('create_repair', 'CreateRepairController');
+
     Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
     //报修流程
+    Route::post('process/create/{id}', 'ProcessController@create');
     Route::resource('process', 'ProcessController');
 });
 //-------------------------------------------------------------------------
@@ -132,3 +134,13 @@ Route::group(['prefix' => 'file','namespace' => 'File','middleware'=>'auth'], fu
 
 //-------------------------------------------------------------------------
 //文件管理模块路由结束
+
+//维修工登录
+//-------------------------------------------------------------------------
+
+Route::group(['namespace'=>'Repair'], function () {
+    Route::resource('work_login','WorkerLoginController');
+});
+
+//-------------------------------------------------------------------------
+//维修工登录
