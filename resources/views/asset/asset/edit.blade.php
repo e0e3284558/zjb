@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <div class="row">
+        {{--<div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">使用期限</label>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
 
         <div class="row">
             <div class="col-md-4">

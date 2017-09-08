@@ -75,6 +75,11 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
     Route::resource('service_worker', 'ServiceWorkerController');
     //服务商管理
     Route::resource('service_provider', 'ServiceProviderController');
+    //创建报修
+    Route::resource('create_repair', 'CreateRepairController');
+    Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
+    //报修流程
+    Route::resource('process', 'ProcessController');
 });
 //-------------------------------------------------------------------------
 //报修模块路由结束
@@ -92,9 +97,13 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
     Route::get('area/add_son/{id}','AreaController@add');
     Route::get('area/prints','AreaController@prints');
     Route::get('area/export','AreaController@export');
+    Route::get('area/downloadModel','AreaController@downloadModel');
     Route::resource('area','AreaController');
 
     //其他报修项
+    Route::get('other_asset/downloadModel','OtherAssetController@downloadModel');
+    Route::get('other_asset/add_import','OtherAssetController@add_import');
+    Route::post('other_asset/import','OtherAssetController@import');
     Route::resource('other_asset','OtherAssetController');
 
     //资产管理

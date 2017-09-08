@@ -51,6 +51,9 @@
                                 <a class="btn btn-success" onclick="add('添加','{{url('area/create')}}')"  id="create" >
                                     <i class="fa  fa-plus"></i> 新增
                                 </a>
+                                <a class="btn btn-default" id="download" href="{{url('area/downloadModel')}}">
+                                    <i class="fa fa-sign-in"></i> 下载模板
+                                </a>
                                 <a class="btn btn-default" id="import">
                                     <i class="fa fa-sign-in"></i> 导入数据
                                 </a>
@@ -136,7 +139,16 @@
                 $('#search-output').html('');
             });
 
-        })
+        });
+
+        /*$("#download").on("click",function () {
+            $.ajax({
+                url:"",
+                type:"get",
+                data:{},
+
+            })
+        });*/
 
     </script>
 
