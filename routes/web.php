@@ -81,6 +81,7 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
 
 });
 Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
+
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
     Route::resource('process', 'ProcessController');

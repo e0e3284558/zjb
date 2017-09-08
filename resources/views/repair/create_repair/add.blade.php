@@ -46,10 +46,12 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="get" class="form-horizontal">
+                        <form method="post" class="form-horizontal" action="{{url('repair/create_repair')}}">
+                            {{csrf_field()}}
                             <div class="form-group"><label class="col-sm-2 control-label">选择资产类型</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="account" onchange="select_asset(this.value)">
+                                    <select class="form-control m-b" name="asset_classify_id"
+                                            onchange="select_asset(this.value)">
                                         @foreach($classifies as $v)
                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                         @endforeach
@@ -58,27 +60,27 @@
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="account" id="asset">
+                                    <select class="form-control m-b" name="asset_id" id="asset">
                                         <option value="">请选择资产类别</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
-                                <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="remarks" class="form-control"></div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
-                                <div id="multi-image2-upload" class="clearfix multi-image-upload multi-image-upload-lg">
-                                    <div id="multi-image2-upload-file-list" class="pull-left">
 
-
-                                    </div>
-                                    <div id="multi-image2-upload-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                                <div id="image-upload-instance"
+                                     class="clearfix multi-image-upload multi-image-upload-lg">
+                                    <div id="image-upload-instance-file-list" class="pull-left"></div>
+                                    <div id="image-upload-instance-picker"
+                                         class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
+                                         data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
                                         <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
                                         选择图片
                                     </div>
 
                                 </div>
-
 
                             </div>
 
@@ -86,8 +88,8 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white" type="submit">Cancel</button>
-                                    <button class="btn btn-primary" type="submit">Save changes</button>
+                                    <button class="btn btn-white" type="submit">取消</button>
+                                    <button class="btn btn-primary" type="submit">我要报修</button>
                                 </div>
                             </div>
                         </form>
@@ -98,7 +100,7 @@
     </div>
     <script>
         function select_asset(id) {
-            url='{{url('repair/create_repair/select_asset')}}/'+id;
+            url = '{{url('repair/create_repair/select_asset')}}/' + id;
             jQuery("#asset").empty();
             $.ajax({
                 "url": url,
@@ -109,30 +111,87 @@
             })
         }
 
-        $(document).ready(function(){
+        $(document).ready(function () {
+            zjb.initAjax();
+            var l = $("button[type='submit']").ladda();
+            var forms = $(".form-horizontal");
+            /*字段验证*/
+            forms.validate(
+                {
+                    rules: {
+                        username: {
+                            required: true,
+                            minlength: 6,
+                            maxlength: 20
+                        },
+                        password: {
+                            required: true,
+                            minlength: 6,
+                            maxlength: 20
+                        },
+                        name: {
+                            required: true
+                        },
+                        tel: {
+                            required: true,
+                            phoneUS: true
+                        }
+                    },
+                    /*ajax提交*/
+                    submitHandler: function (form) {
+
+                        jQuery.ajax({
+                            url: forms.attr('action'),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: forms.serialize(),
+                            beforeSend: function () {
+                                l.ladda('start');
+                            },
+                            complete: function (xhr, textStatus) {
+                                l.ladda('stop');
+                            },
+                            success: function (data, textStatus, xhr) {
+                                if (data.status) {
+                                    toastr.success(data.message);
+                                    zjb.backUrl('{{url('repair/service_worker')}}', 1000);
+                                } else {
+                                    toastr.error(data.message, '警告');
+                                }
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                if (xhr.status == 422 && textStatus == 'error') {
+                                    $.each(xhr.responseJSON, function (i, v) {
+                                        toastr.error(v[0], '警告');
+                                    });
+                                } else {
+                                    toastr.error('请求出错，稍后重试', '警告');
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            );
+
             zjb.imageUpload({
-                uploader:'multiImageUpload2',
-                picker:'multi-image2-upload',
+                uploader: 'imageUploadInstance',
+                picker: 'image-upload-instance',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("image.upload") }}',
                 formData: {
-                    // '_token':'{{ csrf_token() }}'
+                    '_token': '{{ csrf_token() }}'
                 },
-                fileNumLimit:10,
-                uploadComplete:function(file){
-                    alert('com');
+                fileNumLimit: 10,
+                uploadComplete: function (file, uploader) {
                 },
-                uploadError:function(file){
-                    alert('error');
+                uploadError: function (file, uploader) {
                 },
-                uploadSuccess:function(file,response){
-                    alert('success');
+                uploadSuccess: function (file, response, uploader) {
                 },
-                fileCannel:function(fileId){
-                    alert('cannel');
+                fileCannel: function (fileId, uploader) {
                 },
-                fileDelete:function(fileId){
-                    alert('fileDelete');
+                fileDelete: function (fileId, uploader) {
                 }
             });
         });

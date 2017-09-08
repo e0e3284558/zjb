@@ -38,9 +38,6 @@
     <link href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/js/plugins/select2/css/select2-bootstrap.min.css') }}" rel="stylesheet">
     
-    <!-- chosen style-->
-    <!-- <link href="{{ asset('assets/js/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet"> -->
-
     <!-- bootstrap-treeView -->
     <link href="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.css') }}" rel="stylesheet">
 
@@ -643,7 +640,6 @@
     <script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
     <!-- layui -->
-    <!-- <script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script> -->
     <script src="{{ asset('assets/js/plugins/layui/layui.all.js') }}" type="text/javascript"></script>
 
     <!-- jqGrid -->
@@ -669,10 +665,6 @@
     <!-- select2 -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/i18n/zh-CN.js') }}"></script>
-    
-
-    <!-- chosen -->
-    <!-- <script type="text/javascript" src="{{ asset('assets/js/plugins/chosen/chosen.jquery.min.js') }}"></script> -->
 
     <!-- bootstrap-treeView -->
     <script src="{{ asset('assets/js/plugins/bootstrap-treeview/bootstrap-treeview.min.js') }}" type="text/javascript"></script>

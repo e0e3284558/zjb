@@ -87,7 +87,7 @@ $(document).ready(function() {
     $('#departments-tree').on('changed.jstree',function (e,data) {
       if(data.node != undefined){
         var link = data.node.a_attr.href;
-        zjb.ajaxGetHtml('#dep-form-wrapper',link);
+        zjb.ajaxGetHtml('#dep-form-wrapper',link,{},true);
       }
     });
     zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("users/departments/create") }}');

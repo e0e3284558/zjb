@@ -355,13 +355,20 @@ var zjb = function(){
             //     'swf':options.swf,//必须
             //     'server':options.server,//必须
             //     'formData':options.formData,
-            //     'errorMsgHiddenTime':options.errorMsgHiddenTime,
+            //     'errorMsgHiddenTime':options.errorMsgHiddenTime, #自动隐藏上传出错时间
+            //     'isAutoInsertInput':options.isAutoInsertInput,#是否自动追加上传成功后的input存储框
+            //     'storageInputName':options.storageInputName,#上传成功后的input存储框名称
+            //     'isHiddenResult':options.isHiddenResult,#是否隐藏上传成功后的提示信息
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
             // }
             options = $.extend(true, {}, options);
-            var uploader = options.uploader;
+            console.log(options);
+            var uploader = options.uploader,
+                autoCreateInput = !options.isAutoInsertInput ? options.isAutoInsertInput : true,
+                isHiddenResult = !options.isHiddenResult ? options.isHiddenResult : true,
+                storageInputName = options.storageInputName ? options.storageInputName : 'image';
             // 初始化Web Uploader
             uploader = WebUploader.create({
 
@@ -418,6 +425,14 @@ var zjb = function(){
                 if(response.status == 1){
                     $percent.removeClass("fa-spinner fa-spin").addClass("fa-check font-blue");
                     $info.attr('data-response-info',JSON.stringify(response));
+                    if(autoCreateInput){
+                        $li.append('<input type="hidden" name="'+storageInputName+'" value="'+response.data.id+'">');
+                    }
+                    if(isHiddenResult){
+                        window.setTimeout(function () {
+                            $li.hide();
+                        }, options.errorMsgHiddenTime ? options.errorMsgHiddenTime : 1500);
+                    }
                     if (options.uploadSuccess instanceof Function) {
                         options.uploadSuccess(file, response, uploader);
                     }
@@ -462,7 +477,8 @@ var zjb = function(){
             //     'server':options.server,//必须
             //     'formData':options.formData,
             //     'fileNumLimit':options.fileNumLimit,
-            //     'isAutoInsertInput':options.isAutoInsertInput,
+            //     'isAutoInsertInput':options.isAutoInsertInput,#是否自动追加上传成功后的input存储框
+            //     'storageInputName':options.storageInputName,#上传成功后的input存储框名称
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
@@ -472,7 +488,8 @@ var zjb = function(){
             options = $.extend(true, {}, options);
             var pickers = options.picker,
                 uploaders = options.uploader,
-                autoCreateInput = options.isAutoInsertInput ? options.isAutoInsertInput : true,
+                autoCreateInput = !options.isAutoInsertInput ? options.isAutoInsertInput : true,
+                storageInputName = options.storageInputName ? options.storageInputName : 'files',
                 limit = options.fileNumLimit ? options.fileNumLimit : 50;
             uploaders = WebUploader.create({
                 // 选完文件后，是否自动上传。
@@ -544,9 +561,9 @@ var zjb = function(){
                     $cannelBtn.attr('data-response-info',JSON.stringify(response));
                     if(autoCreateInput){
                         if(uploaders.option('fileNumLimit') == 1){
-                            $li.append('<input type="hidden" name="files" value="'+response.data.id+'">');
+                            $li.append('<input type="hidden" name="'+storageInputName+'" value="'+response.data.id+'">');
                         }else{
-                            $li.append('<input type="hidden" name="files[]" value="'+response.data.id+'">');
+                            $li.append('<input type="hidden" name="'+storageInputName+'[]" value="'+response.data.id+'">');
                         }
                     }
                     if (options.uploadSuccess instanceof Function) {
@@ -607,7 +624,8 @@ var zjb = function(){
             //     'server':options.server,//必须
             //     'formData':options.formData,
             //     'fileNumLimit':options.fileNumLimit
-            //     'isAutoInsertInput':options.isAutoInsertInput,
+            //     'isAutoInsertInput':options.isAutoInsertInput,#是否自动追加上传成功后的input存储框
+            //     'storageInputName':options.storageInputName,#上传成功后的input存储框名称
             //     'uploadSuccess':function
             //     'uploadError':function
             //     'uploadComplete':function
@@ -617,7 +635,8 @@ var zjb = function(){
             options = $.extend(true, {}, options);
             var pickers = options.picker,
                 uploaders = options.uploader,
-                autoCreateInput = options.isAutoInsertInput ? options.isAutoInsertInput : true,
+                autoCreateInput = !options.isAutoInsertInput ? options.isAutoInsertInput : true,
+                storageInputName = options.storageInputName ? options.storageInputName : 'images',
                 limit = options.fileNumLimit ? options.fileNumLimit : 50;
             uploaders = WebUploader.create({
                 // 选完文件后，是否自动上传。
@@ -713,9 +732,9 @@ var zjb = function(){
                         $img.removeClass('hide');
                         if(autoCreateInput){
                             if(uploaders.option('fileNumLimit') == 1){
-                                $li.append('<input type="hidden" name="images" value="'+response.data.id+'">');
+                                $li.append('<input type="hidden" name="'+storageInputName+'" value="'+response.data.id+'">');
                             }else{
-                                $li.append('<input type="hidden" name="images[]" value="'+response.data.id+'">');
+                                $li.append('<input type="hidden" name="'+storageInputName+'[]" value="'+response.data.id+'">');
                             }
                         }
                         if (options.uploadSuccess instanceof Function) {
