@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Repair;
 
-use App\Models\Repair\Process;
+use App\Models\Repair\ServiceWorker;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
-class ProcessController extends Controller
+class WorkerLoginController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,7 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",session('worker')->id)->get();
-        return view("repair.process.index",compact("list"));
+        return view("repair.login.login");
     }
 
     /**
@@ -24,9 +24,9 @@ class ProcessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
-        return view("repair.process.add",compact("id"));
+        //
     }
 
     /**
@@ -37,7 +37,17 @@ class ProcessController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $info = ServiceWorker::where('username',$request->username)->first();
+        if($info){
+            if(Hash::check($request->password, $info->password)){
+                session(['worker'=>$info]);
+                return redirect("repair/process");
+            }else{
+                return back();
+            }
+        }else{
+            return back();
+        }
     }
 
     /**
@@ -59,20 +69,7 @@ class ProcessController extends Controller
      */
     public function edit($id)
     {
-        $info = Process::where("id",$id)->update(['status'=>'4']);
-        $message = [];
-        if($info){
-            $message = [
-                'code' => '1',
-                'message' => '成功'
-            ];
-        }else{
-            $message = [
-                'code' => '0',
-                'message' => '失败'
-            ];
-        }
-        return response()->json($message);
+        //
     }
 
     /**
