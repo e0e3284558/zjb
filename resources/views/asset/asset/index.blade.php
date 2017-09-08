@@ -110,12 +110,12 @@
 {{--                                        <td>{{$value->SN_code}}</td>--}}
                                         <td>{{$value->calculate}}</td>
                                         <td>{{$value->money}}</td>
-                                        <td>{{$value->useDepartment->name}}</td>
+                                        <td>{{@$value->useDepartment->name}}</td>
 {{--                                        <td>{{$value->user_name}}</td>--}}
-                                        <td>{{$value->area->name}}</td>
-                                        <td>{{$value->admin->name}}</td>
-                                        <td>{{$value->org->name}}</td>
-                                        <td>{{$value->department->name}}</td>
+                                        <td>{{@$value->area->name}}</td>
+                                        <td>{{@$value->admin->name}}</td>
+                                        <td>{{@$value->org->name}}</td>
+                                        <td>{{@$value->department->name}}</td>
                                         <td>{{$value->buy_time}}</td>
 {{--                                        <td>{{$value->use_time}}</td>--}}
 {{--                                        <td>{{$value->source->name}}</td>--}}
