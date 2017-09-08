@@ -1262,16 +1262,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.8.0",
+            "version": "8.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "54c69fcb45c3a39d9a206398f57fe18809401eda"
+                "reference": "d234fc851e71443f20325501d1b764af488b0a66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/giggsey/libphonenumber-for-php/54c69fcb45c3a39d9a206398f57fe18809401eda.zip",
-                "reference": "54c69fcb45c3a39d9a206398f57fe18809401eda",
+                "url": "https://files.phpcomposer.com/files/giggsey/libphonenumber-for-php/d234fc851e71443f20325501d1b764af488b0a66.zip",
+                "reference": "d234fc851e71443f20325501d1b764af488b0a66",
                 "shasum": ""
             },
             "require": {
@@ -1282,7 +1282,7 @@
             "require-dev": {
                 "pear/pear-core-minimal": "^1.9",
                 "pear/pear_exception": "^1.0",
-                "pear/versioncontrol_git": "dev-master",
+                "pear/versioncontrol_git": "^0.5",
                 "phing/phing": "^2.7",
                 "phpunit/phpunit": "^4.8|^5.0",
                 "satooshi/php-coveralls": "^1.0",
@@ -1326,7 +1326,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2017-08-22T10:35:52+00:00"
+            "time": "2017-09-06T08:32:29+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -1699,16 +1699,16 @@
         },
         {
             "name": "hieu-le/active",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/letrunghieu/active.git",
-                "reference": "977b3927033bdf7aedfbf983cf6050c82e31e598"
+                "reference": "42d0f50be74b89d730bb4c0ee8c32447630506c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/letrunghieu/active/977b3927033bdf7aedfbf983cf6050c82e31e598.zip",
-                "reference": "977b3927033bdf7aedfbf983cf6050c82e31e598",
+                "url": "https://files.phpcomposer.com/files/letrunghieu/active/42d0f50be74b89d730bb4c0ee8c32447630506c6.zip",
+                "reference": "42d0f50be74b89d730bb4c0ee8c32447630506c6",
                 "shasum": ""
             },
             "require": {
@@ -1721,6 +1721,16 @@
                 "phpunit/phpunit": "~6.0"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "HieuLe\\Active\\ActiveServiceProvider"
+                    ],
+                    "aliases": {
+                        "Active": "HieuLe\\Active\\Facades\\Active"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "HieuLe\\Active\\": "src/",
@@ -1748,7 +1758,7 @@
                 "laravel",
                 "routing"
             ],
-            "time": "2017-08-31T10:20:30+00:00"
+            "time": "2017-09-07T02:36:51+00:00"
         },
         {
             "name": "intervention/image",

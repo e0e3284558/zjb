@@ -1,8 +1,8 @@
 <!-- Large modal -->
-<div class="modal fade bs-example-modal-lg" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal bs-example-modal-lg  animated bounceInDown" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div id="loading" class="ibox-content"  >
+            <div id="" class="ibox-content"  >
                 <div class="spiner-example">
                     <div class="sk-spinner sk-spinner-circle">
                         <div class="sk-circle1 sk-circle"></div>
@@ -25,10 +25,10 @@
 </div>
 
 <!-- asset md-modal -->
-<div class="modal fade bs-example-modal-md"  role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal bs-example-modal-md  animated bounceInDown"  role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <div id="loading" class="ibox-content"  >
+            <div id="" class="ibox-content">
                 <div class="spiner-example">
                     <div class="sk-spinner sk-spinner-circle">
                         <div class="sk-circle1 sk-circle"></div>

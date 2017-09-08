@@ -464,5 +464,241 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>表格带查询视图</h5>
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link  btn btn-default btn-xs">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-toolbar">
+                        <form action="" method="get" class="form-horizontal m-t-sm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 ">姓名：</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="name" value="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 ">性别：</label>
+                                        <div class="col-md-8">
+                                            <select name="sex" class="form-control select2"></select>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 ">姓名：</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="name" value="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">性别：</label>
+                                        <div class="col-md-8">
+                                            <select name="sex" class="form-control select2"></select>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 ">姓姓姓名：</label>
+                                        <div class="col-md-8">
+                                            <input type="text" name="name" value="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">性别：</label>
+                                        <div class="col-md-8">
+                                            <select name="sex" class="form-control select2"></select>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3"></label>
+                                        <div class="col-md-8">
+                                            <input type="button" name="submit" class="btn blue btn-sm" value="查询">
+                                            <input type="reset" name="submit" class="btn btn-default btn-sm" value="清空">
+                                        </div>
+                                        
+                                    </div>
+                                </div>   
+                            </div>
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="icheck checkall" data-check=".datalist" name="checkall"></th>
+                                <th>用户名</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>电话</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody class="datalist">
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="id[]" value="1" class="icheck checkitems">
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu@ww.com
+                                    </td>
+                                    <td>
+                                        1888888888
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs blue"><i class="fa fa-pencil"></i> 编辑</a>
+                                        <a class="btn btn-xs red"><i class="fa fa-trash"></i> 删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="id[]" value="1" class="icheck checkitems">
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu@ww.com
+                                    </td>
+                                    <td>
+                                        1888888888
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs blue"><i class="fa fa-pencil"></i> 编辑</a>
+                                        <a class="btn btn-xs red"><i class="fa fa-trash"></i> 删除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="icheck checkall" data-check=".datalist2" name="checkall"></th>
+                                <th>用户名</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>电话</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody class="datalist2">
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="id[]" value="1" class="icheck checkitems">
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu@ww.com
+                                    </td>
+                                    <td>
+                                        1888888888
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs blue"><i class="fa fa-pencil"></i> 编辑</a>
+                                        <a class="btn btn-xs red"><i class="fa fa-trash"></i> 删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="id[]" value="1" class="icheck checkitems">
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu
+                                    </td>
+                                    <td>
+                                        liu@ww.com
+                                    </td>
+                                    <td>
+                                        1888888888
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-xs blue"><i class="fa fa-pencil"></i> 编辑</a>
+                                        <a class="btn btn-xs red"><i class="fa fa-trash"></i> 删除</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-b-sm"></div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>表格带查询视图</h5>
+                    <div class="ibox-tools">
+                        <a class="fullscreen-link  btn btn-default btn-xs">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content" style="height: 500px;">
+                    <table class="layui-table" lay-data="{height: 470, url:'{{ route("users.groups") }}',page:true,response:{countName: 'total'}}">
+                      <thead>
+                        <tr>
+                          <th lay-data="{checkbox:true}"></th>
+                          <th lay-data="{field:'id', width:80, sort: true}">ID</th>
+                          <th lay-data="{field:'email', width:80}">用户名</th>
+                          <th lay-data="{field:'name', width:177}">签名</th>
+                        </tr>
+                      </thead>
+                    </table> 
+                    <script>
+                    $(document).ready(function(){
+                       layui.use('table', function(){
+                          var table = layui.table;
+                        }); 
+                    });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
 @endsection

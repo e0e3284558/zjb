@@ -84,7 +84,24 @@ var zjb = function(){
         if($(".full-height-layout-on").length > 0){
             $('body').addClass('full-height-layout');
         }
-    }
+    };
+    var handleCheckAll = function(){
+        if (!$().iCheck) {
+            return;
+        }
+        $('.checkall').each(function(i,v){
+            var checkall = $(this).attr('data-check');
+            if(checkall){
+                $(this).on('ifChecked ifUnchecked', function(event){
+                    if(event.type == 'ifChecked'){
+                        $(checkall).find('.checkitems').iCheck('check');
+                    }else{
+                        $(checkall).find('.checkitems').iCheck('uncheck');
+                    }
+                });
+            }
+        });
+    };
     
 	return {
         //main function to initiate core javascript
@@ -98,6 +115,7 @@ var zjb = function(){
             handlePopovers();
             handleReloadHtml();
             handleFullHeight();
+            handleCheckAll();
         },
         //main function to initiate core javascript after ajax complete
         initAjax:function (){
@@ -108,6 +126,7 @@ var zjb = function(){
             handleTooltips();
             handlePopovers();
             handleScrollers();
+            handleCheckAll();
         },
 		//返回某个url页面
 	    backUrl: function (url,time) {
@@ -374,13 +393,13 @@ var zjb = function(){
             uploader.on( 'fileQueued', function( file ) {
                 var $li = $(
                         '<div id="' + file.id + '" class="p-xs b-r-sm m-b-sm border-top-bottom border-left-right">' +
-                            '<div class="file-info" data-file-id="'+file.id+'"> ' + file.name + '</div>' +
+                            '<div class="file-info overflow" title="' + file.name + '" data-file-id="'+file.id+'"> ' + file.name + '</div>' +
                         '</div>'
                         );
                 $("#" + options.picker + "-file-list").html( $li );
             });
             // 文件上传过程中创建进度条实时显示。
-            uploader.on( 'uploadProgress', function( file, percentage ) {
+            uploader.on( 'uploadProgress', function( file, percentage) {
                 var $li = $( '#'+file.id ),
                     $percent = $li.find('.file-info i');
                     $info = $li.find('div.file-info');
@@ -400,7 +419,7 @@ var zjb = function(){
                     $percent.removeClass("fa-spinner fa-spin").addClass("fa-check font-blue");
                     $info.attr('data-response-info',JSON.stringify(response));
                     if (options.uploadSuccess instanceof Function) {
-                        options.uploadSuccess(file, response);
+                        options.uploadSuccess(file, response, uploader);
                     }
                 }else{
                     $info.addClass('font-red').html('<i class="fa fa-exclamation-circle font-red"></i> ' + response.message);
@@ -423,13 +442,13 @@ var zjb = function(){
                     }, options.errorMsgHiddenTime);
                 }
                 if (options.uploadError instanceof Function) {
-                    options.uploadError(file);
+                    options.uploadError(file, uploader);
                 }
             });
             // 完成上传完了，成功或者失败，先删除进度条。
             uploader.on( 'uploadComplete', function( file ) {
                 if (options.uploadComplete instanceof Function) {
-                    options.uploadComplete(file);
+                    options.uploadComplete(file, uploader);
                 }
                 uploader.removeFile( file,true);
             });

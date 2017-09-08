@@ -56,6 +56,8 @@
     <!-- ladda style -->
     <link href="{{asset('assets/js/plugins/ladda/ladda-themeless.min.css')}}" rel="stylesheet">
 
+     <link rel="stylesheet" href="{{asset('assets/js/plugins/layui/css/layui.css')}}"  media="all">
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -640,8 +642,9 @@
     <script src="{{ asset('assets/js/plugins/dataTables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/plugins/dataTables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 
-    <!-- layer -->
-    <script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script>
+    <!-- layui -->
+    <!-- <script src="{{ asset('assets/js/plugins/layer/layer.js') }}" type="text/javascript"></script> -->
+    <script src="{{ asset('assets/js/plugins/layui/layui.all.js') }}" type="text/javascript"></script>
 
     <!-- jqGrid -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/i18n/grid.locale-cn.js') }}"></script>

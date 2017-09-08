@@ -52,8 +52,8 @@
 									</div>  
 								@endif
 								</div>
-								<p><input type="hidden" name="logo" value="{{ $unit->logo }}"></p>
-								<div id="single-upload" class="btn-upload ">
+								<p class=""><input type="hidden" name="logo" value="{{ $unit->logo }}"></p>
+								<div id="single-upload" class="btn-upload m-t-sm">
 			                        <div id="single-upload-picker" class="pickers tooltips" data-toggle="tooltip" data-placement="bottom" data-original-title="logo仅支持 JPG、PNG、GIF 格式，文件最大2 MB。"><i class="fa fa-upload"></i> 更换logo</div>
 			                        <div id="single-upload-file-list"></div>
 			                    </div> 
