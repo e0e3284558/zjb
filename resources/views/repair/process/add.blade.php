@@ -9,15 +9,16 @@
             请更正下列输入错误：
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <input type="hidden" name="asset_id" value="{{$id}}">
+        <input type="hidden" name="id" value="{{$id}}">
 
         <div class="row" >
             <div class="col-md-12" >
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">维修结果</label>
                     <div class="col-sm-8">
-                        <input type="radio" name="result" value="1">已修好
-                        <input type="radio" name="result" value="0">未修好
+                        <input type="radio" name="status" value="10">已修好
+                        <input type="radio" name="status" value="2">未修好(可再修)
+                        <input type="radio" name="status" value="0">未修好(不可再修)
                     </div>
                 </div>
             </div>
@@ -28,7 +29,7 @@
                 <div class="form-group">
                     <label for="remarks" class="col-sm-2 control-label">维修建议</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
+                        <textarea class="form-control" name="suggest" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
                 </div>
             </div>
