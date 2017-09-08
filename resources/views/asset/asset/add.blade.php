@@ -212,7 +212,6 @@
 
     $( document ).ready( function () {
 
-
         zjb.singleImageUpload({
             uploader:'singleUpload',
             picker:'single-upload',

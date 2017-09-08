@@ -36,7 +36,7 @@
 	    </div>
     </div>
     <div class="full-height">
-        <div class="full-height-scroll white-bg border-left ">
+        <div class="full-height-scroll  border-left ">
             <div class="full-height-wrapper">
                 <div class="row">
                 	<div class="col-lg-12" id="dep-form-wrapper">

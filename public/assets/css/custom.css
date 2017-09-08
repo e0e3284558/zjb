@@ -8155,4 +8155,43 @@ Custom color buttons
   max-height: 138px;
 }
 .skin-1 .multi-image-upload-lg .file-item .file-progress{padding-top: 20px;}
+.skin-1 .breadcrumb {
+    margin-left: -10px;
+}
+.p-tb-xs{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.p-r-xxs{padding-right: 5px;}
+.p-r-xs{padding-right: 10px;}
+.form-horizontal .tl{text-align: left; }
+.overflow{overflow: hidden;}
+.bg-f2{
+    background-color: #f4f6fa;
+}
+/* layui style*/
+.layui-table-view{
+    margin:0 
+}
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #0e9aef;
+    background-color: #0e9aef;
+    color: #fff;
+}
+.layui-form-checkbox[lay-skin=primary]:hover i {
+    border-color: #0e9aef;
+}
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+    background-color: #0e9aef;
+}
+.layui-table-no-border .layui-table-view{
+    border:0;
+}
+.layui-table-tool select{
+    height: 24px;
+}
+.layui-table-tips-c{padding: 0;}
+.layui-table thead tr, .layui-table-fixed-l tr, .layui-table-header, .layui-table-mend, .layui-table-patch, .layui-table-tool{
+    background-color: #f4f6fa;
+}
 
