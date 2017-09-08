@@ -18,6 +18,9 @@
         <li class="{{ active_class(if_route('create_repair.create'))}}"><a
                     href="{{ url('repair/create_repair/create?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 我要报修</a>
         </li>
+        <li class="{{ active_class(if_route('process.index'))}}"><a
+                    href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 维修单列表</a>
+        </li>
     </ul>
 </li>
 

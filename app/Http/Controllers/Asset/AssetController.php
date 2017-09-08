@@ -6,7 +6,7 @@ use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\AssetFile;
-use App\Models\Asset\File;
+use App\Models\File\File;
 use App\Models\Asset\Source;
 use App\Models\User\Department;
 use App\Models\User\Org;
