@@ -44,7 +44,7 @@
 
 
 
-<li class="{{ active_class(if_uri_pattern('asset/*')) }}">
+<li class="{{ active_class(if_uri_pattern('asset/*') || if_query('app_groups','asset')) }}">
     <a href="javascript:;"><i class="fa fa-credit-card"></i> <span class="nav-label">资产管理</span> <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
         <li class="{{ active_class(if_route('asset_category.index') && if_query('app_groups','asset')) }}"><a href="{{ route('asset_category.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产类别</a></li>
