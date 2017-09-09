@@ -12,9 +12,6 @@ class Process extends Model
     public function user(){
         return $this->belongsTo('App\Models\User\User');
     }
-    public function admin(){
-        return $this->belongsTo('App\Models\User\User','admin_id');
-    }
     public function asset(){
         return $this->belongsTo('App\Models\Asset\Asset');
     }
@@ -26,5 +23,8 @@ class Process extends Model
     }
     public function serviceProvider(){
         return $this->belongsTo('App\Models\Repair\ServiceProvider');
+    }
+    public function img(){
+        return $this->belongsToMany('App\Models\File\File');
     }
 }

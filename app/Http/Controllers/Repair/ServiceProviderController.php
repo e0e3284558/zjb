@@ -92,6 +92,7 @@ class ServiceProviderController extends Controller
     {
         $data = ServiceProvider::find($id);
         $serviceWorker = $data->service_worker()->get();
+
         return response()->view('repair.service_provider.show', compact('data', 'serviceWorker'));
     }
 

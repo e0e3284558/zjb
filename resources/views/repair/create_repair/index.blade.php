@@ -40,19 +40,32 @@
                                 <th>报修物品所属分类</th>
                                 <th>报修物品照片</th>
                                 <th>报修备注</th>
+                                <th>上次维修工</th>
                                 <th>维修建议</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-
+                            @foreach($data as $v)
+                                <tr>
+                                    <td>{{$v->user->name}}</td>
+                                    <td>{{$v->asset->name}}</td>
+                                    <td>{{$v->category->name}}</td>
+                                    <td>
+                                        @foreach($v->img as $img)
+                                               <img src='{{url("$img->path")}}' alt="" class="img-circle-b">
+                                        @endforeach
+                                    </td>
+                                    <td>{{$v->remarks}}</td>
+                                    <td>{{@$v->serviceWorker->name}}</td>
+                                    <td>{{$v->suggest}}</td>
+                                    <td>
+                                        <button class="btn btn-success" onclick="assign('{{$v->id}}')"
+                                                data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            分派维修工</button>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
 
@@ -62,4 +75,16 @@
         </div>
     </div>
 
+    <script>
+        function assign(id) {
+            var url='{{url("repair/create_repair/assign_worker/")}}/'+id;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-lg .modal-content").html(data);
+                }
+            })
+        }
+    </script>
 @endsection
