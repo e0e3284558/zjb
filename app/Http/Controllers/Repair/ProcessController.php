@@ -106,8 +106,21 @@ class ProcessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function refuse($id)
     {
-        //
+        $info = Process::where('id',$id)->update(['status'=>'2']);
+        $message = [];
+        if($info){
+            $message = [
+                'code' => 1,
+                'message' => '成功'
+            ];
+        }else{
+            $message = [
+                'code' => 0,
+                'message' => '失败'
+            ];
+        }
+        return response()->json($message);
     }
 }

@@ -32,7 +32,6 @@
                         <table style="min-width: 1000px" class="table table-striped  table-bordered" >
                             <thead>
                                 <tr role="row">
-                                    {{--<th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>--}}
                                     <th>操作</th>
                                     <th>公司</th>
                                     <th>报修人</th>
@@ -44,26 +43,25 @@
                             </thead>
                             <tbody>
                                 @foreach($list as $value)
-                                    <tr role="row">
-                                        {{--<td role="gridcell">--}}
-                                            {{--<input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">--}}
-                                        {{--</td>--}}
-                                        @if($value->status=="20")
-                                            <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger">拒绝</button></td>
-                                        @elseif($value->status=="4")
-                                            <td><button class="btn btn-primary" onclick="add('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">填写报修结果</button></td>
-                                        @elseif($value->status=='10')
-                                            <td><span>已修好</span></td>
-                                        @elseif($value->status=='0')
-                                            <td><span>不可再修</span></td>
-                                        @endif
-                                        <td>{{$value->org->name}}</td>
-                                        <td>{{$value->user->name}}</td>
-                                        <td>{{$value->asset->name}}</td>
-                                        <td>{{$value->category->name}}</td>
-                                        <td>{{$value->serviceWorker->name}}</td>
-                                        <td>{{@$value->serviceProvider->name}}</td>
-                                    </tr>
+                                    @if($value->status!='2')
+                                        <tr role="row">
+                                            @if($value->status=="20")
+                                                <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger" onclick="refuse('{{$value->id}}')" >拒绝</button></td>
+                                            @elseif($value->status=="4")
+                                                <td><button class="btn btn-primary" onclick="add('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">填写报修结果</button></td>
+                                            @elseif($value->status=='10')
+                                                <td><span>已修好</span></td>
+                                            @elseif($value->status=='0')
+                                                <td><span>不可再修</span></td>
+                                            @endif
+                                            <td>{{$value->org->name}}</td>
+                                            <td>{{$value->user->name}}</td>
+                                            <td>{{$value->asset->name}}</td>
+                                            <td>{{$value->category->name}}</td>
+                                            <td>{{$value->serviceWorker->name}}</td>
+                                            <td>{{@$value->serviceProvider->name}}</td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -125,6 +123,41 @@
                     $.ajax({
                         type: "get",
                         url: '{{url('repair/process')}}/'+id+'/edit',
+                        dataType:"json",
+                        success: function (data) {
+                            if(data.code==1){
+                                swal({
+                                    title: "",
+                                    text: data.message,
+                                    type: "success",
+                                    timer: 1000,
+                                },function () {
+                                    window.location.reload();
+                                });
+                            }else{
+                                swal("", data.message, "error");
+                            }
+                        }
+                    });
+                });
+        }
+
+        function refuse(id) {
+            swal({
+                    title: "确认要拒绝此报修项吗？",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false
+                },
+                function(){
+                    //发异步删除数据
+                    $.ajax({
+                        type: "get",
+                        url: '{{url('repair/process/refuse')}}/'+id,
                         dataType:"json",
                         success: function (data) {
                             if(data.code==1){

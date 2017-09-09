@@ -93,6 +93,7 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair'], function () {
     Route::resource('repair_list','RepairListController');
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
+    Route::get('process/refuse/{id}', 'ProcessController@refuse');
     Route::resource('process', 'ProcessController');
 });
 //-------------------------------------------------------------------------
