@@ -36,7 +36,6 @@
                                     <th>操作</th>
                                     <th>公司</th>
                                     <th>报修人</th>
-                                    <th>管理员</th>
                                     <th>资产名称</th>
                                     <th>资产分类</th>
                                     <th>维修工id</th>
@@ -60,7 +59,6 @@
                                         @endif
                                         <td>{{$value->org->name}}</td>
                                         <td>{{$value->user->name}}</td>
-                                        <td>{{$value->admin->name}}</td>
                                         <td>{{$value->asset->name}}</td>
                                         <td>{{$value->category->name}}</td>
                                         <td>{{$value->serviceWorker->name}}</td>

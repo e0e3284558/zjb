@@ -32,15 +32,10 @@
                         <table style="min-width: 1000px" class="table table-striped  table-bordered" >
                             <thead>
                                 <tr role="row">
-                                    {{--<th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>--}}
                                     <th>操作</th>
                                     <th>公司</th>
-                                    <th>报修人</th>
-                                    <th>管理员</th>
                                     <th>资产名称</th>
                                     <th>资产分类</th>
-                                    <th>维修工id</th>
-                                    <th>服务商id</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -59,12 +54,8 @@
                                             @endif
                                         @endif
                                         <td>{{$value->org->name}}</td>
-                                        <td>{{$value->user->name}}</td>
-                                        <td>{{$value->admin->name}}</td>
                                         <td>{{$value->asset->name}}</td>
                                         <td>{{$value->category->name}}</td>
-                                        <td>{{$value->serviceWorker->name}}</td>
-                                        <td>{{@$value->serviceProvider->name}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
