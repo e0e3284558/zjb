@@ -108,7 +108,7 @@ class ProcessController extends Controller
      */
     public function refuse($id)
     {
-        $info = Process::where('id',$id)->update(['status'=>'2']);
+        $info = Process::where('id',$id)->update(['status'=>'1']);
         $message = [];
         if($info){
             $message = [
