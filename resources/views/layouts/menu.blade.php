@@ -1,11 +1,14 @@
+@if(isset(Auth::user()->is_org_admin))
 <li class="{{ active_class(if_route('home')) }}">
     <a href="{{ url('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">控制面板</span></a>
 </li>
-
+@endif
 <li class="{{ active_class(if_uri_pattern('repair/*')) }}">
     <a href="javascript:;"><i class="fa fa-wrench"></i> <span class="nav-label">报修管理</span> <span
                 class="fa arrow"></span></a>
     <ul class="nav nav-second-level collapse">
+        @if(!session('worker'))
+        @if(isset(Auth::user()->is_org_admin))
         <li class="{{ active_class(if_route('classify.index'))}}"><a
                     href="{{ url('repair/classify?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 报修分类</a>
         </li>
@@ -16,20 +19,22 @@
                     href="{{ url('repair/service_provider?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
                 服务商管理</a>
         </li>
-        <li class="{{ active_class(if_route('create_repair.create'))}}"><a
-                    href="{{ url('repair/create_repair/create?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
-                我要报修</a>
-        </li>
+
         <li class="{{ active_class(if_route('repair_list.index'))}}"><a
                     href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 我的报修列表</a>
         </li>
-        @if(isset(Auth::user()->is_org_admin))
+
             <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                         href="{{ url('repair/create_repair?app_groups=repair') }}"><i
                             class="fa fa-angle-right"></i> 待报修列表</a>
             </li>
         @endif
-        @if(session('worker'))
+        <li class="{{ active_class(if_route('create_repair.create'))}}"><a
+                    href="{{ url('repair/create_repair/create?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
+                我要报修</a>
+        </li>
+        @else
+{{--        @if(session('worker'))--}}
         <li class="{{ active_class(if_route('process.index'))}}"><a
                     href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 维修单列表</a>
         </li>
@@ -38,7 +43,7 @@
     </ul>
 </li>
 
-
+@if(isset(Auth::user()->is_org_admin))
 <li class="{{ active_class(if_uri_pattern('users/*')) }}">
     <a href="javascript:;"><i class="fa fa-sitemap"></i> <span class="nav-label">用户管理</span> <span
                 class="fa arrow"></span></a>
@@ -79,3 +84,4 @@
         </li>
     </ul>
 </li>
+@endif

@@ -86,13 +86,11 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     //选中维修工进行派工
     Route::post('create_repair/confirm_worker', 'CreateRepairController@confirmWorker');
 
-
-    //我的报修列表
-    Route::resource('repair_list','RepairListController');
-
 });
 Route::group(['prefix' => 'repair', 'namespace' => 'Repair'], function () {
 
+    //我的报修列表
+    Route::resource('repair_list','RepairListController');
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
     Route::resource('process', 'ProcessController');
