@@ -7,10 +7,10 @@
                     <a href="{{ route('home') }}">控制面板</a>
                 </li>
                 <li>
-                    <a href="javascript:;">资产管理</a>
+                    <a href="javascript:;">报修管理</a>
                 </li>
                 <li class="active">
-                    <strong>资产入库</strong>
+                    <strong>维修单列表</strong>
                 </li>
             </ol>
         </div>
