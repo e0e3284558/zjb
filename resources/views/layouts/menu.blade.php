@@ -20,15 +20,20 @@
                     href="{{ url('repair/create_repair/create?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
                 我要报修</a>
         </li>
-        @if(Auth::user()->is_org_admin)
+        <li class="{{ active_class(if_route('repair_list.index'))}}"><a
+                    href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 我的报修列表</a>
+        </li>
+        @if(isset(Auth::user()->is_org_admin))
             <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                         href="{{ url('repair/create_repair?app_groups=repair') }}"><i
                             class="fa fa-angle-right"></i> 待报修列表</a>
             </li>
         @endif
+        @if(session('worker'))
         <li class="{{ active_class(if_route('process.index'))}}"><a
                     href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 维修单列表</a>
         </li>
+        @endif
 
     </ul>
 </li>

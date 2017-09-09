@@ -79,6 +79,9 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
     Route::resource('create_repair', 'CreateRepairController');
     Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
 
+    //我的报修列表
+    Route::resource('repair_list','RepairListController');
+
 });
 Route::group(['prefix' => 'repair','namespace' => 'Repair'], function () {
 

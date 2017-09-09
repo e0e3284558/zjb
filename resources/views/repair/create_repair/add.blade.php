@@ -52,6 +52,7 @@
                                 <div class="col-sm-10">
                                     <select class="form-control m-b" name="asset_classify_id"
                                             onchange="select_asset(this.value)">
+                                        <option value="">请选择</option>
                                         @foreach($classifies as $v)
                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                         @endforeach
