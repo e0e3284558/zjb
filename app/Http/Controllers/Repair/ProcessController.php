@@ -37,7 +37,20 @@ class ProcessController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $info = Process::where("id",$request->id)->update($request->except('id','_token'));
+        $message = [];
+        if($info){
+            $message = [
+                'code' => '1',
+                'message' => '成功'
+            ];
+        }else{
+            $message = [
+                'code' => '0',
+                'message' => '失败'
+            ];
+        }
+        return response()->json($message);
     }
 
     /**

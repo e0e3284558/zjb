@@ -25,18 +25,6 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    {{--<h3 class="h3">--}}
-                        {{--<a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>--}}
-                        {{--<button type="button" onclick="edit()" href="javascript:;" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
-                            {{--<i class="fa fa-pencil"></i> 修改--}}
-                        {{--</button>--}}
-                        {{--<button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">--}}
-                            {{--<i class="fa  fa-trash-o"></i> 删除--}}
-                        {{--</button>--}}
-                        {{--<a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
-                            {{--<i class="fa fa-copy"></i> 复制--}}
-                        {{--</a>--}}
-                    {{--</h3>--}}
                 </div>
                 <div class="ibox-content">
 
@@ -44,7 +32,8 @@
                         <table style="min-width: 1000px" class="table table-striped  table-bordered" >
                             <thead>
                                 <tr role="row">
-                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
+                                    {{--<th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>--}}
+                                    <th>操作</th>
                                     <th>公司</th>
                                     <th>报修人</th>
                                     <th>管理员</th>
@@ -60,10 +49,14 @@
                                         {{--<td role="gridcell">--}}
                                             {{--<input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">--}}
                                         {{--</td>--}}
-                                        @if($value->status=="2")
-                                            <th><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger">拒绝</button></th>
+                                        @if($value->status=="20")
+                                            <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger">拒绝</button></td>
                                         @elseif($value->status=="4")
-                                            <th><button class="btn btn-primary" onclick="add('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">填写报修结果</button></th>
+                                            <td><button class="btn btn-primary" onclick="add('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">填写报修结果</button></td>
+                                        @elseif($value->status=='10')
+                                            <td><span>已修好</span></td>
+                                        @elseif($value->status=='0')
+                                            <td><span>不可再修</span></td>
                                         @endif
                                         <td>{{$value->org->name}}</td>
                                         <td>{{$value->user->name}}</td>
