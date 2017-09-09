@@ -16,7 +16,8 @@ class RepairListController extends Controller
      */
     public function index()
     {
-        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("user_id",Auth::user()->id)->get();
+        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')
+                         ->where("user_id",Auth::user()->id)->get();
         return view("repair.repair_list.index",compact("list"));
     }
 

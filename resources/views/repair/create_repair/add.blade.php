@@ -155,7 +155,7 @@
                             success: function (data, textStatus, xhr) {
                                 if (data.status) {
                                     toastr.success(data.message);
-                                    zjb.backUrl('{{url('repair/service_worker')}}', 1000);
+                                    zjb.backUrl('{{url('repair/repair_list')}}', 1000);
                                 } else {
                                     toastr.error(data.message, '警告');
                                 }
