@@ -180,6 +180,8 @@
                 picker: 'image-upload-instance',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("image.upload") }}',
+                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
+                storageInputName:'images',//上传成功后input存储区域的name
                 formData: {
                     '_token': '{{ csrf_token() }}'
                 },
