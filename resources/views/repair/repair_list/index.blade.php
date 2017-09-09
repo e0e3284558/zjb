@@ -41,9 +41,6 @@
                             <tbody>
                                 @foreach($list as $value)
                                     <tr role="row">
-                                        {{--<td role="gridcell">--}}
-                                            {{--<input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">--}}
-                                        {{--</td>--}}
                                         @if($value->status!="10")
                                             <td><span>正在努力维修中</span></td>
                                         @else

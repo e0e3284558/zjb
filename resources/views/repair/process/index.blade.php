@@ -45,9 +45,6 @@
                             <tbody>
                                 @foreach($list as $value)
                                     <tr role="row">
-                                        {{--<td role="gridcell">--}}
-                                            {{--<input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">--}}
-                                        {{--</td>--}}
                                         @if($value->status=="20")
                                             <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger">拒绝</button></td>
                                         @elseif($value->status=="4")
@@ -62,7 +59,7 @@
                                         <td>{{$value->asset->name}}</td>
                                         <td>{{$value->category->name}}</td>
                                         <td>{{$value->serviceWorker->name}}</td>
-                                        <td>{{@$value->serviceProvider->name}}</td>
+                                        <td>{{$value->serviceProvider->name}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
