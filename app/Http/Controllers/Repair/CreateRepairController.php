@@ -98,6 +98,7 @@ class CreateRepairController extends Controller
         ];
         $process_id = Process::insertGetId($res);
         if ($process_id) {
+            
             foreach ($request->images as $v) {
                 if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process_id])) {
                     return response()->json([
