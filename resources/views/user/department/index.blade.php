@@ -27,16 +27,24 @@
 @section('content')
 <div class="fh-breadcrumb full-height-layout-on">
 	<div class="fh-column fh-column-w">
-	    <div class="full-height-scroll">
-	    	<div class="full-height-wrapper">
-	    		<div id="departments-tree">
-                    
+	    <div class="full-height-scroll"  id="ztree-warpper">
+            <div class="search-tools-top padding-20 border-bottom">
+                <div class="input-group">
+                    <input type="text" placeholder="请输入关键字" name="name" id="search-name" class="form-control border-radius-none">
+                    <span class="input-group-btn"> 
+                        <button type="button" id="search-dep" class="btn btn-primary blue border-radius-none"><i class="fa fa-search"></i> 查询</button>
+                    </span>
                 </div>
+            </div>
+	    	<div class="full-height-wrapper">
+	    		<ul id="departments-tree" class="ztree">
+                   
+                </ul>
 	    	</div>
 	    </div>
     </div>
     <div class="full-height">
-        <div class="full-height-scroll  border-left ">
+        <div class="full-height-scroll  border-left " >
             <div class="full-height-wrapper">
                 <div class="row">
                 	<div class="col-lg-12" id="dep-form-wrapper">
@@ -50,47 +58,59 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#departments-tree').jstree({
-        'core' : {
-            'force_text' : true,
-            "check_callback" : true, 
-            'data' : {
-                'url' : '{!! url("users/departments?tree=1") !!}',
-                "dataType" : "json"
+    var depTreeBeforeAsync = function(treeId, treeNode) {
+        zjb.blockUI("#ztree-warpper");
+        return true;
+    };
+    var depTreeOnAsyncSuccess = function(event, treeId, treeNode, msg) {
+        $.fn.zTree.getZTreeObj(treeId).expandAll(true);
+        zjb.unblockUI("#ztree-warpper");
+    };
+    var depTreeOnClick = function(event, treeId, treeNode, clickFlag){
+        // console.log(treeNode);
+        if(treeNode.href != undefined && treeNode.href != '' ){
+            zjb.ajaxGetHtml('#dep-form-wrapper',treeNode.href,{},true);
+        }
+    };
+	var setting = {
+        async: {
+            enable: true,
+            url:"{!! url('users/departments?tree=1') !!}",
+            autoParam:["id", "level=lv"],
+            otherParam:{},  
+            dataFilter: null,
+            type:'get'
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "parent_id"
             }
         },
-        'plugins' : [ 'types', 'dnd' ,'changed'],
-        'types' : {
-            'default' : {
-                'icon' : 'fa fa-folder'
-            },
-            'html' : {
-                'icon' : 'fa fa-file-code-o'
-            },
-            'svg' : {
-                'icon' : 'fa fa-file-picture-o'
-            },
-            'css' : {
-                'icon' : 'fa fa-file-code-o'
-            },
-            'img' : {
-                'icon' : 'fa fa-file-image-o'
-            },
-            'js' : {
-                'icon' : 'fa fa-file-text-o'
-            }
+        view: {
+            showIcon:false
+        },
+        callback: {
+            beforeAsync: depTreeBeforeAsync,
+            onAsyncSuccess: depTreeOnAsyncSuccess,
+            onClick: depTreeOnClick
         }
-    });
-    $('#departments-tree').on('load_node.jstree',function (e, data) {
-      $('#departments-tree').jstree('open_all');
-    });
-    $('#departments-tree').on('changed.jstree',function (e,data) {
-      if(data.node != undefined){
-        var link = data.node.a_attr.href;
-        zjb.ajaxGetHtml('#dep-form-wrapper',link,{},true);
-      }
-    });
+    };
+    $.fn.zTree.init($("#departments-tree"), setting);
+    
     zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("users/departments/create") }}');
+
+    $("#search-dep").click(function(){
+        var treeObj = $.fn.zTree.getZTreeObj("departments-tree");
+        var value = $('#search-name').val();
+        nodeList = treeObj.getNodesByParamFuzzy('name', value);
+        nodes = treeObj.getNodes();
+        console.log(nodes);
+        console.log(nodeList);
+        treeObj.hideNodes(nodes[0].children);
+        treeObj.showNodes(nodeList);
+    });
 } );
 </script>
 @endsection

@@ -29,28 +29,28 @@ class DepartmentController extends Controller
      */
     public function unit(Request $request)
     {
-        if($request->method() == 'POST'){
+        if ($request->method() == 'POST') {
             //表单验证
             $rules = [
-                'name'=>'bail|required',
-                'short_name'=>'bail|required',
-                'contacts'=>'bail|required',
-                'contacts_tel'=>'bail|required'
+                'name' => 'bail|required',
+                'short_name' => 'bail|required',
+                'contacts' => 'bail|required',
+                'contacts_tel' => 'bail|required'
             ];
             $message = [
-                'name.required'=>'请填写单位全称',
-                'short_name.required'=>'请填写单位简称',
-                'contacts.required'=>'请填写单位联系人姓名',
-                'contacts_tel.required'=>'请填写单位联系电话',
+                'name.required' => '请填写单位全称',
+                'short_name.required' => '请填写单位简称',
+                'contacts.required' => '请填写单位联系人姓名',
+                'contacts_tel.required' => '请填写单位联系电话',
             ];
             $data = Input::all();
-            $validator = Validator::make($data,$rules,$message);
+            $validator = Validator::make($data, $rules, $message);
             if ($validator->fails()) {
-                return response()->json($validator->errors(),422);
-            }else{
+                return response()->json($validator->errors(), 422);
+            } else {
                 //编辑数据
                 $unit = Org::userUint()->first();
-                if($unit){
+                if ($unit) {
                     $unit->name = $data['name'];
                     $unit->short_name = $data['short_name'];
                     $unit->logo = $data['logo'];
@@ -59,25 +59,25 @@ class DepartmentController extends Controller
                     $unit->contacts_tel = $data['contacts_tel'];
                     $unit->contacts_postion = $data['contacts_postion'];
                     $unit->contacts_email = $data['contacts_email'];
-                    if($unit->save()){
+                    if ($unit->save()) {
                         return response()->json([
-                            'status'=>1,'message'=>'保存成功',
-                            'data'=>$unit->toArray(),'url'=>''
+                            'status' => 1, 'message' => '保存成功',
+                            'data' => $unit->toArray(), 'url' => ''
                         ]);
-                    }else{
+                    } else {
                         return response()->json([
-                            'status'=>0,'message'=>'保存失败'
+                            'status' => 0, 'message' => '保存失败'
                         ]);
                     }
-                }else{
+                } else {
                     return response()->json([
-                        'status'=>0,'message'=>'无效参数'
+                        'status' => 0, 'message' => '无效参数'
                     ]);
                 }
             }
-        }else{
+        } else {
             $unit = Org::userUint()->first();
-            return view('user.department.unit',['unit'=>$unit]);
+            return view('user.department.unit', ['unit' => $unit]);
         }
     }
 
@@ -87,15 +87,29 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //获取所有部门信息
         if (request('tree') == 1) {
-            $list = Department::org()->get()->toArray();
-            $select = request('select');
-            //获取树形菜单
-            $tempData = [];
+            $select = $request->select;
+            $name = $request->name;
+            $where = [];
+            if($name){
+                $where[] = ['name','like',"%{$name}%"];
+            }
+            $list = Department::org()->where($where)->get()->toArray();
+            $org = get_current_login_user_org_info('name')->name;
+            $tempData = [
+                [
+                    'id' => 0,
+                    'parent_id' => -1,
+                    'text' => $org,
+                    'name' => $org,
+                    'href' => '',//编辑地址
+                ]
+            ];
             if ($list) {
+                /*//获取树形菜单(jsTree使用)
                 foreach ($list as $key => $v) {
                     $temp = array(
                         'id' => $v['id'],
@@ -117,7 +131,11 @@ class DepartmentController extends Controller
                     $tempData[] = $temp;
                 }
                 $tempData = list_to_tree($tempData, 'id', 'parent_id', 'children');
-
+                */
+                foreach ($list as $key => $val) {
+                    $val['href'] = url('users/departments/' . $val['id'] . '/edit');
+                    $tempData[] = $val;
+                }
             }
             return response()->json($tempData);
         }
@@ -125,7 +143,8 @@ class DepartmentController extends Controller
         return view('user.department.index');
     }
 
-    public function create(){
+    public function create()
+    {
         return view('user.department.add');
     }
 
@@ -143,12 +162,12 @@ class DepartmentController extends Controller
         $department->sort = $request->sort;
         $department->parent_id = $request->parent_id;
         $department->org_id = auth()->user()->org_id;
-        if($department->save()){
+        if ($department->save()) {
             return response()->json([
                 'status' => 1, 'message' => '添加成功',
                 'data' => $department->toArray(), 'url' => url('users/departments?tree=1&select=' . $department->id)
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 0, 'message' => '保存失败',
                 'data' => null, 'url' => ''
@@ -182,12 +201,12 @@ class DepartmentController extends Controller
         $dep->parent_id = $request->parent_id;
         $dep->sort = $request->sort;
         $dep->status = $request->status;
-        if($dep->save()){
+        if ($dep->save()) {
             return response()->json([
                 'status' => 1, 'message' => '编辑成功',
                 'data' => $dep->toArray(), 'url' => url('users/departments?tree=1&select=' . $id)
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 0, 'message' => '编辑失败',
                 'data' => null, 'url' => ''
@@ -201,35 +220,35 @@ class DepartmentController extends Controller
      * @param  \App\Models\User\Department $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department,$id)
+    public function destroy(Department $department, $id)
     {
         $result = [
-            'status'=>1,
-            'message'=>'操作成功',
-            'data'=>'',
-            'url'=>'',
+            'status' => 1,
+            'message' => '操作成功',
+            'data' => '',
+            'url' => '',
         ];
         $dp = $department->find($id);
-        if($dp){
+        if ($dp) {
             $flag = 1;
             //判断是否有子部门
-            if($department->where(['parent_id'=>$id])->first()){
+            if ($department->where(['parent_id' => $id])->first()) {
                 $result['status'] = 0;
                 $result['message'] = '存在子部门信息不能删除';
                 $flag = 0;
             }
             //检测是否包含其他数据如部门用户
-            if(User::where('department_id',$id)->first()){
+            if (User::where('department_id', $id)->first()) {
                 $result['status'] = 0;
                 $result['message'] = '该部门存在用户关联数据不能删除';
                 $flag = 0;
             }
             //删除
-            if($flag && !$dp->delete()){
+            if ($flag && !$dp->delete()) {
                 $result['status'] = 0;
                 $result['message'] = '删除失败';
             }
-        }else{
+        } else {
             $result['status'] = 0;
             $result['message'] = '操作的信息不存在';
         }

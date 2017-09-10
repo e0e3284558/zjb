@@ -52,8 +52,15 @@
     
     <!-- ladda style -->
     <link href="{{asset('assets/js/plugins/ladda/ladda-themeless.min.css')}}" rel="stylesheet">
+    
+    <!-- layui style-->
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/layui/css/layui.css')}}"  media="all">
 
-     <link rel="stylesheet" href="{{asset('assets/js/plugins/layui/css/layui.css')}}"  media="all">
+    <!-- ztree -->
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/zTree/css/bootstrapStyle/bootstrapStyle.css')}}"  media="all">
+
+    <!-- ztree -->
+    <link rel="stylesheet" href="{{asset('assets/css/plugins/text-spinners/spinners.css')}}"  media="all">
 
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
@@ -683,6 +690,10 @@
     <script type="text/javascript" src="{{asset('assets/js/plugins/ladda/spin.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/plugins/ladda/ladda.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/plugins/ladda/ladda.jquery.min.js')}}"></script>
+
+    <!-- ztree -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/zTree/js/jquery.ztree.all.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/plugins/zTree/js/jquery.ztree.exhide.min.js')}}"></script>
 
     <!-- Custom and plugin javascript -->    
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>

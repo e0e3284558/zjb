@@ -8169,6 +8169,19 @@ Custom color buttons
 .bg-f2{
     background-color: #f4f6fa;
 }
+.border-radius-none{border-radius:0;}
+.padding-20{padding: 20px;}
+.p-b-none{
+    padding-bottom: 0;
+}
+.position-relative{
+    position: relative;
+}
+.position-absolute-top{
+    position: absolute;
+    top:0;
+    left: 0;
+}
 /* layui style*/
 .layui-table-view{
     margin:0 

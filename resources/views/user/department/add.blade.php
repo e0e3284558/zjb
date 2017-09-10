@@ -117,7 +117,7 @@
                                 if(data.status){
                                     toastr.success(data.message);
                                     //重新载入左侧树形菜单
-                                    $('#departments-tree').jstree(true).refresh();
+                                    $.fn.zTree.getZTreeObj("departments-tree").reAsyncChildNodes(null, "refresh");
                                     zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("users/departments/create") }}',{},false);
                                 }else{
                                    toastr.error(data.message,'警告'); 
