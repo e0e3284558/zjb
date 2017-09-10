@@ -26,7 +26,6 @@ class ServiceWorkerController extends Controller
         foreach ($data as $v) {
             $serviceWorker[] = $v->serviceWorker()->get();
         }
-//        dd($serviceWorker);
 
         return view('repair.service_worker.index', compact('data', 'serviceWorker'));
     }

@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">填写维修结果</h4>
+    <h4 class="modal-title" id="myModalLabel">填写评价</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -8,17 +8,18 @@
             <button class="close" data-close="alert"></button>
             请更正下列输入错误：
         </div>
+        <input type="hidden" name="_method" value="PUT">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <input type="hidden" name="id" value="{{$id}}">
 
         <div class="row" >
             <div class="col-md-12" >
                 <div class="form-group" >
-                    <label class="col-sm-2 control-label">维修结果</label>
+                    <label class="col-sm-2 control-label">评价等级</label>
                     <div class="col-sm-8">
-                        <input type="radio" name="status" value="10">已修好
-                        <input type="radio" name="status" value="2">未修好(可再修)
-                        <input type="radio" name="status" value="0">未修好(不可再修)
+                        <input type="radio" name="score" value="5">好评
+                        <input type="radio" name="score" value="4">一般
+                        <input type="radio" name="score" value="3">普通
+                        <input type="radio" name="score" value="1">差评
                     </div>
                 </div>
             </div>
@@ -27,9 +28,9 @@
         <div class="row">
             <div class="col-md-12" >
                 <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">维修建议</label>
+                    <label for="remarks" class="col-sm-2 control-label">评论建议</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" name="suggest" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
+                        <textarea class="form-control" name="appraisal" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
                 </div>
             </div>
@@ -145,7 +146,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('repair/process')}}",
+                    url:"{{url('repair/repair_list/'.$id)}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",
@@ -204,30 +205,4 @@
             }
         })
     }
-</script>
-
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
 </script>

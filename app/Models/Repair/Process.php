@@ -27,4 +27,7 @@ class Process extends Model
     public function serviceProvider(){
         return $this->belongsTo('App\Models\Repair\ServiceProvider');
     }
+    public function img(){
+        return $this->belongsToMany('App\Models\File\File');
+    }
 }

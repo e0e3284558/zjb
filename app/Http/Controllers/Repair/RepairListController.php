@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Repair;
 use App\Models\Repair\Process;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
-class ProcessController extends Controller
+class RepairListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,9 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",session('worker')->id)->get();
-        return view("repair.process.index",compact("list"));
+        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')
+                         ->where("user_id",Auth::user()->id)->get();
+        return view("repair.repair_list.index",compact("list"));
     }
 
     /**
@@ -24,9 +26,9 @@ class ProcessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
-        return view("repair.process.add",compact("id"));
+        //
     }
 
     /**
@@ -37,20 +39,7 @@ class ProcessController extends Controller
      */
     public function store(Request $request)
     {
-        $info = Process::where("id",$request->id)->update($request->except('id','_token'));
-        $message = [];
-        if($info){
-            $message = [
-                'code' => '1',
-                'message' => '成功'
-            ];
-        }else{
-            $message = [
-                'code' => '0',
-                'message' => '失败'
-            ];
-        }
-        return response()->json($message);
+        //
     }
 
     /**
@@ -72,20 +61,7 @@ class ProcessController extends Controller
      */
     public function edit($id)
     {
-        $info = Process::where("id",$id)->update(['status'=>'4']);
-        $message = [];
-        if($info){
-            $message = [
-                'code' => '1',
-                'message' => '成功'
-            ];
-        }else{
-            $message = [
-                'code' => '0',
-                'message' => '失败'
-            ];
-        }
-        return response()->json($message);
+        return view("repair.repair_list.add",compact("id"));
     }
 
     /**
@@ -97,7 +73,21 @@ class ProcessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+//        dd($request->all());
+        $info = Process::where("id",$id)->update($request->except("_method","_token"));
+        $message = [];
+        if($info){
+            $message = [
+                'code' => 1,
+                'message' => '评价成功,感谢您的评价'
+            ];
+        }else{
+            $message = [
+                'code' => 0,
+                'message' => '评价失败'
+            ];
+        }
+        return response()->json($message);
     }
 
     /**
@@ -106,21 +96,8 @@ class ProcessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function refuse($id)
+    public function destroy($id)
     {
-        $info = Process::where('id',$id)->update(['status'=>'1']);
-        $message = [];
-        if($info){
-            $message = [
-                'code' => 1,
-                'message' => '成功'
-            ];
-        }else{
-            $message = [
-                'code' => 0,
-                'message' => '失败'
-            ];
-        }
-        return response()->json($message);
+        //
     }
 }

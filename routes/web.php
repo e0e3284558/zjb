@@ -37,7 +37,7 @@ Route::get('/home', 'Portal\IndexController@index')->name('home');
 
 //用户模块路由开始
 //-------------------------------------------------------------------------
-Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], function () {
+Route::group(['prefix' => 'users', 'namespace' => 'User', 'middleware' => 'auth'], function () {
     Route::get('default/index', 'DefaultController@index')->name('users.index');
     Route::get('default/create', 'DefaultController@create')->name('users.create');
     Route::post('default/store', 'DefaultController@store')->name('users.store');
@@ -65,10 +65,9 @@ Route::group(['prefix' => 'users','namespace' => 'User','middleware'=>'auth'], f
 //用户模块路由结束
 
 
-
 //报修模块路由开始
 //-------------------------------------------------------------------------
-Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth'], function () {
+Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'auth'], function () {
     //报修分类
     Route::resource('classify', 'ClassifyController');
     //维修工管理
@@ -78,9 +77,23 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
     //创建报修
     Route::resource('create_repair', 'CreateRepairController');
 
+    //选择分类
     Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
+    //分派维修工
+    Route::get('create_repair/assign_worker/{id}', 'CreateRepairController@assignWorker');
+    //根据选择条件选取维修工
+    Route::post('create_repair/select_worker', 'CreateRepairController@selectWorker');
+    //选中维修工进行派工
+    Route::post('create_repair/confirm_worker', 'CreateRepairController@confirmWorker');
+
+});
+Route::group(['prefix' => 'repair', 'namespace' => 'Repair'], function () {
+
+    //我的报修列表
+    Route::resource('repair_list','RepairListController');
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
+    Route::get('process/refuse/{id}', 'ProcessController@refuse');
     Route::resource('process', 'ProcessController');
 });
 //-------------------------------------------------------------------------
@@ -89,34 +102,34 @@ Route::group(['prefix' => 'repair','namespace' => 'Repair','middleware'=>'auth']
 
 //资产管理模块路由开始
 //-------------------------------------------------------------------------
-Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
+Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     //资产分类
-    Route::get('asset_category/add_son/{id}','AssetCategoryController@add');
-    Route::get('asset_category/find/{id}','AssetCategoryController@find');
-    Route::get('asset_category/export','AssetCategoryController@export');
-    Route::resource('asset_category','AssetCategoryController');
+    Route::get('asset_category/add_son/{id}', 'AssetCategoryController@add');
+    Route::get('asset_category/find/{id}', 'AssetCategoryController@find');
+    Route::get('asset_category/export', 'AssetCategoryController@export');
+    Route::resource('asset_category', 'AssetCategoryController');
 
-    Route::get('area/add_son/{id}','AreaController@add');
-    Route::get('area/prints','AreaController@prints');
-    Route::get('area/export','AreaController@export');
-    Route::get('area/downloadModel','AreaController@downloadModel');
-    Route::resource('area','AreaController');
+    Route::get('area/add_son/{id}', 'AreaController@add');
+    Route::get('area/prints', 'AreaController@prints');
+    Route::get('area/export', 'AreaController@export');
+    Route::get('area/downloadModel', 'AreaController@downloadModel');
+    Route::resource('area', 'AreaController');
 
     //其他报修项
-    Route::get('other_asset/downloadModel','OtherAssetController@downloadModel');
-    Route::get('other_asset/add_import','OtherAssetController@add_import');
-    Route::post('other_asset/import','OtherAssetController@import');
-    Route::resource('other_asset','OtherAssetController');
+    Route::get('other_asset/downloadModel', 'OtherAssetController@downloadModel');
+    Route::get('other_asset/add_import', 'OtherAssetController@add_import');
+    Route::post('other_asset/import', 'OtherAssetController@import');
+    Route::resource('other_asset', 'OtherAssetController');
 
     //资产管理
-    Route::get('asset/show_img/{file_id}','AssetController@show_img');
-    Route::get('asset/add_copy/{id}','AssetController@add_copy');
-    Route::post('asset/copy','AssetController@copy');
-    Route::resource('asset','AssetController');
+    Route::get('asset/show_img/{file_id}', 'AssetController@show_img');
+    Route::get('asset/add_copy/{id}', 'AssetController@add_copy');
+    Route::post('asset/copy', 'AssetController@copy');
+    Route::resource('asset', 'AssetController');
 
     //附件信息
-    Route::post("upload/uploadFile","UploadController@uploadFile");
-    Route::resource("upload","UploadController");
+    Route::post("upload/uploadFile", "UploadController@uploadFile");
+    Route::resource("upload", "UploadController");
 });
 //-------------------------------------------------------------------------
 //资产管理模块路由开始
@@ -125,11 +138,11 @@ Route::group(["namespace"=>"Asset",'middleware'=>['auth']],function (){
 //文件管理模块路由开始
 //-------------------------------------------------------------------------
 
-Route::group(['prefix' => 'file','namespace' => 'File','middleware'=>'auth'], function () {
-    Route::post('image_upload','DefaultController@imageUpload')->name('image.upload');
-    Route::post('file_upload','DefaultController@fileUpload')->name('file.upload');
-    Route::post('video_upload','DefaultController@videoUpload')->name('video.upload');
-    Route::post('asset_file_upload','DefaultController@assetFileUpload')->name('asset.file.upload');
+Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
+    Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
+    Route::post('file_upload', 'DefaultController@fileUpload')->name('file.upload');
+    Route::post('video_upload', 'DefaultController@videoUpload')->name('video.upload');
+    Route::post('asset_file_upload', 'DefaultController@assetFileUpload')->name('asset.file.upload');
 });
 
 //-------------------------------------------------------------------------
@@ -138,8 +151,8 @@ Route::group(['prefix' => 'file','namespace' => 'File','middleware'=>'auth'], fu
 //维修工登录
 //-------------------------------------------------------------------------
 
-Route::group(['namespace'=>'Repair'], function () {
-    Route::resource('work_login','WorkerLoginController');
+Route::group(['namespace' => 'Repair'], function () {
+    Route::resource('work_login', 'WorkerLoginController');
 });
 
 //-------------------------------------------------------------------------
