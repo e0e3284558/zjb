@@ -20,17 +20,17 @@
 @endsection
 @section("content")
     {{--资产入库--}}
-<div class="wrapper wrapper-content ">
-    <div class="row" >
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                </div>
-                <div class="ibox-content">
+    <div class="wrapper wrapper-content ">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    </div>
+                    <div class="ibox-content">
 
-                    <div class="table-responsive">
-                        <table style="min-width: 1000px" class="table table-striped  table-bordered" >
-                            <thead>
+                        <div class="table-responsive">
+                            <table style="min-width: 1000px" class="table table-striped  table-bordered">
+                                <thead>
                                 <tr role="row">
                                     <th>操作</th>
                                     <th>公司</th>
@@ -40,15 +40,26 @@
                                     <th>维修工id</th>
                                     <th>服务商id</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 @foreach($list as $value)
-                                    @if($value->status!='2')
+                                    @if($value->status!='1')
                                         <tr role="row">
                                             @if($value->status=="20")
-                                                <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger" onclick="refuse('{{$value->id}}')" >拒绝</button></td>
+                                                <td>
+                                                    <button class="btn btn-primary" onclick="edit('{{$value->id}}')">
+                                                        接单
+                                                    </button>&nbsp;<button class="btn btn-danger"
+                                                                           onclick="refuse('{{$value->id}}')">拒绝
+                                                    </button>
+                                                </td>
                                             @elseif($value->status=="4")
-                                                <td><button class="btn btn-primary" onclick="add('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">填写报修结果</button></td>
+                                                <td>
+                                                    <button class="btn btn-primary" onclick="add('{{$value->id}}')"
+                                                            data-toggle="modal" data-target=".bs-example-modal-md">
+                                                        填写报修结果
+                                                    </button>
+                                                </td>
                                             @elseif($value->status=='10')
                                                 <td><span>已修好</span></td>
                                             @elseif($value->status=='0')
@@ -56,37 +67,40 @@
                                             @endif
                                             <td>{{$value->org->name}}</td>
                                             <td>{{$value->user->name}}</td>
-                                            <td>{{$value->asset->name}}</td>
-                                            <td>{{$value->category->name}}</td>
+                                            <td title="{{$value->remarks}}">{{$value->asset->name}}</td>
+                                            @if(isset($value->category))
+                                                <td>{{$value->category->name}}</td>
+                                            @endif
                                             <td>{{$value->serviceWorker->name}}</td>
                                             <td>{{@$value->serviceProvider->name}}</td>
                                         </tr>
                                     @endif
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-    <script type="text/javascript" >
+    <script type="text/javascript">
 
         $("document").ready(function () {
             $('.i-checks,#all').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue'
             });
-            $('#all').on('ifChecked ifUnchecked', function(event){
-                if(event.type == 'ifChecked'){
+            $('#all').on('ifChecked ifUnchecked', function (event) {
+                if (event.type == 'ifChecked') {
                     $('.i-checks').iCheck('check');
-                }else{
+                } else {
                     $('.i-checks').iCheck('uncheck');
                 }
             });
         });
+
         function str(message) {
             var messages = "<div class='modal-header'>" +
                 "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
@@ -118,23 +132,23 @@
                     confirmButtonText: "确认",
                     closeOnConfirm: false
                 },
-                function(){
+                function () {
                     //发异步删除数据
                     $.ajax({
                         type: "get",
-                        url: '{{url('repair/process')}}/'+id+'/edit',
-                        dataType:"json",
+                        url: '{{url('repair/process')}}/' + id + '/edit',
+                        dataType: "json",
                         success: function (data) {
-                            if(data.code==1){
+                            if (data.code == 1) {
                                 swal({
                                     title: "",
                                     text: data.message,
                                     type: "success",
                                     timer: 1000,
-                                },function () {
+                                }, function () {
                                     window.location.reload();
                                 });
-                            }else{
+                            } else {
                                 swal("", data.message, "error");
                             }
                         }
@@ -153,23 +167,23 @@
                     confirmButtonText: "确认",
                     closeOnConfirm: false
                 },
-                function(){
+                function () {
                     //发异步删除数据
                     $.ajax({
                         type: "get",
-                        url: '{{url('repair/process/refuse')}}/'+id,
-                        dataType:"json",
+                        url: '{{url('repair/process/refuse')}}/' + id,
+                        dataType: "json",
                         success: function (data) {
-                            if(data.code==1){
+                            if (data.code == 1) {
                                 swal({
                                     title: "",
                                     text: data.message,
                                     type: "success",
                                     timer: 1000,
-                                },function () {
+                                }, function () {
                                     window.location.reload();
                                 });
-                            }else{
+                            } else {
                                 swal("", data.message, "error");
                             }
                         }
@@ -179,28 +193,28 @@
 
         function add(id) {
             $.ajax({
-                url:'{{url('repair/process/create')}}/'+id,
-                type:"post",
-                data:{},
-                success:function (data) {
+                url: '{{url('repair/process/create')}}/' + id,
+                type: "post",
+                data: {},
+                success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }
 
-        function show_img(object,url) {
+        function show_img(object, url) {
             $.ajax({
-                url:url,
-                success:function (data) {
+                url: url,
+                success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }
 
-        function shows(title,url) {
+        function shows(title, url) {
             $.ajax({
-                "url":url,
-                success:function (data) {
+                "url": url,
+                success: function (data) {
                     $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })

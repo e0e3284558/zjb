@@ -88,7 +88,6 @@ class CreateRepairController extends Controller
      */
     public function store(Request $request)
     {
-
         $res = ['asset_classify_id' => $request->asset_classify_id,
             'asset_id' => $request->asset_id,
             'remarks' => $request->remarks,
@@ -118,6 +117,11 @@ class CreateRepairController extends Controller
         }
     }
 
+    /**
+     * 分配维修工
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function assignWorker($id)
     {
         $process = Process::where('id', $id)
@@ -147,6 +151,8 @@ class CreateRepairController extends Controller
 
     /**
      * 根据条件选择维修工
+     * @param Request $request
+     * @return array|string
      */
     public function selectWorker(Request $request)
     {
@@ -175,12 +181,13 @@ class CreateRepairController extends Controller
 
     /**
      * 选中维修工并更改维修状态
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function confirmWorker(Request $request)
     {
         $repair=Process::find($request['id']);
         $repair->service_worker_id = $request['service_worker_id'];
-        $repair->asset_classify_id = $request['asset_classify_id'];
         $repair->service_provider_id = $request['service_provider_id'];
         $repair->status =20;
         if ($repair->save()){
@@ -193,50 +200,5 @@ class CreateRepairController extends Controller
                 'data' => null, 'url' => ''
             ]);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
