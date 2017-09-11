@@ -16,7 +16,7 @@
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">评价等级</label>
                     <div class="col-sm-8">
-                        <input id="sroce" name="score" type="text" data-min=0 data-max=5 data-step=0.5 data-size="md" title="">
+                        <input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=0.5 data-size="md" title="">
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
 
     $( document ).ready( function () {
 
-        $("#score").rating({
+        $("#input-21f").rating({
             starCaptions: function (val) {
                 return val;
             },
