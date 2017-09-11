@@ -43,7 +43,7 @@
                             </thead>
                             <tbody>
                                 @foreach($list as $value)
-                                    @if($value->status!='2')
+                                    @if($value->status!='1')
                                         <tr role="row">
                                             @if($value->status=="20")
                                                 <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" >接单</button>&nbsp;<button class="btn btn-danger" onclick="refuse('{{$value->id}}')" >拒绝</button></td>
