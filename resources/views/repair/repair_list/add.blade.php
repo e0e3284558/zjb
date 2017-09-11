@@ -16,10 +16,7 @@
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">评价等级</label>
                     <div class="col-sm-8">
-                        <input type="radio" name="score" value="5">好评
-                        <input type="radio" name="score" value="4">一般
-                        <input type="radio" name="score" value="3">普通
-                        <input type="radio" name="score" value="1">差评
+                        <input id="sroce" name="score" type="text" data-min=0 data-max=5 data-step=0.5 data-size="md" title="">
                     </div>
                 </div>
             </div>
@@ -45,6 +42,12 @@
 
     $( document ).ready( function () {
 
+        $("#score").rating({
+            starCaptions: function (val) {
+                return val;
+            },
+            hoverOnClear: false
+        });
 
         zjb.singleImageUpload({
             uploader:'singleUpload',
@@ -187,22 +190,4 @@
             }
         } );
     } );
-</script>
-
-<script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
 </script>
