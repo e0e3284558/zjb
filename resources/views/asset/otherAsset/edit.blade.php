@@ -4,26 +4,10 @@
         <button class="close" data-close="alert"></button>
         请更正下列输入错误：
     </div>
-
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <input type="hidden" name="_method" value="PUT">
     <div class="form-group">
-        <label class="col-sm-3 control-label">资产类别<span style="color:red;">*</span></label>
-        <div class="col-sm-8">
-            <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2" data-error-container="#error-block">
-                <option value="">请选择</option>
-                @foreach($list as $value)
-                    @if($info->category_id == $value->id)
-                        <option selected value="{{$value->id}}">{{$value->name}}</option>
-                    @else
-                        <option value="{{$value->id}}">{{$value->name}}</option>
-                    @endif
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label">资产名称<span style="color:red;">*</span></label>
+        <label class="col-sm-3 control-label">报修项名称<span style="color:red;">*</span></label>
         <div class="col-sm-8">
             <input type="text" name="name" class="form-control" value="{{$info->name}}" data-error-container="#error-block">
         </div>
@@ -56,11 +40,9 @@
         });
         otherAssets_form.validate( {
             rules: {
-                category_id:"required",
                 name:"required"
             },
             messages: {
-                category_id:"资产类别不能为空",
                 name:"资产名称不能为空"
             },
             errorElement: 'span', //default input error message container
