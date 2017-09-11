@@ -364,7 +364,7 @@ var zjb = function(){
             //     'uploadComplete':function
             // }
             options = $.extend(true, {}, options);
-            console.log(options);
+            //console.log(options);
             var uploader = options.uploader,
                 autoCreateInput = !options.isAutoInsertInput ? options.isAutoInsertInput : true,
                 isHiddenResult = !options.isHiddenResult ? options.isHiddenResult : true,

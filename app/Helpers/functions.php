@@ -307,6 +307,19 @@ if (!function_exists('get_current_login_user_org_id')) {
     }
 }
 /**
+ * 获取当前登录用户所属单位信息
+ */
+if (!function_exists('get_current_login_user_org_info')) {
+    function get_current_login_user_org_info($field = true, $guard = 'web')
+    {
+        $data = auth($guard)->user()->org; //get_current_login_user_info('org', $guard)
+        if($field == true){
+            return $data;
+        }
+        return isset($data[$field]) ? $data[$field] : null;
+    }
+}
+/**
  * 获取客户端ip地址
  */
 if (!function_exists('get_client_ip')) {
@@ -322,14 +335,11 @@ if (!function_exists('get_client_ip')) {
 if (!function_exists('loop_Arr')) {
     function loop_Arr($arr)
     {
-        foreach($arr as $v)
-        {
-            if(is_array($v))
-            {
+        foreach ($arr as $v) {
+            if (is_array($v)) {
                 loopArr($v);
-            }else
-            {
-                echo $v."";
+            } else {
+                echo $v . "";
             }
         }
     }

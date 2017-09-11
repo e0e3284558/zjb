@@ -34,4 +34,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\User\Department');
     }
+
+    /**
+     * 获取当前登录用户所属单位信息
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function org(){
+        return $this->belongsTo('App\Models\User\Org');
+    }
 }

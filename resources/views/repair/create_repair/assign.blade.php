@@ -50,8 +50,8 @@
                         <div class="col-lg-6">
                             <li class="dd-item">
                                 <div class="dd-handle ">
-                                    <label>选择类型</label>
-                                    <select name="asset_classify_id" id="" class="form-control" onchange="change_classify(this.value)">
+                                    <label>选择维修工类型</label>
+                                    <select name="" id="" class="form-control" onchange="change_classify(this.value)">
                                         <option value="">-----请选择类型-----</option>
                                         @foreach($classify as $v)
                                             <option value="{{$v->id}}">{{$v->name}}</option>
@@ -77,7 +77,7 @@
                             <li class="dd-item">
                                 <div class="dd-handle ">
                                     <label>选择维修工</label>
-                                    <select name="service_worker_id"  class="form-control" id="service_worker">
+                                    <select name="service_worker_id" class="form-control" id="service_worker">
                                         <option value="">请选择分类信息</option>
                                     </select>
                                     <input type="hidden" name="id" value="{{$process->id}}">
@@ -100,13 +100,17 @@
         var provider;
         //获取当前选中服务商value
         provider = $('#provider').val();
-        $.post("{{url('repair/create_repair/select_worker')}}", {
-            '_token': "{{csrf_token()}}",
-            'classify_id': id,
-            'provider_id': provider
-        }, function (data) {
-            $('#service_worker').append(data);
-        });
+        if (provider != '') {
+            $.post("{{url('repair/create_repair/select_worker')}}", {
+                '_token': "{{csrf_token()}}",
+                'classify_id': id,
+                'provider_id': provider
+            }, function (data) {
+                $('#service_worker').append(data);
+            });
+        }else{
+            alert('请选择服务商');
+        }
     }
 
 
