@@ -50,17 +50,17 @@
                                 <a class="btn btn-success" onclick="add('添加','{{url('asset_category/create')}}')"  id="create" >
                                     <i class="fa  fa-plus"></i> 新增
                                 </a>
-                                <a class="btn btn-default" id="import">
-                                    <i class="fa fa-sign-in"></i> 导入数据
-                                </a>
-                                <a href="{{url('asset_category/export')}}" class="btn btn-default" id="export">
-                                    <i class="fa fa-sign-out"></i> 导出EXCEL
-                                </a>
-                                <a class="btn" disabled="">
-                                <span class="overlay" id="loading" style="display:none">
-                                    <i class="fa fa-refresh fa-spin"></i>
-                                </span>
-                                </a>
+
+                                <div class="dropup inline">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-print"></i>更多操作
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li><a class="btn btn-default" id="import"><i class="fa fa-sign-in"></i> 导入数据</a></li>
+                                        <li><a href="{{url('asset_category/export')}}" class="btn btn-default" id="export"><i class="fa fa-sign-out"></i> 导出EXCEL</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

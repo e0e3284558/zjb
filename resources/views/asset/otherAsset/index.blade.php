@@ -37,8 +37,7 @@
                                     <thead>
                                     <tr role="row">
                                         <th><input type="checkbox" name="checkAll" id="all" ></th>
-                                        <th>类别</th>
-                                        <th>资产名称</th>
+                                        <th>报修项名称</th>
                                         <th>备注</th>
                                     </tr>
                                     </thead>
@@ -46,8 +45,7 @@
                                     @foreach($list as $k=>$v)
                                         <tr>
                                             <td><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
-                                            <td>{{$v->category->name}}</td>
-                                            <td><span class="cursor_pointer" href="{{url('other_asset')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$v->name}}</span></td>
+                                            <td><span class="cursor_pointer" href="{{url('other_asset')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-md" >{{$v->name}}</span></td>
                                             <td>{{$v->remarks}}</td>
                                         </tr>
                                     @endforeach
@@ -66,12 +64,17 @@
                             <button type="button" onclick="dlt()" class="btn btn-danger">
                                 <i class="fa  fa-trash-o"></i> 删除
                             </button>
-                            <a class="btn btn-default" id="download" href="{{url('other_asset/downloadModel')}}">
-                                <i class="fa fa-sign-in"></i> 下载模板
-                            </a>
-                            <a class="btn btn-default" id="download" href="{{url('other_asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg">
-                                <i class="fa fa-sign-in"></i> 导入其他报修项
-                            </a>
+
+                            <div class="dropup inline">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-print"></i>更多操作
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><a class="btn btn-default" id="printBarcode download" href="{{url('other_asset/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
+                                    <li><a class="btn btn-default" id="print download" href="{{url('other_asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入其他报修项</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,18 +96,7 @@
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <div class="row">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">资产类别<span class="required">*</span></label>
-                                            <div class="col-sm-8">
-                                                <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2 " data-error-container="#error-block">
-                                                    <option value="">请选择</option>
-                                                    @foreach($category_list as $value)
-                                                        <option value="{{$value->id}}">{{$value->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">资产名称<span class="required">*</span></label>
+                                            <label class="col-sm-3 control-label">报修项名称<span class="required">*</span></label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="资产名称" data-error-container="#error-block">
                                             </div>
@@ -230,45 +222,6 @@
             }
         } );
     } );
-</script>
-<script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
-    //查看是否还有子部门
-    function seldep(id) {
-        $.ajax({
-            "url":'{{url('asset/sel')}}'+"/"+id,
-            "type":"get",
-            'data':{id:id},
-            'dataType':"json",
-            success:function (data) {
-                var select = $("#use_department_id");
-                if(data.length>0){
-                    select.append("<option value=''>请选择</option>");
-                    //遍历
-                    for (var i = 0; i < data.length; i++) {
-                        //把遍历出来数据添加到option
-                        info = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                        //把当前info数据添加到创建的select
-                        select.append(info);
-                    }
-                }
-            }
-        })
-    }
 </script>
 
 <script type="text/javascript" >

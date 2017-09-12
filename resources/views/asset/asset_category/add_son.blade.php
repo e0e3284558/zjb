@@ -1,4 +1,3 @@
-<h4 class="modal-title" id="myModalLabel">添加子类</h4>
 <div class="pt20" ></div>
 <form id="signupForm1" class="form-horizontal" method="post" >
     <input type="hidden" name="_token" value="{{csrf_token()}}">
