@@ -74,6 +74,10 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     Route::resource('service_worker', 'ServiceWorkerController');
     //服务商管理
     Route::resource('service_provider', 'ServiceProviderController');
+    //完成报修
+    Route::post('create_repair/success/{id}', 'CreateRepairController@success');
+    //修改状态为不可再修
+    Route::post('create_repair/del/{id}', 'CreateRepairController@del');
     //创建报修
     Route::resource('create_repair', 'CreateRepairController');
 
@@ -81,6 +85,9 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
     //分派维修工
     Route::get('create_repair/assign_worker/{id}', 'CreateRepairController@assignWorker');
+    //分派维修工
+    Route::get('create_repair/change_status/{id}', 'CreateRepairController@changeStatus');
+
     //根据选择条件选取维修工
     Route::post('create_repair/select_worker', 'CreateRepairController@selectWorker');
     //选中维修工进行派工
