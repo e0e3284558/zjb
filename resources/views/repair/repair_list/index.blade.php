@@ -20,25 +20,25 @@
 @endsection
 @section("content")
     {{--资产入库--}}
-<div class="wrapper wrapper-content ">
-    <div class="row" >
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                </div>
-                <div class="ibox-content">
+    <div class="wrapper wrapper-content ">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    </div>
+                    <div class="ibox-content">
 
-                    <div class="table-responsive">
-                        <table style="min-width: 1000px" class="table table-striped  table-bordered" >
-                            <thead>
+                        <div class="table-responsive">
+                            <table style="min-width: 1000px" class="table table-striped  table-bordered">
+                                <thead>
                                 <tr role="row">
                                     <th>操作</th>
                                     <th>公司</th>
                                     <th>资产名称</th>
                                     <th>资产分类</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 @foreach($list as $value)
                                     <tr role="row">
                                         @if($value->status!="10")
@@ -47,38 +47,45 @@
                                             @if($value->score)
                                                 <td>忠心感谢您的评价</td>
                                             @else
-                                                <td><button class="btn btn-primary" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md" >给个评价</button></td>
+                                                <td>
+                                                    <button class="btn btn-primary" onclick="edit('{{$value->id}}')"
+                                                            data-toggle="modal" data-target=".bs-example-modal-md">给个评价
+                                                    </button>
+                                                </td>
                                             @endif
                                         @endif
                                         <td>{{$value->org->name}}</td>
                                         <td>{{$value->asset->name}}</td>
-                                        <td>{{$value->category->name}}</td>
+                                        @if(isset($value->category))
+                                            <td>{{$value->category->name}}</td>
+                                        @endif
                                     </tr>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-    <script type="text/javascript" >
+    <script type="text/javascript">
 
         $("document").ready(function () {
             $('.i-checks,#all').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue'
             });
-            $('#all').on('ifChecked ifUnchecked', function(event){
-                if(event.type == 'ifChecked'){
+            $('#all').on('ifChecked ifUnchecked', function (event) {
+                if (event.type == 'ifChecked') {
                     $('.i-checks').iCheck('check');
-                }else{
+                } else {
                     $('.i-checks').iCheck('uncheck');
                 }
             });
         });
+
         function str(message) {
             var messages = "<div class='modal-header'>" +
                 "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
@@ -101,44 +108,44 @@
 
         function edit(id) {
             {{--swal({--}}
-                    {{--title: "确认要接单吗？",--}}
-                    {{--text: "",--}}
-                    {{--type: "warning",--}}
-                    {{--showCancelButton: true,--}}
-                    {{--confirmButtonColor: "#DD6B55",--}}
-                    {{--cancelButtonText: "取消",--}}
-                    {{--confirmButtonText: "确认",--}}
-                    {{--closeOnConfirm: false--}}
-                {{--},--}}
-                {{--function(){--}}
-                    {{--//发异步删除数据--}}
-                    {{--$.ajax({--}}
-                        {{--type: "get",--}}
-                        {{--url: '{{url('repair/process')}}/'+id+'/edit',--}}
-                        {{--dataType:"json",--}}
-                        {{--success: function (data) {--}}
-                            {{--if(data.code==1){--}}
-                                {{--swal({--}}
-                                    {{--title: "",--}}
-                                    {{--text: data.message,--}}
-                                    {{--type: "success",--}}
-                                    {{--timer: 1000,--}}
-                                {{--},function () {--}}
-                                    {{--window.location.reload();--}}
-                                {{--});--}}
-                            {{--}else{--}}
-                                {{--swal("", data.message, "error");--}}
-                            {{--}--}}
-                        {{--}--}}
-                    {{--});--}}
-                {{--});--}}
+            {{--title: "确认要接单吗？",--}}
+            {{--text: "",--}}
+            {{--type: "warning",--}}
+            {{--showCancelButton: true,--}}
+            {{--confirmButtonColor: "#DD6B55",--}}
+            {{--cancelButtonText: "取消",--}}
+            {{--confirmButtonText: "确认",--}}
+            {{--closeOnConfirm: false--}}
+            {{--},--}}
+            {{--function(){--}}
+            {{--//发异步删除数据--}}
+            {{--$.ajax({--}}
+            {{--type: "get",--}}
+            {{--url: '{{url('repair/process')}}/'+id+'/edit',--}}
+            {{--dataType:"json",--}}
+            {{--success: function (data) {--}}
+            {{--if(data.code==1){--}}
+            {{--swal({--}}
+            {{--title: "",--}}
+            {{--text: data.message,--}}
+            {{--type: "success",--}}
+            {{--timer: 1000,--}}
+            {{--},function () {--}}
+            {{--window.location.reload();--}}
+            {{--});--}}
+            {{--}else{--}}
+            {{--swal("", data.message, "error");--}}
+            {{--}--}}
+            {{--}--}}
+            {{--});--}}
+            {{--});--}}
 
 
             $.ajax({
-                url:'{{url('repair/repair_list')}}/'+id+"/edit",
-                type:"get",
-                data:{},
-                success:function (data) {
+                url: '{{url('repair/repair_list')}}/' + id + "/edit",
+                type: "get",
+                data: {},
+                success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
@@ -148,28 +155,28 @@
 
         function add(id) {
             $.ajax({
-                url:'{{url('repair/process/create')}}/'+id,
-                type:"post",
-                data:{},
-                success:function (data) {
+                url: '{{url('repair/process/create')}}/' + id,
+                type: "post",
+                data: {},
+                success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }
 
-        function show_img(object,url) {
+        function show_img(object, url) {
             $.ajax({
-                url:url,
-                success:function (data) {
+                url: url,
+                success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }
 
-        function shows(title,url) {
+        function shows(title, url) {
             $.ajax({
-                "url":url,
-                success:function (data) {
+                "url": url,
+                success: function (data) {
                     $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
