@@ -58,6 +58,8 @@
                                         <td>{{$value->asset->name}}</td>
                                         @if(isset($value->category))
                                             <td>{{$value->category->name}}</td>
+                                        @else
+                                            <td>通用报修项资产</td>
                                         @endif
                                     </tr>
                                 @endforeach

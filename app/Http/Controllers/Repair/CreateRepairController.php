@@ -48,8 +48,9 @@ class CreateRepairController extends Controller
     {
         //
         $data = Process::where('org_id', Auth::user()->org_id)
-            ->where('status', 1)
-            ->with('user', 'img', 'asset', 'category', 'serviceWorker')->get();
+            ->orderBy('status', 'asc')->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+
         return view('repair.create_repair.index', compact('data'));
     }
 
@@ -93,15 +94,21 @@ class CreateRepairController extends Controller
      */
     public function store(Request $request)
     {
+        $category_id = null;
+        if ($request->other == 0) {
+            $category_id = Asset::find($request->area_id)->category_id;
+        }
         $res = [
-            'asset_classify_id' => $request->classify_id ? $request->classify_id : null,
+            'asset_classify_id' => $category_id,
+            'classify_id' => $request->classify_id ? $request->classify_id : null,
             'asset_id' => $request->asset_id ? $request->asset_id : null,
             'area_id' => $request->area_id ? $request->area_id : null,
             'remarks' => $request->remarks ? $request->remarks : null,
             'other' => $request->other,
             'status' => 1,
             'org_id' => Auth::user()->org_id,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'created_at' => date('Y-m-d H:i:s')
         ];
         $process_id = Process::insertGetId($res);
         if ($process_id) {
@@ -207,6 +214,74 @@ class CreateRepairController extends Controller
             return response()->json([
                 'status' => 0, 'message' => '分派失败',
                 'data' => null, 'url' => ''
+            ]);
+        }
+    }
+
+    /**
+     * 管理员更改状态
+     * @param $id
+     */
+    public function changeStatus($id)
+    {
+        $process = Process::where('id', $id)
+            ->with('user', 'img', 'asset', 'category', 'serviceWorker')->first();
+        //获取当前登录公司下的所有服务商
+        $serviceProvider = ServiceProvider::with('org')->get()->toArray();
+        foreach ($serviceProvider as $a) {
+            if (($a['org'])) {
+                if ($a['org'][0]['id'] == Auth::user()->org_id) {
+                    $data[] = $a;
+                }
+            }
+        }
+        $serviceProvider = $data;
+        //获取当前登录公司下的所有分类
+        $classify = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        //循环输出已获取分类的所有维修工
+        foreach ($classify as $v) {
+            $serviceWorker[] = $v->serviceWorker()->get();
+        }
+        return response()->view(
+            'repair.create_repair.change',
+            compact('process', 'classify', 'serviceWorker', 'serviceProvider')
+        );
+    }
+
+    /**
+     * 更改维修完成的状态
+     * @param $id
+     */
+    public function success($id)
+    {
+        $process=Process::find($id);
+        $process->status=10;
+        if ($process->save()){
+            return response()->json([
+                'code' => 1, 'message' => '维修完成'
+            ]);
+        } else {
+            return response()->json([
+                'code' => 0, 'message' => '操作失败，请稍候重试'
+            ]);
+        }
+    }
+
+    /**
+     * 将该条记录的状态值改为0，不可再修，报废处理
+     * @param $id
+     */
+    public function del($id)
+    {
+        $process=Process::find($id);
+        $process->status=0;
+        if ($process->save()){
+            return response()->json([
+                'code' => 1, 'message' => '操作完成'
+            ]);
+        } else {
+            return response()->json([
+                'code' => 0, 'message' => '操作失败'
             ]);
         }
     }
