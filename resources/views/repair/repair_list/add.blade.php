@@ -16,7 +16,8 @@
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">评价等级</label>
                     <div class="col-sm-8">
-                        <input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=1 data-size="md" title="">
+                        {{--<input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=1 data-size="md" title="">--}}
+                        <input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=1 >
                     </div>
                 </div>
             </div>
@@ -47,8 +48,9 @@
                 return val;
             },
             hoverOnClear: false
-        });
 
+        });
+        $(".caption").css("display","none");
         zjb.singleImageUpload({
             uploader:'singleUpload',
             picker:'single-upload',

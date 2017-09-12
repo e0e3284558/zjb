@@ -50,7 +50,9 @@ class RepairListController extends Controller
      */
     public function show($id)
     {
-        //
+//        dd($id);
+        $info = Process::find($id);
+        return response()->view("repair.repair_list.show",compact('info'));
     }
 
     /**
