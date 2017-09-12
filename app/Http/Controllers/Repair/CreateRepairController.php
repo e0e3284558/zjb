@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\Repair\Classify;
@@ -59,9 +60,9 @@ class CreateRepairController extends Controller
     public function create()
     {
 
-        $classifies = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id", Auth::user()->org_id)->orderBy("paths")->get();
-        $classifies = $this->test($classifies);
-        return view('repair.create_repair.add', compact('classifies'));
+        $area=Area::where('org_id',Auth::user()->org_id)->get();
+        $area=$this->test($area);
+        return view('repair.create_repair.add', compact('area'));
     }
 
     /**
@@ -72,11 +73,13 @@ class CreateRepairController extends Controller
     public function selectAsset($id)
     {
         $arr = [];
-        $data = Asset::where('category_id', $id)->get();
+        $area = Area::find($id);
+        $data = Asset::where('area_id', $area->id)->get();
         foreach ($data as $v) {
             $arr[] = '<option value=' . $v->id . '>' . $v->name . '</option>';
         }
         if ($arr == []) $arr = '<option value="">当前类别下无资产，请重新选择</option>';
+        
         return $arr;
     }
 
@@ -165,9 +168,9 @@ class CreateRepairController extends Controller
 
         foreach ($service_worker as $v) {
             $a = DB::table('classify_service_worker')->where('service_worker_id', $v['id'])->get();
-            foreach ($a as $j){
-                if ($j->classify_id==$request->classify_id){
-                    $data[]=$v;
+            foreach ($a as $j) {
+                if ($j->classify_id == $request->classify_id) {
+                    $data[] = $v;
                 }
             }
         }
@@ -186,15 +189,15 @@ class CreateRepairController extends Controller
      */
     public function confirmWorker(Request $request)
     {
-        $repair=Process::find($request['id']);
+        $repair = Process::find($request['id']);
         $repair->service_worker_id = $request['service_worker_id'];
         $repair->service_provider_id = $request['service_provider_id'];
-        $repair->status =20;
-        if ($repair->save()){
+        $repair->status = 20;
+        if ($repair->save()) {
             return response()->json([
                 'status' => 1, 'message' => '分派成功'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 0, 'message' => '分派失败',
                 'data' => null, 'url' => ''

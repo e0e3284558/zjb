@@ -47,18 +47,34 @@
                     </div>
                     <div class="ibox-content">
                         <form method="post" class="form-horizontal" action="{{url('repair/create_repair')}}">
-                            {{csrf_field()}}
-                            <div class="form-group"><label class="col-sm-2 control-label">选择资产类型</label>
+                        {{csrf_field()}}
+                        <!-- 根据资产类型选资产 -->
+                        {{--<div class="form-group"><label class="col-sm-2 control-label">选择资产类型</label>--}}
+                        {{--<div class="col-sm-10">--}}
+                        {{--<select class="form-control m-b" name="asset_classify_id"--}}
+                        {{--onchange="select_asset(this.value)">--}}
+                        {{--<option value="">请选择</option>--}}
+                        {{--@foreach($classifies as $v)--}}
+                        {{--<option value="{{$v['id']}}">{{$v['name']}}</option>--}}
+                        {{--@endforeach--}}
+                        {{--</select>--}}
+                        {{--</div>--}}
+                        {{--</div>--}}
+
+                        <!-- 根据位置 -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择资产位置</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="asset_classify_id"
+                                    <select class="form-control m-b" name="area_id"
                                             onchange="select_asset(this.value)">
                                         <option value="">请选择</option>
-                                        @foreach($classifies as $v)
+                                        @foreach($area as $v)
                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b" name="asset_id" id="asset">
@@ -70,15 +86,16 @@
                                 <div class="col-sm-10"><input type="text" name="remarks" class="form-control"></div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
-
-                                <div id="image-upload-instance"
-                                     class="clearfix multi-image-upload multi-image-upload-lg">
-                                    <div id="image-upload-instance-file-list" class="pull-left"></div>
-                                    <div id="image-upload-instance-picker"
-                                         class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
-                                         data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                                        <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
-                                        选择图片
+                                <div class="col-sm-10">
+                                    <div id="image-upload-instance"
+                                         class="clearfix multi-image-upload multi-image-upload-lg">
+                                        <div id="image-upload-instance-file-list" class="pull-left"></div>
+                                        <div id="image-upload-instance-picker"
+                                             class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
+                                             data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                                            选择图片
+                                        </div>
                                     </div>
 
                                 </div>
@@ -180,8 +197,8 @@
                 picker: 'image-upload-instance',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("image.upload") }}',
-                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
-                storageInputName:'images',//上传成功后input存储区域的name
+                isAutoInsertInput: true,//上传成功是否自动创建input存储区域
+                storageInputName: 'images',//上传成功后input存储区域的name
                 formData: {
                     '_token': '{{ csrf_token() }}'
                 },
