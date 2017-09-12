@@ -152,10 +152,10 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">通用保修</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="asset_id" id="asset">
-                                                        <option value="">通用报修</option>
+                                                        <option value="">请选择资产</option>
                                                         @foreach($other as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
