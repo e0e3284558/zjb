@@ -45,55 +45,136 @@
                             </a>
                         </div>
                     </div>
-                    <div class="ibox-content">
-                        <form method="post" class="form-horizontal" action="{{url('repair/create_repair')}}">
-                            {{csrf_field()}}
-                            <div class="form-group"><label class="col-sm-2 control-label">选择资产类型</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control m-b" name="asset_classify_id"
-                                            onchange="select_asset(this.value)">
-                                        <option value="">请选择</option>
-                                        @foreach($classifies as $v)
-                                            <option value="{{$v['id']}}">{{$v['name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-options">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
+                                    <li class=""><a href="#tab-2" data-toggle="tab">通用报修</a></li>
+                                </ul>
                             </div>
-                            <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control m-b" name="asset_id" id="asset">
-                                        <option value="">请选择资产类别</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
-                                <div class="col-sm-10"><input type="text" name="remarks" class="form-control"></div>
-                            </div>
-                            <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
+                        </div>
 
-                                <div id="image-upload-instance"
-                                     class="clearfix multi-image-upload multi-image-upload-lg">
-                                    <div id="image-upload-instance-file-list" class="pull-left"></div>
-                                    <div id="image-upload-instance-picker"
-                                         class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
-                                         data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                                        <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
-                                        选择图片
+                        <div class="panel-body">
+
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-1">
+                                    <div class="ibox-content">
+                                        <form method="post" class="form-horizontal"
+                                              id="asset_repair"
+                                              action="{{url('repair/create_repair')}}">
+                                        {{csrf_field()}}
+                                        <!-- 根据位置 -->
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">选择资产位置</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" name="area_id"
+                                                            onchange="select_asset(this.value)">
+                                                        <option value="">请选择</option>
+                                                        @foreach($area as $v)
+                                                            <option value="{{$v['id']}}">{{$v['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" name="asset_id" id="asset">
+                                                        <option value="">请选择资产位置</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group"><label class="col-sm-2 control-label">选择报修类别</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" name="classify_id" id="asset">
+                                                        <option value="">请选择报修类别</option>
+                                                        @foreach($classify as $v)
+                                                            <option value="{{$v->id}}">{{$v->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
+                                                <div class="col-sm-10"><input type="text" name="remarks"
+                                                                              class="form-control"></div>
+                                            </div>
+                                            <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
+                                                <div class="col-sm-10">
+                                                    <div id="image-upload-instance"
+                                                         class="clearfix multi-image-upload multi-image-upload-lg">
+                                                        <div id="image-upload-instance-file-list"
+                                                             class="pull-left"></div>
+                                                        <div id="image-upload-instance-picker"
+                                                             class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
+                                                             data-toggle="tooltip" data-placement="top"
+                                                             data-original-title="文件大小10M以内">
+                                                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i>
+                                                            </p>
+                                                            选择图片
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4 col-sm-offset-2">
+                                                    <button class="btn btn-white" type="button">取消</button>
+                                                    <button class="btn btn-primary" id="btn1" type="button">我要报修
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-
                                 </div>
 
-                            </div>
 
+                                <div class="tab-pane" id="tab-2">
+                                    <div class="ibox-content">
+                                        <form method="post" class="form-horizontal"
+                                              id="general_repair"
+                                        >
+                                        {{csrf_field()}}
+                                        <!-- 根据位置 -->
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">选择资产位置</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" name="area_id"
+                                                            onchange="select_asset(this.value)">
+                                                        <option value="">请选择</option>
+                                                        @foreach($area as $v)
+                                                            <option value="{{$v['id']}}">{{$v['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white" type="submit">取消</button>
-                                    <button class="btn btn-primary" type="submit">我要报修</button>
+                                            <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" name="asset_id" id="asset">
+                                                        <option value="">请选择资产类别</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
+                                                <div class="col-sm-10"><input type="text" name="remarks"
+                                                                              class="form-control"></div>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <div class="col-sm-4 col-sm-offset-2">
+                                                    <button class="btn btn-white" type="button">取消</button>
+                                                    <button class="btn btn-primary" id="btn2" type="button">我要报修
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,8 +195,11 @@
 
         $(document).ready(function () {
             zjb.initAjax();
-            var l = $("button[type='submit']").ladda();
-            var forms = $(".form-horizontal");
+            var l = $("#btn1").ladda();
+            var forms = $("#asset_repair");
+            $('#btn1').click(function () {
+                forms.submit();
+            });
             /*字段验证*/
             forms.validate(
                 {
@@ -142,7 +226,7 @@
                     submitHandler: function (form) {
 
                         jQuery.ajax({
-                            url: forms.attr('action'),
+                            url: '{{url('repair/create_repair')}}',
                             type: 'POST',
                             dataType: 'json',
                             data: forms.serialize(),
@@ -175,13 +259,61 @@
                 }
             );
 
+
+            zjb.initAjax();
+            var l = $("#btn2").ladda();
+            var forms2 = $("#general_repair");
+            $('#btn2').click(function () {
+                forms2.submit();
+            });
+            /*字段验证*/
+            forms2.validate(
+                {
+                    /*ajax提交*/
+                    submitHandler: function (form) {
+
+                        jQuery.ajax({
+                            url: '{{url('repair/create_repair')}}',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: forms2.serialize(),
+                            beforeSend: function () {
+                                l.ladda('start');
+                            },
+                            complete: function (xhr, textStatus) {
+                                l.ladda('stop');
+                            },
+                            success: function (data, textStatus, xhr) {
+                                if (data.status) {
+                                    toastr.success(data.message);
+                                    zjb.backUrl('{{url('repair/repair_list')}}', 1000);
+                                } else {
+                                    toastr.error(data.message, '警告');
+                                }
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                if (xhr.status == 422 && textStatus == 'error') {
+                                    $.each(xhr.responseJSON, function (i, v) {
+                                        toastr.error(v[0], '警告');
+                                    });
+                                } else {
+                                    toastr.error('请求出错，稍后重试', '警告');
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            );
+
+
             zjb.imageUpload({
                 uploader: 'imageUploadInstance',
                 picker: 'image-upload-instance',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("image.upload") }}',
-                isAutoInsertInput:true,//上传成功是否自动创建input存储区域
-                storageInputName:'images',//上传成功后input存储区域的name
+                isAutoInsertInput: true,//上传成功是否自动创建input存储区域
+                storageInputName: 'images',//上传成功后input存储区域的name
                 formData: {
                     '_token': '{{ csrf_token() }}'
                 },
