@@ -61,10 +61,11 @@ class CreateRepairController extends Controller
     public function create()
     {
 
-        $area=Area::where('org_id',Auth::user()->org_id)->get();
-        $area=$this->test($area);
-        $classify=Classify::where('org_id',Auth::user()->org_id)->get();
-        return view('repair.create_repair.add', compact('area','classify'));
+        $area = Area::where('org_id', Auth::user()->org_id)->get();
+        $area = $this->test($area);
+        $classify = Classify::where('org_id', Auth::user()->org_id)->get();
+        $other = OtherAsset::where('org_id', Auth::user()->org_id)->get();
+        return view('repair.create_repair.add', compact('area', 'classify', 'other'));
     }
 
     /**
@@ -92,25 +93,26 @@ class CreateRepairController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $res = [
-            'asset_classify_id' => $request->classify_id,
-            'asset_id' => $request->asset_id,
-            'area_id' => $request->area_id,
-            'remarks' => $request->remarks,
+            'asset_classify_id' => $request->classify_id ? $request->classify_id : null,
+            'asset_id' => $request->asset_id ? $request->asset_id : null,
+            'area_id' => $request->area_id ? $request->area_id : null,
+            'remarks' => $request->remarks ? $request->remarks : null,
+            'other' => $request->other,
             'status' => 1,
             'org_id' => Auth::user()->org_id,
             'user_id' => Auth::user()->id
         ];
         $process_id = Process::insertGetId($res);
         if ($process_id) {
-
-            foreach ($request->images as $v) {
-                if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process_id])) {
-                    return response()->json([
-                        'status' => 0, 'message' => '图片上传失败',
-                        'data' => null, 'url' => ''
-                    ]);
+            if ($request->images) {
+                foreach ($request->images as $v) {
+                    if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process_id])) {
+                        return response()->json([
+                            'status' => 0, 'message' => '图片上传失败',
+                            'data' => null, 'url' => ''
+                        ]);
+                    }
                 }
             }
             return response()->json([

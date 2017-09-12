@@ -101,6 +101,7 @@
                                                 <div class="col-sm-10"><input type="text" name="remarks"
                                                                               class="form-control"></div>
                                             </div>
+                                            <input type="hidden" name="other" value="0">
                                             <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
                                                 <div class="col-sm-10">
                                                     <div id="image-upload-instance"
@@ -139,7 +140,7 @@
                                         {{csrf_field()}}
                                         <!-- 根据位置 -->
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label">选择资产位置</label>
+                                                <label class="col-sm-2 control-label">报修位置</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="area_id"
                                                             onchange="select_asset(this.value)">
@@ -154,10 +155,14 @@
                                             <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="asset_id" id="asset">
-                                                        <option value="">请选择资产类别</option>
+                                                        <option value="">通用报修</option>
+                                                        @foreach($other as $v)
+                                                            <option value="{{$v['id']}}">{{$v['name']}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="other" value="1">
                                             <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
                                                 <div class="col-sm-10"><input type="text" name="remarks"
                                                                               class="form-control"></div>
