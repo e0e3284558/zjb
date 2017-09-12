@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Repair;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
+use App\Models\Asset\OtherAsset;
 use App\Models\Repair\Classify;
 use App\Models\Repair\Process;
 use App\Models\Repair\ServiceProvider;
@@ -62,7 +63,8 @@ class CreateRepairController extends Controller
 
         $area=Area::where('org_id',Auth::user()->org_id)->get();
         $area=$this->test($area);
-        return view('repair.create_repair.add', compact('area'));
+        $classify=Classify::where('org_id',Auth::user()->org_id)->get();
+        return view('repair.create_repair.add', compact('area','classify'));
     }
 
     /**
@@ -78,8 +80,7 @@ class CreateRepairController extends Controller
         foreach ($data as $v) {
             $arr[] = '<option value=' . $v->id . '>' . $v->name . '</option>';
         }
-        if ($arr == []) $arr = '<option value="">当前类别下无资产，请重新选择</option>';
-        
+        if ($arr == []) $arr = '<option value="">当前下无资产，请重新选择</option>';
         return $arr;
     }
 
@@ -91,8 +92,11 @@ class CreateRepairController extends Controller
      */
     public function store(Request $request)
     {
-        $res = ['asset_classify_id' => $request->asset_classify_id,
+        dd($request->all());
+        $res = [
+            'asset_classify_id' => $request->classify_id,
             'asset_id' => $request->asset_id,
+            'area_id' => $request->area_id,
             'remarks' => $request->remarks,
             'status' => 1,
             'org_id' => Auth::user()->org_id,
