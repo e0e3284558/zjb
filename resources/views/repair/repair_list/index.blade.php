@@ -19,7 +19,6 @@
     </div>
 @endsection
 @section("content")
-<<<<<<< HEAD
 {{--报修列表--}}
 <div class="wrapper wrapper-content ">
     <div class="row" >
@@ -28,67 +27,42 @@
                 <div class="ibox-title">
                 </div>
                 <div class="ibox-content">
-=======
-    {{--资产入库--}}
-    <div class="wrapper wrapper-content ">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                    </div>
-                    <div class="ibox-content">
->>>>>>> 6997ec30f2597398fd48af725e4d8f1538135bd8
 
                         <div class="table-responsive">
                             <table style="min-width: 1000px" class="table table-striped  table-bordered">
                                 <thead>
                                 <tr role="row">
-                                    <th>操作</th>
+                                    <th>状态</th>
                                     <th>详情</th>
-                                    <th>公司</th>
                                     <th>资产名称</th>
-                                    <th>资产分类</th>
+                                    <th>维修服务商</th>
+                                    <th>已派出维修工</th>
+                                    <th>所属公司</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($list as $value)
                                     <tr role="row">
-                                        {{--@if($value->status!="10")
-                                            <td><span>正在努力维修中</span></td>
-                                        @else
-                                            @if($value->score)
-                                                <td>忠心感谢您的评价</td>
-                                            @else
-                                                <td>
-                                                    <button class="btn btn-primary" onclick="edit('{{$value->id}}')"
-                                                            data-toggle="modal" data-target=".bs-example-modal-md">给个评价
-                                                    </button>
-                                                </td>
-                                            @endif
-                                        @endif--}}
                                         <td>
-                                            @if($value->status=='1')
-                                                <span>已填写保修信息</span>
-                                            @elseif($value->status=='2')
-                                                <span>手动分工</span>
-                                            @elseif($value->status=='3')
-                                                <span>自动分工</span>
+                                            @if($value->status=='1'||$value->status=='2'||$value->status=='3')
+                                                <span class="label label-info" >待分派</span>
                                             @elseif($value->status=='4')
-                                                <span>确认接单</span>
-                                            @elseif($value->status=='10')
-                                                <button class="btn btn-primary" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md" >点击评价</button>
+                                                <span class="label label-success" >已派工</span>
+                                            @elseif($value->status=='10' && $value->score)
+                                                <span class="label label-primary" >评价完毕</span>
+                                            @elseif($value->status=='10' || !$value->score)
+                                                <button class="btn btn-primary btn-sm" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md" >点击评价</button>
                                             @elseif($value->status=='0')
-                                                <span>不可再修</span>
+                                                <span class="label label-danger" >不可再修</span>
                                             @elseif($value->status=='20')
-                                                <span>已分工</span>
+                                                <span>已派工</span>
                                             @endif
                                         </td>
-                                        <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->asset->name}}</span></td>
-                                        <td>{{$value->org->name}}</td>
+                                        <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->asset->name}}</span></td>
                                         <td>{{$value->asset->name}}</td>
-                                        @if(isset($value->category))
-                                            <td>{{$value->category->name}}</td>
-                                        @endif
+                                        <td>{{$value->serviceProvider->name}}</td>
+                                        <td>{{$value->serviceWorker->name}}</td>
+                                        <td>{{$value->org->name}}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
