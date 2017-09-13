@@ -50,7 +50,7 @@
                             <div class="panel-options">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
-                                    <li class=""><a href="#tab-2" data-toggle="tab">通用报修</a></li>
+                                    <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">通用报修</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -102,7 +102,8 @@
                                                                               class="form-control"></div>
                                             </div>
                                             <input type="hidden" name="other" value="0">
-                                            <div class="form-group"><label class="col-sm-2 control-label">图片上传</label>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">图片上传</label>
                                                 <div class="col-sm-10">
                                                     <div id="image-upload-instance"
                                                          class="clearfix multi-image-upload multi-image-upload-lg">
@@ -134,9 +135,7 @@
 
                                 <div class="tab-pane" id="tab-2">
                                     <div class="ibox-content">
-                                        <form method="post" class="form-horizontal"
-                                              id="general_repair"
-                                        >
+                                        <form method="post" class="form-horizontal" id="general_repair">
                                         {{csrf_field()}}
                                         <!-- 根据位置 -->
                                             <div class="form-group">
@@ -167,6 +166,26 @@
                                                 <div class="col-sm-10"><input type="text" name="remarks"
                                                                               class="form-control"></div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label">图片上传</label>
+                                                <div class="col-sm-10">
+                                                    <div id="image-upload-instance2"
+                                                         class="clearfix multi-image-upload multi-image-upload-lg">
+                                                        <div id="image-upload-instance2-file-list"
+                                                             class="pull-left"></div>
+                                                        <div id="image-upload-instance2-picker"
+                                                             class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
+                                                             data-toggle="tooltip" data-placement="top"
+                                                             data-original-title="文件大小10M以内">
+                                                            <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i>
+                                                            </p>
+                                                            选择图片
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="hr-line-dashed"></div>
                                             <div class="form-group">
                                                 <div class="col-sm-4 col-sm-offset-2">
@@ -311,7 +330,7 @@
                 }
             );
 
-
+            //资产报修图片上传
             zjb.imageUpload({
                 uploader: 'imageUploadInstance',
                 picker: 'image-upload-instance',
@@ -335,5 +354,34 @@
                 }
             });
         });
+        //通用报修图片上传
+        var isset = 0;
+        function newImg() {
+            if (isset !== 1) {
+                isset = 1;
+                zjb.imageUpload({
+                    uploader: 'imageUploadInstance2',
+                    picker: 'image-upload-instance2',
+                    swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+                    server: '{{ route("image.upload") }}',
+                    isAutoInsertInput: true,//上传成功是否自动创建input存储区域
+                    storageInputName: 'images',//上传成功后input存储区域的name
+                    formData: {
+                        '_token': '{{ csrf_token() }}'
+                    },
+                    fileNumLimit: 10,
+                    uploadComplete: function (file, uploader) {
+                    },
+                    uploadError: function (file, uploader) {
+                    },
+                    uploadSuccess: function (file, response, uploader) {
+                    },
+                    fileCannel: function (fileId, uploader) {
+                    },
+                    fileDelete: function (fileId, uploader) {
+                    }
+                });
+            }
+        }
     </script>
 @endsection

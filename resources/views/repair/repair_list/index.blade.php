@@ -58,7 +58,10 @@
                                                 <span>已派工</span>
                                             @endif
                                         </td>
-                                        <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->asset->name}}</span></td>
+                                        <td><span class="cursor_pointer" onclick="shows('{{$value->name}}',
+                                                    '{{url('repair/repair_list')}}/{{$value->id}}')"
+                                                  data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                  title="详情">{{$value->asset->name}}</span></td>
                                         <td>{{$value->asset->name}}</td>
                                         <td>{{$value->serviceProvider->name}}</td>
                                         <td>{{$value->serviceWorker->name}}</td>
