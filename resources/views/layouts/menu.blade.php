@@ -33,7 +33,7 @@
             </li>
             <li class="{{ active_class(if_route('repair_list.index'))}}"><a
                         href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
-                    我的报修列表</a>
+                    报修列表</a>
             </li>
         @else
             {{--        @if(session('worker'))--}}

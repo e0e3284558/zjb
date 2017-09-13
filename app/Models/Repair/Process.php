@@ -33,7 +33,7 @@ class Process extends Model
     public function area(){
         return $this->belongsTo('App\Models\Asset\Area');
     }
-    public function other_asset(){
+    public function otherAsset(){
         return $this->belongsTo('App\Models\Asset\OtherAsset','other');
     }
 }
