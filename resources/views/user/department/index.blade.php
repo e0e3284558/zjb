@@ -33,6 +33,7 @@
                     <input type="text" placeholder="请输入关键字" name="name" id="search-name" class="form-control border-radius-none">
                     <span class="input-group-btn"> 
                         <button type="button" id="search-dep" class="btn btn-primary blue border-radius-none"><i class="fa fa-search"></i> 查询</button>
+                        <a class="btn default border-radius-none" href="{{ url("users/departments/create") }}" data-target="#dep-form-wrapper" data-toggle="relaodHtml" data-loading="true"><i class="fa fa-plus"></i> 新增</a>
                     </span>
                 </div>
             </div>
@@ -88,8 +89,13 @@ $(document).ready(function() {
                 pIdKey: "parent_id"
             }
         },
+        check:{
+            enable: false
+        },
         view: {
-            showIcon:false
+            showIcon:true,
+            dblClickExpand:false,
+            showLine: false
         },
         callback: {
             beforeAsync: depTreeBeforeAsync,

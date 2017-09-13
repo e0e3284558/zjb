@@ -639,6 +639,70 @@
                                 </div>   
                             </div>
                         </form>
+
+                        <form action="" method="get" class="form-horizontal m-t-sm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group m-b">
+                                        <span class="input-group-addon bg-grey-cararra">姓名：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group  m-b">
+                                        <span class="input-group-addon bg-grey-cararra">电话：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group m-b">
+                                        <span class="input-group-addon bg-grey-cararra">身份证号：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group m-b">
+                                        <span class="input-group-addon bg-grey-cararra">邮箱：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group  m-b">
+                                        <span class="input-group-addon bg-grey-cararra">性别：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group m-b">
+                                        <span class="input-group-addon bg-grey-cararra">其他：</span>
+                                        <select class="select2 form-control">
+                                            <option>asd</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group m-b">
+                                        <span class="input-group-addon bg-grey-cararra">身份证号：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group  m-b">
+                                        <span class="input-group-addon bg-grey-cararra">性别：</span>
+                                        <input type="text" placeholder="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="button" name="submit" class="btn blue " value="查询">
+                                    <input type="reset" name="submit" class="btn btn-default " value="清空">
+                                </div>
+                            </div>
+                            
+                        </form>
                     </div>
                     <hr>
                     <div class="table-responsive">

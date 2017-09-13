@@ -25,6 +25,8 @@ class AddDescribeToOrgs extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('orgs', function (Blueprint $table) {
+            $table->dropColumn('describe');
+        });
     }
 }

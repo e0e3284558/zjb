@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DefaultController extends Controller
 {
@@ -23,10 +25,41 @@ class DefaultController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = User::where('org_id', Auth::user()->org_id)->with('department')->get();
-        return view('user.user.index', compact('data'));
+        if ($request->ajax()) {
+            $search = $request->get('search');
+            $department = $request->get('department_id');
+            $name = $request->get('name');
+            $username = $request->get('username');
+            $tel = $request->get('tel');
+            $email = $request->get('email');
+            $user = User::where('org_id', get_current_login_user_org_id())
+                ->where(function ($query) use ($search) {
+                    $query->when($search,function ($querys) use ($search){
+                        $querys->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('tel', 'like', "%{$search}%")
+                            ->orWhere('username', 'like', "%{$search}%");
+                    });
+                })->when($department,function ($query) use ($department){
+                    $query->where('department_id',$department);
+                })->when($name,function ($query) use ($name){
+                    $query->where('name', 'like', "%{$name}%");
+                })->when($username,function ($query) use ($username){
+                    $query->where('username', 'like', "%{$username}%");
+                })->when($tel,function ($query) use ($tel){
+                    $query->where('tel', 'like', "%{$tel}%");
+                })->when($email,function ($query) use ($email){
+                    $query->where('email', 'like', "%{$email}%");
+                })->orderBy('id', 'desc')->with('department')->paginate(request('limit'));
+            $data = $user->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
+        }
+//        $data = User::where('org_id', Auth::user()->org_id)->with('department')->orderBy('id','desc')->get();
+        return view('user.user.index');
     }
 
     /**
@@ -36,22 +69,24 @@ class DefaultController extends Controller
      */
     public function create()
     {
-        return response()->view('user.user.add');
+        return view('user.user.add');
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $user = new User;
+        $user->username = $request->username;
         $user->name = $request->name;
         $user->password = bcrypt($request->password);
         $user->email = $request->email;
         $user->tel = $request->tel;
-        $user->department_id = $request->department_id;
-        $user->avatar = $request->avatar;
-        $user->org_id = $request->org_id;
+        $user->department_id = $request->department_id ? $request->department_id : 0;
+//        $user->avatar = $request->avatar;
+        $user->org_id = get_current_login_user_org_id();
         if ($user->save()) {
             return response()->json([
-                'status' => 1, 'message' => '添加成功'
+                'status' => 1, 'message' => '添加成功',
+                'data' => $user->toArray(), 'url' => ''
             ]);
         } else {
             return response()->json([
@@ -63,27 +98,27 @@ class DefaultController extends Controller
 
     public function show($id)
     {
-        if ($id=='*'){
+        if ($id == '*') {
             $data = User::where('org_id', Auth::user()->org_id)->with('department')->get();
-        }else{
-            $data = User::where('department_id',$id)->with('department')->get();
+        } else {
+            $data = User::where('department_id', $id)->with('department')->get();
         }
 
-        return  response()->view('user.user.show', compact('data','id'));
+        return response()->view('user.user.show', compact('data', 'id'));
     }
 
     public function search($value)
     {
-        if ($value){
-            $data = User::where('name','like', "$value%")->with('department')->get();
-            return  response()->view('user.user.show', compact('data'));
+        if ($value) {
+            $data = User::where('name', 'like', "$value%")->with('department')->get();
+            return response()->view('user.user.show', compact('data'));
         }
 
     }
 
-    public function edit($id)
+    public function edit()
     {
-        $data = User::find($id);
+        $data = User::find(request('id'));
         return response()->view('user.user.edit', compact('data'));
     }
 
@@ -93,20 +128,20 @@ class DefaultController extends Controller
      * @param $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $user = User::find($id);
+        $user->username = $request->username;
         $user->name = $request->name;
         if ($request->password != null) $user->password = bcrypt($request->password);
-        $user->department_id = $request->department_id;
+        $user->department_id = $request->department_id ? $request->department_id : 0;
         $user->tel = $request->tel;
         $user->email = $request->email;
-        $user->avatar = $request->avatar;
-        $user->org_id = $request->org_id;
+//        $user->avatar = $request->avatar;
         if ($user->save()) {
             return response()->json([
                 'status' => 1, 'message' => '编辑成功',
-                'data' => $user->toArray()
+                'data' => User::with('department')->find($user->id)->toArray()
             ]);
         } else {
             return response()->json([
@@ -116,16 +151,26 @@ class DefaultController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy()
     {
-        if (User::where('id', $id)->delete()) {
+        $id = request('id');
+        $id = array_unique((array)$id);
+        if (count($id) == 1 && !current($id)) {
+            return response()->json([
+                'status' => 0,
+                'message' => '请选择要操作的数据',
+            ]);
+        }
+        if (User::where('is_org_admin', '<>', 1)
+            ->whereIn('id', $id)->delete()
+        ) {
             return response()->json([
                 'message' => '删除成功',
-                'status' => 'success'
+                'status' => 1
             ]);
         } else {
             return response()->json([
-                'status' => 'error',
+                'status' => 0,
                 'message' => '删除失败，请稍后重试',
             ]);
         }

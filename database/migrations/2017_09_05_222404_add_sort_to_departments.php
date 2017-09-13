@@ -26,7 +26,7 @@ class AddSortToDepartments extends Migration
     public function down()
     {
         Schema::table('departments', function (Blueprint $table) {
-            //
+            $table->dropColumn('sort');
         });
     }
 }
