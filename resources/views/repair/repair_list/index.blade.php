@@ -58,8 +58,13 @@
                                                 <span>已派工</span>
                                             @endif
                                         </td>
-                                        <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->asset->name}}</span></td>
-                                        <td>{{$value->asset->name}}</td>
+                                        @if($value->other=="0")
+                                            <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->asset->name}}</span></td>
+                                            <td>{{$value->asset->name}}</td>
+                                        @else
+                                            <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->otherAsset->name}}</span></td>
+                                            <td>{{$value->otherAsset->name}}</td>
+                                        @endif
                                         <td>{{$value->serviceProvider->name}}</td>
                                         <td>{{$value->serviceWorker->name}}</td>
                                         <td>{{$value->org->name}}</td>
@@ -97,6 +102,17 @@
                     $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
+        }
+
+        function edit(id) {
+            $.ajax({
+                url:"{{url('repair/repair_list')}}/"+id+'/edit',
+                type:"get",
+                dataType:"html",
+                success:function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
+                }
+            });
         }
 
     </script>
