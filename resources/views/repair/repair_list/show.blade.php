@@ -7,10 +7,10 @@
         <tbody>
             <tr role="row">
                 <td><label class="control-label">报修项名称</label></td>
-                @if($info->asset_id)
+                @if($info->other=="0")
                     <td>{{$info->asset->name}}</td>
                 @else
-                    <td>{{$info->other_asset->name}}</td>
+                    <td>{{$info->otherAsset->name}}</td>
                 @endif
                 <td ><label class="control-label">维修服务商</label></td>
                 <td>{{$info->serviceProvider->name}}</td>

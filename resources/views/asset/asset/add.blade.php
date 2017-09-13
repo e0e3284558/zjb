@@ -169,7 +169,7 @@
                 <div class="form-group">
                     <label for="Comment" class="col-sm-4 control-label">照片</label>
                     <div class="col-sm-8">
-                        <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" class="img-lg">
+                        <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="file_id" value="">
                         <div id="single-upload" class="btn-upload m-t-xs">
                             <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
@@ -178,9 +178,6 @@
                     </div>
                 </div>
             </div>
-
-
-
             <input type="hidden" name="org_id" value="{{$org_id}}">
         </div>
     </form>

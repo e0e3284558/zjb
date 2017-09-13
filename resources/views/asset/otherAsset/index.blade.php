@@ -107,6 +107,7 @@
                                                 <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="col-md-offset-10">
                                         <button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>
