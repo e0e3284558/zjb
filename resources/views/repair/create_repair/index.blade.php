@@ -86,11 +86,15 @@
                                         @if($v->status==20 ||$v->status==4)
                                             已分派维修工
                                         @endif
+                                        @if($v->status==10)
+                                            已完成维修
+                                        @endif
                                     </td>
                                     <td>
                                         @if($v->status==1 || $v->status==10 || $v->status==0)
                                             @if($v->status==1)
-                                                <button class="btn btn-success btn-sm" onclick="assign('{{$v->id}}')"
+                                                <button class="btn btn-success btn-sm pull-left"
+                                                        onclick="assign('{{$v->id}}')"
                                                         data-toggle="modal" data-target=".bs-example-modal-lg">
                                                     分派维修
                                                 </button>
@@ -98,21 +102,24 @@
                                             @if($v->status==10)
 
                                                 @if($v->appraisal)
-                                                    <button class="btn btn-primary btn-sm">已评价</button>
+                                                    <button class="btn btn-primary btn-sm  pull-left">已评价</button>
                                                 @else
-                                                    <button class="btn btn-primary btn-sm">维修完成</button>
+                                                    <button class="btn btn-primary btn-sm  pull-left">维修完成</button>
                                                 @endif
                                             @endif
-                                                @if($v->status==0)
-                                                    <label class="btn btn-danger btn-sm">不可再修</label>
-                                                    @endif
+                                            @if($v->status==0)
+                                                <label class="btn btn-danger btn-sm pull-left">不可再修</label>
+                                            @endif
                                         @else
-                                            <button class="btn btn-warning btn-sm"
+
+                                            <button class="btn btn-warning btn-sm pull-left"
                                                     data-toggle="modal" data-target=".bs-example-modal-lg"
                                                     onclick="change_status({{$v->id}})">重新分派
                                             </button>
-                                            <br>
-                                            <button class="btn btn-info btn-sm" onclick="success({{$v->id}})">完成维修</button>
+
+                                            <button class="btn btn-info btn-sm pull-left" onclick="success({{$v->id}})">
+                                                完成维修
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -153,9 +160,9 @@
             swal({
                     title: "确认要完成维修吗？",
                     text: "",
-                    type: "success",
+                    type: "info",
                     showCancelButton: true,
-                    confirmButtonColor: "#00cc00",
+                    confirmButtonColor: "#0e9aef",
                     cancelButtonText: "取消",
                     confirmButtonText: "确认",
                     closeOnConfirm: false

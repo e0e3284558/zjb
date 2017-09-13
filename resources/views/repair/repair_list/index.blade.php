@@ -19,14 +19,14 @@
     </div>
 @endsection
 @section("content")
-{{--报修列表--}}
-<div class="wrapper wrapper-content ">
-    <div class="row" >
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                </div>
-                <div class="ibox-content">
+    {{--报修列表--}}
+    <div class="wrapper wrapper-content ">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                    </div>
+                    <div class="ibox-content">
 
                         <div class="table-responsive">
                             <table style="min-width: 1000px" class="table table-striped  table-bordered">
@@ -44,20 +44,28 @@
                                     <tr role="row">
                                         <td>
                                             @if($value->status=='1'||$value->status=='2'||$value->status=='3')
-                                                <span class="label label-info" >待分派</span>
+                                                <span class="label label-info">待分派</span>
                                             @elseif($value->status=='4')
-                                                <span class="label label-success" >已派工</span>
+                                                <span class="label label-success">已派工</span>
                                             @elseif($value->status=='10' && $value->score)
+<<<<<<< HEAD
                                                 <span class="label label-default" >评价完毕</span>
+=======
+                                                <span class="label label-primary">评价完毕</span>
+>>>>>>> 5584706ed980a5a4b8492b0116247f1e66dd2490
                                             @elseif($value->status=='10' || !$value->score)
-                                                <button class="btn btn-primary btn-sm" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md" >点击评价</button>
+                                                <button class="btn btn-primary btn-sm" onclick="edit('{{$value->id}}')"
+                                                        data-toggle="modal" data-target=".bs-example-modal-md">点击评价
+                                                </button>
                                             @elseif($value->status=='0')
-                                                <span class="label label-danger" >不可再修</span>
+                                                <span class="label label-danger">不可再修</span>
                                             @elseif($value->status=='20')
                                                 <span>已派工</span>
                                             @endif
                                         </td>
+
                                         @if($value->other=="0")
+<<<<<<< HEAD
                                             <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->asset->name}}</span></td>
                                         @else
                                             <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->otherAsset->name}}</span></td>
@@ -68,6 +76,29 @@
                                         @else
                                             <td>等待分派</td>
                                             <td>等待分派</td>
+=======
+                                            <td><span class="cursor_pointer"
+                                                      onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')"
+                                                      data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                      title="详情">{{$value->asset->name}}</span></td>
+                                            <td>{{$value->asset->name}}</td>
+                                        @else
+                                            <td><span class="cursor_pointer"
+                                                      onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')"
+                                                      data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                      title="详情">{{$value->otherAsset->name}}</span></td>
+                                            <td>{{$value->otherAsset->name}}</td>
+                                        @endif
+                                        @if($value->serviceProvider)
+                                            <td>{{$value->serviceProvider->name}}</td>
+                                        @else
+                                            <td>等待分派维修工</td>
+                                        @endif
+                                        @if($value->serviceWorker)
+                                            <td>{{$value->serviceWorker->name}}</td>
+                                        @else
+                                            <td>等待分派服务商</td>
+>>>>>>> 5584706ed980a5a4b8492b0116247f1e66dd2490
                                         @endif
                                         <td>{{$value->org->name}}</td>
                                     </tr>
@@ -108,10 +139,10 @@
 
         function edit(id) {
             $.ajax({
-                url:"{{url('repair/repair_list')}}/"+id+'/edit',
-                type:"get",
-                dataType:"html",
-                success:function (data) {
+                url: "{{url('repair/repair_list')}}/" + id + '/edit',
+                type: "get",
+                dataType: "html",
+                success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }
             });
