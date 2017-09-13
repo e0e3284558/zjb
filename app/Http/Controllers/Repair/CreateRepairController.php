@@ -46,12 +46,23 @@ class CreateRepairController extends Controller
      */
     public function index()
     {
-        //
-        $data = Process::where('org_id', Auth::user()->org_id)
-            ->orderBy('status', 'asc')->latest()
+        //获取等待维修的报修
+        $data1 = Process::where('org_id', Auth::user()->org_id)
+            ->where('status','1')->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+        //获取正在维修中的报修
+        $data2 = Process::where('org_id', Auth::user()->org_id)
+            ->where('status','2')
+            ->orWhere('status', '20')
+            ->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+        //获取已完成的报修
+        $data3 = Process::where('org_id', Auth::user()->org_id)
+            ->where('status','10')
+            ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
 
-        return view('repair.create_repair.index', compact('data'));
+        return view('repair.create_repair.index', compact('data1','data2','data3'));
     }
 
     /**
