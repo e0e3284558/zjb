@@ -33,8 +33,7 @@
                                 <thead>
                                 <tr role="row">
                                     <th>状态</th>
-                                    <th>详情</th>
-                                    <th>资产名称</th>
+                                    <th>报修项名称</th>
                                     <th>维修服务商</th>
                                     <th>已派出维修工</th>
                                     <th>所属公司</th>
@@ -49,7 +48,7 @@
                                             @elseif($value->status=='4')
                                                 <span class="label label-success" >已派工</span>
                                             @elseif($value->status=='10' && $value->score)
-                                                <span class="label label-primary" >评价完毕</span>
+                                                <span class="label label-default" >评价完毕</span>
                                             @elseif($value->status=='10' || !$value->score)
                                                 <button class="btn btn-primary btn-sm" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md" >点击评价</button>
                                             @elseif($value->status=='0')
@@ -60,13 +59,16 @@
                                         </td>
                                         @if($value->other=="0")
                                             <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->asset->name}}</span></td>
-                                            <td>{{$value->asset->name}}</td>
                                         @else
                                             <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" title="详情">{{$value->otherAsset->name}}</span></td>
-                                            <td>{{$value->otherAsset->name}}</td>
                                         @endif
-                                        <td>{{$value->serviceProvider->name}}</td>
-                                        <td>{{$value->serviceWorker->name}}</td>
+                                        @if($value->status!="1")
+                                            <td>{{$value->serviceProvider->name}}</td>
+                                            <td>{{$value->serviceWorker->name}}</td>
+                                        @else
+                                            <td>等待分派</td>
+                                            <td>等待分派</td>
+                                        @endif
                                         <td>{{$value->org->name}}</td>
                                     </tr>
                                 @endforeach

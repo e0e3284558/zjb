@@ -1,5 +1,6 @@
 <div class="ibox">
     <div class="ibox-title">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h5>分派维修工</h5>
     </div>
     <div class="ibox-content">
