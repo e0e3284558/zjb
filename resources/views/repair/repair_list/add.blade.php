@@ -16,7 +16,7 @@
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">评价等级</label>
                     <div class="col-sm-8">
-                        <input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=1 data-size="md" title="">
+                        <input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=1 data-size="xs" data-error-container="#error-block" title="">
                     </div>
                 </div>
             </div>
@@ -47,8 +47,9 @@
                 return val;
             },
             hoverOnClear: false
-        });
 
+        });
+        $(".caption").css("display","none");
         zjb.singleImageUpload({
             uploader:'singleUpload',
             picker:'single-upload',
@@ -81,34 +82,12 @@
             assets_form.submit();
         });
         assets_form.validate( {
-//            rules: {
-//                category_id:"required",
-//                name:"required",
-//                area_id:"required",
-//                money:{
-//                    number:true,
-//                    min:0
-//                },
-//                buy_time:"required",
-//                use_time: {
-//                    min: 1,
-//                    digits:true
-//                }
-//            },
-//            messages: {
-//                category_id:"资产类别不能为空",
-//                name:"资产名称不能为空",
-//                area_id:'所在场地不能为空',
-//                money:{
-//                    number:"必须为数值类型",
-//                    min:"金额必须为大于零的有效数字"
-//                },
-//                buy_time:"购入时间不能为空",
-//                use_time: {
-//                    min: "请输入一个有效整数",
-//                    digits:"请输入一个正整数"
-//                }
-//            },
+            rules: {
+                score:"required",
+            },
+            messages: {
+                score:"评分不能为空",
+            },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input

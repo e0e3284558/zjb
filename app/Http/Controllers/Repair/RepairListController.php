@@ -17,7 +17,7 @@ class RepairListController extends Controller
     public function index()
     {
         $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')
-                         ->where("user_id",Auth::user()->id)->get();
+                         ->where("user_id",Auth::user()->id)->orderBy('id','desc')->get();
         return view("repair.repair_list.index",compact("list"));
     }
 
@@ -50,7 +50,8 @@ class RepairListController extends Controller
      */
     public function show($id)
     {
-        //
+        $info = Process::with('org','user','admin','area','other_asset','asset','category','serviceWorker','serviceProvider')->find($id);
+        return response()->view("repair.repair_list.show",compact('info'));
     }
 
     /**

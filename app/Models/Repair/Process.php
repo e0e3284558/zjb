@@ -30,7 +30,10 @@ class Process extends Model
     public function img(){
         return $this->belongsToMany('App\Models\File\File');
     }
-    public function otherAsset(){
-        return $this->belongsTo('App\Models\Asset\OtherAsset','asset_id');
+    public function area(){
+        return $this->belongsTo('App\Models\Asset\Area');
+    }
+    public function other_asset(){
+        return $this->belongsTo('App\Models\Asset\OtherAsset','other');
     }
 }
