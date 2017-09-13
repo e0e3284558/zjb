@@ -1,11 +1,10 @@
 <div class="ibox">
     <div class="ibox-title">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h5>分派维修工</h5>
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            手动分派维修工。
+            重新分派维修工。
         </p>
 
         <div class="dd" id="nestable2">
@@ -51,11 +50,11 @@
                                     <label>需要维修的资产</label>
                                     <input type="text" class="form-control" disabled
                                            @if($process->other==1)
-                                               @if($process->otherAsset)
-                                                 value="{{$process->otherAsset->name}}"
-                                               @endif
+                                           @if($process->otherAsset)
+                                           value="{{$process->otherAsset->name}}"
+                                           @endif
                                            @else
-                                                value="{{$process->asset->name}}"
+                                           value="{{$process->asset->name}}"
                                             @endif
                                     >
                                 </div>
@@ -104,6 +103,7 @@
                 <li>
                     <button type="submit" class="btn btn-success">分配</button>
                     <button type="button" onclick="del({{$process->id}})" class="btn btn-warning">废弃报修</button>
+
                 </li>
             </form>
         </div>

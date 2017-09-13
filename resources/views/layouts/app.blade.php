@@ -62,6 +62,9 @@
     <!-- ztree -->
     <link rel="stylesheet" href="{{asset('assets/css/plugins/text-spinners/spinners.css')}}"  media="all">
 
+    <!-- star-rating -->
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.css')}}">
+
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -695,7 +698,11 @@
     <script type="text/javascript" src="{{asset('assets/js/plugins/zTree/js/jquery.ztree.all.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/plugins/zTree/js/jquery.ztree.exhide.min.js')}}"></script>
 
+    <!-- serializejson -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/jquerySerializeJSON/jquery.serializejson.min.js')}}"></script>
+
+    <!-- star-rating -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.js')}}" ></script>
 
     <!-- Custom and plugin javascript -->    
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>

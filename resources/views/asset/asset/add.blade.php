@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label for="buy_time" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="buy_time" value="{{date("Y/m/d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
@@ -63,50 +63,23 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4" >
+                <div class="form-group">
+                    <label for="money" class="col-sm-4 control-label">规格型号</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="spec" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" >
             <div class="col-md-4" >
                 <div class="form-group">
                     <label for="money" class="col-sm-4 control-label">金额</label>
                     <div class="col-sm-8">
                         <input type="text" name="money" class="form-control" data-error-container="#error-block" placeholder="金额">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        {{--<div class="row" >
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="use_time" class="col-sm-4 control-label">使用期限</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="use_time" class="form-control" data-error-container="#error-block" placeholder="使用期限">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="SN_code" class="col-sm-4 control-label">SN号</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="SN_code" class="form-control" placeholder="SN号">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="user_name" class="col-sm-4 control-label">使用人</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="user_name" class="form-control" id="inputEmail3" placeholder="使用人">
-                    </div>
-                </div>
-            </div>
-        </div>--}}
-
-        <div class="row" >
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="supplier" class="col-sm-4 control-label">供应商</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="supplier" class="form-control" id="inputEmail3" placeholder="供应商">
                     </div>
                 </div>
             </div>
@@ -158,19 +131,27 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group" style="position: relative;" >
-                    <label for="use_department_id" class="col-sm-4 control-label">使用部门</label>
+            <div class="col-md-4" >
+                <div class="form-group">
+                    <label for="supplier" class="col-sm-4 control-label">供应商</label>
                     <div class="col-sm-8">
-                        <select id="use_department_id" name="use_department_id" class="form-control select2">
-                            <option value="">请选择</option>
-                            @foreach($list6 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" name="supplier" class="form-control" id="inputEmail3" placeholder="供应商">
                     </div>
                 </div>
             </div>
+            {{--<div class="col-md-4">--}}
+                {{--<div class="form-group" style="position: relative;" >--}}
+                    {{--<label for="use_department_id" class="col-sm-4 control-label">使用部门</label>--}}
+                    {{--<div class="col-sm-8">--}}
+                        {{--<select id="use_department_id" name="use_department_id" class="form-control select2">--}}
+                            {{--<option value="">请选择</option>--}}
+                            {{--@foreach($list6 as $v)--}}
+                                {{--<option value="{{$v->id}}">{{$v->name}}</option>--}}
+                            {{--@endforeach--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
         </div>
 
@@ -188,7 +169,7 @@
                 <div class="form-group">
                     <label for="Comment" class="col-sm-4 control-label">照片</label>
                     <div class="col-sm-8">
-                        <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" class="img-lg">
+                        <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="file_id" value="">
                         <div id="single-upload" class="btn-upload m-t-xs">
                             <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
@@ -197,9 +178,6 @@
                     </div>
                 </div>
             </div>
-
-
-
             <input type="hidden" name="org_id" value="{{$org_id}}">
         </div>
     </form>

@@ -6,18 +6,7 @@
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="row">
         <div class="form-group">
-            <label class="col-sm-3 control-label">资产类别<span class="required">*</span></label>
-            <div class="col-sm-8">
-                <select name="category_id" onchange="find(this.value)" id="type_id" class="form-control select2 " data-error-container="#error-block">
-                    <option value="">请选择</option>
-                    @foreach($category_list as $value)
-                        <option value="{{$value->id}}">{{$value->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">资产名称<span class="required">*</span></label>
+            <label class="col-sm-3 control-label">报修项名称<span class="required">*</span></label>
             <div class="col-sm-8">
                 <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="资产名称" data-error-container="#error-block">
             </div>
@@ -45,16 +34,14 @@
         zjb.initAjax();
         var otherAssets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', otherAssets_form);
-        $('#submitAssetsForm').click(function () {
-            otherAssets_form.submit();
-        });
+//        $('#submitAssetsForm').click(function () {
+//            otherAssets_form.submit();
+//        });
         otherAssets_form.validate( {
             rules: {
-                category_id:"required",
                 name:"required"
             },
             messages: {
-                category_id:"资产类别不能为空",
                 name:"资产名称不能为空"
             },
             errorElement: 'span', //default input error message container

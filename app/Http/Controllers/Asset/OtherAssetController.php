@@ -28,16 +28,11 @@ class OtherAssetController extends Controller
         $map = [
             ['org_id','=',$org_id]
         ];
-        if($request->category_id){
-            $map[] = ['category_id','=',$request->category_id];
-        }
         if($request->name){
             $map[] = ['name','like','%'.$request->name.'%'];
         }
         $list = OtherAsset::with('category')->where($map)->get();
-        //资产类别
-        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        return view("asset.otherAsset.index",compact('list','category_list'));
+        return view("asset.otherAsset.index",compact('list'));
     }
 
 
@@ -48,8 +43,7 @@ class OtherAssetController extends Controller
      */
     public function create()
     {
-        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        return response()->view("asset.otherAsset.add",compact("category_list"));
+        return response()->view("asset.otherAsset.add");
     }
 
     /**
@@ -64,7 +58,6 @@ class OtherAssetController extends Controller
             'code' => date("mdis").rand(1000,9999),
             'name' => $request->name,
             'uid' => Uuid::generate()->string,
-            'category_id' => $request->category_id,
             'remarks' => $request->remarks,
             'org_id' => Auth::user()->org_id
         ];
@@ -86,8 +79,6 @@ class OtherAssetController extends Controller
     public function show($id)
     {
         $info = OtherAsset::where("id",$id)->first();
-        //类别
-        $info->category_id = AssetCategory::where("id",$info->category_id)->where("org_id",Auth::user()->org_id)->value("name");
         $info->org_id = Org::where("id",$info->org_id)->value("name");
 
         return response()->view("asset.otherAsset.show",compact('info'));
@@ -103,13 +94,7 @@ class OtherAssetController extends Controller
     {
         if(Auth::user()->org_id == OtherAsset::where("id",$id)->value("org_id")) {
             $info = OtherAsset::where("id", $id)->first();
-            //图片
-//            $file_id = AssetFile::where("asset_id",$info->id)->value("file_id");
-//            $file = File::where("id",$file_id)->first();
-            //资产类别
-            $list = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->orderBy("paths")->get();
-
-            return response()->view("asset.otherAsset.edit", compact("info", "list"));
+            return response()->view("asset.otherAsset.edit", compact("info"));
         }else{
             return redirect("home");
         }
@@ -127,7 +112,6 @@ class OtherAssetController extends Controller
         $arr = [
             'name' => $request->name,
             'remarks' => $request->remarks,
-            'category_id' => $request->category_id,
         ];
         $info = OtherAsset::where("id",$id)->update($arr);
 

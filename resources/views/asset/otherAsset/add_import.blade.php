@@ -31,9 +31,6 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
-
-
-
         zjb.fileUpload({
             uploader:'singleUpload',
             picker:'single-upload',
