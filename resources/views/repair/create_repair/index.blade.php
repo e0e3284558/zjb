@@ -112,8 +112,7 @@
                                                     onclick="change_status({{$v->id}})">重新分派
                                             </button>
                                             <br>
-                                            <button class="btn btn-info btn-sm" onclick="success({{$v->id}})">完成维修
-                                            </button>
+                                            <button class="btn btn-info btn-sm" onclick="success({{$v->id}})">维修完成</button>
                                         @endif
                                     </td>
                                 </tr>
