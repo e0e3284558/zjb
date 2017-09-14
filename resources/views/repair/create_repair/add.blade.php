@@ -68,7 +68,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">选择资产位置</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="area_id"
+                                                    <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset(this)">
                                                         <option value="">请选择</option>
                                                         @foreach($area as $v)
@@ -141,7 +141,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">报修位置</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="area_id"
+                                                    <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset(this)">
                                                         <option value="">请选择</option>
                                                         @foreach($area as $v)
@@ -205,18 +205,6 @@
         </div>
     </div>
     <script>
-        {{--function select_asset(id) {--}}
-        {{--url = '{{url('repair/create_repair/select_asset')}}/' + id;--}}
-        {{--jQuery("#asset").empty();--}}
-        {{--$.ajax({--}}
-        {{--"url": url,--}}
-        {{--"type": 'get',--}}
-        {{--success: function (data) {--}}
-        {{--$("#asset").append(data);--}}
-        {{--}--}}
-        {{--})--}}
-        {{--}--}}
-
         function select_asset(obj) {
             o = $(obj);
             //清除
@@ -231,9 +219,11 @@
                 success: function (data) {
                     $("#asset").append(data.asset);
                     //创建select
-                    select = $("<select name='area_id' class='form-control m-b' onchange='select_asset(this)' ></select>");
+                    select = $("<select name='area_id[]' class='form-control m-b' onchange='select_asset(this)' ></select>");
                     if (data.area.length > 0) {
                         //遍历
+                        ini='<option value="0">请选择 </option>';
+                        select.append(ini);
                         for (var i = 0; i < data.area.length; i++) {
                             //把遍历出来数据添加到option
                             info = '<option value="' + data.area[i].id + '">' + data.area[i].name + '</option>';
