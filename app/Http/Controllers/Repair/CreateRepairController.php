@@ -67,7 +67,7 @@ class CreateRepairController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     * 我要报修，创建报修
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -82,7 +82,7 @@ class CreateRepairController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     * 根据条件选择资产 AJAX
      * @return \Illuminate\Http\Response
      */
     public function selectAsset($id)
@@ -107,6 +107,7 @@ class CreateRepairController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $category_id = null;
         if ($request->other == 0) {
             $category_id = Asset::find($request->area_id)->category_id;
