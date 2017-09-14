@@ -46,7 +46,7 @@ var zjb = function(){
         if ($().select2) {
             $.fn.select2.defaults.set("theme", "bootstrap");
             $('.select2').select2({
-                width: 'auto' 
+                width: '100%' 
             });
         }
     };
@@ -76,7 +76,7 @@ var zjb = function(){
             var query = $(this).data('query');
             var loading = $(this).data('loading') ? true : false;
             if(url){
-                zjb.ajaxGetHtml($(el),url,query,loading);
+                zjb.ajaxGetHtml(el,url,query,loading);
             }
         });
     };
@@ -213,11 +213,13 @@ var zjb = function(){
                 dataType: dataType ? dataType : 'JSON',
                 data: query,
                 beforeSend: function () {
-                    zjb.blockUI(el?el:'');
+                    if(el){
+                        zjb.blockUI(el?el:'');
+                    }
                 },
                 complete: function (xhr, textStatus) {
                     //called when complete
-                    zjb.unblockUI(el?el:'');
+                    if(el){zjb.unblockUI(el?el:'');}
                 },
                 success: function (data, textStatus, xhr) {
                     //called when successful

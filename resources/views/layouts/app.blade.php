@@ -57,7 +57,7 @@
     <link rel="stylesheet" href="{{asset('assets/js/plugins/layui/css/layui.css')}}"  media="all">
 
     <!-- ztree -->
-    <link rel="stylesheet" href="{{asset('assets/js/plugins/zTree/css/bootstrapStyle/bootstrapStyle.css')}}"  media="all">
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/zTree/css/zTreeStyle2/zTreeStyle2.css')}}"  media="all">
 
     <!-- ztree -->
     <link rel="stylesheet" href="{{asset('assets/css/plugins/text-spinners/spinners.css')}}"  media="all">
@@ -697,6 +697,9 @@
     <!-- ztree -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/zTree/js/jquery.ztree.all.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/plugins/zTree/js/jquery.ztree.exhide.min.js')}}"></script>
+
+    <!-- serializejson -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/jquerySerializeJSON/jquery.serializejson.min.js')}}"></script>
 
     <!-- star-rating -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.js')}}" ></script>

@@ -29,7 +29,10 @@ class AddUserIdIpRemarkUploadModeToFiles extends Migration
     public function down()
     {
         Schema::table('files', function (Blueprint $table) {
-            //
+            $table->dropColumn('ip');
+            $table->dropColumn('user_id');
+            $table->dropColumn('remark');
+            $table->dropColumn('upload_mode');
         });
     }
 }

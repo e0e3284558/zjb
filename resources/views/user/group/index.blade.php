@@ -38,10 +38,22 @@
 </div>
 <div class="fh-breadcrumb full-height-layout-on white-bg layui-table-no-border">
  	<div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
- 		<button class="btn blue " id="add-btn">添加</button>
- 		<a href="{{ route('users.groups') }}"  class="btn default ">修改</a>
- 		<a href="" class="btn red ">删除</a>
- 		<a href="#testModal" class="btn blue-madison" data-toggle="modal" data-target="#testModal">查询</a>
+    <div class="row">
+      <div class="col-md-8">
+        <button class="btn blue " id="add-btn">添加</button>
+        <a href="{{ route('users.groups') }}"  class="btn default ">修改</a>
+        <a href="" class="btn red ">删除</a>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group">
+          <input type="text" class="form-control"> 
+          <span class="input-group-btn"> 
+          <button type="button" class="btn blue-madison ">查询</button> 
+          <a href="#testModal" class="btn default" data-toggle="modal" data-target="#testModal">高级查询</a>
+          </span>
+        </div>
+      </div>
+    </div>
  	</div>
  	<table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ route("users.groups") }}',page:true,limit:15,response:{countName: 'total'}}">
       <thead>

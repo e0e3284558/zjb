@@ -14,7 +14,7 @@ class AddUuidToOrgs extends Migration
     public function up()
     {
         Schema::table('orgs', function (Blueprint $table) {
-            //
+            $table->uuid('uuid')->unique()->comment('单位uuid');
         });
     }
 
@@ -26,7 +26,7 @@ class AddUuidToOrgs extends Migration
     public function down()
     {
         Schema::table('orgs', function (Blueprint $table) {
-            //
+//            $table->dropColumn('uuid');
         });
     }
 }

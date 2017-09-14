@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSortToOrgs extends Migration
+class AddUsernameToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSortToOrgs extends Migration
      */
     public function up()
     {
-        Schema::table('orgs', function (Blueprint $table) {
-            $table->integer('sort')->default(0)->comment('排序号，同级有效');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('username',30)->unique();//增加用户名字段
         });
     }
 
@@ -25,8 +25,8 @@ class AddSortToOrgs extends Migration
      */
     public function down()
     {
-        Schema::table('orgs', function (Blueprint $table) {
-            $table->dropColumn('sort');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('username');
         });
     }
 }

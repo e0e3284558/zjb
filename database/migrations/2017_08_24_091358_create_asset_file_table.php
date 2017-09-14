@@ -33,6 +33,6 @@ class CreateAssetFileTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('asset_file');
     }
 }

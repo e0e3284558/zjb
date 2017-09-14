@@ -12,18 +12,20 @@
                 <li class="{{ active_class(if_route('classify.index'))}}"><a
                             href="{{ url('repair/classify?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 报修分类</a>
                 </li>
-                <li class="{{ active_class(if_route('service_worker.index'))}}"><a
-                            href="{{ url('repair/service_worker?app_groups=repair') }}"><i
-                                class="fa fa-angle-right"></i> 维修工管理</a>
-                </li>
                 <li class="{{ active_class(if_route('service_provider.index'))}}"><a
                             href="{{ url('repair/service_provider?app_groups=repair') }}"><i
                                 class="fa fa-angle-right"></i>
                         服务商管理</a>
                 </li>
+                <li class="{{ active_class(if_route('service_worker.index'))}}"><a
+                            href="{{ url('repair/service_worker?app_groups=repair') }}"><i
+                                class="fa fa-angle-right"></i>
+                        维修工管理</a>
+                </li>
                 <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                             href="{{ url('repair/create_repair?app_groups=repair') }}"><i
-                                class="fa fa-angle-right"></i> 待报修列表</a>
+                                class="fa fa-angle-right"></i>
+                        待维修列表</a>
                 </li>
             @endif
             <li class="{{ active_class(if_route('create_repair.create'))}}"><a
@@ -38,7 +40,8 @@
         @else
             {{--        @if(session('worker'))--}}
             <li class="{{ active_class(if_route('process.index'))}}"><a
-                        href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 维修单列表</a>
+                        href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
+                    维修单列表</a>
             </li>
         @endif
 

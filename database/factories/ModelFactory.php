@@ -20,7 +20,9 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
         'avatar'=>0,
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'username' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('asdasd'),
         'remember_token' => str_random(10),
+        'org_id'=>1
     ];
 });
