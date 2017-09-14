@@ -178,10 +178,9 @@ class OtherAssetController extends Controller
     }
 
     function import(Request $request){
-        dd($request->all());
-        $filePath =  'uploads/file/201709/05/59adff0f5762d.xls';
+        $filePath =  $request->file_path;
         Excel::load($filePath, function($reader) {
-            $data = $reader->first();
+            $data = $reader->all();
             $org_id = Auth::user()->org_id;
             foreach ($data as $k=>$v){
                 $arr = $v->toArray();
@@ -190,12 +189,12 @@ class OtherAssetController extends Controller
                 $arr['org_id'] = $org_id;
                 OtherAsset::insert($arr);
             }
-            $message = [
-                'code'=>'1',
-                'message'=> '数据导入成功'
-            ];
-            return response()->json($message);
         });
+        $message = [
+            'code'=>'1',
+            'message'=> '数据导入成功'
+        ];
+        return response()->json($message);
     }
 
 }

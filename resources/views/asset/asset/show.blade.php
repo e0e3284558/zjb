@@ -62,14 +62,14 @@
                         <span>暂无图片</span>
                     @endif
                 </td>
-                <td class="td-bg" ><label class="control-label">资产标签</label></td>
-                <td colspan="2" >
-                    <div style="text-align: center;" >
-                        <img src="{{asset($info->qrcode_path)}}" alt="">
-                        <p>资产名称：{{$info->name}}</p>
-                        <p>所属公司：{{$info->org->name}}</p>
-                    </div>
-                </td>
+                {{--<td class="td-bg" ><label class="control-label">资产标签</label></td>--}}
+                {{--<td colspan="2" >--}}
+                    {{--<div style="text-align: center;" >--}}
+                        {{--<img src="{{asset($info->qrcode_path)}}" alt="">--}}
+                        {{--<p>资产名称：{{$info->name}}</p>--}}
+                        {{--<p>所属公司：{{$info->org->name}}</p>--}}
+                    {{--</div>--}}
+                {{--</td>--}}
             </tr>
         </tbody>
     </table>
