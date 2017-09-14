@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\AreaRequest;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\User\Org;
@@ -58,7 +59,7 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AreaRequest $request)
     {
         $arr = [
             'name' => $request->name,
@@ -130,7 +131,7 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AreaRequest $request, $id)
     {
         $user_org = Auth::user()->org_id;
         $info = Area::find($id);
