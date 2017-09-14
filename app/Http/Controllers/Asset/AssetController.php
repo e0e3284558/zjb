@@ -109,10 +109,10 @@ class AssetController extends Controller
         $arr = $request->except("_token","img","file_id");
 
         $arr['asset_uid'] = Uuid::generate()->string;
-        QrCode::format('png')->size("100")->margin(0)->merge('/public/uploads/qrcodes/logo.png', .3)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
+        QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
+        $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
 
         $arr['created_at'] = date("Y-m-d H:i:s");
-//        $arr['asset_status_id'] = "1";
         $info = Asset::insertGetId($arr);
 
         if($request->file_id){
