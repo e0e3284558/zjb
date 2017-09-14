@@ -221,9 +221,9 @@
                                                     <th>分类</th>
                                                     <th>照片</th>
                                                     <th>备注</th>
-                                                    {{--<th>上次维修工</th>--}}
-                                                    {{--<th>维修建议</th>--}}
-                                                    <th>当前状态</th>
+                                                    <th>维修工</th>
+                                                    <th>服务商</th>
+                                                    <th>评分</th>
                                                     <th>评价</th>
                                                 </tr>
                                                 </thead>
@@ -259,21 +259,20 @@
                                                             </td>
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
-                                                        {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                        {{--<td>{{$v->suggest}}</td>--}}
+                                                        @if($v->serviceWorker)
+                                                            <td>{{$v->serviceWorker->name}}</td>
+                                                        @endif
+                                                        @if($v->serviceProvider)
+                                                            <td>{{$v->serviceProvider->name}}</td>
+                                                        @endif
+
                                                         <td>
-                                                            @if($v->status==1)
-                                                                等待分派维修中
-                                                            @endif
-                                                            @if($v->status==20 ||$v->status==4)
-                                                                已分派维修工
-                                                            @endif
-                                                            @if($v->status==10)
-                                                                已完成维修
-                                                            @endif
+                                                            @for($i=0;$i<$v->score;$i++)
+                                                                <i class="fa fa-star" style="color:#e8bd0d;"></i>
+                                                            @endfor
                                                         </td>
-                                                        <td title="{{$v->score}}">
-                                                           {{$v->appraisal}}
+                                                        <td title="{{$v->appraisal}}">
+                                                            {{mb_substr($v->appraisal,0,10)}}
                                                         </td>
                                                     </tr>
                                                 @endforeach
