@@ -19,27 +19,6 @@ class CreateRepairController extends Controller
 {
 
     /**
-     * @param $list
-     * @return mixed
-     */
-    public function test($list)
-    {
-        foreach ($list as $key => $value) {
-            // var_dump($value);
-            $s = $value->path;
-            //转换为数组
-            $arr = explode(',', $s);
-            //获取数组的长度
-            $len = count($arr);
-            //获取逗号个数
-            $dlen = $len - 1;
-            //拼接分割符 str_repeat()重复字符串
-            $list[$key]->name = str_repeat('|--', $dlen) . $value->name;
-        }
-        return $list;
-    }
-
-    /**
      *
      * 待报修列表
      * @return \Illuminate\Http\Response
@@ -48,21 +27,21 @@ class CreateRepairController extends Controller
     {
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status','1')->latest()
+            ->where('status', '1')->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status','2')
+            ->where('status', '2')
             ->orWhere('status', '20')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取已完成的报修
         $data3 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status','10')
+            ->where('status', '10')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
 
-        return view('repair.create_repair.index', compact('data1','data2','data3'));
+        return view('repair.create_repair.index', compact('data1', 'data2', 'data3'));
     }
 
     /**
@@ -73,8 +52,7 @@ class CreateRepairController extends Controller
     public function create()
     {
 
-        $area = Area::where('org_id', Auth::user()->org_id)->get();
-        $area = $this->test($area);
+        $area = Area::where('org_id', Auth::user()->org_id)->where('pid', 0)->get();
         $classify = Classify::where('org_id', Auth::user()->org_id)->get();
         $other = OtherAsset::where('org_id', Auth::user()->org_id)->get();
         return view('repair.create_repair.add', compact('area', 'classify', 'other'));
@@ -88,14 +66,17 @@ class CreateRepairController extends Controller
     public function selectAsset($id)
     {
         $arr = [];
-        $area = Area::find($id);
-        $asset = Asset::where('area_id', $area->id)->get();
-        foreach ($asset as $v) {
-            $arr[] = '<option value=' . $v->id . '>' . $v->name . '</option>';
+        $data['area'] = '';
+        if ($id != 0) {
+            $area = Area::find($id);
+            $asset = Asset::where('area_id', $area->id)->get();
+            foreach ($asset as $v) {
+                $arr[] = '<option value=' . $v->id . '>' . $v->name . '</option>';
+            }
+            $data['area'] = Area::where("pid", $id)->get();
         }
         if ($arr == []) $arr = '<option value="">当前下无资产，请重新选择</option>';
-        $data['asset']=$arr;
-        $data['area']=Area::where("pid",$id)->get();
+        $data['asset'] = $arr;
         return response()->json($data);
     }
 
@@ -107,16 +88,23 @@ class CreateRepairController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //判断场地信息是否符合规范，并处理场地信息
+        if ($request->area_id !== null) {
+            $area_id = $request->area_id;
+            $area_id = end($area_id);
+            if ($area_id == 0) {
+                $area_id = $request->area_id[count($request->area_id) - 2];
+            }
+        }
         $category_id = null;
         if ($request->other == 0) {
-            $category_id = Asset::find($request->area_id)->category_id;
+            $category_id = Asset::find($area_id)->category_id;
         }
         $res = [
             'asset_classify_id' => $category_id,
             'classify_id' => $request->classify_id ? $request->classify_id : null,
             'asset_id' => $request->asset_id ? $request->asset_id : null,
-            'area_id' => $request->area_id ? $request->area_id : null,
+            'area_id' => $area_id,
             'remarks' => $request->remarks ? $request->remarks : null,
             'other' => $request->other,
             'status' => 1,
@@ -268,9 +256,9 @@ class CreateRepairController extends Controller
      */
     public function success($id)
     {
-        $process=Process::find($id);
-        $process->status=10;
-        if ($process->save()){
+        $process = Process::find($id);
+        $process->status = 10;
+        if ($process->save()) {
             return response()->json([
                 'code' => 1, 'message' => '维修完成'
             ]);
@@ -287,9 +275,9 @@ class CreateRepairController extends Controller
      */
     public function del($id)
     {
-        $process=Process::find($id);
-        $process->status=0;
-        if ($process->save()){
+        $process = Process::find($id);
+        $process->status = 0;
+        if ($process->save()) {
             return response()->json([
                 'code' => 1, 'message' => '操作完成'
             ]);

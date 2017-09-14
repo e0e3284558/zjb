@@ -65,17 +65,18 @@
                                               action="{{url('repair/create_repair')}}">
                                         {{csrf_field()}}
                                         <!-- 根据位置 -->
-                                            <div class="form-group">
+                                            <div class="form-group slt">
                                                 <label class="col-sm-2 control-label">选择资产位置</label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset(this)">
-                                                        <option value="">请选择</option>
+                                                        <option value="0">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
+
                                             </div>
 
                                             <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
@@ -140,7 +141,7 @@
                                         <!-- 根据位置 -->
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">报修位置</label>
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-2">
                                                     <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset(this)">
                                                         <option value="">请选择</option>
@@ -206,10 +207,16 @@
     </div>
     <script>
         function select_asset(obj) {
+
             o = $(obj);
             //清除
-            o.nextAll("select").remove();
-            id = o.val();
+            ids = o.val();
+            if(ids=="0"){
+                o.parent("div").nextAll("div").remove();
+                id = o.parent("div").prev('div').find('select').val();
+            }else{
+                id = ids;
+            }
             url = '{{url('repair/create_repair/select_asset')}}/' + id;
             jQuery("#asset").empty();
             $.ajax({
@@ -218,21 +225,28 @@
                 'dataType': 'json',
                 success: function (data) {
                     $("#asset").append(data.asset);
-                    //创建select
-                    select = $("<select name='area_id[]' class='form-control m-b' onchange='select_asset(this)' ></select>");
-                    if (data.area.length > 0) {
-                        //遍历
-                        ini='<option value="0">请选择 </option>';
-                        select.append(ini);
-                        for (var i = 0; i < data.area.length; i++) {
-                            //把遍历出来数据添加到option
-                            info = '<option value="' + data.area[i].id + '">' + data.area[i].name + '</option>';
-                            //把当前info数据添加到创建的select
-                            select.append(info);
-                        }
-                        //把带有数据的select 追加
-                        o.after(select);
+                    if(ids!="0"){
 
+                        //创建select
+                        select1 = $("<div class='col-sm-2'></div>");
+                        select = $("<select name='area_id[]' class='form-control m-b' onchange='select_asset(this)' ></select>");
+                        select1.append(select);
+                        if (data.area != '') {
+                            if (data.area.length > 0) {
+                                //遍历
+                                ini = '<option value="0">请选择 </option>';
+                                select.append(ini);
+                                for (var i = 0; i < data.area.length; i++) {
+                                    //把遍历出来数据添加到option
+                                    info = '<option value="' + data.area[i].id + '">' + data.area[i].name + '</option>';
+                                    //把当前info数据添加到创建的select
+                                    select.append(info);
+                                }
+                                //把带有数据的select 追加
+                                o.parent("div").after(select1);
+
+                            }
+                        }
                     }
                 }
             })
