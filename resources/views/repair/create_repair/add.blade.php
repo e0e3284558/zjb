@@ -69,7 +69,7 @@
                                                 <label class="col-sm-2 control-label">选择资产位置</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="area_id"
-                                                            onchange="select_asset(this.value)">
+                                                            onchange="select_asset(this)">
                                                         <option value="">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
@@ -142,7 +142,7 @@
                                                 <label class="col-sm-2 control-label">报修位置</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="area_id"
-                                                            onchange="select_asset(this.value)">
+                                                            onchange="select_asset(this)">
                                                         <option value="">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
@@ -205,14 +205,45 @@
         </div>
     </div>
     <script>
-        function select_asset(id) {
+        {{--function select_asset(id) {--}}
+        {{--url = '{{url('repair/create_repair/select_asset')}}/' + id;--}}
+        {{--jQuery("#asset").empty();--}}
+        {{--$.ajax({--}}
+        {{--"url": url,--}}
+        {{--"type": 'get',--}}
+        {{--success: function (data) {--}}
+        {{--$("#asset").append(data);--}}
+        {{--}--}}
+        {{--})--}}
+        {{--}--}}
+
+        function select_asset(obj) {
+            o = $(obj);
+            //清除
+            o.nextAll("select").remove();
+            id = o.val();
             url = '{{url('repair/create_repair/select_asset')}}/' + id;
             jQuery("#asset").empty();
             $.ajax({
                 "url": url,
                 "type": 'get',
+                'dataType': 'json',
                 success: function (data) {
-                    $("#asset").append(data);
+                    $("#asset").append(data.asset);
+                    //创建select
+                    select = $("<select name='area_id' class='form-control m-b' onchange='select_asset(this)' ></select>");
+                    if (data.area.length > 0) {
+                        //遍历
+                        for (var i = 0; i < data.area.length; i++) {
+                            //把遍历出来数据添加到option
+                            info = '<option value="' + data.area[i].id + '">' + data.area[i].name + '</option>';
+                            //把当前info数据添加到创建的select
+                            select.append(info);
+                        }
+                        //把带有数据的select 追加
+                        o.after(select);
+
+                    }
                 }
             })
         }
@@ -295,7 +326,6 @@
                 {
                     /*ajax提交*/
                     submitHandler: function (form) {
-
                         jQuery.ajax({
                             url: '{{url('repair/create_repair')}}',
                             type: 'POST',
@@ -356,6 +386,7 @@
         });
         //通用报修图片上传
         var isset = 0;
+
         function newImg() {
             if (isset !== 1) {
                 isset = 1;

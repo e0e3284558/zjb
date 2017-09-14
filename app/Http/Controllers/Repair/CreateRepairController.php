@@ -89,12 +89,14 @@ class CreateRepairController extends Controller
     {
         $arr = [];
         $area = Area::find($id);
-        $data = Asset::where('area_id', $area->id)->get();
-        foreach ($data as $v) {
+        $asset = Asset::where('area_id', $area->id)->get();
+        foreach ($asset as $v) {
             $arr[] = '<option value=' . $v->id . '>' . $v->name . '</option>';
         }
         if ($arr == []) $arr = '<option value="">当前下无资产，请重新选择</option>';
-        return $arr;
+        $data['asset']=$arr;
+        $data['area']=Area::where("pid",$id)->get();
+        return response()->json($data);
     }
 
     /**
