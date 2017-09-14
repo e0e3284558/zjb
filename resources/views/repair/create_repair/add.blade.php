@@ -144,7 +144,7 @@
                                                 <div class="col-sm-2">
                                                     <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset2(this)">
-                                                        <option value="">请选择</option>
+                                                        <option value="0">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
