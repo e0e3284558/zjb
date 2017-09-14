@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label for="money" class="col-md-3 control-label">上传文件</label>
                 <div class="col-md-8">
-                    <input type="hidden" id="upload_id" name="file_id" value="">
+                    <input type="hidden" id="upload_id" name="file_path" value="">
                     <div id="single-upload" class="btn-upload m-t-xs">
                         <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择附件</div>
                         <div id="single-upload-file-list"></div>
@@ -43,9 +43,7 @@
 
             uploadSuccess:function(file,response){
                 //上传完成触发时间
-                console.log(file);
-//                console.log(response.path);
-//                $('#upload_id').val(response.data.id);
+                $('#upload_id').val(response.data.path);
             }
         });
 

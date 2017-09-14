@@ -51,28 +51,28 @@
                                 <a class="btn btn-success" onclick="add('添加','{{url('area/create')}}')"  id="create" >
                                     <i class="fa  fa-plus"></i> 新增
                                 </a>
-                                <div class="dropup inline">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-print"></i>更多操作
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <li><a class="btn btn-default" id="printBarcode download" href="{{url('area/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
-                                        <li><a class="btn btn-default" id="print import"><i class="fa fa-sign-in"></i> 导入数据</a></li>
-                                        <li><a href="{{url('area/export')}}" class="btn btn-default" id="print export"><i class="fa fa-sign-out"></i> 导出EXCEL</a></li>
-                                    </ul>
-                                </div>
-                                <div class="dropup inline">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-print"></i>打印
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <li><a href="#" id="printBarcode" onclick="prints()" >打印资产标签</a></li>
-                                        <li><a href="#" id="print" >打印资产卡片</a></li>
-                                        <li><a href="#" id="print" >打印入库单</a></li>
-                                    </ul>
-                                </div>
+                                {{--<div class="dropup inline">--}}
+                                    {{--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                        {{--<i class="fa fa-print"></i>更多操作--}}
+                                        {{--<span class="caret"></span>--}}
+                                    {{--</button>--}}
+                                    {{--<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">--}}
+                                        {{--<li><a class="btn btn-default" id="printBarcode download" href="{{url('area/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>--}}
+                                        {{--<li><a class="btn btn-default" id="print import"><i class="fa fa-sign-in"></i> 导入数据</a></li>--}}
+                                        {{--<li><a href="{{url('area/export')}}" class="btn btn-default" id="print export"><i class="fa fa-sign-out"></i> 导出EXCEL</a></li>--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
+                                {{--<div class="dropup inline">--}}
+                                    {{--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                                        {{--<i class="fa fa-print"></i>打印--}}
+                                        {{--<span class="caret"></span>--}}
+                                    {{--</button>--}}
+                                    {{--<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">--}}
+                                        {{--<li><a href="#" id="printBarcode" onclick="prints()" >打印资产标签</a></li>--}}
+                                        {{--<li><a href="#" id="print" >打印资产卡片</a></li>--}}
+                                        {{--<li><a href="#" id="print" >打印入库单</a></li>--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
                             </div>
                         </div>
                     </div>
