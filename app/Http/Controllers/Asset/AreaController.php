@@ -76,8 +76,9 @@ class AreaController extends Controller
             $arr['pid'] = "0";
             $arr['path'] = "";
         }
-        QrCode::encoding("UTF-8")->format('png')->size("100")->merge('/public/assets/img/logo.png', .3)->margin("0")->generate($arr['uid'],public_path('uploads/area/'.$arr['uid'].'.png'));
+        QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],public_path('uploads/area/'.$arr['uid'].'.png'));
 
+        $arr['qrcode_path'] = 'uploads/area/'.$arr['uid'].'.png';
         $info = Area::insertGetId($arr);
         if($info){
             $message = [
