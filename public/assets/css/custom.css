@@ -8172,6 +8172,7 @@ Custom color buttons
 }
 .p-r-xxs{padding-right: 5px;}
 .p-r-xs{padding-right: 10px;}
+.p-b-xs{padding-bottom: 10px;}
 .form-horizontal .tl{text-align: left; }
 .overflow{overflow: hidden;}
 .bg-f2{
@@ -8213,6 +8214,9 @@ Custom color buttons
 }
 .layui-table-tips-c{padding: 0;}
 .layui-table thead tr, .layui-table-fixed-l tr, .layui-table-header, .layui-table-mend, .layui-table-patch, .layui-table-tool{
+    background-color: #f4f6fa;
+}
+.layui-table[lay-even] tr:nth-child(even){
     background-color: #f4f6fa;
 }
 

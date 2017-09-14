@@ -106,6 +106,7 @@ class DepartmentController extends Controller
                     'text' => $org,
                     'name' => $org,
                     'href' => '',//编辑地址
+                    'icon' => asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/global.gif')
                 ]
             ];
             if ($list) {
@@ -134,6 +135,11 @@ class DepartmentController extends Controller
                 */
                 foreach ($list as $key => $val) {
                     $val['href'] = url('users/departments/' . $val['id'] . '/edit');
+//                    if($val['is_company']){
+//                        $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/home.gif');
+//                    }else{
+                        $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
+//                    }
                     $tempData[] = $val;
                 }
             }

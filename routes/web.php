@@ -41,11 +41,11 @@ Route::group(['prefix' => 'users', 'namespace' => 'User', 'middleware' => 'auth'
     Route::get('default/index', 'DefaultController@index')->name('users.index');
     Route::get('default/create', 'DefaultController@create')->name('users.create');
     Route::post('default/store', 'DefaultController@store')->name('users.store');
-    Route::get('default/{id}', 'DefaultController@show')->name('users.show');
-    Route::get('default/search/{value}', 'DefaultController@search')->name('users.show');
+    Route::get('default/{id}', 'DefaultController@show')->name('users.show')->where('id', '[0-9]+');;
+    Route::get('default/edit', 'DefaultController@edit')->name('users.default.edit');
     Route::get('default/{id}/edit', 'DefaultController@edit')->name('users.edit');
     Route::put('default/{id}', 'DefaultController@update')->name('users.update');
-    Route::delete('default/{id}', 'DefaultController@destroy')->name('users.destroy');
+    Route::delete('default/delete', 'DefaultController@destroy')->name('users.destroy');
 
     Route::get('unit', 'DepartmentController@unit')->name('users.unit');
     Route::post('unit', 'DepartmentController@unit')->name('users.unit_edit');

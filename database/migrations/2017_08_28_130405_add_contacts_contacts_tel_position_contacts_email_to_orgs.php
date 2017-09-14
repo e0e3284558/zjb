@@ -28,6 +28,11 @@ class AddContactsContactsTelPositionContactsEmailToOrgs extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('orgs', function (Blueprint $table) {
+            $table->dropColumn('contacts');
+            $table->dropColumn('contacts_tel');
+            $table->dropColumn('contacts_postion');
+            $table->dropColumn('contacts_email');
+        });
     }
 }

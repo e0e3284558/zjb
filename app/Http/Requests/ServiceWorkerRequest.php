@@ -34,7 +34,7 @@ class ServiceWorkerRequest extends FormRequest
             case 'PUT':
                 return [
                     'username' => 'required|min:6|max:20',
-                    'password' => 'nullable|min:6|max:20',
+                    'password' => 'nullable|min:6',
                     'name' => 'required|min:2|max:10',
                     'tel' => 'required|numeric|digits:11',
                 ];
@@ -50,7 +50,7 @@ class ServiceWorkerRequest extends FormRequest
             'username.max' => '用户名不能大于20位',
             'password.required' => '密码必须填写',
             'password.min' => '密码不能小于6位',
-            'password.max' => '密码不能大于20位',
+//            'password.max' => '密码不能大于20位',
             'name.required' => '姓名必须填写',
             'name.min' => '姓名不能小于2位',
             'name.max' => '姓名不能大于10位',

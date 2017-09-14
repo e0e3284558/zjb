@@ -26,7 +26,7 @@ class AddShortNameToOrgs extends Migration
     public function down()
     {
         Schema::table('orgs', function (Blueprint $table) {
-            //
+            $table->dropColumn('short_name');
         });
     }
 }
