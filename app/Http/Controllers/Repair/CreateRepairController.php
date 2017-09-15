@@ -249,7 +249,7 @@ class CreateRepairController extends Controller
             $serviceWorker[] = $v->serviceWorker()->get();
         }
         return response()->view(
-            'repair.create_repair.change',
+            'repair.create_repair.assign',
             compact('process', 'classify', 'serviceWorker', 'serviceProvider')
         );
     }

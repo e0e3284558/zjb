@@ -56,7 +56,6 @@
                                                 <th>照片</th>
                                                 <th>备注</th>
                                                 <th>地址</th>
-                                                <th>当前状态</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -129,6 +128,7 @@
                                                     <th>照片</th>
                                                     <th>备注</th>
                                                     <th>报修位置</th>
+                                                    <th>当前维修人员</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -166,6 +166,7 @@
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
                                                         <td>{{get_area($v->area_id)}}</td>
+                                                        <td>{{$v->serviceWorker->name}}</td>
 
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
@@ -312,7 +313,7 @@
                                                             </td>
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
-                                           
+
                                                         <td>
                                                             @if($v->status==1 || $v->status==10 || $v->status==0)
                                                                 @if($v->status==1)
