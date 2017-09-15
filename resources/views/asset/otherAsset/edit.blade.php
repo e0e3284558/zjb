@@ -7,7 +7,7 @@
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <input type="hidden" name="_method" value="PUT">
     <div class="form-group">
-        <label class="col-sm-3 control-label">报修项名称<span style="color:red;">*</span></label>
+        <label class="col-sm-3 control-label">维修项名称<span style="color:red;">*</span></label>
         <div class="col-sm-8">
             <input type="text" name="name" class="form-control" value="{{$info->name}}" data-error-container="#error-block">
         </div>

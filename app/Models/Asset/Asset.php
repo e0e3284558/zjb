@@ -44,4 +44,8 @@ class Asset extends Model
     public function file(){
         return $this->belongsToMany('App\Models\File\File');
     }
+
+    public function supplier(){
+        return $this->belongsTo('App\Models\Asset\Supplier');
+    }
 }

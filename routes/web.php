@@ -134,6 +134,9 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post('asset/copy', 'AssetController@copy');
     Route::resource('asset', 'AssetController');
 
+    //供应商管理
+    Route::resource("supplier",'SupplierController');
+
     //附件信息
     Route::post("upload/uploadFile", "UploadController@uploadFile");
     Route::resource("upload", "UploadController");

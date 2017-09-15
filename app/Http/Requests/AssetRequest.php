@@ -26,7 +26,6 @@ class AssetRequest extends FormRequest
         return [
             'name'=>'required',
             'category_id'=>'required',
-            'buy_time'=>'required',
             'area_id'=>'required'
         ];
     }
@@ -35,8 +34,7 @@ class AssetRequest extends FormRequest
     {
         return [
             'name.required'=>'请输入资产名称',
-            'required.required'=>'请选择资产类别',
-            'buy_time.required'=>'请选择购入时间',
+            'category_id.required'=>'请选择资产类别',
             'area_id.required'=>'请选择所在场地',
         ];
     }

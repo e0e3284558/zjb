@@ -12,7 +12,7 @@
                 </li>
 
                 <li class="active">
-                    <strong>维修项列表</strong>
+                    <strong>供应商管理</strong>
                 </li>
             </ol>
         </div>
@@ -21,14 +21,14 @@
     </div>
 @endsection
 @section("content")
-{{--其他报修项 --}}
+{{--供应商管理 --}}
 <div class="fh-breadcrumb fh-breadcrumb-m full-height-layout-on">
     <div class="wrapper wrapper-content2 full-height">
         <div class="row full-height">
             <div class="col-md-6 full-height">
                 <div class="ibox full-height-ibox">
                     <div class="ibox-title">
-                        <h5>维修项列表</h5>
+                        <h5>供应商管理</h5>
                     </div>
                     <div class="ibox-content margin-padding-0">
                         <div class="ibox-content-wrapper">
@@ -37,7 +37,8 @@
                                     <thead>
                                     <tr role="row">
                                         <th><input type="checkbox" name="checkAll" id="all" ></th>
-                                        <th>维修项名称</th>
+                                        <th>供应商名称</th>
+                                        <th>类别</th>
                                         <th>备注</th>
                                     </tr>
                                     </thead>
@@ -45,7 +46,8 @@
                                     @foreach($list as $k=>$v)
                                         <tr>
                                             <td><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
-                                            <td><span class="cursor_pointer" href="{{url('other_asset')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-md" >{{$v->name}}</span></td>
+                                            <td><span class="cursor_pointer" href="{{url('supplier')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-md" >{{$v->name}}</span></td>
+                                            <td>{{$v->category->name}}</td>
                                             <td>{{$v->remarks}}</td>
                                         </tr>
                                     @endforeach
@@ -54,7 +56,7 @@
                             </div>
                         </div>
                         <div class="form-actions border-top ">
-                            <button type="button" onclick="add('{{url('other_asset/create')}}')" class="btn btn-success" >
+                            <button type="button" onclick="add('{{url('supplier/create')}}')" class="btn btn-success" >
                                 <i class="fa  fa-plus"></i> 增加
                             </button>
                             <button type="button" onclick="edit()" class="btn btn-default">
@@ -64,17 +66,6 @@
                             <button type="button" onclick="dlt()" class="btn btn-danger">
                                 <i class="fa  fa-trash-o"></i> 删除
                             </button>
-
-                            <div class="dropup inline">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-print"></i>更多操作
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <li><a class="btn btn-default" id="printBarcode download" href="{{url('other_asset/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
-                                    <li><a class="btn btn-default" id="print download" href="{{url('other_asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入其他报修项</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,9 +87,20 @@
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <div class="row">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">维修项名称<span class="required">*</span></label>
+                                            <label class="col-sm-3 control-label">供应商名称<span class="required">*</span></label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="名称" data-error-container="#error-block">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
+                                            <div class="col-sm-8">
+                                                <select name="category_id" class="form-control select2" data-error-container="#error-block">
+                                                    <option value="">请选择</option>
+                                                    @foreach($category_list as $v)
+                                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -132,16 +134,16 @@
         });
 
         zjb.initAjax();
-        var otherAssets_form = $( "#signupForm1" );
-        var errorInfo = $('.alert-danger', otherAssets_form);
-        otherAssets_form.validate( {
+        var supplier_form = $( "#signupForm1" );
+        var errorInfo = $('.alert-danger', supplier_form);
+        supplier_form.validate( {
             rules: {
                 category_id:"required",
                 name:"required"
             },
             messages: {
-                category_id:"资产类别不能为空",
-                name:"资产名称不能为空"
+                category_id:"类别不能为空",
+                name:"名称不能为空"
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -182,8 +184,8 @@
             submitHandler: function () {
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('other_asset')}}",
-                    data:otherAssets_form.serialize(),
+                    url:"{{url('supplier')}}",
+                    data:supplier_form.serialize(),
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {
@@ -274,7 +276,7 @@
         if($("tbody input[type='checkbox']:checked").length == 1){
             var id = $("tbody input[type='checkbox']:checked").val();
             $.ajax({
-                url:'{{url('other_asset')}}/'+id+"/edit",
+                url:'{{url('supplier')}}/'+id+"/edit",
                 success:function (data) {
                     $("#right_content").html(data);
                 }
@@ -311,7 +313,7 @@
                     //发异步删除数据
                     $.ajax({
                         type: "post",
-                        url: '{{url('other_asset')}}'+'/'+arr,
+                        url: '{{url('supplier')}}'+'/'+arr,
                         data: {
                             "_token": '{{csrf_token()}}',
                             '_method': 'delete'
