@@ -99,7 +99,7 @@ class CreateRepairController extends Controller
         }
         $category_id = null;
         if ($request->other == 0) {
-            $category_id = Asset::find($area_id)->category_id;
+            $category_id = Asset::find($request->id)->category_id;
         }
         $res = [
             'asset_classify_id' => $category_id,

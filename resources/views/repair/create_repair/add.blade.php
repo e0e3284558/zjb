@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>创建一个报修 </h5>
+                        <h5>报修单填写 </h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -50,7 +50,7 @@
                             <div class="panel-options">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
-                                    <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">通用报修</a></li>
+                                    <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">维修项目报修</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                         {{csrf_field()}}
                                         <!-- 根据位置 -->
                                             <div class="form-group slt">
-                                                <label class="col-sm-2 control-label">选择资产位置</label>
+                                                <label class="col-sm-2 control-label">资产位置</label>
                                                 <div class="col-sm-2">
                                                     <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset(this)">
@@ -79,18 +79,18 @@
 
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">资产</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="asset_id" id="asset">
-                                                        <option value="">请选择资产位置</option>
+                                                        <option value="">请选择</option>
                                                     </select>
                                                 </div>
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">选择报修类别</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修类别</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="classify_id">
-                                                        <option value="">请选择报修类别</option>
+                                                        <option value="">请选择</option>
                                                         @foreach($classify as $v)
                                                             <option value="{{$v->id}}">{{$v->name}}</option>
                                                         @endforeach
@@ -125,7 +125,7 @@
                                             <div class="form-group">
                                                 <div class="col-sm-4 col-sm-offset-2">
                                                     <button class="btn btn-white" type="button">取消</button>
-                                                    <button class="btn btn-primary" id="btn1" type="button">我要报修
+                                                    <button class="btn btn-primary" id="btn1" type="button">确认
                                                     </button>
                                                 </div>
                                             </div>
@@ -152,10 +152,10 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">通用报修</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修项目</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="asset_id" id="asset">
-                                                        <option value="">请选择资产</option>
+                                                        <option value="">请选择</option>
                                                         @foreach($other as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
@@ -191,7 +191,7 @@
                                             <div class="form-group">
                                                 <div class="col-sm-4 col-sm-offset-2">
                                                     <button class="btn btn-white" type="button">取消</button>
-                                                    <button class="btn btn-primary" id="btn2" type="button">我要报修
+                                                    <button class="btn btn-primary" id="btn2" type="button">确认
                                                     </button>
                                                 </div>
                                             </div>
@@ -210,8 +210,8 @@
             o = $(obj);
             //清除
             ids = o.val();
+            o.parent("div").nextAll("div").remove();
             if (ids == "0") {
-                o.parent("div").nextAll("div").remove();
                 id = o.parent("div").prev('div').find('select').val();
             } else {
                 id = ids;
@@ -256,8 +256,8 @@
             o = $(obj);
             //清除
             ids = o.val();
+            o.parent("div").nextAll("div").remove();
             if (ids == "0") {
-                o.parent("div").nextAll("div").remove();
                 id = o.parent("div").prev('div').find('select').val();
             } else {
                 id = ids;

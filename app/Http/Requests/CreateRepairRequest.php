@@ -24,14 +24,14 @@ class CreateRepairRequest extends FormRequest
     public function rules()
     {
         return [
-            'area_id'=>'required',
-            'classify_id '=>'nullable|numeric|min:1',
-            'asset_id '=>'nullable|numeric|min:1',
-            'remarks '=>'nullable|max:191',
-            'other '=>'numeric|min:0|max:1',
-            'provider_id'=>'required|numeric|min:1',
-            'service_worker_id'=>'required|numeric|min:1',
-            'service_provider_id'=>'required|numeric|min:1',
+//            'area_id'=>'required',
+//            'classify_id '=>'nullable|numeric|min:1',
+//            'asset_id '=>'nullable|numeric|min:1',
+//            'remarks '=>'nullable|max:191',
+//            'other '=>'numeric|min:0|max:1',
+//            'provider_id'=>'required|numeric|min:1',
+//            'service_worker_id'=>'required|numeric|min:1',
+//            'service_provider_id'=>'required|numeric|min:1',
         ];
     }
     public function messages()

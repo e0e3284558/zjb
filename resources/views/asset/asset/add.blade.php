@@ -12,9 +12,9 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">资产条码</label>
+                    <label for="code" class="col-sm-4 control-label">资产编号</label>
                     <div class="col-sm-8">
-                        <input type="text" name="code" class="form-control" placeholder="资产条码">
+                        <input type="text" name="code" class="form-control" placeholder="资产编号">
                     </div>
                 </div>
             </div>
