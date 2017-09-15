@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Http\Requests\ServiceProviderRequest;
 use App\Models\Repair\ServiceProvider;
 use App\Models\Repair\ServiceWorker;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ class ServiceProviderController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServiceProviderRequest $request)
     {
         $serviceProvider = new ServiceProvider;
         $serviceProvider->name = $request->name;
@@ -117,7 +118,7 @@ class ServiceProviderController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServiceProviderRequest $request, $id)
     {
         $res = ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id', ''));
         //修改服务商信息

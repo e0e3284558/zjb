@@ -57,7 +57,8 @@ class CreateRepairController extends Controller
     {
 
         $area = Area::where('org_id', Auth::user()->org_id)->where('pid', 0)->get();
-        $classify = Classify::where('org_id', Auth::user()->org_id)->get();
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+                    ->where('enabled',1)->get();
         $other = OtherAsset::where('org_id', Auth::user()->org_id)->get();
         return view('repair.create_repair.add', compact('area', 'classify', 'other'));
     }
@@ -159,7 +160,10 @@ class CreateRepairController extends Controller
         }
         $serviceProvider = $data;
         //获取当前登录公司下的所有分类
-        $classify = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
         //循环输出已获取分类的所有维修工
         foreach ($classify as $v) {
             $serviceWorker[] = $v->serviceWorker()->get();
@@ -243,7 +247,10 @@ class CreateRepairController extends Controller
         }
         $serviceProvider = $data;
         //获取当前登录公司下的所有分类
-        $classify = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
         //循环输出已获取分类的所有维修工
         foreach ($classify as $v) {
             $serviceWorker[] = $v->serviceWorker()->get();

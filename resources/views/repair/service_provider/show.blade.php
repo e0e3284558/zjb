@@ -34,8 +34,6 @@
                     <dd>{{$data->user}}</dd>
                     <dt>服务商电话:</dt>
                     <dd>{{$data->tel}}</dd>
-                    <dt>服务商传真:</dt>
-                    <dd>{{$data->tel}}</dd>
                 </dl>
             </div>
             <div class="col-lg-7" id="cluster_info">

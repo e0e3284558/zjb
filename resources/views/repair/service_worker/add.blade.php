@@ -133,8 +133,7 @@
                     },
                     tel: {
                         required: true,
-                        minlength: 7,
-                        maxlength: 11
+                        maxlength:20
                     }
                 },
                 /*ajax提交*/

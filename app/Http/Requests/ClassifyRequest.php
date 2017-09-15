@@ -28,7 +28,8 @@ class ClassifyRequest extends FormRequest
             'name' => 'required|max:20',
             'comment' => 'max:191',
             'icon' => 'max:100',
-            'sorting' => 'numeric|min:0|max:10000'
+            'sorting' => 'numeric|min:0|max:10000',
+            'enabled' =>'numeric|min:0|max:1'
         ];
     }
 
@@ -42,6 +43,9 @@ class ClassifyRequest extends FormRequest
             'sorting.numeric' => '分类排序必须为数字',
             'sorting.min' => '分类排序最小值为0',
             'sorting.max' => '分类排序最大值为10000',
+            'enabled.numeric' => '请勿错误操作',
+            'enabled.min' => '请勿错误操作',
+            'enabled.max' => '请勿错误操作',
         ];
     }
 }

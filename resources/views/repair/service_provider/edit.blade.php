@@ -112,9 +112,7 @@
                         maxlength: 20
                     },
                     tel: {
-                        required: true,
-                        minlength:11,
-                        maxlength: 11
+                        required: true
                     },
                     comment: {
                         maxlength: 2000

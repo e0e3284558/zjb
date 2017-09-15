@@ -10,6 +10,7 @@
             <form class="form-horizontal" action="{{url('repair/classify/'.$data->id)}}" method="post">
                 {{csrf_field()}}
                 {{method_field('PUT')}}
+
                 <li class="dd-item">
                     <div class="dd-handle">
                         <label>分类名称<i>*</i></label>
@@ -22,6 +23,23 @@
                         <label>分类备注</label>
                         <input type="text" class="form-control" name="comment" value="{{$data->comment}}"
                                placeholder="分类备注">
+                    </div>
+                </li>
+                <li class="dd-item">
+                    <div class="dd-handle ">
+                        <div class="pull-left">
+                            <label>是否启用</label>
+                        </div>
+                        <div class=" icheck pull-left" style="margin-right: 10px"><label>
+                                <input type="radio" value="1" name="enabled" @if($data->enabled) checked="" @endif>
+                                <i></i> 启用
+                            </label>
+                        </div>
+                        <div class="icheck"><label> <input type="radio" name="enabled" value="0"
+                                                           @if(!$data->enabled) checked="" @endif> <i></i>禁用
+                            </label>
+                        </div>
+
                     </div>
                 </li>
 
@@ -53,6 +71,7 @@
 
 <script>
     $(document).ready(function () {
+        zjb.initAjax();
         var l = $("button[type='submit']").ladda();
         var forms = $(".form-horizontal");
         /*字段验证*/
@@ -71,6 +90,11 @@
                         number: true,
                         digits: true,
                         range: [0, 100000]
+                    },
+                    enabled: {
+                        number: true,
+                        digits: true,
+                        range: [0, 9]
                     }
                 },
                 /*ajax提交*/

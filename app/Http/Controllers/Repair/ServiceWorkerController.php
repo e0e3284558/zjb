@@ -21,12 +21,18 @@ class ServiceWorkerController extends Controller
      */
     public function index()
     {
-
-        $data = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
-        foreach ($data as $v) {
-            $serviceWorker[] = $v->serviceWorker()->get();
+        $serviceWorker = collect([]);
+        //获取当前公司下的所有服务商
+        $service_provider_all_id = DB::table('org_service_provider')->where('org_id', Auth::user()->org_id)->get();
+        foreach ($service_provider_all_id as $v) {
+             $service_provider=ServiceProvider::find($v->service_provider_id);
+             $service_worker=$service_provider->service_worker()->get();
+            $serviceWorker->push($service_worker);
         }
-
+        $data = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
         return view('repair.service_worker.index', compact('data', 'serviceWorker'));
     }
 
@@ -37,7 +43,10 @@ class ServiceWorkerController extends Controller
      */
     public function create()
     {
-        $data = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $data = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled', 1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
         $serviceProvider = ServiceProvider::with('org')->get();
         $my_Provider = [];
         //只获取当前公司已拥有的服务商
@@ -60,6 +69,7 @@ class ServiceWorkerController extends Controller
      */
     public function store(ServiceWorkerRequest $request)
     {
+        dd($request->all());
         $serviceWorker = new ServiceWorker;
         $serviceWorker->username = $request->username;
         $serviceWorker->password = bcrypt($request->password);
@@ -106,6 +116,7 @@ class ServiceWorkerController extends Controller
      */
     public function edit($id)
     {
+        $ids=[];
         // 读取该维修工信息
         $data = ServiceWorker::find($id);
         // 根据维修工id获取所在服务商信息
@@ -113,7 +124,7 @@ class ServiceWorkerController extends Controller
             ->where('service_worker_id', $data->id)
             ->value('service_provider_id');
         // 读取所有分类信息
-        $classifies = Classify::where('org_id', Auth::user()->org_id)->get();
+        $classifies = Classify::withTrashed()->where('org_id', Auth::user()->org_id)->get();
         // 读取维修工与分类关联信息
         $serviceWorkerClassify = $data->classify->toArray();
         foreach ($serviceWorkerClassify as $k => $v) {
