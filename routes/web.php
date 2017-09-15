@@ -88,6 +88,8 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     //分派维修工
     Route::get('create_repair/change_status/{id}', 'CreateRepairController@changeStatus');
 
+    Route::get('create_repair/reason/{id}', 'CreateRepairController@reason');
+
     //根据选择条件选取维修工
     Route::post('create_repair/select_worker', 'CreateRepairController@selectWorker');
     //选中维修工进行派工

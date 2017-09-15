@@ -75,7 +75,12 @@ class RepairListController extends Controller
      */
     public function update(RepairListRequest $request, $id)
     {
-        $info = Process::where("id",$id)->update($request->except("_method","_token"));
+        $arr = [
+            'score' => $request->score,
+            'appraisal' => $request->appraisal,
+            'status' => '6'
+        ];
+        $info = Process::where("id",$id)->update($arr);
         $message = [];
         if($info){
             $message = [

@@ -149,7 +149,6 @@ class AssetCategoryController extends Controller
     {
         if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
             $list = AssetCategory::where("pid",$id)->first();
-
             if($list!=null){
                 $message = [
                     'code'=>0,

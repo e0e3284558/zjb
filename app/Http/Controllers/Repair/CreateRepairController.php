@@ -28,7 +28,7 @@ class CreateRepairController extends Controller
     {
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status', '1')->orWhere('status', '4')->latest()
+            ->where('status', '1')->orWhere('status', '4')->orWhere('status','7')->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
@@ -38,7 +38,7 @@ class CreateRepairController extends Controller
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取已完成的报修
         $data3 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status', '10')
+            ->where('status', '6')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //当前公司下的全部的报修
@@ -302,5 +302,10 @@ class CreateRepairController extends Controller
                 'code' => 0, 'message' => '操作失败'
             ]);
         }
+    }
+
+    public function reason($id){
+        $info = Process::find($id);
+        return response()->view("repair.create_repair.reason",compact('info'));
     }
 }
