@@ -3,7 +3,6 @@
 @section('breadcrumb')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <!-- <h2></h2> -->
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ route('home') }}">控制面板</a>
@@ -30,8 +29,6 @@
                     <div class="ibox-title">
                         <h5>维修列表</h5>
                     </div>
-
-
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="panel-options">
@@ -58,6 +55,8 @@
                                                 <th>分类</th>
                                                 <th>照片</th>
                                                 <th>备注</th>
+                                                <th>地址</th>
+                                                <th>当前状态</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -94,17 +93,9 @@
                                                         </td>
                                                     @endif
                                                     <td>{{$v->remarks}}</td>
-                                                    {{--<td>--}}
-                                                        {{--@if($v->status==1)--}}
-                                                            {{--等待分派维修中--}}
-                                                        {{--@endif--}}
-                                                        {{--@if($v->status==20 ||$v->status==4)--}}
-                                                            {{--已分派维修工--}}
-                                                        {{--@endif--}}
-                                                        {{--@if($v->status==10)--}}
-                                                            {{--已完成维修--}}
-                                                        {{--@endif--}}
-                                                    {{--</td>--}}
+
+                                                    <td>{{get_area($v->area_id)}}</td>
+
                                                     <td>
                                                         @if($v->status=='4' || $v->status=='7')
                                                             <button class="btn btn-danger btn-sm pull-left" data-toggle="modal"
@@ -140,7 +131,6 @@
                                                     <th>照片</th>
                                                     <th>备注</th>
                                                     <th>报修位置</th>
-                                                    {{--<th>当前状态</th>--}}
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -178,17 +168,7 @@
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
                                                         <td>{{get_area($v->area_id)}}</td>
-                                                        {{--<td>--}}
-                                                            {{--@if($v->status==1)--}}
-                                                                {{--等待分派维修中--}}
-                                                            {{--@endif--}}
-                                                            {{--@if($v->status==20 ||$v->status==4)--}}
-                                                                {{--已分派维修工:{{$v->serviceWorker->name}}--}}
-                                                            {{--@endif--}}
-                                                            {{--@if($v->status==10)--}}
-                                                                {{--已完成维修:{{$v->serviceWorker->name}}--}}
-                                                            {{--@endif--}}
-                                                        {{--</td>--}}
+
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
@@ -298,9 +278,6 @@
                                                     <th>分类</th>
                                                     <th>照片</th>
                                                     <th>备注</th>
-                                                    {{--<th>上次维修工</th>--}}
-                                                    {{--<th>维修建议</th>--}}
-                                                    {{--<th>当前状态</th>--}}
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
@@ -337,19 +314,7 @@
                                                             </td>
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
-                                                        {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                        {{--<td>{{$v->suggest}}</td>--}}
-                                                        {{--<td>--}}
-                                                            {{--@if($v->status==1)--}}
-                                                                {{--等待分派维修中--}}
-                                                            {{--@endif--}}
-                                                            {{--@if($v->status==20 ||$v->status==4)--}}
-                                                                {{--已分派维修工--}}
-                                                            {{--@endif--}}
-                                                            {{--@if($v->status==10)--}}
-                                                                {{--已完成维修--}}
-                                                            {{--@endif--}}
-                                                        {{--</td>--}}
+                                           
                                                         <td>
                                                             @if($v->status=='1')
                                                                 <button class="btn btn-success btn-sm pull-left"
