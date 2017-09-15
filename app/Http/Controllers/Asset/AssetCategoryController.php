@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\User\Org;
@@ -56,10 +57,10 @@ class AssetCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $arr = [
-            'category_code' => "13124",
+            'category_code' => date("dHis").rand("1000","9999"),
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,
             'created_at' => date("Y-m-d H:i:s")
@@ -119,7 +120,7 @@ class AssetCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
             $info = AssetCategory::where("id",$id)->update($request->except("_token","_method"));

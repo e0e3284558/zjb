@@ -32,10 +32,9 @@
                             <table style="min-width: 1000px" class="table table-striped  table-bordered">
                                 <thead>
                                 <tr role="row">
-                                    <th>报修项名称</th>
+                                    <th>报修项目</th>
                                     <th>维修服务商</th>
                                     <th>已派出维修工</th>
-                                    <th>所属公司</th>
                                     <th>状态</th>
                                 </tr>
                                 </thead>
@@ -63,7 +62,6 @@
                                         @else
                                             <td>等待分派服务商</td>
                                         @endif
-                                        <td>{{$value->org->name}}</td>
                                         <td>
                                             @if($value->status=='1'||$value->status=='2'||$value->status=='3')
                                                 <span class="label label-info">待分派</span>

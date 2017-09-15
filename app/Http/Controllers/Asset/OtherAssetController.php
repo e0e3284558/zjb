@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\OtherAssetRequest;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\AssetFile;
 use App\Models\Asset\File;
@@ -52,7 +53,7 @@ class OtherAssetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OtherAssetRequest $request)
     {
         $arr = [
             'code' => date("mdis").rand(1000,9999),
@@ -107,7 +108,7 @@ class OtherAssetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OtherAssetRequest $request, $id)
     {
         $arr = [
             'name' => $request->name,
