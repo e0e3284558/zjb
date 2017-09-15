@@ -50,7 +50,7 @@
                             <div class="panel-options">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
-                                    <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">维修项目报修</a></li>
+                                    <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">场地报修</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -152,12 +152,22 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">报修项目</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修项</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="asset_id" id="asset">
                                                         <option value="">请选择</option>
                                                         @foreach($other as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修类别</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" name="classify_id">
+                                                        <option value="">请选择</option>
+                                                        @foreach($classify as $v)
+                                                            <option value="{{$v->id}}">{{$v->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

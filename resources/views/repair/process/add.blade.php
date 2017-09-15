@@ -16,9 +16,8 @@
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">维修结果</label>
                     <div class="col-sm-8">
-                        <input type="radio" name="status" value="10">已修好
-                        <input type="radio" name="status" value="2">未修好(可再修)
-                        <input type="radio" name="status" value="0">未修好(不可再修)
+                        <input type="radio" name="status" value="5">已修好
+                        <input type="radio" name="status" value="7">未修好
                     </div>
                 </div>
             </div>

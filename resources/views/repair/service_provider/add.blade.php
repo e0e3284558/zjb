@@ -107,7 +107,8 @@
                     },
                     tel: {
                         required: true,
-                        phoneUS: true
+                        minlength: 7,
+                        maxlength: 11
                     },
                     comment: {
                         maxlength:2000

@@ -53,13 +53,11 @@
                                             <thead>
                                             <tr>
                                                 <th>报修人</th>
+                                                <th>报修场地</th>
                                                 <th>资产</th>
                                                 <th>分类</th>
                                                 <th>照片</th>
                                                 <th>备注</th>
-                                                {{--<th>上次维修工</th>--}}
-                                                {{--<th>维修建议</th>--}}
-                                                <th>当前状态</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -67,6 +65,7 @@
                                             @foreach($data1 as $v)
                                                 <tr>
                                                     <td>{{$v->user->name}}</td>
+                                                    <td>{{$v->area->name}}</td>
                                                     @if($v->other==1)
                                                         @if($v->otherAsset)
                                                             <td>{{$v->otherAsset->name}}</td>
@@ -95,28 +94,28 @@
                                                         </td>
                                                     @endif
                                                     <td>{{$v->remarks}}</td>
-                                                    {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                    {{--<td>{{$v->suggest}}</td>--}}
+                                                    {{--<td>--}}
+                                                        {{--@if($v->status==1)--}}
+                                                            {{--等待分派维修中--}}
+                                                        {{--@endif--}}
+                                                        {{--@if($v->status==20 ||$v->status==4)--}}
+                                                            {{--已分派维修工--}}
+                                                        {{--@endif--}}
+                                                        {{--@if($v->status==10)--}}
+                                                            {{--已完成维修--}}
+                                                        {{--@endif--}}
+                                                    {{--</td>--}}
                                                     <td>
-                                                        @if($v->status==1)
-                                                            等待分派维修中
+                                                        @if($v->status=='4')
+{{--                                                        @elseif($v->status=='4')--}}
+                                                            <button class="btn btn-danger btn-sm pull-left">查看原因</button>
                                                         @endif
-                                                        @if($v->status==20 ||$v->status==4)
-                                                            已分派维修工
-                                                        @endif
-                                                        @if($v->status==10)
-                                                            已完成维修
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if($v->status==1)
-                                                            <button class="btn btn-success btn-sm pull-left"
-                                                                    onclick="assign('{{$v->id}}')"
-                                                                    data-toggle="modal"
-                                                                    data-target=".bs-example-modal-lg">
-                                                                分派维修
-                                                            </button>
-                                                        @endif
+                                                        <button class="btn btn-success btn-sm pull-left"
+                                                                onclick="assign('{{$v->id}}')"
+                                                                data-toggle="modal"
+                                                                data-target=".bs-example-modal-lg">
+                                                            分派维修
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -134,13 +133,13 @@
                                                 <thead>
                                                 <tr>
                                                     <th>报修人</th>
+                                                    <th>报修场地</th>
                                                     <th>资产</th>
                                                     <th>分类</th>
                                                     <th>照片</th>
                                                     <th>备注</th>
-                                                    {{--<th>上次维修工</th>--}}
-                                                    {{--<th>维修建议</th>--}}
-                                                    <th>当前状态</th>
+                                                    <th>报修位置</th>
+                                                    {{--<th>当前状态</th>--}}
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -148,6 +147,7 @@
                                                 @foreach($data2 as $v)
                                                     <tr>
                                                         <td>{{$v->user->name}}</td>
+                                                        <td>{{$v->area->name}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -176,19 +176,18 @@
                                                             </td>
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
-                                                        {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                        {{--<td>{{$v->suggest}}</td>--}}
-                                                        <td>
-                                                            @if($v->status==1)
-                                                                等待分派维修中
-                                                            @endif
-                                                            @if($v->status==20 ||$v->status==4)
-                                                                已分派维修工
-                                                            @endif
-                                                            @if($v->status==10)
-                                                                已完成维修
-                                                            @endif
-                                                        </td>
+                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        {{--<td>--}}
+                                                            {{--@if($v->status==1)--}}
+                                                                {{--等待分派维修中--}}
+                                                            {{--@endif--}}
+                                                            {{--@if($v->status==20 ||$v->status==4)--}}
+                                                                {{--已分派维修工:{{$v->serviceWorker->name}}--}}
+                                                            {{--@endif--}}
+                                                            {{--@if($v->status==10)--}}
+                                                                {{--已完成维修:{{$v->serviceWorker->name}}--}}
+                                                            {{--@endif--}}
+                                                        {{--</td>--}}
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
@@ -219,6 +218,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>报修人</th>
+                                                    <th>报修场地</th>
                                                     <th>资产</th>
                                                     <th>分类</th>
                                                     <th>照片</th>
@@ -233,6 +233,7 @@
                                                 @foreach($data3 as $v)
                                                     <tr>
                                                         <td>{{$v->user->name}}</td>
+                                                        <td>{{$v->area->name}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -291,20 +292,22 @@
                                                 <thead>
                                                 <tr>
                                                     <th>报修人</th>
+                                                    <th>报修场地</th>
                                                     <th>资产</th>
                                                     <th>分类</th>
                                                     <th>照片</th>
                                                     <th>备注</th>
                                                     {{--<th>上次维修工</th>--}}
                                                     {{--<th>维修建议</th>--}}
-                                                    <th>当前状态</th>
+                                                    {{--<th>当前状态</th>--}}
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($data3 as $v)
+                                                @foreach($data4 as $v)
                                                     <tr>
                                                         <td>{{$v->user->name}}</td>
+                                                        <td>{{$v->area->name}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -335,17 +338,17 @@
                                                         <td>{{$v->remarks}}</td>
                                                         {{--<td>{{@$v->serviceWorker->name}}</td>--}}
                                                         {{--<td>{{$v->suggest}}</td>--}}
-                                                        <td>
-                                                            @if($v->status==1)
-                                                                等待分派维修中
-                                                            @endif
-                                                            @if($v->status==20 ||$v->status==4)
-                                                                已分派维修工
-                                                            @endif
-                                                            @if($v->status==10)
-                                                                已完成维修
-                                                            @endif
-                                                        </td>
+                                                        {{--<td>--}}
+                                                            {{--@if($v->status==1)--}}
+                                                                {{--等待分派维修中--}}
+                                                            {{--@endif--}}
+                                                            {{--@if($v->status==20 ||$v->status==4)--}}
+                                                                {{--已分派维修工--}}
+                                                            {{--@endif--}}
+                                                            {{--@if($v->status==10)--}}
+                                                                {{--已完成维修--}}
+                                                            {{--@endif--}}
+                                                        {{--</td>--}}
                                                         <td>
                                                             @if($v->status==1 || $v->status==10 || $v->status==0)
                                                                 @if($v->status==1)

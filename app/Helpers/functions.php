@@ -343,7 +343,19 @@ if (!function_exists('loop_Arr')) {
             }
         }
     }
+}/**
+ * 循环输出下拉框并分类
+ */
+if (!function_exists('get_area')) {
+    function get_area($id)
+    {
+        $area='';
+        $area_path=\App\Models\Asset\Area::find($id);
+        if ($area_path->pid){}
+    }
 }
+
+
 
 
 

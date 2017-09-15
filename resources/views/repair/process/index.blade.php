@@ -53,17 +53,17 @@
                                                                            onclick="refuse('{{$value->id}}')">拒绝
                                                     </button>
                                                 </td>
-                                            @elseif($value->status=="4")
+                                            @elseif($value->status=="3")
                                                 <td>
                                                     <button class="btn btn-primary" onclick="add('{{$value->id}}')"
                                                             data-toggle="modal" data-target=".bs-example-modal-md">
                                                         填写报修结果
                                                     </button>
                                                 </td>
-                                            @elseif($value->status=='10')
-                                                <td><span>已修好</span></td>
-                                            @elseif($value->status=='0')
-                                                <td><span>不可再修</span></td>
+                                            @elseif($value->status=='5')
+                                                <td><span>待评价</span></td>
+                                            @elseif($value->status=='6')
+                                                <td><span>已完成</span></td>
                                             @endif
                                             <td>{{$value->org->name}}</td>
                                             <td>{{$value->user->name}}</td>

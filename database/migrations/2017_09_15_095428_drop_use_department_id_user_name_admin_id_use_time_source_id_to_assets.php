@@ -14,7 +14,7 @@ class DropUseDepartmentIdUserNameAdminIdUseTimeSourceIdToAssets extends Migratio
     public function up()
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->dropColumn(['use_department_id','user_name','admin_id','source_id']);
+            $table->dropColumn(['use_department_id','admin_id','source_id']);
         });
     }
 

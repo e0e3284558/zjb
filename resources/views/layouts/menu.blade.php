@@ -35,7 +35,7 @@
             </li>
             <li class="{{ active_class(if_route('repair_list.index'))}}"><a
                         href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
-                    报修项目</a>
+                    我的报修单</a>
             </li>
         @else
             <li class="{{ active_class(if_route('process.index'))}}"><a
