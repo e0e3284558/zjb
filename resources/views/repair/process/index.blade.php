@@ -36,9 +36,9 @@
                                     <th>公司</th>
                                     <th>报修人</th>
                                     <th>资产名称</th>
-                                    <th>资产分类</th>
-                                    <th>维修工id</th>
-                                    <th>服务商id</th>
+                                    {{--<th>资产分类</th>--}}
+                                    {{--<th>维修工id</th>--}}
+                                    {{--<th>服务商id</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -64,15 +64,17 @@
                                                 <td><span>待评价</span></td>
                                             @elseif($value->status=='6')
                                                 <td><span>已完成</span></td>
+                                            @elseif($value->status=='7')
+                                                <td><span>已完成</span></td>
                                             @endif
                                             <td>{{$value->org->name}}</td>
                                             <td>{{$value->user->name}}</td>
-                                            <td title="{{$value->remarks}}">{{$value->asset->name}}</td>
-                                            @if(isset($value->category))
-                                                <td>{{$value->category->name}}</td>
-                                            @endif
-                                            <td>{{$value->serviceWorker->name}}</td>
-                                            <td>{{@$value->serviceProvider->name}}</td>
+                                            <td title="{{$value->remarks}}">{{$value->remarks}}</td>
+                                            {{--@if(isset($value->category))--}}
+                                                {{--<td>{{$value->category->name}}</td>--}}
+                                            {{--@endif--}}
+{{--                                            <td>{{$value->serviceWorker->name}}</td>--}}
+{{--                                            <td>{{@$value->serviceProvider->name}}</td>--}}
                                         </tr>
                                     @endif
                                 @endforeach

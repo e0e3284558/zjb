@@ -106,9 +106,10 @@
                                                         {{--@endif--}}
                                                     {{--</td>--}}
                                                     <td>
-                                                        @if($v->status=='4')
-{{--                                                        @elseif($v->status=='4')--}}
-                                                            <button class="btn btn-danger btn-sm pull-left">查看原因</button>
+                                                        @if($v->status=='4' || $v->status=='7')
+                                                            <button class="btn btn-danger btn-sm pull-left" data-toggle="modal"
+                                                                    data-target=".bs-example-modal-md"
+                                                                    onclick="reason('{{$v->id}}')">查看原因</button>
                                                         @endif
                                                         <button class="btn btn-success btn-sm pull-left"
                                                                 onclick="assign('{{$v->id}}')"
@@ -350,7 +351,33 @@
                                                             {{--@endif--}}
                                                         {{--</td>--}}
                                                         <td>
-                                                            @if($v->status==1 || $v->status==10 || $v->status==0)
+                                                            @if($v->status=='1')
+                                                                <button class="btn btn-success btn-sm pull-left"
+                                                                        onclick="assign('{{$v->id}}')"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg">
+                                                                    分派维修
+                                                                </button>
+                                                            @elseif($v->status=='4' || $v->status=='7')
+                                                                <button class="btn btn-danger btn-sm pull-left" data-toggle="modal"
+                                                                        data-target=".bs-example-modal-md"
+                                                                        onclick="reason('{{$v->id}}')">查看原因</button>
+                                                                <button class="btn btn-success btn-sm pull-left"
+                                                                        onclick="assign('{{$v->id}}')"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg">
+                                                                    分派维修
+                                                                </button>
+                                                            @elseif($v->status=='2')
+                                                                <span class="label label-info" >待服务</span>
+                                                            @elseif($v->status=='3')
+                                                                <span class="label label-primary" >维修中</span>
+                                                            @elseif($v->status=='5')
+                                                                <span class="label label-primary" >待评价</span>
+                                                            @elseif($v->status=='6')
+                                                                <span class="label label-success" >已完成</span>
+                                                            @endif
+                                                            {{--@if($v->status==1 || $v->status==10 || $v->status==0)
                                                                 @if($v->status==1)
                                                                     <button class="btn btn-success btn-sm pull-left"
                                                                             onclick="assign('{{$v->id}}')"
@@ -374,9 +401,9 @@
                                                                 @if($v->status==0)
                                                                     <label class="btn btn-danger btn-sm pull-left">不可再修</label>
                                                                 @endif
-                                                            @else
+                                                            @else--}}
 
-                                                                <button class="btn btn-warning btn-sm pull-left"
+                                                                {{--<button class="btn btn-warning btn-sm pull-left"
                                                                         data-toggle="modal"
                                                                         data-target=".bs-example-modal-lg"
                                                                         onclick="change_status({{$v->id}})">重新分派
@@ -385,8 +412,8 @@
                                                                 <button class="btn btn-info btn-sm pull-left"
                                                                         onclick="success({{$v->id}})">
                                                                     完成维修
-                                                                </button>
-                                                            @endif
+                                                                </button>--}}
+                                                            {{--@endif--}}
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -426,6 +453,17 @@
                 "type": 'get',
                 success: function (data) {
                     $(".bs-example-modal-lg .modal-content").html(data);
+                }
+            })
+        }
+
+        function reason(id) {
+            var url = '{{url("repair/create_repair/reason/")}}/' + id;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }

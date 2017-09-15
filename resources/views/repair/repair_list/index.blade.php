@@ -81,7 +81,7 @@
                                             @elseif($value->status=='4')
                                                 <span class="label label-info">已拒绝</span>
                                             @elseif($value->status=='5')
-                                                <button class="label label-success" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">待评价</button>
+                                                <button class="btn btn-sm btn-success" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">待评价</button>
                                             @else
                                                 <span class="label label-info">已完成</span>
                                             @endif

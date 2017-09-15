@@ -113,4 +113,8 @@ class ProcessController extends Controller
         }
         return response()->json($message);
     }
+
+    public function refuse_reason(){
+
+    }
 }

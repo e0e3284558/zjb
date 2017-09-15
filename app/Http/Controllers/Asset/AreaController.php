@@ -250,9 +250,6 @@ class AreaController extends Controller
                 $sheet->rows($cellData);
             });
         })->export('xlsx');
-
-
-
         return ;
     }
 
