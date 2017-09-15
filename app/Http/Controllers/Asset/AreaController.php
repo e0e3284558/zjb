@@ -136,11 +136,7 @@ class AreaController extends Controller
         $user_org = Auth::user()->org_id;
         $info = Area::find($id);
         if($user_org == $info->org_id){
-            $info = Area::find($id);
-            //删除原来的二维码图片
-            unlink(public_path('uploads/qrcodes/'.$info->uid.'.png'));
-            QrCode::encoding("UTF-8")->format('png')->size("300")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("6")->generate($info->uid,public_path('uploads/qrcodes/'.$info->uid.'.png'));
-
+            $info = Area::where("id",$id)->update($request->except('_method','_token'));
             if($info){
                 $arr = [
                     'code'=>1,

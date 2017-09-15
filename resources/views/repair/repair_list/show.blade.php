@@ -36,8 +36,6 @@
             <td>{{$info->remarks}}</td>
         </tr>
         <tr>
-            {{--<td><label class="control-label">所属公司</label></td>--}}
-            {{--<td>{{$info->org->name}}</td>--}}
             <td><label class="control-label">用户评分</label></td>
             <td>
                 @for($i=0;$i<$info->score;$i++)

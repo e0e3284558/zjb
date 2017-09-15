@@ -94,6 +94,7 @@ class ServiceProviderController extends Controller
     {
         $data = ServiceProvider::find($id);
         $serviceWorker = $data->service_worker()->get();
+        //综合好评评率
 
         return response()->view('repair.service_provider.show', compact('data', 'serviceWorker'));
     }

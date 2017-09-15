@@ -25,9 +25,9 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
+                        <h5>我的报修单</h5>
                     </div>
                     <div class="ibox-content">
-
                         <div class="table-responsive">
                             <table style="min-width: 1000px" class="table table-striped  table-bordered">
                                 <thead>
@@ -62,19 +62,14 @@
                                             <td>无分类</td>
                                         @endif
                                         <td>{{$value->remarks}}</td>
-                                        @if(collect($value->img)->isEmpty())
-                                            <td>用户未上传图片</td>
-                                        @else
-                                            <td>
-                                                @foreach($value->img as $k=>$img)
-                                                    <?php
-                                                    if ($k > 3) break;
-                                                    ?>
-                                                    <img src='{{url("$img->path")}}' alt=""
-                                                         class="img-circle-b">
-                                                @endforeach
-                                            </td>
-                                        @endif
+                                        <td>
+                                            @if(!collect($value->img)->isEmpty())
+                                                <span class="cursor_pointer"
+                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$value->id}}')"
+                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                      title="详情">详情</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($value->status=='1')
                                                 <span class="label label-info">待分派</span>
@@ -85,9 +80,7 @@
                                             @elseif($value->status=='4')
                                                 <span class="label label-info">已拒绝</span>
                                             @elseif($value->status=='5')
-
                                                 <button class="btn btn-sm btn-success" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">待评价</button>
-
                                             @else
                                                 <span class="label label-info">已完成</span>
                                             @endif
@@ -98,7 +91,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -125,6 +117,15 @@
                 "url": url,
                 success: function (data) {
                     $(".bs-example-modal-lg .modal-content").html(data);
+                }
+            })
+        }
+
+        function showImg(url) {
+            $.ajax({
+                "url": url,
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }
