@@ -128,7 +128,7 @@ class SupplierController extends Controller
     {
         $arr = explode(",",$id);
         $user_org_id = Auth::user()->org_id;
-        if($user_org_id == OtherAsset::where("id",$arr[0])->value("org_id")) {
+        if($user_org_id == Supplier::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
                 $info = Asset::where("org_id",$user_org_id)->where("supplier_id",$v)->first();
                 if($info){

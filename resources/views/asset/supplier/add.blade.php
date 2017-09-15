@@ -94,7 +94,7 @@
             submitHandler: function () {
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('other_asset')}}",
+                    url:"{{url('supplier')}}",
                     data:otherAssets_form.serialize(),
                     type:"post",
                     dataType:"json",
