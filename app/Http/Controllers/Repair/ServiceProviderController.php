@@ -19,7 +19,9 @@ class ServiceProviderController extends Controller
     public function index()
     {
         $data = [];
-        $serviceProvider = ServiceProvider::with('org')->get()->toArray();
+        $serviceProvider = ServiceProvider::with('org')
+            ->orderBy('created_at','desc')
+            ->get()->toArray();
         foreach ($serviceProvider as $a) {
             if (($a['org'])) {
                 if ($a['org'][0]['id'] == Auth::user()->org_id) {

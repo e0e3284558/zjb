@@ -39,7 +39,6 @@
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>服务商logo</label>
                         <img id="thumb_img" src="{{url('img/noavatar.png')}}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="logo_id" value="">
                         <input type="hidden" name="upload_id" value="">

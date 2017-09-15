@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Http\Requests\CreateRepairRequest;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
@@ -86,7 +87,7 @@ class CreateRepairController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRepairRequest $request)
     {
         //判断场地信息是否符合规范，并处理场地信息
         if ($request->area_id !== null) {
@@ -172,7 +173,7 @@ class CreateRepairController extends Controller
      * @param Request $request
      * @return array|string
      */
-    public function selectWorker(Request $request)
+    public function selectWorker(CreateRepairRequest $request)
     {
         $data = [];
         $arr = [];
@@ -202,7 +203,7 @@ class CreateRepairController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function confirmWorker(Request $request)
+    public function confirmWorker(CreateRepairRequest $request)
     {
         $repair = Process::find($request['id']);
         $repair->service_worker_id = $request['service_worker_id'];
@@ -256,17 +257,18 @@ class CreateRepairController extends Controller
      */
     public function success($id)
     {
-        $process = Process::find($id);
-        $process->status = 10;
-        if ($process->save()) {
-            return response()->json([
-                'code' => 1, 'message' => '维修完成'
-            ]);
-        } else {
-            return response()->json([
-                'code' => 0, 'message' => '操作失败，请稍候重试'
-            ]);
-        }
+        $data=Process::find($id);
+        return response()->view('repair.create_repair.success');
+    }
+
+    /**
+     * 完成报修进行记录
+     * @param $id
+     */
+    public function successStore(Request $request)
+    {
+        dd($request->all());
+        $process=Process::find($request->id);
     }
 
     /**

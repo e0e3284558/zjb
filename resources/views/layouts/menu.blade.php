@@ -25,7 +25,7 @@
                 <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                             href="{{ url('repair/create_repair?app_groups=repair') }}"><i
                                 class="fa fa-angle-right"></i>
-                        待维修列表</a>
+                        报修管理</a>
                 </li>
             @endif
             <li class="{{ active_class(if_route('create_repair.create'))}}"><a
@@ -38,7 +38,6 @@
                     报修列表</a>
             </li>
         @else
-            {{--        @if(session('worker'))--}}
             <li class="{{ active_class(if_route('process.index'))}}"><a
                         href="{{ url('repair/process?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
                     维修单列表</a>

@@ -48,7 +48,6 @@
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工照片</label>
                         <img id="thumb_img" src="{{url('img/noavatar.png')}}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="upload_id" value="">
                         <div id="single-upload" class="btn-upload m-t-xs">
@@ -86,7 +85,7 @@
                 </li>
 
 
-                <li>
+                <li class="dd-item">
                     <input type="hidden" name="org_id" value="{{Auth::user()->or}}">
                     <button type="submit" class="btn btn-success">添加</button>
                 </li>

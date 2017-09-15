@@ -8219,4 +8219,10 @@ Custom color buttons
 .layui-table[lay-even] tr:nth-child(even){
     background-color: #f4f6fa;
 }
-
+.dl-horizontal dd,dt {
+    line-height: 2;
+}
+.project-people img {
+    width: 45px;
+    height: 45px;
+}

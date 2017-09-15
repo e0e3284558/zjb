@@ -273,7 +273,7 @@ function avatar_circle($img_path, $name)
     if ($img_path !== null) {
         return '<img class="img-circle img-md" src="' . get_img_path($img_path) . '">';
     } else {
-        return '<button class="btn ' . random_color() . ' img-circle img-md" type="button"> <span style="font-size: 36px">' . mb_substr($name, 0, 1) . '</span> </button>';
+        return '<button class="btn ' . random_color() . ' img-circle img-md" type="button" style="text-align: center"> <span style="font-size: 24px;text-align: center">' . mb_substr($name, 0, 1) . '</span> </button>';
     }
 }
 

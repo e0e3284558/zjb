@@ -74,6 +74,9 @@
                             </div>
                             <div class="ibox-content">
                                 <div class="team-members">
+                                    <div class="form-group">
+                                        维修工成员
+                                    </div>
                                     @if(isset($service_worker[$k]))
                                         @foreach($service_worker[$k] as $img)
                                             @foreach($img as $a)
@@ -86,29 +89,28 @@
                                         @endforeach
                                     @endif
                                 </div>
-                                <h4>有关这支团队的信息</h4>
-                                <p>
-                                    {{$v['comment']}}
-                                </p>
-                                <div>
-                                    <span>好评率</span>
-                                    <div class="stat-percent">99%</div>
-                                    <div class="progress progress-mini">
-                                        <div style="width: 99%;" class="progress-bar"></div>
-                                    </div>
-                                </div>
-                                <div class="row  m-t-sm">
-                                    <div class="col-sm-4">
-                                        <div class="font-bold">总维修次数</div>
-                                        12
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="font-bold">为本单位维修次数</div>
-                                        5
-                                    </div>
+                                {{--<h4>有关这支团队的信息</h4>--}}
+                                {{--<p>--}}
+                                    {{--{{$v['comment']}}--}}
+                                {{--</p>--}}
+                              {{--<div>--}}
+                                    {{--<span>好评率</span>--}}
+                                    {{--<div class="stat-percent">99%</div>--}}
+                                    {{--<div class="progress progress-mini">--}}
+                                        {{--<div style="width: 99%;" class="progress-bar"></div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="row  m-t-sm">--}}
+                                    {{--<div class="col-sm-4">--}}
+                                        {{--<div class="font-bold">总维修次数</div>--}}
+                                        {{--12--}}
+                                    {{--</div>--}}
+                                    {{--<div class="col-sm-4">--}}
+                                        {{--<div class="font-bold">为本单位维修次数</div>--}}
+                                        {{--5--}}
+                                    {{--</div>--}}
 
-                                </div>
-
+                                {{--</div>--}}
                             </div>
                         </div>
 

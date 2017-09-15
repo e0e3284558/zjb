@@ -197,6 +197,8 @@
                                                             </button>
 
                                                             <button class="btn btn-info btn-sm left"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-md"
                                                                     onclick="success({{$v->id}})">
                                                                 完成维修
                                                             </button>
@@ -426,42 +428,14 @@
         }
 
         function success(cid) {
-            swal({
-                    title: "确认要完成维修吗？",
-                    text: "",
-                    type: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#0e9aef",
-                    cancelButtonText: "取消",
-                    confirmButtonText: "确认",
-                    closeOnConfirm: false
-                },
-                function () {
-                    //发异步删除数据
-                    $.ajax({
-                        type: "post",
-                        url: '{{url('repair/create_repair/success')}}/' + cid,
-                        data: {
-                            "_token": '{{csrf_token()}}'
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            if (data.code == 1) {
-                                swal({
-                                    title: "",
-                                    text: data.message,
-                                    type: "success",
-                                    timer: 1000,
-                                }, function () {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal("", data.message, "error");
-                            }
-                        }
-                    });
+            var url = '{{url('repair/create_repair/success')}}/' + cid;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
-            );
+            })
         }
     </script>
 @endsection

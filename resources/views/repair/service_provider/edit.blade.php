@@ -31,7 +31,7 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <label>负责人电话<i>*</i></label>
-                        <input type="number" class="form-control"
+                        <input type="text" class="form-control"
                                value="{{$data->tel}}" name="tel"
                                placeholder="负责人电话">
                     </div>
@@ -49,7 +49,7 @@
                         <br>
                         <input type="hidden" id="upload_id" name="logo_id" value="{{$data['logo_id']}}">
                         <div id="single-upload" class="btn-upload m-t-xs">
-                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
+                            <div id="single-upload-picker" class="pickers img-circle"><i class="fa fa-upload"></i> 选择图片</div>
                             <div id="single-upload-file-list"></div>
                         </div>
 
@@ -61,7 +61,7 @@
                         <textarea name="comment"  class="form-control"   rows="3">{!! $data->comment !!}</textarea>
                     </div>
                 </li>
-                <li>
+                <li lass="dd-item">
                     <button type="submit" class="btn btn-success">修改</button>
                 </li>
             </form>
@@ -113,7 +113,8 @@
                     },
                     tel: {
                         required: true,
-                        phoneUS: true
+                        minlength:11,
+                        maxlength: 11
                     },
                     comment: {
                         maxlength: 2000

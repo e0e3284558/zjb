@@ -48,7 +48,7 @@ class ServiceWorkerController extends Controller
                 }
             }
         }
-        $serviceProvider=$my_Provider;
+        $serviceProvider = $my_Provider;
         return response()->view('repair.service_worker.add', compact('data', 'serviceProvider'));
     }
 
@@ -164,8 +164,9 @@ class ServiceWorkerController extends Controller
      */
     public function destroy($id)
     {
-        if (ServiceWorker::where('id', $id)->delete()) {
-            if (DB::table('classify_service_worker')->where('service_worker_id', $id)->delete()) {
+
+        if (DB::table('classify_service_worker')->where('service_worker_id', $id)->delete()) {
+            if (ServiceWorker::where('id', $id)->delete()) {
                 return response()->json([
                     'code' => 1,
                     'message' => '删除成功'
