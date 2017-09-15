@@ -282,7 +282,12 @@ function avatar_circle($img_path, $name)
  */
 function id_to_img($id)
 {
-    return \App\Models\File\File::find($id)->value('path');
+    if ($id != null) {
+        return \App\Models\File\File::find($id)->value('path');
+    }else{
+        return url('img/noavatar.png');
+    }
+
 }
 
 /**
@@ -352,20 +357,54 @@ if (!function_exists('get_area')) {
     {
         $data = '';
         $res = \App\Models\Asset\Area::find($id);
-        $area=$res->path;
+        $area = $res->path;
         $area = substr($area, 0, strlen($area) - 1);
         if ($area) {
             $address = explode(",", $area);
             foreach ($address as $v) {
                 if ($v != '') {
-                    $data .= \App\Models\Asset\Area::find($v)->name.'/';
+                    $data .= \App\Models\Asset\Area::find($v)->name . '/';
                 }
             }
-            $data.=$res->name;
-        }else{
-            $data=\App\Models\Asset\Area::find($id)->name;
+            $data .= $res->name;
+        } else {
+            $data = \App\Models\Asset\Area::find($id)->name;
         }
         return $data;
+    }
+}
+
+
+/**
+ * 根据用户ID获取用户名
+ */
+if (!function_exists('get_username')) {
+    function get_username($id)
+    {
+        return \App\Models\User\User::find($id)->name;
+    }
+}
+
+/**
+ * 根据服务商ID获取服务商
+ */
+if (!function_exists('get_org')) {
+    function get_org($id)
+    {
+
+        return \App\Models\User\Org::find($id)->name;
+    }
+}
+
+/**
+ * 根据用户获取其头像如果为空，则返回首字母
+ */
+if (!function_exists('get_avatar')) {
+    function get_avatar($id)
+    {
+
+        $avatar = \App\Models\User\User::find($id)->avatar;
+        return id_to_img($avatar);
     }
 }
 
