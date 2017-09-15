@@ -57,6 +57,7 @@
                                                 <th>分类</th>
                                                 <th>照片</th>
                                                 <th>备注</th>
+                                                <th>地址</th>
                                                 {{--<th>上次维修工</th>--}}
                                                 {{--<th>维修建议</th>--}}
                                                 <th>当前状态</th>
@@ -95,8 +96,7 @@
                                                         </td>
                                                     @endif
                                                     <td>{{$v->remarks}}</td>
-                                                    {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                    {{--<td>{{$v->suggest}}</td>--}}
+                                                    <td>{{get_area($v->area_id)}}</td>
                                                     <td>
                                                         @if($v->status==1)
                                                             等待分派维修中

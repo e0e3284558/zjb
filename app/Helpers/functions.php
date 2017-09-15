@@ -313,7 +313,7 @@ if (!function_exists('get_current_login_user_org_info')) {
     function get_current_login_user_org_info($field = true, $guard = 'web')
     {
         $data = auth($guard)->user()->org; //get_current_login_user_info('org', $guard)
-        if($field == true){
+        if ($field == true) {
             return $data;
         }
         return isset($data[$field]) ? $data[$field] : null;
@@ -343,15 +343,29 @@ if (!function_exists('loop_Arr')) {
             }
         }
     }
-}/**
- * 循环输出下拉框并分类
+}
+/**
+ * 根据id获取场地信息
  */
 if (!function_exists('get_area')) {
     function get_area($id)
     {
-        $area='';
-        $area_path=\App\Models\Asset\Area::find($id);
-        if ($area_path->pid){}
+        $data = '';
+        $res = \App\Models\Asset\Area::find($id);
+        $area=$res->path;
+        $area = substr($area, 0, strlen($area) - 1);
+        if ($area) {
+            $address = explode(",", $area);
+            foreach ($address as $v) {
+                if ($v != '') {
+                    $data .= \App\Models\Asset\Area::find($v)->name.'/';
+                }
+            }
+            $data.=$res->name;
+        }else{
+            $data=\App\Models\Asset\Area::find($id)->name;
+        }
+        return $data;
     }
 }
 

@@ -45,7 +45,7 @@ class CreateRepairController extends Controller
         $data4 = Process::where('org_id', Auth::user()->org_id)->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
 
-        return view('repair.create_repair.index', compact('data1', 'data2', 'data3，'));
+        return view('repair.create_repair.index', compact('data1', 'data2', 'data3','data4'));
     }
 
     /**
