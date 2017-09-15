@@ -12,9 +12,9 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">资产条码</label>
+                    <label for="code" class="col-sm-4 control-label">资产编号</label>
                     <div class="col-sm-8">
-                        <input type="text" name="code" class="form-control" placeholder="资产条码">
+                        <input type="text" name="code" class="form-control" placeholder="资产编号">
                     </div>
                 </div>
             </div>
@@ -111,10 +111,8 @@
                 <div class="form-group">
                     <label for="supplier_id" class="col-sm-4 control-label">供应商</label>
                     <div class="col-sm-8">
-                        {{--<input type="text" name="supplier" class="form-control" id="inputEmail3" placeholder="供应商">--}}
-                        {{--<input type="text" name="supplier_id" class="form-control" id="inputEmail3" placeholder="供应商">--}}
                         <select id="supplier_id" data-error-container="#error-block" name="supplier_id" class="form-control select2">
-                            <option>请选择</option>
+                            <option value="" >请选择</option>
                             @foreach($list7 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
                             @endforeach

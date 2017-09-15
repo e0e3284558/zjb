@@ -71,7 +71,7 @@
                             <thead>
                                 <tr role="row">
                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
-                                    <th>资产条码</th>
+                                    <th>资产编号</th>
                                     <th>图片</th>
                                     <th>资产名称</th>
                                     <th>资产类别</th>

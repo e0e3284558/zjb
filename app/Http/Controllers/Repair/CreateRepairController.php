@@ -28,7 +28,7 @@ class CreateRepairController extends Controller
     {
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status', '1')->latest()
+            ->where('status', '1')->orWhere('status', '4')->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
