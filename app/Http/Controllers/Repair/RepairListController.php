@@ -55,6 +55,14 @@ class RepairListController extends Controller
         return response()->view("repair.repair_list.show",compact('info'));
     }
 
+
+    public function showImg($id){
+//        dd($id);
+
+        $list = Process::where("id",$id)->with("img")->first()->img;
+        return response()->view("repair.repair_list.showImg",compact('list'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -99,6 +99,7 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
 Route::group(['prefix' => 'repair', 'namespace' => 'Repair'], function () {
 
     //我的报修列表
+    Route::get('repair_list/showImg/{id}','RepairListController@showImg');
     Route::resource('repair_list','RepairListController');
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');

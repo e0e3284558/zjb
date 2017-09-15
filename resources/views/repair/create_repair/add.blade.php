@@ -27,39 +27,16 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>报修单填写 </h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#">Config option 1</a>
-                                </li>
-                                <li><a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
                     </div>
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <div class="panel-options">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
-                                    <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">场地报修</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="panel-body">
-
+                    <div class="ibox-content" >
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
+                                <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">场地报修</a></li>
+                            </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
-                                    <div class="ibox-content">
+                                    <div class="panel-body">
                                         <form method="post" class="form-horizontal"
                                               id="asset_repair"
                                               action="{{url('repair/create_repair')}}">
@@ -132,10 +109,8 @@
                                         </form>
                                     </div>
                                 </div>
-
-
                                 <div class="tab-pane" id="tab-2">
-                                    <div class="ibox-content">
+                                    <div class="panel-body">
                                         <form method="post" class="form-horizontal" id="general_repair">
                                         {{csrf_field()}}
                                         <!-- 根据位置 -->
@@ -213,6 +188,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <script>

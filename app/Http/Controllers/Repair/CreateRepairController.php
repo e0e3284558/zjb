@@ -41,11 +41,16 @@ class CreateRepairController extends Controller
             ->where('status', '6')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+        //待评价
+        $data4 = Process::where('org_id', Auth::user()->org_id)
+            ->where('status', '5')
+            ->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //当前公司下的全部的报修
-        $data4 = Process::where('org_id', Auth::user()->org_id)->latest()
+        $data5 = Process::where('org_id', Auth::user()->org_id)->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
 
-        return view('repair.create_repair.index', compact('data1', 'data2', 'data3','data4'));
+        return view('repair.create_repair.index', compact('data1', 'data2', 'data3','data4','data5'));
     }
 
     /**
@@ -55,7 +60,6 @@ class CreateRepairController extends Controller
      */
     public function create()
     {
-
         $area = Area::where('org_id', Auth::user()->org_id)->where('pid', 0)->get();
         $classify = Classify::where('org_id', Auth::user()->org_id)
                     ->where('enabled',1)->get();
@@ -215,7 +219,7 @@ class CreateRepairController extends Controller
         $repair = Process::find($request['id']);
         $repair->service_worker_id = $request['service_worker_id'];
         $repair->service_provider_id = $request['service_provider_id'];
-        $repair->status = 20;
+        $repair->status = 3;
         if ($repair->save()) {
             return response()->json([
                 'status' => 1, 'message' => '分派成功'

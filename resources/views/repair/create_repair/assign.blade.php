@@ -101,7 +101,7 @@
     </div>
 
     <div class="modal-footer">
-        <button type="button" onclick="del({{$process->id}})" class="btn btn-warning pull-left">废弃报修</button>
+        <button type="button" onclick="del({{$process->id}})" class="btn btn-warning pull-left">取消工单</button>
         <button type="submit" class="btn btn-default" id="btn_action">取消</button>
         <button type="submit" class="btn btn-success" id="btn_action">分配</button>
     </div>
