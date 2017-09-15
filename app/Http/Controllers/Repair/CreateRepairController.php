@@ -41,8 +41,11 @@ class CreateRepairController extends Controller
             ->where('status', '10')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+        //当前公司下的全部的报修
+        $data4 = Process::where('org_id', Auth::user()->org_id)->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
 
-        return view('repair.create_repair.index', compact('data1', 'data2', 'data3'));
+        return view('repair.create_repair.index', compact('data1', 'data2', 'data3，'));
     }
 
     /**
@@ -99,7 +102,7 @@ class CreateRepairController extends Controller
         }
         $category_id = null;
         if ($request->other == 0) {
-            $category_id = Asset::find($area_id)->category_id;
+            $category_id = Asset::find($request->asset_id)->category_id;
         }
         $res = [
             'asset_classify_id' => $category_id,
@@ -258,7 +261,7 @@ class CreateRepairController extends Controller
     public function success($id)
     {
         $data=Process::find($id);
-        return response()->view('repair.create_repair.success');
+        return response()->view('repair.create_repair.success',compact('data'));
     }
 
     /**
@@ -267,8 +270,19 @@ class CreateRepairController extends Controller
      */
     public function successStore(Request $request)
     {
-        dd($request->all());
         $process=Process::find($request->id);
+        $process->status=$request->status;
+        $process->result=$request->result;
+        if ($process->save()){
+            return response()->json([
+                'status' => 1, 'message' => '维修完成，等待评价'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 0, 'message' => '保存失败，请稍后重试',
+                'data' => null, 'url' => ''
+            ]);
+        }
     }
 
     /**

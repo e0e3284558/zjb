@@ -138,8 +138,7 @@
                                                     <th>分类</th>
                                                     <th>照片</th>
                                                     <th>备注</th>
-                                                    {{--<th>上次维修工</th>--}}
-                                                    {{--<th>维修建议</th>--}}
+                                                    <th>报修位置</th>
                                                     <th>当前状态</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
@@ -176,17 +175,16 @@
                                                             </td>
                                                         @endif
                                                         <td>{{$v->remarks}}</td>
-                                                        {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                        {{--<td>{{$v->suggest}}</td>--}}
+                                                        <td>{{get_area($v->area_id)}}</td>
                                                         <td>
                                                             @if($v->status==1)
                                                                 等待分派维修中
                                                             @endif
                                                             @if($v->status==20 ||$v->status==4)
-                                                                已分派维修工
+                                                                已分派维修工:{{$v->serviceWorker->name}}
                                                             @endif
                                                             @if($v->status==10)
-                                                                已完成维修
+                                                                已完成维修:{{$v->serviceWorker->name}}
                                                             @endif
                                                         </td>
                                                         <td>
@@ -302,7 +300,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($data3 as $v)
+                                                @foreach($data4 as $v)
                                                     <tr>
                                                         <td>{{$v->user->name}}</td>
                                                         @if($v->other==1)
