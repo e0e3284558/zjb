@@ -74,6 +74,12 @@ return [
             'url' => env('APP_URL').'/uploads/video',
         ],
 
+        'area_qrcodes' => [
+            'root' => public_path('uploads/area'),
+            'base_path'=> 'uploads/area',
+            'url' => env('APP_URL').'/uploads/area',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_KEY'),

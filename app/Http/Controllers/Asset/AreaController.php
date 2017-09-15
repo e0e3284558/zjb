@@ -76,7 +76,7 @@ class AreaController extends Controller
             $arr['pid'] = "0";
             $arr['path'] = "";
         }
-        QrCode::encoding("UTF-8")->format('png')->size("100")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("0")->generate($arr['uid'],public_path('uploads/area/'.$arr['uid'].'.png'));
+        QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],config('filesystems.disks.area_qrcodes.root').$arr['uid'].'.png');
 
         $info = Area::insertGetId($arr);
         if($info){
@@ -136,8 +136,8 @@ class AreaController extends Controller
         if($user_org == $info->org_id){
             $info = Area::find($id);
             //删除原来的二维码图片
-            unlink(public_path('uploads/qrcodes/'.$info->uid.'.png'));
-            QrCode::encoding("UTF-8")->format('png')->size("300")->merge('/public/uploads/qrcodes/logo.png', .3)->margin("6")->generate($info->uid,public_path('uploads/qrcodes/'.$info->uid.'.png'));
+            unlink(config('filesystems.disks.area_qrcodes.root').'/'.$info->uid.'.png');
+            QrCode::encoding("UTF-8")->format('png')->size("300")->margin("6")->generate($info->uid,config('filesystems.disks.area_qrcodes.root').$info->uid.'.png');
 
             if($info){
                 $arr = [
