@@ -50,6 +50,9 @@
                                     <label>
                                         <input type="radio" name="type" value="worker" {{ old('type') == 'worker' ? 'checked' : '' }}> 维修工
                                     </label>
+                                    {{--<label>--}}
+                                        {{--<input type="radio" name="type" value="admins" {{ old('type') == 'admins' ? 'checked' : '' }}> 管理员--}}
+                                    {{--</label>--}}
                             </div>
                         </div>
                         <div class="form-group">

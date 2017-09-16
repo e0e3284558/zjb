@@ -50,6 +50,7 @@ return [
             'driver' => 'session',
             'provider' => 'service_workers',
         ],
+
     ],
 
     /*
