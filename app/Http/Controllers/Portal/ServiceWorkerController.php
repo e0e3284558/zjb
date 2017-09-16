@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Portal;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ServiceWorkerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:service_workers');
+        $this->middleware(['auth:service_workers']);
     }
 
     public function index(){
