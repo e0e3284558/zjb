@@ -54,9 +54,12 @@
                 <div class="col-md-6">
                     <div class="ibox">
                         <div class="ibox-title">
-                            <span class="label label-warning pull-right">移除</span>
-                            <span class="label label-primary pull-right">编辑</span>
-                            <span class="label label-success pull-right">详情</span>
+                            <span class="label label-warning pull-right" onclick="del('{{$v->id}}')">移除</span>
+                            <a href="{{url('repair/service_provider'.'/'.$v->id.'/edit')}}">
+                                <span class="label label-primary pull-right">编辑</span>
+                            </a>
+                            <a href="{{url('repair/service_provider'.'/'.$v->id)}}">
+                                <span class="label label-success pull-right">详情</span></a>
                             <h5>{{$v->name}}</h5>
                         </div>
                         <div class="ibox-content h-150">
@@ -118,22 +121,47 @@
             })
         }
 
+
         /*删除*/
         function del(id) {
-            layer.confirm('确认要删除吗？', function () {
-                //发异步删除数据
-                $.post("{{url('repair/service_worker/')}}/" + id, {
-                    '_method': 'delete',
-                    '_token': "{{csrf_token()}}"
-                }, function (data) {
-                    if (data.status == 'success') {
-                        layer.msg(data.message, {icon: 6});
-                        window.location.reload();
-                    } else {
-                        layer.msg('删除失败', {icon: 5});
-                    }
-                });
-            });
+
+            swal({
+                    title: "确认要移除该服务商吗？",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    cancelButtonText: "取消",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false
+                },
+                function () {
+                    //发异步删除数据
+                    $.ajax({
+                        type: "post",
+                        url: '{{url('repair/service_provider')}}/' + id,
+                        data: {
+                            "_token": '{{csrf_token()}}',
+                            '_method': 'delete'
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code == 1) {
+                                swal({
+                                    title: "",
+                                    text: data.message,
+                                    type: "success",
+                                    timer: 1000,
+                                }, function () {
+                                    window.location.reload();
+                                });
+                            } else {
+                                swal("", data.message, "error");
+                            }
+                        }
+                    });
+                }
+            );
         }
     </script>
 @endsection

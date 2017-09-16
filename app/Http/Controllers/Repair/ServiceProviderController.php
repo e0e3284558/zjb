@@ -21,7 +21,7 @@ class ServiceProviderController extends Controller
     public function index()
     {
         $data = [];
-        $serviceProvider = ServiceProvider::with('org','service_worker')
+        $serviceProvider = ServiceProvider::with('org', 'service_worker')
             ->orderBy('created_at', 'desc')
             ->get();
         // foreach ($serviceProvider as $a) {
@@ -148,11 +148,20 @@ class ServiceProviderController extends Controller
         if (DB::table('org_service_provider')
             ->where('org_id', Auth::user()->org_id)
             ->where('service_provider_id', $id)
+            ->where('status', 0)
             ->delete()) {
-            return response()->json([
-                'code' => 1,
-                'message' => '移除成功'
-            ]);
+            if (ServiceProvider::find($id)->delete()) {
+                return response()->json([
+                    'code' => 1,
+                    'message' => '成功删除该服务商'
+                ]);
+            } else {
+                return response()->json([
+                    'code' => 1,
+                    'message' => '已移除与服务商关联关系'
+                ]);
+            }
+
         } else {
             return response()->json([
                 'code' => 0,
