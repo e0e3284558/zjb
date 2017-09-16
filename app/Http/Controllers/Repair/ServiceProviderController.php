@@ -21,27 +21,27 @@ class ServiceProviderController extends Controller
     public function index()
     {
         $data = [];
-        $serviceProvider = ServiceProvider::with('org')
+        $serviceProvider = ServiceProvider::with('org','service_worker')
             ->orderBy('created_at', 'desc')
-            ->get()->toArray();
-        foreach ($serviceProvider as $a) {
-            if (($a['org'])) {
-                if ($a['org'][0]['id'] == Auth::user()->org_id) {
-                    $data[] = $a;
-                }
-            }
-        }
-        $data = collect($data);
-        //获取服务商下面的维修工
-        foreach ($data as $k => $v) {
-            $worker_id = DB::table('service_provider_service_worker')
-                ->where('service_provider_id', $v['id'])->get();
-            foreach ($worker_id as $value) {
-                $service_worker[$k][] = ServiceWorker::where('id', $value->service_worker_id)->get()->toArray();
+            ->get();
+        // foreach ($serviceProvider as $a) {
+        //     if (($a['org'])) {
+        //         if ($a['org'][0]['id'] == Auth::user()->org_id) {
+        //             $data[] = $a;
+        //         }
+        //     }
+        // }
+        // $data = collect($data);
+        // //获取服务商下面的维修工
+        // foreach ($data as $k => $v) {
+        //     $worker_id = DB::table('service_provider_service_worker')
+        //         ->where('service_provider_id', $v['id'])->get();
+        //     foreach ($worker_id as $value) {
+        //         $service_worker[$k][] = ServiceWorker::where('id', $value->service_worker_id)->get()->toArray();
 
-            }
-        }
-        return view('repair.service_provider.index', compact('data', 'service_worker'));
+        //     }
+        // }
+        return view('repair.service_provider.index', compact('data', 'serviceProvider'));
     }
 
     /**

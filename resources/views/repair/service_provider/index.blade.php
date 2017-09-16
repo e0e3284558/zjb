@@ -138,57 +138,31 @@
 
                     @endforeach
                 </div> -->
+                 @foreach($serviceProvider as $k=>$v)
                     <div class="col-md-6">
                         <div class="ibox">
                             <div class="ibox-title">
                                 <span class="label label-primary pull-right">编辑</span>
-                                <h5>安徽这就办信息技术有限责任公司</h5>
+                                <h5>{{$v->name}}</h5>
                             </div>
-                            <div class="ibox-content">
+                            <div class="ibox-content h-150">
+                                <!-- {{dump($v)}} -->
                                 <div class="team-members">
-                                    {!! avatar_circle(null,'章' )!!}
-                                    {!! avatar_circle(null,'刘' )!!}
-                                    {!! avatar_circle(null,'里' )!!}
+                                    @if(isset($v->service_worker))
+                                        @foreach($v->service_worker as $img)
+                                            @if($img->upload_id)
+                                                {!! avatar_circle($img->upload_id,'') !!}
+                                            @else
+                                                {!! avatar_circle(null,$img->name )!!}
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 </div>
-                                
-                                <p>如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于“异步数据请求”的方式（即设置了url的情况下</p>
+                                <p>{{$v['comment']}}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="ibox">
-                            <div class="ibox-title">
-                                <span class="label label-primary pull-right">编辑</span>
-                                <h5>安徽这就办信息技术有限责任公司</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <div class="team-members">
-                                    {!! avatar_circle(null,'章' )!!}
-                                    {!! avatar_circle(null,'刘' )!!}
-                                    {!! avatar_circle(null,'里' )!!}
-                                </div>
-                                
-                                <p>如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于“异步数据请求”的方式（即设置了url的情况下</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="ibox">
-                            <div class="ibox-title">
-                                <span class="label label-primary pull-right">编辑</span>
-                                <h5>安徽这就办信息技术有限责任公司</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <div class="team-members">
-                                    {!! avatar_circle(null,'章' )!!}
-                                    {!! avatar_circle(null,'刘' )!!}
-                                    {!! avatar_circle(null,'里' )!!}
-                                </div>
-                                
-                                <p>如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于“异步数据请求”的方式（即设置了url的情况下</p>
-                            </div>
-                        </div>
-                    </div>
+                @endforeach
             </div>
         </div>
     </div>
