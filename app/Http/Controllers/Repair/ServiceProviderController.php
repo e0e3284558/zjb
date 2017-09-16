@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Repair;
 
 use App\Http\Requests\ServiceProviderRequest;
+use App\Models\Repair\Process;
 use App\Models\Repair\ServiceProvider;
 use App\Models\Repair\ServiceWorker;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class ServiceProviderController extends Controller
     {
         $data = [];
         $serviceProvider = ServiceProvider::with('org')
-            ->orderBy('created_at','desc')
+            ->orderBy('created_at', 'desc')
             ->get()->toArray();
         foreach ($serviceProvider as $a) {
             if (($a['org'])) {
@@ -95,9 +96,10 @@ class ServiceProviderController extends Controller
     {
         $data = ServiceProvider::find($id);
         $serviceWorker = $data->service_worker()->get();
-        //综合好评评率
-
-        return response()->view('repair.service_provider.show', compact('data', 'serviceWorker'));
+        $processProvider = Process::where('service_provider_id', $data->id)->get();
+        return response()->view('repair.service_provider.show',
+            compact('data', 'serviceWorker', 'processProvider')
+        );
     }
 
     /**
@@ -144,9 +146,9 @@ class ServiceProviderController extends Controller
     public function destroy($id)
     {
         if (DB::table('org_service_provider')
-                ->where('org_id', Auth::user()->org_id)
-                ->where('service_provider_id',$id)
-                ->delete()) {
+            ->where('org_id', Auth::user()->org_id)
+            ->where('service_provider_id', $id)
+            ->delete()) {
             return response()->json([
                 'code' => 1,
                 'message' => '移除成功'

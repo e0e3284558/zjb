@@ -80,19 +80,20 @@
 
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab-1">
-                                <div class="feed-activity-list">
-                                    <div class="feed-element">
-                                        <a href="#" class="pull-left">
-                                            <img alt="image" class="img-circle" src="/img/a2.jpg">
-                                        </a>
-                                        <div class="media-body ">
-                                            <small class="pull-right">2h ago</small>
-                                            <strong>Mark Johnson</strong> posted message on <strong>Monica
-                                                Smith</strong> site. <br>
+                                @foreach($processProvider as $v)
+                                    <div class="feed-activity-list">
+                                        <div class="feed-element">
+                                            <a href="#" class="pull-left">
+                                                <img alt="image" class="img-circle" src="{{get_avatar($v->user_id)}}">
+                                            </a>
+                                            <div class="media-body ">
+                                                <small class="pull-right">{{(time()-strtotime($v->updated_at))/(60*60*24)}}</small>
+                                                {{$v->appraisal}}
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
+                                    </div>
+                                @endforeach
 
                             </div>
                             <div class="tab-pane" id="tab-2">
@@ -101,35 +102,45 @@
                                     <thead>
                                     <tr>
                                         <th>当前状态</th>
-                                        <th>标题</th>
-                                        <th>开始时间</th>
-                                        <th>结束时间</th>
-                                        <th>备注</th>
+                                        <th>报修人</th>
+                                        <th>报修公司</th>
+                                        <th>维修场地</th>
+                                        <th>当前操作完成时间</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>
-                                            <span class="label label-primary"><i
-                                                        class="fa fa-check"></i> Completed</span>
-                                        </td>
-                                        <td>
-                                            Create project in webapp
-                                        </td>
-                                        <td>
-                                            12.07.2014 10:10:1
-                                        </td>
-                                        <td>
-                                            14.07.2014 10:16:36
-                                        </td>
-                                        <td>
-                                            <p class="small">
-                                                Lorem Ipsum is that it has a more-or-less normal distribution of
-                                                letters, as opposed to using 'Content here, content here', making it
-                                                look like readable.
-                                            </p>
-                                        </td>
-                                    </tr>
+                                    @foreach($processProvider as $v)
+                                        <tr>
+                                            <td>
+                                                @switch($v->status)
+                                                    @case(3)
+                                                    <span class="label label-warning"><i
+                                                                class="fa fa-check"></i> 维修中</span>
+                                                    @break
+                                                    @case(5)
+                                                    <span class="label label-success"><i
+                                                                class="fa fa-check"></i> 待评价</span>
+                                                    @break
+                                                    @case(10)
+                                                    <span class="label label-primary" title="{{$v->appraisal}}"><i
+                                                                class="fa fa-check"></i> 已评价</span>
+                                                    @break
+                                                @endswitch
+                                            </td>
+                                            <td>
+                                                {{get_username($v->user_id)}}
+                                            </td>
+                                            <td>
+                                                {{get_org($v->org_id)}}
+                                            </td>
+                                            <td>
+                                                {{get_area($v->area_id)}}
+                                            </td>
+                                            <td>
+                                                {{$v->updated_at}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
