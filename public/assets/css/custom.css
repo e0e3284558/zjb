@@ -8198,6 +8198,9 @@ Custom color buttons
     top:0;
     left: 0;
 }
+.inline-block{
+    display: inline-block;
+}
 /* layui style*/
 .layui-table-view{
     margin:0 

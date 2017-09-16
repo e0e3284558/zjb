@@ -230,7 +230,7 @@ if (!function_exists('randomClass')) {
 if (!function_exists('random_color')) {
     function random_color()
     {
-        $arr = ['blue', 'green', 'red', 'yellow', 'orange'];
+        $arr = ['default', 'blue', 'blue-madison', 'red', 'yellow','grey','green'];
         $a = array_random($arr);
         return $a;
     }
@@ -273,7 +273,8 @@ function avatar_circle($img_path, $name)
     if ($img_path !== null) {
         return '<img class="img-circle img-md" src="' . get_img_path($img_path) . '">';
     } else {
-        return '<button class="btn ' . random_color() . ' img-circle img-md" type="button" style="text-align: center"> <span style="font-size: 24px;text-align: center">' . mb_substr($name, 0, 1) . '</span> </button>';
+
+        return '<span class="bg-' . random_color() . ' font-white img-circle img-sm btn-circle-sm inline-block" >' . mb_substr($name, 0, 1) . '</span>';
     }
 }
 

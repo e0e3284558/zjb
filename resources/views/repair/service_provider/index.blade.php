@@ -23,10 +23,31 @@
     </div>
 @endsection
 @section('content')
-    <div class="wrapper wrapper-content wrapper-content2 animated fadeInRight">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="ibox ">
+    <div class="wrapper wrapper-content wrapper-content2  ">
+        
+        <div class="row m-b-sm">
+            <div class="col-md-7">
+                <div class="tools">
+                    <a class="btn blue"
+                            href="{{url("repair/service_provider/create")}}">添加服务商
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="input-group">
+                  <input type="text" id="search-text" placeholder="用户名、姓名、邮箱、电话" class="form-control"> 
+                  <span class="input-group-btn"> 
+                  <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button> 
+                  <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
+                  <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
+                  </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-lg-12 m-b-sm">
+               <div class="ibox ">
                     <div class="ibox-title">
                         <h5>服务商列表</h5>
                     </div>
@@ -54,11 +75,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                
+            </div> -->
+ 
+            <div class="row" id="create">
 
-            <div class="col-lg-9" id="create">
-
-                <div class="row gray-bg">
+                <!-- <div class="row gray-bg">
 
                     @foreach($data as $k=>$v)
                         <div class="ibox">
@@ -115,7 +137,58 @@
                         </div>
 
                     @endforeach
-                </div>
+                </div> -->
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-primary pull-right">编辑</span>
+                                <h5>安徽这就办信息技术有限责任公司</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="team-members">
+                                    {!! avatar_circle(null,'章' )!!}
+                                    {!! avatar_circle(null,'刘' )!!}
+                                    {!! avatar_circle(null,'里' )!!}
+                                </div>
+                                
+                                <p>如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于“异步数据请求”的方式（即设置了url的情况下</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-primary pull-right">编辑</span>
+                                <h5>安徽这就办信息技术有限责任公司</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="team-members">
+                                    {!! avatar_circle(null,'章' )!!}
+                                    {!! avatar_circle(null,'刘' )!!}
+                                    {!! avatar_circle(null,'里' )!!}
+                                </div>
+                                
+                                <p>如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于“异步数据请求”的方式（即设置了url的情况下</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-primary pull-right">编辑</span>
+                                <h5>安徽这就办信息技术有限责任公司</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="team-members">
+                                    {!! avatar_circle(null,'章' )!!}
+                                    {!! avatar_circle(null,'刘' )!!}
+                                    {!! avatar_circle(null,'里' )!!}
+                                </div>
+                                
+                                <p>如果设置 false，则在切换分页时，不会出现加载条。该参数只适用于“异步数据请求”的方式（即设置了url的情况下</p>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>

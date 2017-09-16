@@ -61,7 +61,7 @@ class DefaultController extends Controller
                 }
             }else{
                 //维修工不存在
-                dump('维修工不存在');
+
             }
         }else{
            echo '参数有误';
