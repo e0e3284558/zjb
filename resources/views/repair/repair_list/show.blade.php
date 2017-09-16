@@ -20,7 +20,7 @@
                 <td>待分派中...</td>
             @endif
 
-            <td><label class="control-label">维修工</label></td>
+            <td><label class="control-label">维修人员</label></td>
             @if($info->serviceWorker)
                 <td>{{$info->serviceWorker->name}}</td>
             @else

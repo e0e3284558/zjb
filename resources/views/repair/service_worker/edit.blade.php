@@ -1,7 +1,7 @@
 <meta charset="UTF-8">
 <div class="ibox">
     <div class="ibox-title">
-        <h5>修改维修工信息</h5>
+        <h5>修改维修人员信息</h5>
     </div>
     <div class="ibox-content">
         <div class="dd" id="nestable2">
@@ -13,7 +13,7 @@
                         <label>帐号<i>*</i></label>
                         <input type="text" class="form-control"
                                value="{{$data->username}}" name="username"
-                               placeholder="维修工帐号">
+                               placeholder="维修人员帐号">
                     </div>
                 </li>
 
@@ -27,19 +27,19 @@
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工姓名<i>*</i></label>
+                        <label>维修人员姓名<i>*</i></label>
                         <input type="text" class="form-control"
                                value="{{$data->name}}" name="name"
-                               placeholder="维修工姓名">
+                               placeholder="维修人员姓名">
                     </div>
                 </li>
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工电话<i>*</i></label>
+                        <label>维修人员电话<i>*</i></label>
                         <input type="text" class="form-control"
                                value="{{$data->tel}}" name="tel"
-                               placeholder="维修工电话号码">
+                               placeholder="维修人员电话号码">
                     </div>
                 </li>
                 <li class="dd-item">
@@ -54,7 +54,7 @@
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工维修种类</label>
+                        <label>维修人员维修种类</label>
                         @foreach($classifies as $k=>$v)
                             @if(!$v->deleted_at)
                                 <label class="checkbox-inline i-checkbox">
