@@ -14,7 +14,7 @@
                 </li>
 
                 <li class="active">
-                    <strong>报修分类管理</strong>
+                    <strong>报修项目管理</strong>
                 </li>
             </ol>
         </div>
@@ -28,7 +28,7 @@
             <div class="col-lg-6">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>分类列表</h5>
+                        <h5>项目列表</h5>
                     </div>
                     <div class="ibox-content">
 
@@ -95,7 +95,7 @@
         function del(id) {
 
             swal({
-                    title: "确认要删除该分类吗？",
+                    title: "确认要删除该项目吗？",
                     text: "",
                     type: "warning",
                     showCancelButton: true,

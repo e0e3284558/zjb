@@ -1,7 +1,7 @@
 <meta charset="UTF-8">
 <div class="ibox">
     <div class="ibox-title">
-        <h5>分类操作-添加分类</h5>
+        <h5>项目操作-添加项目</h5>
     </div>
     <div class="ibox-content">
 
@@ -10,32 +10,32 @@
                 {{csrf_field()}}
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>分类名称<i>*</i></label>
+                        <label>项目名称<i>*</i></label>
                         <input type="text" class="form-control" value=""
-                               name="name" placeholder="分类名称">
+                               name="name" placeholder="项目名称">
                     </div>
                 </li>
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>分类备注</label>
+                        <label>项目备注</label>
                         <input type="text" class="form-control" value="" name="comment"
-                               placeholder="分类备注">
+                               placeholder="项目备注">
                     </div>
                 </li>
 
                 <li class="dd-item  hide">
                     <div class="dd-handle ">
-                        <label>分类图标</label>
+                        <label>项目图标</label>
                         <input type="text" class="form-control" value="fa fa-cogs"
-                               name="icon" placeholder="分类图标">
+                               name="icon" placeholder="项目图标">
                     </div>
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>分类排序</label>
+                        <label>项目排序</label>
                         <input type="number" class="form-control" value="0" name="sorting"
-                               placeholder="分类排序">
+                               placeholder="项目排序">
                     </div>
                 </li>
                 <li>

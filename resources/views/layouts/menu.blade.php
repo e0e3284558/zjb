@@ -15,7 +15,7 @@
                         服务商管理</a>
                 </li>
                 <li class="{{ active_class(if_route('classify.index'))}}"><a
-                            href="{{ url('repair/classify?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 报修分类</a>
+                            href="{{ url('repair/classify?app_groups=repair') }}"><i class="fa fa-angle-right"></i> 报修项目</a>
                 </li>
                 <li class="{{ active_class(if_route('service_worker.index'))}}"><a
                             href="{{ url('repair/service_worker?app_groups=repair') }}"><i

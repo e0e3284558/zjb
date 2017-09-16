@@ -2,7 +2,7 @@
 
 <div class="ibox ">
     <div class="ibox-title">
-        <h5>分类操作-修改分类</h5>
+        <h5>项目操作-修改项目</h5>
     </div>
     <div class="ibox-content">
 
@@ -13,16 +13,16 @@
 
                 <li class="dd-item">
                     <div class="dd-handle">
-                        <label>分类名称<i>*</i></label>
+                        <label>项目名称<i>*</i></label>
                         <input type="text" class="form-control" name="name" value="{{$data->name}}"
-                               placeholder="分类名称">
+                               placeholder="项目名称">
                     </div>
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>分类备注</label>
+                        <label>项目备注</label>
                         <input type="text" class="form-control" name="comment" value="{{$data->comment}}"
-                               placeholder="分类备注">
+                               placeholder="项目备注">
                     </div>
                 </li>
                 <li class="dd-item">
@@ -45,17 +45,17 @@
 
                 <li class="dd-item hide">
                     <div class="dd-handle">
-                        <label>分类图标</label>
+                        <label>项目图标</label>
                         <input type="text" class="form-control" name="icon" value="{{$data->icon}}"
-                               placeholder="分类图标">
+                               placeholder="项目图标">
                     </div>
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>分类排序</label>
+                        <label>项目排序</label>
                         <input type="number" class="form-control" value="0" value="{{$data->sorting}}"
                                name="sorting"
-                               placeholder="分类排序">
+                               placeholder="项目排序">
                     </div>
                 </li>
                 <li>
