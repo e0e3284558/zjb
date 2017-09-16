@@ -15,7 +15,8 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",session('worker')->id)->get();
+//        dd(get_current_login_user_info("id",'service_workers'));
+        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",auth('service_workers')->user()->id)->get();
         return view("repair.process.index",compact("list"));
     }
 

@@ -106,13 +106,14 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
 
     //选中维修工进行派工
     Route::post('create_repair/confirm_worker', 'CreateRepairController@confirmWorker');
-
-});
-Route::group(['prefix' => 'repair', 'namespace' => 'Repair'], function () {
-
     //我的报修列表
     Route::get('repair_list/showImg/{id}','RepairListController@showImg');
     Route::resource('repair_list','RepairListController');
+
+});
+Route::group(['prefix' => 'repair', 'namespace' => 'Repair','middleware' => 'auth:service_workers'], function () {
+
+
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
     Route::get('process/refuse/{id}', 'ProcessController@refuse');
@@ -176,9 +177,9 @@ Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth']
 //维修工登录
 //-------------------------------------------------------------------------
 
-Route::group(['namespace' => 'Repair'], function () {
-    Route::resource('work_login', 'WorkerLoginController');
-});
+//Route::group(['namespace' => 'Repair'], function () {
+//    Route::resource('work_login', 'WorkerLoginController');
+//});
 
 //-------------------------------------------------------------------------
 //维修工登录

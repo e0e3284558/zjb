@@ -25,7 +25,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>所有资产</h5>
+                    <h5>资产列表</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="table-tools">
@@ -38,9 +38,9 @@
                                 <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
                                     <i class="fa  fa-trash-o"></i> 删除
                                 </button>
-                                <a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">
-                                    <i class="fa fa-copy"></i> 复制
-                                </a>
+                                {{--<a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
+                                    {{--<i class="fa fa-copy"></i> 复制--}}
+                                {{--</a>--}}
                             </div>
                             <div class="col-md-6">
                                 <!-- 搜索 -->
@@ -84,11 +84,9 @@
                                     <th>规格型号</th>
                                     <th>计量单位</th>
                                     <th>金额</th>
-                                    {{--<th>使用部门</th>--}}
-                                    <th>区域</th>
-                                    {{--<th>管理员</th>--}}
-                                    <th>所属公司</th>
-                                    <th>所属部门</th>
+                                    <th>所在场地</th>
+                                    {{--<th>所属公司</th>--}}
+                                    {{--<th>所属部门</th>--}}
                                     <th>购入时间</th>
 
                                 </tr>
@@ -106,13 +104,13 @@
                                             @endif
                                         </td>
                                         <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
-                                        <td>{{$value->category->name}}</td>
+                                        <td>{{$value->category_id?$value->category->name:""}}</td>
                                         <td>{{$value->spec}}</td>
                                         <td>{{$value->calculate}}</td>
                                         <td>{{$value->money}}</td>
-                                        <td>{{$value->area_id?$value->area->name:""}}</td>
-                                        <td>{{$value->org_id?$value->org->name:""}}</td>
-                                        <td>{{$value->depatment_id?$value->department->name:""}}</td>
+                                        <td>{{$value->area_id?get_area($value->area_id):""}}</td>
+{{--                                        <td>{{$value->org_id?$value->org->name:""}}</td>--}}
+{{--                                        <td>{{$value->depatment_id?$value->department->name:""}}</td>--}}
                                         <td>{{$value->buy_time}}</td>
                                     </tr>
                                 @endforeach

@@ -140,9 +140,7 @@
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
                                                         <td>
-                                                            @if($v->status=='3')
-                                                                <span class="label label-warning" >维修中</span>
-                                                            @endif
+                                                            <span class="label label-warning" >维修中</span>
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
@@ -207,6 +205,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all3" ></th>
+                                                    <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修资产</th>
@@ -225,6 +224,7 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
+                                                        <td><span class="label label-success" >已完成</span></td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
@@ -274,6 +274,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all4" ></th>
+                                                    <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
@@ -289,6 +290,7 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
+                                                        <td><span class="label label-warning" >待评价</span></td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)

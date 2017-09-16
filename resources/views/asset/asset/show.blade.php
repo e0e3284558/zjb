@@ -9,7 +9,7 @@
                 <td class="td-bg" ><label class="control-label">资产条码</label></td>
                 <td>{{$info->code}}</td>
                 <td class="td-bg" ><label class="control-label">资产类别</label></td>
-                <td>{{$info->category->name}}</td>
+                <td>{{$info->category_id?$info->category->name:""}}</td>
                 <td class="td-bg" ><label class="control-label">资产名称</label></td>
                 <td>{{$info->name}}</td>
             </tr>
@@ -27,15 +27,11 @@
                 <td class="td-bg" ><label class="control-label">购入时间</label></td>
                 <td>{{$info->buy_time}}</td>
                 <td class="td-bg" ><label class="control-label">供应商</label></td>
-                <td>{{$info->supplier->name}}</td>
+                <td>{{$info->supplier_id?$info->supplier->name:""}}</td>
             </tr>
             <tr role="row">
-                <td class="td-bg" ><label class="control-label">所属公司</label></td>
-                <td>{{$info->org->name}}</td>
                 <td class="td-bg" ><label class="control-label">备注</label></td>
-                <td colspan="4" >{{$info->remarks}}</td>
-            </tr>
-            <tr role="row" >
+                <td colspan="2" >{{$info->remarks}}</td>
                 <td class="td-bg" ><label class="control-label">图片</label></td>
                 <td colspan="2" >
                     @if($info->img_path)
