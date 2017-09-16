@@ -22,7 +22,7 @@
                 <td>{{$info->area_id?$info->area->name:""}}</td>
             </tr>
             <tr role="row">
-                <td class="td-bg" ><label class="control-label">金额</label></td>
+                <td class="td-bg" ><label class="control-label">金额(元)</label></td>
                 <td>{{$info->money}}</td>
                 <td class="td-bg" ><label class="control-label">购入时间</label></td>
                 <td>{{$info->buy_time}}</td>

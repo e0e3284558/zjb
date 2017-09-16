@@ -9,92 +9,42 @@
             {{csrf_field()}}
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>需要维修的资产类型</label>
-                                <input type="text" class="form-control" disabled
-                                       @if ($process->category)
-                                       value="{{$process->category->name}}"
-                                       @else
-                                       value="通用报修"
-                                        @endif
-                                >
-                            </div>
-                        </li>
-                    </div>
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>选择服务商</label>
-                                <select name="service_provider_id" id="provider" class="form-control">
-                                    <option value="">-----请选择服务商-----</option>
-                                    @foreach($serviceProvider as $v)
-                                        <option value="{{$v['id']}}">{{$v['name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </li>
-                    </div>
+                    <li class="dd-item">
+                        <div class="dd-handle ">
+                            <label>选择服务商</label>
+                            <select name="service_provider_id" id="provider" class="form-control">
+                                <option value="">-----请选择服务商-----</option>
+                                @foreach($serviceProvider as $v)
+                                    <option value="{{$v['id']}}">{{$v['name']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>需要维修的资产</label>
-                                <input type="text" class="form-control" disabled
-                                       @if($process->other==1)
-                                       @if($process->otherAsset)
-                                       value="{{$process->otherAsset->name}}"
-                                       @endif
-                                       @else
-                                       value="{{$process->asset->name}}"
-                                        @endif
-                                >
-                            </div>
-                        </li>
-                    </div>
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>选择维修人员类型</label>
-                                <select name="classify_id" id="" class="form-control"
-                                        onchange="change_classify(this.value)">
-                                    <option value="">-----请选择类型-----</option>
-                                    @foreach($classify as $v)
-                                        <option value="{{$v->id}}">{{$v->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </li>
-                    </div>
+                    <li class="dd-item">
+                        <div class="dd-handle ">
+                            <label>选择维修人员类型</label>
+                            <select name="classify_id" id="" class="form-control"
+                                    onchange="change_classify(this.value)">
+                                <option value="">-----请选择类型-----</option>
+                                @foreach($classify as $v)
+                                    <option value="{{$v->id}}">{{$v->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>被维修人备注</label>
-                                <input type="text" class="form-control" disabled value="{{$process->remarks}}">
-                            </div>
-                        </li>
-                    </div>
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>选择维修人员</label>
-                                <select name="service_worker_id" class="form-control" id="service_worker">
-                                    <option value="">请选择分类信息</option>
-                                </select>
-                                <input type="hidden" name="id" value="{{$process->id}}">
-                            </div>
-                        </li>
-                    </div>
+                    <li class="dd-item">
+                        <div class="dd-handle ">
+                            <label>选择维修人员</label>
+                            <select name="service_worker_id" class="form-control" id="service_worker">
+                                <option value="">请选择分类信息</option>
+                            </select>
+                            <input type="hidden" name="id" value="{{$process->id}}">
+                        </div>
+                    </li>
                 </div>
             </div>
         </div>

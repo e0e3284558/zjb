@@ -16,8 +16,16 @@
                 <div class="form-group" >
                     <label class="col-sm-2 control-label">维修结果</label>
                     <div class="col-sm-8">
-                        <input type="radio" name="status" value="5">已修好
-                        <input type="radio" name="status" value="7">未修好
+                        <div class=" icheck pull-left" style="margin-right: 10px"><label>
+                                <input type="radio" value="5" name="status" checked="">
+                                <i></i> 已修好
+                            </label>
+                        </div>
+                        <div class=" icheck pull-left" style="margin-right: 10px"><label>
+                                <input type="radio" value="7" name="status" checked="">
+                                <i></i> 未修好
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,12 +78,12 @@
             autoclose:true
         });
         zjb.initAjax();
-        var assets_form = $( "#signupForm1" );
-        var errorInfo = $('.alert-danger', assets_form);
+        var process_form = $( "#signupForm1" );
+        var errorInfo = $('.alert-danger', process_form);
         $('#submitAssetsForm').click(function () {
-            assets_form.submit();
+            process_form.submit();
         });
-        assets_form.validate( {
+        process_form.validate( {
 //            rules: {
 //                category_id:"required",
 //                name:"required",
@@ -145,7 +153,7 @@
                 //表单验证之后ajax上传数据
                 $.ajax({
                     url:"{{url('repair/process')}}",
-                    data:assets_form.serialize(),
+                    data:process_form.serialize(),
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {

@@ -57,8 +57,6 @@ class RepairListController extends Controller
 
 
     public function showImg($id){
-//        dd($id);
-
         $list = Process::where("id",$id)->with("img")->first()->img;
         return response()->view("repair.repair_list.showImg",compact('list'));
     }

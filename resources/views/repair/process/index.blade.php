@@ -19,88 +19,266 @@
     </div>
 @endsection
 @section("content")
-    {{--资产入库--}}
-    <div class="wrapper wrapper-content ">
+    <div class="wrapper wrapper-content wrapper-content2 animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
+                        <h5>维修列表</h5>
                     </div>
                     <div class="ibox-content">
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab-1" data-toggle="tab">待服务</a></li>
+                                <li class=""><a href="#tab-2" data-toggle="tab">待填写维修结果</a></li>
+                                <li class=""><a href="#tab-3" data-toggle="tab">已结束工单</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-1">
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                <th>报修人</th>
+                                                <th>报修场地</th>
+                                                <th>报修项目</th>
+                                                <th>报修分类</th>
+                                                <th>报修照片</th>
+                                                <th>报修原因</th>
+                                                <th>工单详情</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($list1 as $v)
+                                                <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                    <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                    <td>{{@get_area($v->area_id)}}</td>
+                                                    @if($v->other==1)
+                                                        @if($v->otherAsset)
+                                                            <td>{{$v->otherAsset->name}}</td>
+                                                        @endif
+                                                    @else
+                                                        <td>{{$v->asset->name}}</td>
+                                                    @endif
 
-                        <div class="table-responsive">
-                            <table style="min-width: 1000px" class="table table-striped  table-bordered">
-                                <thead>
-                                <tr role="row">
-                                    <th>操作</th>
-                                    <th>公司</th>
-                                    <th>报修人</th>
-                                    <th>资产名称</th>
-                                    {{--<th>资产分类</th>--}}
-                                    {{--<th>维修工id</th>--}}
-                                    {{--<th>服务商id</th>--}}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($list as $value)
-                                    @if($value->status!='1')
-                                        <tr role="row">
-                                            @if($value->status=="2")
-                                                <td>
-                                                    <button class="btn btn-primary" onclick="edit('{{$value->id}}')">
-                                                        接单
-                                                    </button>&nbsp;<button class="btn btn-danger"
-                                                                           onclick="refuse('{{$value->id}}')">拒绝
-                                                    </button>
-                                                </td>
-                                            @elseif($value->status=="3")
-                                                <td>
-                                                    <button class="btn btn-primary" onclick="add('{{$value->id}}')"
-                                                            data-toggle="modal" data-target=".bs-example-modal-md">
-                                                        填写报修结果
-                                                    </button>
-                                                </td>
-                                            @elseif($value->status=='5')
-                                                <td><span>待评价</span></td>
-                                            @elseif($value->status=='6')
-                                                <td><span>已完成</span></td>
-                                            @elseif($value->status=='7')
-                                                <td><span>已完成</span></td>
-                                            @endif
-                                            <td>{{$value->org->name}}</td>
-                                            <td>{{$value->user->name}}</td>
-                                            <td title="{{$value->remarks}}">{{$value->remarks}}</td>
-                                            {{--@if(isset($value->category))--}}
-                                                {{--<td>{{$value->category->name}}</td>--}}
-                                            {{--@endif--}}
-{{--                                            <td>{{$value->serviceWorker->name}}</td>--}}
-{{--                                            <td>{{@$value->serviceProvider->name}}</td>--}}
-                                        </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
+                                                    @if($v->category)
+                                                        <td>{{$v->category->name}}</td>
+                                                    @else
+                                                        <td>通用报修</td>
+                                                    @endif
+
+                                                    <td>
+                                                        @if(!collect($v->img)->isEmpty())
+                                                            <span class="cursor_pointer"
+                                                                  onclick="showImg('{{url('repair/process/showImg')}}/{{$v->id}}')"
+                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                  title="详情">详情</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$v->remarks}}</td>
+
+                                                    <td>
+                                                        <span>点击查看详情</span>
+                                                    </td>
+
+                                                    <td>
+                                                        @if($v->status=="2")
+                                                            <button class="btn btn-primary" onclick="edit('{{$v->id}}')">
+                                                                接单
+                                                            </button>&nbsp;<button class="btn btn-danger"
+                                                                                   onclick="refuse('{{$v->id}}')">拒绝
+                                                            </button>
+                                                        @elseif($v->status=="3")
+                                                            <button class="btn btn-primary" onclick="add('{{$v->id}}')"
+                                                                    data-toggle="modal" data-target=".bs-example-modal-md">
+                                                                填写报修结果
+                                                            </button>
+                                                        @elseif($v->status=='5')
+                                                            <span>待评价</span>
+                                                        @elseif($v->status=='6')
+                                                            <span>已完成</span>
+                                                        @elseif($v->status=='7')
+                                                            <span>已完成</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            批量接单
+                                        </button>
+                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            批量拒单
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab-2">
+                                    <div class="panel-body">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                <th>报修人</th>
+                                                <th>报修场地</th>
+                                                <th>报修项目</th>
+                                                <th>报修分类</th>
+                                                <th>报修照片</th>
+                                                <th>报修原因</th>
+                                                <th>工单详情</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($list2 as $v)
+                                                <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                    <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                    <td>{{@get_area($v->area_id)}}</td>
+                                                    @if($v->other==1)
+                                                        @if($v->otherAsset)
+                                                            <td>{{$v->otherAsset->name}}</td>
+                                                        @endif
+                                                    @else
+                                                        <td>{{$v->asset->name}}</td>
+                                                    @endif
+
+                                                    @if($v->category)
+                                                        <td>{{$v->category->name}}</td>
+                                                    @else
+                                                        <td>通用报修</td>
+                                                    @endif
+
+                                                    <td>
+                                                        @if(!collect($v->img)->isEmpty())
+                                                            <span class="cursor_pointer"
+                                                                  onclick="showImg('{{url('repair/process/showImg')}}/{{$v->id}}')"
+                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                  title="详情">详情</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$v->remarks}}</td>
+
+                                                    <td>
+                                                        <span>点击查看详情</span>
+                                                    </td>
+
+                                                    <td>
+                                                        @if($v->status=="2")
+                                                            <button class="btn btn-primary" onclick="edit('{{$v->id}}')">
+                                                                接单
+                                                            </button>&nbsp;<button class="btn btn-danger"
+                                                                                   onclick="refuse('{{$v->id}}')">拒绝
+                                                            </button>
+                                                        @elseif($v->status=="3")
+                                                            <button class="btn btn-primary" onclick="add('{{$v->id}}')"
+                                                                    data-toggle="modal" data-target=".bs-example-modal-md">
+                                                                填写报修结果
+                                                            </button>
+                                                        @elseif($v->status=='5')
+                                                            <span>待评价</span>
+                                                        @elseif($v->status=='6')
+                                                            <span>已完成</span>
+                                                        @elseif($v->status=='7')
+                                                            <span>已完成</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            批量接单
+                                        </button>
+                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            批量拒单
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab-3">
+                                    <div class="tab-pane" id="tab-1">
+                                        <div class="panel-body">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>报修人</th>
+                                                    <th>报修场地</th>
+                                                    <th>报修项目</th>
+                                                    <th>报修分类</th>
+                                                    <th>报修照片</th>
+                                                    <th>报修原因</th>
+                                                    <th>当前维修人员</th>
+                                                    <th width="18%">工单详情</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($list3 as $v)
+                                                    <tr>
+                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
+                                                        @if($v->other==1)
+                                                            @if($v->otherAsset)
+                                                                <td>{{$v->otherAsset->name}}</td>
+                                                            @endif
+                                                        @else
+                                                            <td>{{$v->asset->name}}</td>
+                                                        @endif
+
+                                                        @if($v->category)
+                                                            <td>{{$v->category->name}}</td>
+                                                        @else
+                                                            <td>通用报修</td>
+                                                        @endif
+
+                                                        <td>
+                                                            @if(!collect($v->img)->isEmpty())
+                                                                <span class="cursor_pointer"
+                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
+                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      title="详情">详情</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{$v->remarks}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
+                                                        <td>查看详情</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 
     <script type="text/javascript">
 
         $("document").ready(function () {
-            $('.i-checks,#all').iCheck({
+            $('.i-checks,#all1,#all2,#all3').iCheck({
                 checkboxClass: 'icheckbox_minimal-blue'
             });
-            $('#all').on('ifChecked ifUnchecked', function (event) {
-                if (event.type == 'ifChecked') {
-                    $('.i-checks').iCheck('check');
-                } else {
-                    $('.i-checks').iCheck('uncheck');
-                }
-            });
+
+            function all(id) {
+                $(id).on('ifChecked ifUnchecked', function(event){
+                    if(event.type == 'ifChecked'){
+                        $(this).parents('thead').next('tbody').find('.i-checks').iCheck('check');
+                    }else{
+                        $(this).parents('thead').next('tbody').find('.i-checks').iCheck('uncheck');
+                    }
+                });
+            }
+            all("#all1");
+            all("#all2");
+            all("#all3");
         });
 
         function str(message) {
@@ -125,7 +303,7 @@
 
         function edit(id) {
             swal({
-                    title: "确认要接单吗？",
+                    title: "确认要接收此维修单吗？",
                     text: "",
                     type: "warning",
                     showCancelButton: true,
@@ -135,7 +313,6 @@
                     closeOnConfirm: false
                 },
                 function () {
-                    //发异步删除数据
                     $.ajax({
                         type: "get",
                         url: '{{url('repair/process')}}/' + id + '/edit',
@@ -155,7 +332,8 @@
                             }
                         }
                     });
-                });
+                }
+            );
         }
 
         function refuse(id) {
@@ -204,20 +382,12 @@
             })
         }
 
-        function show_img(object, url) {
-            $.ajax({
-                url: url,
-                success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
-        }
-
-        function shows(title, url) {
+        function showImg(url) {
             $.ajax({
                 "url": url,
+                "type":"get",
                 success: function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }

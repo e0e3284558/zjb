@@ -113,9 +113,11 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
 });
 Route::group(['prefix' => 'repair', 'namespace' => 'Repair','middleware' => 'auth:service_workers'], function () {
 
-
-    //报修流程
+    //维修人员的维修单管理
+    Route::get('process/showImg/{id}','ProcessController@showImg');
+    //接收维修单
     Route::post('process/create/{id}', 'ProcessController@create');
+    //填写维修结果
     Route::get('process/refuse/{id}', 'ProcessController@refuse');
     Route::resource('process', 'ProcessController');
 });

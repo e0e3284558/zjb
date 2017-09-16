@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 use Excel;
+use Overtrue\Pinyin\Pinyin;
 
 class AssetCategoryController extends Controller
 {
@@ -59,7 +60,14 @@ class AssetCategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+//        $pinyin = new Pinyin();
+        //获取公司名称
+//        $org_name = Org::find(Auth::user()->org_id)->name;
+//        $str = mb_substr($pinyin->abbr($org_name),0,3).mb_substr($pinyin->abbr($request->name),0,3);
+//        $ss = AssetCategory::where("org_id",Auth::user()->org_id)->orderBy();
+//        dd($ss);
         $arr = [
+//            'category_code' => $str,
             'category_code' => date("dHis").rand("1000","9999"),
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,

@@ -15,9 +15,13 @@ class ProcessController extends Controller
      */
     public function index()
     {
-//        dd(get_current_login_user_info("id",'service_workers'));
-        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",auth('service_workers')->user()->id)->get();
-        return view("repair.process.index",compact("list"));
+        //新工单
+        $list1 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",auth('service_workers')->user()->id)->where("status","2")->get();
+        //待填写维修结果
+        $list2 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",auth('service_workers')->user()->id)->where("status","3")->orWhere('status',"0")->get();
+        //工单已经结束
+        $list3 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",auth('service_workers')->user()->id)->where("status","6")->orWhere('status',"0")->get();
+        return view("repair.process.index",compact("list1","list2","list3"));
     }
 
     /**
@@ -35,6 +39,7 @@ class ProcessController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 填写维修结果
      */
     public function store(Request $request)
     {
@@ -60,6 +65,7 @@ class ProcessController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 接收维修单
      */
     public function edit($id)
     {
@@ -96,6 +102,7 @@ class ProcessController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     * 拒接接收维修单
      */
     public function refuse($id)
     {
@@ -115,7 +122,13 @@ class ProcessController extends Controller
         return response()->json($message);
     }
 
-    public function refuse_reason(){
-
+    /**
+     * @param $id
+     * @return \Illuminate\Http\Response
+     * 报修图片显示
+     */
+    public function showImg($id){
+        $list = Process::where("id",$id)->with("img")->first()->img;
+        return response()->view("repair.repair_list.showImg",compact('list'));
     }
 }

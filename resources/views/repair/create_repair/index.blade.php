@@ -122,7 +122,6 @@
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all2" ></th>
-                                                    <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
@@ -138,9 +137,6 @@
                                                     <tr>
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
-                                                        </td>
-                                                        <td>
-                                                            <span class="label label-warning" >维修中</span>
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
@@ -167,7 +163,7 @@
                                                             @endif
                                                         </td>
                                                         <td>{{$v->remarks}}</td>
-                                                        <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
 
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
@@ -205,7 +201,6 @@
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all3" ></th>
-                                                    <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修资产</th>
@@ -224,7 +219,6 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
-                                                        <td><span class="label label-success" >已完成</span></td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
@@ -274,7 +268,6 @@
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all4" ></th>
-                                                    <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
@@ -290,7 +283,6 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
-                                                        <td><span class="label label-warning" >待评价</span></td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
@@ -349,7 +341,20 @@
                                                 @foreach($data5 as $v)
                                                     <tr>
                                                         <td role="gridcell">
-                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                            @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                            @elseif($v->status=='2')
+                                                                <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                            @elseif($v->status=='3')
+                                                                <input type="checkbox" class="i-checks" disabled >
+                                                            @elseif($v->status=='5')
+                                                                <input type="checkbox" class="i-checks" disabled>
+                                                            @elseif($v->status=='6')
+                                                                <input type="checkbox" class="i-checks" disabled>
+                                                            @elseif($v->status=='0')
+                                                                <input type="checkbox" class="i-checks" disabled>
+                                                            @endif
+                                                            {{--<input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">--}}
                                                         </td>
                                                         <td>
                                                             @if($v->status=='1' || $v->status=='4' || $v->status=='7')
@@ -359,11 +364,11 @@
                                                             @elseif($v->status=='3')
                                                                 <span class="label label-warning" >维修中</span>
                                                             @elseif($v->status=='5')
-                                                                <span class="label label-warning" >待评价</span>
+                                                                <span class="label label-default" >待评价</span>
                                                             @elseif($v->status=='6')
                                                                 <span class="label label-success" >已完成</span>
                                                             @elseif($v->status=='0')
-                                                                <span class="label label-default" >工单已取消</span>
+                                                                <span class="label label-danger" >工单已取消</span>
                                                             @endif
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
@@ -423,6 +428,9 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                            <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                                批量分派
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -474,7 +482,9 @@
                 $(obj).prev('table').find("tbody input[type='checkbox']:checked").each(function() {
                     //判断
                     var id = $(this).val();
-                    arr.push(id);
+                    if(id!='on'){
+                        arr.push(id);
+                    }
                 });
                 $.ajax({
                     type: "get",

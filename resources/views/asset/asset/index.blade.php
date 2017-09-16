@@ -83,10 +83,8 @@
                                     <th>资产类别</th>
                                     <th>规格型号</th>
                                     <th>计量单位</th>
-                                    <th>金额</th>
+                                    <th>金额(元)</th>
                                     <th>所在场地</th>
-                                    {{--<th>所属公司</th>--}}
-                                    {{--<th>所属部门</th>--}}
                                     <th>购入时间</th>
 
                                 </tr>
@@ -109,8 +107,6 @@
                                         <td>{{$value->calculate}}</td>
                                         <td>{{$value->money}}</td>
                                         <td>{{$value->area_id?get_area($value->area_id):""}}</td>
-{{--                                        <td>{{$value->org_id?$value->org->name:""}}</td>--}}
-{{--                                        <td>{{$value->depatment_id?$value->department->name:""}}</td>--}}
                                         <td>{{$value->buy_time}}</td>
                                     </tr>
                                 @endforeach
