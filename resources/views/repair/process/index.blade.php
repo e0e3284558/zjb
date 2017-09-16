@@ -45,7 +45,7 @@
                                 @foreach($list as $value)
                                     @if($value->status!='1')
                                         <tr role="row">
-                                            @if($value->status=="20")
+                                            @if($value->status=="2")
                                                 <td>
                                                     <button class="btn btn-primary" onclick="edit('{{$value->id}}')">
                                                         接单

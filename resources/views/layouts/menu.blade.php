@@ -84,10 +84,10 @@
             <li class="{{ active_class(if_route('area.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('area.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 场地管理</a>
             </li>
-            <li class="{{ active_class(if_route('other_asset.index') && if_query('app_groups','asset')) }}"><a
-                        href="{{ route('other_asset.index',['app_groups'=>'asset']) }}"><i
-                            class="fa fa-angle-right"></i>
-                    维修项目</a></li>
+            {{--<li class="{{ active_class(if_route('other_asset.index') && if_query('app_groups','asset')) }}"><a--}}
+                        {{--href="{{ route('other_asset.index',['app_groups'=>'asset']) }}"><i--}}
+                            {{--class="fa fa-angle-right"></i>--}}
+                    {{--维修项目</a></li>--}}
             <li class="{{ active_class(if_route('asset.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('asset.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产管理</a>
             </li>

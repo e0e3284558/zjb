@@ -2,12 +2,13 @@
     <div class="ibox-title">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>
-        <h5>填写维修结果</h5>
+        <h5>填写批量维修结果</h5>
     </div>
     <div class="ibox-content">
         <div class="dd" id="nestable2">
-            <form class="form-horizontal" action='{{url("repair/create_repair/success_store")}}' method="post">
+            <form class="form-horizontal" action='{{url("repair/create_repair/batch_success_store")}}' method="post">
                 {{csrf_field()}}
+                <input type="hidden" value="{{$str}}" name="str">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
@@ -17,7 +18,6 @@
                                         <input type="radio" value="5" name="status" checked="">
                                         <i></i> 已修好
                                     </label>
-                                    <input type="hidden" value="{{$data->id}}" name="id">
                                 </div>
                                 <div class=" icheck pull-left"><label> <input type="radio" name="status" value="0"> <i></i>取消工单
                                     </label>

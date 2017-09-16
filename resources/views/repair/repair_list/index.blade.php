@@ -71,18 +71,18 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if($value->status=='1')
+                                            @if($value->status=='1' || $value->status=='7' || $value->status=='4')
                                                 <span class="label label-info">待分派</span>
                                             @elseif($value->status=='2')
-                                                <span class="label label-info">待服务</span>
+                                                <span class="label label-primary">待服务</span>
                                             @elseif($value->status=='3')
                                                 <span class="label label-info">维修中</span>
-                                            @elseif($value->status=='4')
-                                                <span class="label label-info">已拒绝</span>
                                             @elseif($value->status=='5')
                                                 <button class="btn btn-sm btn-success" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">待评价</button>
-                                            @else
-                                                <span class="label label-info">已完成</span>
+                                            @elseif($value->status=='6')
+                                                <span class="label label-default">已完成</span>
+                                            @elseif($value->status=='0')
+                                                <span class="label label-danger">工单关闭</span>
                                             @endif
 
                                         </td>

@@ -335,14 +335,32 @@ class CreateRepairController extends Controller
     }
 
 
-    //批量完成维修
+    /**
+     * @param $str
+     * @return \Illuminate\Http\Response
+     * 批量完成维修
+     */
     public function batchSuccess($str){
-        dd($str);
+        return response()->view('repair.create_repair.batch_success',compact('str'));
     }
 
-    //完成报修
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 完成报修
+     */
     public function batchSuccessStore(Request $request){
-
+        $arr = explode(',',$request->str);
+        foreach ($arr as $v){
+            $list = [
+                'status' => $request->status,
+                'result' => $request->result
+            ];
+            Process::where("id",$v)->update($list);
+        }
+        return response()->json([
+            'status' => 1, 'message' => '维修完成，等待评价'
+        ]);
     }
 
 

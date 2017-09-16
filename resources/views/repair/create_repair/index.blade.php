@@ -104,7 +104,7 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        <button type="button" onclick="edit()" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
                                             批量分派
                                         </button>
                                     </div>
@@ -180,9 +180,9 @@
                                             <button class="btn btn-warning btn-sm left"
                                                     data-toggle="modal"
                                                     data-target=".bs-example-modal-lg"
-                                                    onclick="edit()">重新分派
+                                                    onclick="edit(this)">重新分派
                                             </button>
-                                            <button type="button" onclick="batchSuccess()" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            <button type="button" onclick="batchSuccess(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">
                                                 批量完成
                                             </button>
                                         </div>
@@ -354,6 +354,8 @@
                                                                 <span class="label label-primary" >待评价</span>
                                                             @elseif($v->status=='6')
                                                                 <span class="label label-success" >已完成</span>
+                                                            @elseif($v->status=='0')
+                                                                <span class="label label-danger" >工单已取消</span>
                                                             @endif
                                                         </td>
                                                         <td>{{$v->user->name}}</td>
@@ -401,13 +403,12 @@
                                                                     分派维修
                                                                 </button>
                                                             @elseif($v->status=='2')
-                                                                <span class="label label-info" >待服务</span>
-                                                            @elseif($v->status=='3')
-                                                                <span class="label label-primary" >维修中</span>
-                                                            @elseif($v->status=='5')
-                                                                <span class="label label-primary" >待评价</span>
-                                                            @elseif($v->status=='6')
-                                                                <span class="label label-success" >已完成</span>
+                                                                <button class="btn btn-success btn-sm pull-left"
+                                                                        onclick="assign('{{$v->id}}')"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg">
+                                                                    重新分派
+                                                                </button>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -421,8 +422,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -461,16 +460,14 @@
         }
 
         //批量分派
-        function edit() {
-            if($("tbody input[type='checkbox']:checked").length >= 1){
-
+        function edit(obj) {
+            if($(obj).prev('table').find("tbody input[type='checkbox']:checked").length >= 1){
                 var arr = [];
-                $("tbody input[type='checkbox']:checked").each(function() {
+                $(obj).prev('table').find("tbody input[type='checkbox']:checked").each(function() {
                     //判断
                     var id = $(this).val();
                     arr.push(id);
                 });
-
                 $.ajax({
                     type: "get",
                     url: '{{url('repair/create_repair/edit')}}/'+arr,
@@ -538,15 +535,25 @@
             })
         }
 
-        function batchSuccess(cid) {
-            var url = '{{url('repair/create_repair/success')}}/' + cid;
-            $.ajax({
-                "url": url,
-                "type": 'get',
-                success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
+        function batchSuccess(obj) {
+            if($(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").length >= 1){
+                var arr = [];
+                $(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").each(function() {
+                    //判断
+                    var id = $(this).val();
+                    arr.push(id);
+                });
+                var url = '{{url('repair/create_repair/batch_success')}}/' + arr;
+                $.ajax({
+                    "url": url,
+                    "type": 'get',
+                    success: function (data) {
+                        $(".bs-example-modal-md .modal-content").html(data);
+                    }
+                })
+            }else{
+                $(".modal-content").html(str("请选择数据"));
+            }
         }
 
     </script>

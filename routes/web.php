@@ -133,10 +133,10 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::resource('area', 'AreaController');
 
     //其他报修项
-    Route::get('other_asset/downloadModel', 'OtherAssetController@downloadModel');
-    Route::get('other_asset/add_import', 'OtherAssetController@add_import');
-    Route::post('other_asset/import', 'OtherAssetController@import');
-    Route::resource('other_asset', 'OtherAssetController');
+//    Route::get('other_asset/downloadModel', 'OtherAssetController@downloadModel');
+//    Route::get('other_asset/add_import', 'OtherAssetController@add_import');
+//    Route::post('other_asset/import', 'OtherAssetController@import');
+//    Route::resource('other_asset', 'OtherAssetController');
 
     //资产管理
     Route::get('asset/show_img/{file_id}', 'AssetController@show_img');
