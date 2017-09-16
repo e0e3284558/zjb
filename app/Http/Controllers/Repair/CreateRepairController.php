@@ -29,26 +29,26 @@ class CreateRepairController extends Controller
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '1')->orWhere('status', '4')->orWhere('status','7')->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '2')
             ->orWhere('status', '20')
             ->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
         //获取已完成的报修
         $data3 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '6')
             ->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
         //待评价
         $data4 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '5')
             ->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
         //当前公司下的全部的报修
         $data5 = Process::where('org_id', Auth::user()->org_id)->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
 
         return view('repair.create_repair.index', compact('data1', 'data2', 'data3','data4','data5'));
     }
@@ -248,15 +248,16 @@ class CreateRepairController extends Controller
     }
 
     /**
-     * 选中维修工并更改维修状态
+     * 保存  选中维修工并更改维修状态
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function confirmWorker(CreateRepairRequest $request)
     {
-        $repair = Process::find($request['id']);
-        $repair->service_worker_id = $request['service_worker_id'];
-        $repair->service_provider_id = $request['service_provider_id'];
+        $repair = Process::find($request->id);
+        $repair->classify_id = $request->classify_id;
+        $repair->service_worker_id = $request->service_worker_id;
+        $repair->service_provider_id = $request->service_provider_id;
         $repair->status = 2;
         if ($repair->save()) {
             return response()->json([
