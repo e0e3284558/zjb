@@ -1,95 +1,70 @@
 <div class="ibox">
     <div class="ibox-title">
-        <h5>添加维修人员</h5>
+        <h5>添加服务商</h5>
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            输入维修人员的基本信息，并且设置维修人员登录该系统的帐号及初始密码。
+            输入服务商的基本信息。
         </p>
 
         <div class="dd" id="nestable2">
-            <form class="form-horizontal" action="{{url('repair/service_worker')}}" method="post">
+            <form class="form-horizontal" action="{{url('repair/service_provider')}}" method="post">
                 {{csrf_field()}}
-                <li class="dd-item">
-                    <div class="dd-handle ">
-                        <label>帐号<i>*</i></label>
-                        <input type="text" id="username" class="form-control"
-                               value="{{old('username')}}"
-                               name="username" placeholder="维修人员帐号">
-                    </div>
-                </li>
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>密码<i>*</i></label>
-                        <input type="password" class="form-control"
-                               value="{{old('password')}}"
-                               name="password" placeholder="维修人员密码">
-                    </div>
-                </li>
-
-                <li class="dd-item">
-                    <div class="dd-handle ">
-                        <label>维修人员姓名<i>*</i></label>
+                        <label>服务商名称<i>*</i></label>
                         <input type="text" class="form-control"
-                               value="{{old('name')}}"
-                               name="name" placeholder="维修人员姓名">
+                               value=""
+                               name="name" placeholder="服务商名称">
+                    </div>
+                </li>
+                <li class="dd-item">
+                    <div class="dd-handle ">
+                        <label>负责人姓名<i>*</i></label>
+                        <input type="text" class="form-control"
+                               value=""
+                               name="user" placeholder="负责人姓名">
                     </div>
                 </li>
 
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修人员电话<i>*</i></label>
-                        <input type="text" class="form-control"
-                               value="{{old('tel')}}" name="tel"
-                               placeholder="维修人员电话号码">
+                        <label>负责人电话<i>*</i></label>
+                        <input type="number" class="form-control"
+                               value="" name="tel"
+                               placeholder="负责人电话">
                     </div>
                 </li>
+
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <img id="thumb_img" src="{{url('img/noavatar.png')}}" alt="" class="img-lg">
-                        <input type="hidden" id="upload_id" name="upload_id" value="">
+                        <input type="hidden" id="upload_id" name="logo_id" value="">
+                        <input type="hidden" name="upload_id" value="">
                         <div id="single-upload" class="btn-upload m-t-xs">
                             <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
                             <div id="single-upload-file-list"></div>
                         </div>
                     </div>
                 </li>
+
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修人员维修种类</label>
-                        @foreach($data as $k=>$v)
-                            <label class="checkbox-inline icheck">
-                                <input type="checkbox" name="classify[]"
-                                       <?php if (old("classify[$k]")) {
-                                           echo 'checked';
-                                       }
-                                       ?> value="{{$v->id}}"> {{$v->name}}
-                            </label>
-                        @endforeach
+                        <label>服务商简介</label>
+                        <textarea class="form-control" name="comment" rows="3"></textarea>
                     </div>
                 </li>
-                <li class="dd-item">
-                    <div class="dd-handle ">
-                        <label>所属服务商</label>
-                        <div>
-                            <select name="serviceProvider" class="form-control select2 ">
-                                <option value="">请选择服务商</option>
-                                @foreach($serviceProvider as $v)
-                                    <option value="{{$v->id}}">{{$v->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                <li>
+                    <button type="submit" class="btn btn-success">添加</button>
                 </li>
-                <input type="hidden" name="org_id" value="{{Auth::user()->or}}">
-                <button type="submit" class="btn btn-primary">添加</button>
             </form>
         </div>
     </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
+
         zjb.singleImageUpload({
             uploader: 'singleUpload',
             picker: 'single-upload',
@@ -111,29 +86,30 @@
         });
 
 
-        zjb.initAjax();
+        $('.i-checkbox').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue'
+        });
         var l = $("button[type='submit']").ladda();
         var forms = $(".form-horizontal");
         /*字段验证*/
         forms.validate(
             {
                 rules: {
-                    username: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 20
-                    },
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 20
-                    },
                     name: {
-                        required: true
+                        required: true,
+                        minlength: 2,
+                        maxlength: 40
+                    },
+                    user: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 20
                     },
                     tel: {
-                        required: true,
-                        maxlength:20
+                        required: true
+                    },
+                    comment: {
+                        maxlength:2000
                     }
                 },
                 /*ajax提交*/
@@ -159,13 +135,12 @@
                             }
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            if(xhr.status == 422 && textStatus =='error'){
-                                _$error = xhr.responseJSON.errors;
-                                $.each(_$error,function(i,v){
-                                    toastr.error(v[0],'警告');
+                            if (xhr.status == 422 && textStatus == 'error') {
+                                $.each(xhr.responseJSON, function (i, v) {
+                                    toastr.error(v[0], '警告');
                                 });
-                            }else{
-                                toastr.error('请求出错，稍后重试','警告');
+                            } else {
+                                toastr.error('请求出错，稍后重试', '警告');
                             }
                         }
                     });

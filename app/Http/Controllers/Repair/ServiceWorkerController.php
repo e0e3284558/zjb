@@ -25,12 +25,12 @@ class ServiceWorkerController extends Controller
         //获取当前公司下的所有服务商
         $service_provider_all_id = DB::table('org_service_provider')->where('org_id', Auth::user()->org_id)->get();
         foreach ($service_provider_all_id as $v) {
-             $service_provider=ServiceProvider::find($v->service_provider_id);
-             $service_worker=$service_provider->service_worker()->get();
+            $service_provider = ServiceProvider::findOrFail($v->service_provider_id);
+            $service_worker = $service_provider->service_worker()->get();
             $serviceWorker->push($service_worker);
         }
         $data = Classify::where('org_id', Auth::user()->org_id)
-            ->where('enabled',1)
+            ->where('enabled', 1)
             ->OrderBy('sorting', 'desc')
             ->get();
         return view('repair.service_worker.index', compact('data', 'serviceWorker'));
@@ -69,7 +69,7 @@ class ServiceWorkerController extends Controller
      */
     public function store(ServiceWorkerRequest $request)
     {
-        dd($request->all());
+
         $serviceWorker = new ServiceWorker;
         $serviceWorker->username = $request->username;
         $serviceWorker->password = bcrypt($request->password);
@@ -116,7 +116,7 @@ class ServiceWorkerController extends Controller
      */
     public function edit($id)
     {
-        $ids=[];
+        $ids = [];
         // 读取该维修工信息
         $data = ServiceWorker::find($id);
         // 根据维修工id获取所在服务商信息

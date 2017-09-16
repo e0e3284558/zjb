@@ -17,7 +17,7 @@
 
                     <address class="m-t-md">
                         <strong><i class="fa fa-phone"></i> {{$v-> tel}}</strong><br>
-                        <p><i class="fa fa-map-marker"></i> 安徽省芜湖市弋江区</p>
+                        <p><i class="fa fa-map-marker"></i>{{$v->service_provider[0]->name}}</p>
                     </address>
 
                 </a>

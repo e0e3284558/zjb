@@ -46,6 +46,7 @@
                                             <thead>
                                             <tr>
                                                 <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                <th>状态</th>
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
@@ -61,8 +62,13 @@
                                                     <td role="gridcell">
                                                         <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                     </td>
-                                                    <td>{{$v->user->name}}</td>
-                                                    <td>{{$v->area->name}}</td>
+                                                    <td>
+                                                        @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                            <span class="label label-info" >待分派</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                    <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->other==1)
                                                         @if($v->otherAsset)
                                                             <td>{{$v->otherAsset->name}}</td>
@@ -116,6 +122,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all2" ></th>
+                                                    <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
@@ -132,8 +139,13 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
-                                                        <td>{{$v->user->name}}</td>
-                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        <td>
+                                                            @if($v->status=='3')
+                                                                <span class="label label-warning" >维修中</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -157,7 +169,7 @@
                                                             @endif
                                                         </td>
                                                         <td>{{$v->remarks}}</td>
-                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
 
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
@@ -213,8 +225,8 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
-                                                        <td>{{$v->user->name}}</td>
-                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -238,13 +250,8 @@
                                                             @endif
                                                         </td>
                                                         <td>{{$v->remarks}}</td>
-                                                        @if($v->serviceWorker)
-                                                            <td>{{$v->serviceWorker->name}}</td>
-                                                        @endif
-                                                        @if($v->serviceProvider)
-                                                            <td>{{$v->serviceProvider->name}}</td>
-                                                        @endif
-
+                                                        <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
+                                                        <td>{{$v->serviceProvider?$v->serviceProvider->name:""}}</td>
                                                         <td>
                                                             @for($i=0;$i<$v->score;$i++)
                                                                 <i class="fa fa-star" style="color:#e8bd0d;"></i>
@@ -282,8 +289,8 @@
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
                                                         </td>
-                                                        <td>{{$v->user->name}}</td>
-                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -307,7 +314,6 @@
                                                             @endif
                                                         </td>
                                                         <td>{{$v->remarks}}</td>
-
                                                         <td>
                                                             @if($v->status=='5')
                                                                 <span class="label label-primary" >待评价</span>
@@ -345,21 +351,21 @@
                                                         </td>
                                                         <td>
                                                             @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                                <span class="label label-default" >待分派</span>
+                                                                <span class="label label-info" >待分派</span>
                                                             @elseif($v->status=='2')
-                                                                <span class="label label-info" >待服务</span>
+                                                                <span class="label label-primary" >待服务</span>
                                                             @elseif($v->status=='3')
-                                                                <span class="label label-primary" >维修中</span>
+                                                                <span class="label label-warning" >维修中</span>
                                                             @elseif($v->status=='5')
-                                                                <span class="label label-primary" >待评价</span>
+                                                                <span class="label label-warning" >待评价</span>
                                                             @elseif($v->status=='6')
                                                                 <span class="label label-success" >已完成</span>
                                                             @elseif($v->status=='0')
-                                                                <span class="label label-danger" >工单已取消</span>
+                                                                <span class="label label-default" >工单已取消</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{$v->user->name}}</td>
-                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>

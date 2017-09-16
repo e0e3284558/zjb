@@ -115,7 +115,9 @@ class AssetController extends Controller
 
         $arr['asset_uid'] = Uuid::generate()->string;
         QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
+
         $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
+
 
         $arr['created_at'] = date("Y-m-d H:i:s");
         $arr['org_id'] = Auth::user()->org_id;

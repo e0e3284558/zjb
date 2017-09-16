@@ -1,4 +1,33 @@
-<div class="ibox">
+@extends('layouts.app')
+
+@section('breadcrumb')
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <!-- <h2></h2> -->
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ route('home') }}">控制面板</a>
+                </li>
+
+                <li>
+                    <a href="javascript:;">报修管理</a>
+                </li>
+                <li>
+                    <a href="{{ url('repair/service_provider') }}">服务商管理</a>
+                </li>
+
+                <li class="active">
+                    <strong>服务商添加</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+    </div>
+@endsection
+@section('content')
+    <div class="wrapper wrapper-content wrapper-content2  ">
+      <div class="ibox">
     <div class="ibox-title">
         <h5>添加服务商</h5>
     </div>
@@ -57,6 +86,7 @@
                 </li>
                 <li>
                     <button type="submit" class="btn btn-success">添加</button>
+                    <button type="button" onclick="javascript:history.back(-1)">返回</button>
                 </li>
             </form>
         </div>
@@ -149,6 +179,9 @@
             }
         );
     });
+</script>  
+        
+    </div>
+@endsection
 
 
-</script>

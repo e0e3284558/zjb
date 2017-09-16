@@ -25,51 +25,57 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h3 class="h3">
-                        <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
-                        <button type="button" onclick="edit()" href="javascript:;" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">
-                            <i class="fa fa-pencil"></i> 修改
-                        </button>
-                        <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
-                            <i class="fa  fa-trash-o"></i> 删除
-                        </button>
-                        <a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">
-                            <i class="fa fa-copy"></i> 复制
-                        </a>
-                    </h3>
+                    <h5>所有资产</h5>
                 </div>
                 <div class="ibox-content">
-                    <!-- 搜索 -->
-                    <form action="{{url('asset')}}" method="get" id="forms" >
-                        <input type="hidden" name="app_groups" value="asset">
-                        <input type="hidden" name="_token" value="{{csrf_token()}}">
-                        <div class="row m-b-xs m-t-xs">
-                            <div class="col-md-6" ></div>
-                            <div class="col-md-3" >
-                                <div class="form-group" >
-                                    <select name="category_id" class="form-control select2">
-                                        <option value="">请选择资产类别查询</option>
-                                        @foreach($category_list as $k=>$v)
-                                            <option value="{{$v->id}}">{{$v->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                    <div class="table-tools">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
+                                <button type="button" onclick="edit()" href="javascript:;" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                    <i class="fa fa-pencil"></i> 修改
+                                </button>
+                                <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
+                                    <i class="fa  fa-trash-o"></i> 删除
+                                </button>
+                                <a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                    <i class="fa fa-copy"></i> 复制
+                                </a>
                             </div>
-                            <div class="col-md-3">
-                                <div class="input-group">
-                                    <input type="text" name="name" placeholder="按照资产名称查找" class="input-md form-control">
-                                    <span class="input-group-btn">
-                                        <button  type="submit" class="btn btn-md btn-success"> 查找</button>
-                                    </span>
-                                </div>
+                            <div class="col-md-6">
+                                <!-- 搜索 -->
+                                <form action="{{url('asset')}}" method="get" id="forms" >
+                                    <input type="hidden" name="app_groups" value="asset">
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <div class="row m-b-xs m-t-xs">
+                                        <div class="col-md-6" >
+                                            <div class="form-group" >
+                                                <select name="category_id" class="form-control select2">
+                                                    <option value="">请选择资产类别查询</option>
+                                                    @foreach($category_list as $k=>$v)
+                                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input type="text" name="name" placeholder="按照资产名称查找" class="input-md form-control">
+                                                <span class="input-group-btn">
+                                                    <button  type="submit" class="btn btn-md btn-success"> 查找</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </form>
-
+                    </div>
                     <div class="table-responsive">
-                        <table style="min-width: 2200px" class="table table-striped  table-bordered" >
+                        <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
                             <thead>
                                 <tr role="row">
+
                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
                                     <th>资产编号</th>
                                     <th>图片</th>
@@ -84,6 +90,7 @@
                                     <th>所属公司</th>
                                     <th>所属部门</th>
                                     <th>购入时间</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,7 +102,7 @@
                                         <td>{{$value->code}}</td>
                                         <td>
                                             @if($value->img_path)
-                                                <img class="cursor_pointer" onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}" style="max-width: 30px;max-height: 30px;" data-toggle="modal" data-target=".bs-example-modal-md">
+                                                <img class="cursor_pointer img-md" onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}"data-toggle="modal" data-target=".bs-example-modal-md">
                                             @endif
                                         </td>
                                         <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
@@ -133,6 +140,11 @@
                     $('.i-checks').iCheck('uncheck');
                 }
             });
+            // layui.use('table', function(){
+            //   var table = layui.table;
+            //   table.init('asset-table', { //转化静态表格
+            //   }); 
+            // });
         });
         function str(message) {
             var messages = "<div class='modal-header'>" +

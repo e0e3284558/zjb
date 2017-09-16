@@ -1,7 +1,7 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
     </button>
-    <h5>分派维修工</h5>
+    <h5>分派维修人员</h5>
 </div>
 <form class="form-horizontal" id="forms" action="" method="post">
     <div class="modal-body">
@@ -24,7 +24,7 @@
                 <div class="col-lg-12">
                     <li class="dd-item">
                         <div class="dd-handle ">
-                            <label>选择维修工类型</label>
+                            <label>选择维修人员类型</label>
                             <select name="classify_id" id="" class="form-control"
                                     onchange="change_classify(this.value)">
                                 <option value="">-----请选择类型-----</option>
@@ -38,7 +38,7 @@
                 <div class="col-lg-12">
                         <li class="dd-item">
                             <div class="dd-handle ">
-                                <label>选择维修工</label>
+                                <label>选择维修人员</label>
                                 <select name="service_worker_id" class="form-control" id="service_worker">
                                     <option value="">请选择分类信息</option>
                                 </select>

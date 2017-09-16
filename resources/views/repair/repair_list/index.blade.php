@@ -47,7 +47,7 @@
                                             <td><span class="cursor_pointer"
                                                       onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')"
                                                       data-toggle="modal" data-target=".bs-example-modal-lg"
-                                                      title="详情">{{$value->asset->name}}</span></td>
+                                                      title="详情">{{$value->asset_id?$value->asset->name:""}}</span></td>
                                         @else
                                             <td><span class="cursor_pointer"
                                                       onclick="shows('{{$value->name}}','{{url('repair/repair_list')}}/{{$value->id}}')"
@@ -55,9 +55,9 @@
                                                       title="详情">{{$value->otherAsset->name}}</span></td>
                                         @endif
 
-                                        <td>{{$value->area->name}}</td>
+                                        <td>{{@get_area($v->area_id)}}</td>
                                         @if($value->classify)
-                                            <td>{{$value->classify->name}}</td>
+                                            <td>{{$value->classify?$value->classify->name:""}}</td>
                                         @else
                                             <td>无分类</td>
                                         @endif

@@ -128,7 +128,7 @@
                     </form>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li>
+                    <!-- <li>
                         <span class="m-r-sm text-muted welcome-message"></span>
                     </li>
                     <li class="dropdown">
@@ -227,7 +227,7 @@
                                 </div>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
 
                     <li>
@@ -235,11 +235,11 @@
                             <i class="fa fa-power-off"></i> 退出
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="right-sidebar-toggle">
                             <i class="fa fa-tasks"></i>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </nav>
         </div>

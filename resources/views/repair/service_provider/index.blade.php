@@ -23,10 +23,31 @@
     </div>
 @endsection
 @section('content')
-    <div class="wrapper wrapper-content wrapper-content2 animated fadeInRight">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="ibox ">
+    <div class="wrapper wrapper-content wrapper-content2  ">
+        
+        <div class="row m-b-sm">
+            <div class="col-md-7">
+                <div class="tools">
+                    <a class="btn blue"
+                            href="{{url("repair/service_provider/create")}}">添加服务商
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="input-group">
+                  <input type="text" id="search-text" placeholder="用户名、姓名、邮箱、电话" class="form-control"> 
+                  <span class="input-group-btn"> 
+                  <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button> 
+                  <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
+                  <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
+                  </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-lg-12 m-b-sm">
+               <div class="ibox ">
                     <div class="ibox-title">
                         <h5>服务商列表</h5>
                     </div>
@@ -54,11 +75,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                
+            </div> -->
+ 
+            <div class="row" id="create">
 
-            <div class="col-lg-9" id="create">
-
-                <div class="row gray-bg">
+                <!-- <div class="row gray-bg">
 
                     @foreach($data as $k=>$v)
                         <div class="ibox">
@@ -75,7 +97,7 @@
                             <div class="ibox-content">
                                 <div class="team-members">
                                     <div class="form-group">
-                                        维修工成员
+                                        维修成员
                                     </div>
                                     @if(isset($service_worker[$k]))
                                         @foreach($service_worker[$k] as $img)
@@ -115,7 +137,32 @@
                         </div>
 
                     @endforeach
-                </div>
+                </div> -->
+                 @foreach($serviceProvider as $k=>$v)
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <span class="label label-primary pull-right">编辑</span>
+                                <h5>{{$v->name}}</h5>
+                            </div>
+                            <div class="ibox-content h-150">
+                                <!-- {{dump($v)}} -->
+                                <div class="team-members">
+                                    @if(isset($v->service_worker))
+                                        @foreach($v->service_worker as $img)
+                                            @if($img->upload_id)
+                                                {!! avatar_circle($img->upload_id,'') !!}
+                                            @else
+                                                {!! avatar_circle(null,$img->name )!!}
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <p>{{$v['comment']}}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -133,7 +180,7 @@
         }
 
 
-        /*更新所选分类的维修工*/
+        /*更新所选分类的维修人员*/
         function serviceProvider(id) {
             url = '{{url('repair/service_provider')}}/' + id;
             $.ajax({
