@@ -80,12 +80,18 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     //服务商管理
     Route::resource('service_provider', 'ServiceProviderController');
     //完成报修
-    Route::post('create_repair/success/{id}', 'CreateRepairController@success');
+    Route::get('create_repair/success/{id}', 'CreateRepairController@success');
+    Route::post('create_repair/success_store', 'CreateRepairController@successStore');
+    //批量完成
+    Route::get('create_repair/batch_success/{str}', 'CreateRepairController@batchSuccess');
+    Route::post('create_repair/batch_success_store', 'CreateRepairController@batchSuccessStore');
     //修改状态为不可再修
     Route::post('create_repair/del/{id}', 'CreateRepairController@del');
+    //批量分派
+    Route::get('create_repair/edit/{arr}', 'CreateRepairController@edit');
+    Route::post('create_repair/update', 'CreateRepairController@update');
     //创建报修
     Route::resource('create_repair', 'CreateRepairController');
-
     //选择分类
     Route::get('create_repair/select_asset/{id}', 'CreateRepairController@selectAsset');
     //分派维修工
@@ -93,8 +99,11 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     //分派维修工
     Route::get('create_repair/change_status/{id}', 'CreateRepairController@changeStatus');
 
+    Route::get('create_repair/reason/{id}', 'CreateRepairController@reason');
+
     //根据选择条件选取维修工
     Route::post('create_repair/select_worker', 'CreateRepairController@selectWorker');
+
     //选中维修工进行派工
     Route::post('create_repair/confirm_worker', 'CreateRepairController@confirmWorker');
 
@@ -102,6 +111,7 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
 Route::group(['prefix' => 'repair', 'namespace' => 'Repair'], function () {
 
     //我的报修列表
+    Route::get('repair_list/showImg/{id}','RepairListController@showImg');
     Route::resource('repair_list','RepairListController');
     //报修流程
     Route::post('process/create/{id}', 'ProcessController@create');
@@ -138,6 +148,9 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::get('asset/add_copy/{id}', 'AssetController@add_copy');
     Route::post('asset/copy', 'AssetController@copy');
     Route::resource('asset', 'AssetController');
+
+    //供应商管理
+    Route::resource("supplier",'SupplierController');
 
     //附件信息
     Route::post("upload/uploadFile", "UploadController@uploadFile");

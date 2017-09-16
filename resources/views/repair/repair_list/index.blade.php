@@ -10,7 +10,7 @@
                     <a href="javascript:;">报修管理</a>
                 </li>
                 <li class="active">
-                    <strong>我的维修单</strong>
+                    <strong>我的报修单</strong>
                 </li>
             </ol>
         </div>
@@ -25,17 +25,18 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
+                        <h5>我的报修单</h5>
                     </div>
                     <div class="ibox-content">
-
                         <div class="table-responsive">
                             <table style="min-width: 1000px" class="table table-striped  table-bordered">
                                 <thead>
                                 <tr role="row">
-                                    <th>报修项名称</th>
-                                    <th>维修服务商</th>
-                                    <th>已派出维修工</th>
-                                    <th>所属公司</th>
+                                    <th>报修项</th>
+                                    <th>场地位置</th>
+                                    <th>报修类别</th>
+                                    <th>问题描述</th>
+                                    <th>问题图片</th>
                                     <th>状态</th>
                                 </tr>
                                 </thead>
@@ -53,41 +54,43 @@
                                                       data-toggle="modal" data-target=".bs-example-modal-lg"
                                                       title="详情">{{$value->otherAsset->name}}</span></td>
                                         @endif
-                                        @if($value->serviceProvider)
-                                            <td>{{$value->serviceProvider->name}}</td>
-                                        @else
-                                            <td>等待分派维修工</td>
-                                        @endif
-                                        @if($value->serviceWorker)
-                                            <td>{{$value->serviceWorker->name}}</td>
-                                        @else
-                                            <td>等待分派服务商</td>
-                                        @endif
-                                        <td>{{$value->org->name}}</td>
-                                        <td>
-                                            @if($value->status=='1'||$value->status=='2'||$value->status=='3')
-                                                <span class="label label-info">待分派</span>
-                                            @elseif($value->status=='4')
-                                                <span class="label label-success">已派工</span>
-                                            @elseif($value->status=='10' && $value->score)
-                                                <span class="label label-default" >评价完毕</span>
 
-                                            @elseif($value->status=='10' || !$value->score)
-                                                <button class="btn btn-primary btn-sm" onclick="edit('{{$value->id}}')"
-                                                        data-toggle="modal" data-target=".bs-example-modal-md">点击评价
-                                                </button>
-                                            @elseif($value->status=='0')
-                                                <span class="label label-danger">不可再修</span>
-                                            @elseif($value->status=='20')
-                                                <span class="label label-success">已派工</span>
+                                        <td>{{$value->area->name}}</td>
+                                        @if($value->classify)
+                                            <td>{{$value->classify->name}}</td>
+                                        @else
+                                            <td>无分类</td>
+                                        @endif
+                                        <td>{{$value->remarks}}</td>
+                                        <td>
+                                            @if(!collect($value->img)->isEmpty())
+                                                <span class="cursor_pointer"
+                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$value->id}}')"
+                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                      title="详情">详情</span>
                                             @endif
+                                        </td>
+                                        <td>
+                                            @if($value->status=='1')
+                                                <span class="label label-info">待分派</span>
+                                            @elseif($value->status=='2')
+                                                <span class="label label-info">待服务</span>
+                                            @elseif($value->status=='3')
+                                                <span class="label label-info">维修中</span>
+                                            @elseif($value->status=='4')
+                                                <span class="label label-info">已拒绝</span>
+                                            @elseif($value->status=='5')
+                                                <button class="btn btn-sm btn-success" onclick="edit('{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-md">待评价</button>
+                                            @else
+                                                <span class="label label-info">已完成</span>
+                                            @endif
+
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -114,6 +117,15 @@
                 "url": url,
                 success: function (data) {
                     $(".bs-example-modal-lg .modal-content").html(data);
+                }
+            })
+        }
+
+        function showImg(url) {
+            $.ajax({
+                "url": url,
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }

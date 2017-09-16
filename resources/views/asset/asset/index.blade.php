@@ -77,16 +77,16 @@
                                 <tr role="row">
 
                                     <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
-                                    <th>资产条码</th>
+                                    <th>资产编号</th>
                                     <th>图片</th>
                                     <th>资产名称</th>
                                     <th>资产类别</th>
                                     <th>规格型号</th>
                                     <th>计量单位</th>
                                     <th>金额</th>
-                                    <th>使用部门</th>
+                                    {{--<th>使用部门</th>--}}
                                     <th>区域</th>
-                                    <th>管理员</th>
+                                    {{--<th>管理员</th>--}}
                                     <th>所属公司</th>
                                     <th>所属部门</th>
                                     <th>购入时间</th>
@@ -110,10 +110,7 @@
                                         <td>{{$value->spec}}</td>
                                         <td>{{$value->calculate}}</td>
                                         <td>{{$value->money}}</td>
-
-                                        <td>{{$value->useDepartment_id?$value->useDepartment->name:""}}</td>
                                         <td>{{$value->area_id?$value->area->name:""}}</td>
-                                        <td>{{$value->admin_id?$value->admin->name:""}}</td>
                                         <td>{{$value->org_id?$value->org->name:""}}</td>
                                         <td>{{$value->depatment_id?$value->department->name:""}}</td>
                                         <td>{{$value->buy_time}}</td>

@@ -53,16 +53,6 @@ class ProcessController extends Controller
         return response()->json($message);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -72,7 +62,7 @@ class ProcessController extends Controller
      */
     public function edit($id)
     {
-        $info = Process::where("id",$id)->update(['status'=>'4']);
+        $info = Process::where("id",$id)->update(['status'=>'3']);
         $message = [];
         if($info){
             $message = [
@@ -108,7 +98,7 @@ class ProcessController extends Controller
      */
     public function refuse($id)
     {
-        $info = Process::where('id',$id)->update(['status'=>'1']);
+        $info = Process::where('id',$id)->update(['status'=>'4']);
         $message = [];
         if($info){
             $message = [
@@ -122,5 +112,9 @@ class ProcessController extends Controller
             ];
         }
         return response()->json($message);
+    }
+
+    public function refuse_reason(){
+
     }
 }

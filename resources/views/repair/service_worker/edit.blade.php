@@ -44,7 +44,6 @@
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工照片</label>
                         <img id="thumb_img" src="{{ get_img_path($data->upload_id) }}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="upload_id" value="">
                         <div id="single-upload" class="btn-upload m-t-xs">
@@ -57,11 +56,14 @@
                     <div class="dd-handle ">
                         <label>维修工维修种类</label>
                         @foreach($classifies as $k=>$v)
-                            <label class="checkbox-inline i-checkbox">
-                                <input type="checkbox" name="classify[]"
-                                       @if(in_array($v->id ,$ids)) checked @endif
-                                       value="{{$v->id}}"/> {{$v->name}}
-                            </label>
+                            @if(!$v->deleted_at)
+                                <label class="checkbox-inline i-checkbox">
+                                    <input type="checkbox" name="classify[]"
+                                           @if(@in_array($v->id ,$ids)) checked @endif
+                                           @if(!$v->enabled)  disabled @endif
+                                           value="{{$v->id}}"/> {{$v->name}}
+                                </label>
+                            @endif
                         @endforeach
                     </div>
                 </li>
@@ -117,7 +119,6 @@
         });
 
 
-
         $('.i-checkbox').iCheck({
             checkboxClass: 'icheckbox_minimal-blue'
         });
@@ -142,7 +143,7 @@
                     },
                     tel: {
                         required: true,
-                        phoneUS: true
+                        maxlength: 20
                     }
                 },
                 /*ajax提交*/

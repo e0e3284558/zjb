@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Http\Requests\CreateRepairRequest;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
@@ -27,7 +28,7 @@ class CreateRepairController extends Controller
     {
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status', '1')->latest()
+            ->where('status', '1')->orWhere('status', '4')->orWhere('status','7')->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
@@ -37,11 +38,19 @@ class CreateRepairController extends Controller
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
         //获取已完成的报修
         $data3 = Process::where('org_id', Auth::user()->org_id)
-            ->where('status', '10')
+            ->where('status', '6')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+        //待评价
+        $data4 = Process::where('org_id', Auth::user()->org_id)
+            ->where('status', '5')
+            ->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
+        //当前公司下的全部的报修
+        $data5 = Process::where('org_id', Auth::user()->org_id)->latest()
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->get();
 
-        return view('repair.create_repair.index', compact('data1', 'data2', 'data3'));
+        return view('repair.create_repair.index', compact('data1', 'data2', 'data3','data4','data5'));
     }
 
     /**
@@ -51,9 +60,9 @@ class CreateRepairController extends Controller
      */
     public function create()
     {
-
         $area = Area::where('org_id', Auth::user()->org_id)->where('pid', 0)->get();
-        $classify = Classify::where('org_id', Auth::user()->org_id)->get();
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+                    ->where('enabled',1)->get();
         $other = OtherAsset::where('org_id', Auth::user()->org_id)->get();
         return view('repair.create_repair.add', compact('area', 'classify', 'other'));
     }
@@ -86,7 +95,7 @@ class CreateRepairController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRepairRequest $request)
     {
         //判断场地信息是否符合规范，并处理场地信息
         if ($request->area_id !== null) {
@@ -98,7 +107,7 @@ class CreateRepairController extends Controller
         }
         $category_id = null;
         if ($request->other == 0) {
-            $category_id = Asset::find($area_id)->category_id;
+            $category_id = Asset::find($request->asset_id)->category_id;
         }
         $res = [
             'asset_classify_id' => $category_id,
@@ -135,6 +144,44 @@ class CreateRepairController extends Controller
         }
     }
 
+    public function edit($str){
+        //获取当前登录公司下的所有服务商
+        $serviceProvider = ServiceProvider::with('org')->get()->toArray();
+        foreach ($serviceProvider as $a) {
+            if (($a['org'])) {
+                if ($a['org'][0]['id'] == Auth::user()->org_id) {
+                    $data[] = $a;
+                }
+            }
+        }
+        $serviceProvider = $data;
+        //获取当前登录公司下的所有分类
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
+        //循环输出已获取分类的所有维修工
+        foreach ($classify as $v) {
+            $serviceWorker[] = $v->serviceWorker()->get();
+        }
+        return response()->view("repair.create_repair.batch_assign",compact('classify', 'serviceWorker', 'serviceProvider','str'));
+    }
+
+    public function update(Request $request){
+        $arr = explode(',',$request->str);
+        foreach ($arr as $v){
+            $list = [
+                'service_worker_id' => $request->service_worker_id,
+                'service_provider_id' => $request->service_provider_id,
+                'status' => 2
+            ];
+            $info = Process::where("id",$v)->update($list);
+        }
+        return response()->json([
+            'status' => 1, 'message' => '分派成功'
+        ]);
+    }
+
     /**
      * 分配维修工
      * @param $id
@@ -155,7 +202,10 @@ class CreateRepairController extends Controller
         }
         $serviceProvider = $data;
         //获取当前登录公司下的所有分类
-        $classify = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
         //循环输出已获取分类的所有维修工
         foreach ($classify as $v) {
             $serviceWorker[] = $v->serviceWorker()->get();
@@ -172,7 +222,7 @@ class CreateRepairController extends Controller
      * @param Request $request
      * @return array|string
      */
-    public function selectWorker(Request $request)
+    public function selectWorker(CreateRepairRequest $request)
     {
         $data = [];
         $arr = [];
@@ -202,12 +252,12 @@ class CreateRepairController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function confirmWorker(Request $request)
+    public function confirmWorker(CreateRepairRequest $request)
     {
         $repair = Process::find($request['id']);
         $repair->service_worker_id = $request['service_worker_id'];
         $repair->service_provider_id = $request['service_provider_id'];
-        $repair->status = 20;
+        $repair->status = 2;
         if ($repair->save()) {
             return response()->json([
                 'status' => 1, 'message' => '分派成功'
@@ -239,13 +289,16 @@ class CreateRepairController extends Controller
         }
         $serviceProvider = $data;
         //获取当前登录公司下的所有分类
-        $classify = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
         //循环输出已获取分类的所有维修工
         foreach ($classify as $v) {
             $serviceWorker[] = $v->serviceWorker()->get();
         }
         return response()->view(
-            'repair.create_repair.change',
+            'repair.create_repair.assign',
             compact('process', 'classify', 'serviceWorker', 'serviceProvider')
         );
     }
@@ -256,18 +309,42 @@ class CreateRepairController extends Controller
      */
     public function success($id)
     {
-        $process = Process::find($id);
-        $process->status = 10;
-        if ($process->save()) {
+        $data=Process::find($id);
+        return response()->view('repair.create_repair.success',compact('data'));
+    }
+
+    /**
+     * 完成报修进行记录
+     * @param $id
+     */
+    public function successStore(Request $request)
+    {
+        $process=Process::find($request->id);
+        $process->status=$request->status;
+        $process->result=$request->result;
+        if ($process->save()){
             return response()->json([
-                'code' => 1, 'message' => '维修完成'
+                'status' => 1, 'message' => '维修完成，等待评价'
             ]);
         } else {
             return response()->json([
-                'code' => 0, 'message' => '操作失败，请稍候重试'
+                'status' => 0, 'message' => '保存失败，请稍后重试',
+                'data' => null, 'url' => ''
             ]);
         }
     }
+
+
+    //批量完成维修
+    public function batchSuccess($str){
+        dd($str);
+    }
+
+    //完成报修
+    public function batchSuccessStore(Request $request){
+
+    }
+
 
     /**
      * 将该条记录的状态值改为0，不可再修，报废处理
@@ -286,5 +363,10 @@ class CreateRepairController extends Controller
                 'code' => 0, 'message' => '操作失败'
             ]);
         }
+    }
+
+    public function reason($id){
+        $info = Process::find($id);
+        return response()->view("repair.create_repair.reason",compact('info'));
     }
 }

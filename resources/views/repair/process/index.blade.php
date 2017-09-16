@@ -36,9 +36,9 @@
                                     <th>公司</th>
                                     <th>报修人</th>
                                     <th>资产名称</th>
-                                    <th>资产分类</th>
-                                    <th>维修工id</th>
-                                    <th>服务商id</th>
+                                    {{--<th>资产分类</th>--}}
+                                    {{--<th>维修工id</th>--}}
+                                    {{--<th>服务商id</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -53,26 +53,28 @@
                                                                            onclick="refuse('{{$value->id}}')">拒绝
                                                     </button>
                                                 </td>
-                                            @elseif($value->status=="4")
+                                            @elseif($value->status=="3")
                                                 <td>
                                                     <button class="btn btn-primary" onclick="add('{{$value->id}}')"
                                                             data-toggle="modal" data-target=".bs-example-modal-md">
                                                         填写报修结果
                                                     </button>
                                                 </td>
-                                            @elseif($value->status=='10')
-                                                <td><span>已修好</span></td>
-                                            @elseif($value->status=='0')
-                                                <td><span>不可再修</span></td>
+                                            @elseif($value->status=='5')
+                                                <td><span>待评价</span></td>
+                                            @elseif($value->status=='6')
+                                                <td><span>已完成</span></td>
+                                            @elseif($value->status=='7')
+                                                <td><span>已完成</span></td>
                                             @endif
                                             <td>{{$value->org->name}}</td>
                                             <td>{{$value->user->name}}</td>
-                                            <td title="{{$value->remarks}}">{{$value->asset->name}}</td>
-                                            @if(isset($value->category))
-                                                <td>{{$value->category->name}}</td>
-                                            @endif
-                                            <td>{{$value->serviceWorker->name}}</td>
-                                            <td>{{@$value->serviceProvider->name}}</td>
+                                            <td title="{{$value->remarks}}">{{$value->remarks}}</td>
+                                            {{--@if(isset($value->category))--}}
+                                                {{--<td>{{$value->category->name}}</td>--}}
+                                            {{--@endif--}}
+{{--                                            <td>{{$value->serviceWorker->name}}</td>--}}
+{{--                                            <td>{{@$value->serviceProvider->name}}</td>--}}
                                         </tr>
                                     @endif
                                 @endforeach

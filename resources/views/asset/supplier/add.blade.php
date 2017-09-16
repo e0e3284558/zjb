@@ -1,92 +1,59 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">填写评价</h4>
-</div>
-<div class="modal-body">
-    <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
-        <div class="alert alert-danger display-hide" id="error-block">
-            <button class="close" data-close="alert"></button>
-            请更正下列输入错误：
-        </div>
-        <input type="hidden" name="_method" value="PUT">
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
-
-        <div class="row" >
-            <div class="col-md-12" >
-                <div class="form-group" >
-                    <label class="col-sm-2 control-label">评价等级</label>
-                    <div class="col-sm-8">
-                        <input id="input-21f" name="score" type="text" data-min=0 data-max=5 data-step=1 data-size="xs" data-error-container="#error-block" title="">
-                    </div>
-                </div>
+<form id="signupForm1" class="form-horizontal" method="post" enctype="multipart/form-data" >
+    <div class="alert alert-danger display-hide" id="error-block">
+        <button class="close" data-close="alert"></button>
+        请更正下列输入错误：
+    </div>
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">供应商名称<span class="required">*</span></label>
+            <div class="col-sm-8">
+                <input type="text" name="name" class="form-control" id="inputEmail3" placeholder="名称" data-error-container="#error-block">
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-12" >
-                <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">评论建议</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="appraisal" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
-                    </div>
-                </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
+            <div class="col-sm-8">
+                <select name="category_id" class="form-control select2" data-error-container="#error-block">
+                    <option value="">请选择</option>
+                    @foreach($category_list as $v)
+                        <option value="{{$v->id}}">{{$v->name}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-    <button type="button" class="btn btn-success" id="submitAssetsForm">确认</button>
-</div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">备注</label>
+            <div class="col-sm-8">
+                <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-10">
+        <button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>
+    </div>
+</form>
+
 <script type="text/javascript">
-
     $( document ).ready( function () {
-
-        $("#input-21f").rating({
-            starCaptions: function (val) {
-                return val;
-            },
-            hoverOnClear: false
-
-        });
-        $(".caption").css("display","none");
-        zjb.singleImageUpload({
-            uploader:'singleUpload',
-            picker:'single-upload',
-            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-            server: '{{ route("image.upload") }}',
-            formData: {
-                '_token':'{{ csrf_token() }}'
-            },
-            errorMsgHiddenTime:2000,
-
-            uploadSuccess:function(file,response){
-                //上传完成触发时间
-                $('#upload_id').val(response.data.id);
-                $('#thumb_img').attr({src:response.data.url});
-                window.setTimeout(function () {
-                    $('#'+file.id).remove();
-                }, 2000);
-            }
-        });
-
         $('.datepicker').datepicker({
             language: "zh-CN",
             format: 'yyyy/mm/dd',
             autoclose:true
         });
+
         zjb.initAjax();
-        var assets_form = $( "#signupForm1" );
-        var errorInfo = $('.alert-danger', assets_form);
-        $('#submitAssetsForm').click(function () {
-            assets_form.submit();
-        });
-        assets_form.validate( {
+        var otherAssets_form = $( "#signupForm1" );
+        var errorInfo = $('.alert-danger', otherAssets_form);
+//        $('#submitAssetsForm').click(function () {
+//            otherAssets_form.submit();
+//        });
+        otherAssets_form.validate( {
             rules: {
-                score:"required",
+                name:"required"
             },
             messages: {
-                score:"评分不能为空",
+                name:"资产名称不能为空"
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -125,15 +92,14 @@
                     .closest('.form-group').removeClass('has-error'); // set success class to the control group
             },
             submitHandler: function () {
-                errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('repair/repair_list/'.$id)}}",
-                    data:assets_form.serialize(),
+                    url:"{{url('supplier')}}",
+                    data:otherAssets_form.serialize(),
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {
-                        zjb.blockUI('#signupForm1');
+                        zjb.blockUI();
                     },
                     error:function (jqXHR, textStatus, errorThrown) {
                         if(jqXHR.status == 422){
@@ -149,7 +115,7 @@
                         }
                     },
                     complete:function () {
-                        zjb.unblockUI('#signupForm1');
+                        zjb.unblockUI();
                     },
                     success:function (data) {
                         if(data.code){

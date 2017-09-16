@@ -12,15 +12,15 @@
         <div class="row" >
             <div class="col-md-4" >
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">资产条码</label>
+                    <label class="col-sm-4 control-label">资产编号</label>
                     <div class="col-sm-8">
-                        <input type="text" name="asset_code" disabled value="{{$info->code}}" class="form-control" id="inputEmail3" placeholder="资产条码">
+                        <input type="text" name="code" value="{{$info->code}}" class="form-control"  placeholder="资产编号">
                     </div>
                 </div>
             </div>
             <div class="col-md-4" >
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
+                    <label class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
                         <select name="category_id" onchange="finds(this.value)" id="type_sel" class="form-control select2">
                             <option value=""></option>
@@ -38,7 +38,7 @@
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">资产名称<span style="color:red;">*</span></label>
+                    <label class="col-sm-4 control-label">资产名称<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
                         <input type="text" name="name" value="{{$info->name}}" class="form-control" id="inputEmail3" placeholder="资产名称">
                     </div>
@@ -49,7 +49,7 @@
         <div class="row" >
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
+                    <label class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
                         <input type="text" disabled name="buy_time" value="{{date("Y/m/d")}}" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
+                    <label class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
                         <select name="area_id" class="form-control select2">
                             @foreach($list4 as $v)
@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">金额</label>
+                    <label class="col-sm-4 control-label">金额</label>
                     <div class="col-sm-8">
                         <input type="text" name="money" value="{{$info->money}}" class="form-control" id="inputEmail3" placeholder="金额">
                     </div>
@@ -81,48 +81,27 @@
             </div>
         </div>
 
-        {{--<div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">使用期限</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="use_time" value="{{$info->use_time}}" class="form-control" id="inputEmail3" placeholder="使用期限">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">SN号</label>
-
-                    <div class="col-sm-8">
-                        <input type="text" name="SN_code" value="{{$info->SN_code}}" class="form-control" id="inputEmail3" placeholder="SN号">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">使用人</label>
-
-                    <div class="col-sm-8">
-                        <input type="text" name="user_name" value="{{$info->user_name}}" class="form-control" id="inputEmail3" placeholder="使用人">
-                    </div>
-                </div>
-            </div>
-        </div>--}}
-
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">供应商</label>
-
+                    <label class="col-sm-4 control-label">供应商</label>
                     <div class="col-sm-8">
-                        <input type="text" name="supplier" value="{{$info->supplier}}" class="form-control" id="inputEmail3" placeholder="供应商">
+                        <select id="supplier_id" data-error-container="#error-block" name="supplier_id" class="form-control select2">
+                            <option>请选择</option>
+                            @foreach($list7 as $v)
+                                @if($v->id==$info->supplier_id)
+                                    <option value="{{$v->id}}" selected>{{$v->name}}</option>
+                                @else
+                                    <option value="{{$v->id}}">{{$v->name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">计量单位</label>
+                    <label class="col-sm-4 control-label">计量单位</label>
 
                     <div class="col-sm-8">
                         <input type="text" name="calculate" value="{{$info->calculate}}" class="form-control" id="inputEmail3" placeholder="计量单号">
@@ -131,7 +110,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group" style="position: relative;" >
-                    <label for="inputEmail3" class="col-sm-4 control-label">使用部门</label>
+                    <label class="col-sm-4 control-label">使用部门</label>
                     <div class="col-sm-8">
                         <select id="use_department_id" name="use_department_id" class="form-control select2">
                             @foreach($list6 as $v)
@@ -147,43 +126,10 @@
             </div>
         </div>
 
-        <div class="row" >
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">管理员</label>
-                    <div class="col-sm-8">
-                        <select name="admin_id" class="form-control select2">
-                            @foreach($list3 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-4 control-label">来源</label>
-                    <div class="col-sm-8">
-                        <select name="source_id" class="form-control">
-                            @foreach($list5 as $v)
-                                @if($v->id == $info->source_id)
-                                    <option selected value="{{$v->id}}">{{$v->name}}</option>
-                                @else
-                                    <option value="{{$v->id}}">{{$v->name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
         <div class="row">
-
             <div class="col-md-8" >
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">备注</label>
+                    <label class="col-sm-2 control-label">备注</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ...">{{$info->remarks}}</textarea>
                     </div>
@@ -191,7 +137,7 @@
             </div>
             <div class="col-md-4" >
                 <div class="form-group">
-                    <label for="Comment" class="col-sm-4 control-label">照片</label>
+                    <label class="col-sm-4 control-label">照片</label>
                     <div class="col-sm-8">
                         <!--dom结构部分-->
                         <div id="uploader-demo">

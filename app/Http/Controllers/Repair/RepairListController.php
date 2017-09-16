@@ -55,6 +55,14 @@ class RepairListController extends Controller
         return response()->view("repair.repair_list.show",compact('info'));
     }
 
+
+    public function showImg($id){
+//        dd($id);
+
+        $list = Process::where("id",$id)->with("img")->first()->img;
+        return response()->view("repair.repair_list.showImg",compact('list'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -75,7 +83,12 @@ class RepairListController extends Controller
      */
     public function update(RepairListRequest $request, $id)
     {
-        $info = Process::where("id",$id)->update($request->except("_method","_token"));
+        $arr = [
+            'score' => $request->score,
+            'appraisal' => $request->appraisal,
+            'status' => '6'
+        ];
+        $info = Process::where("id",$id)->update($arr);
         $message = [];
         if($info){
             $message = [

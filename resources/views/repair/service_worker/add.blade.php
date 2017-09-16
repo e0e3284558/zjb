@@ -5,7 +5,6 @@
     <div class="ibox-content">
         <p class="m-b-lg">
             输入维修工的基本信息，并且设置维修工登录该系统的帐号及初始密码。
-
         </p>
 
         <div class="dd" id="nestable2">
@@ -48,7 +47,6 @@
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修工照片</label>
                         <img id="thumb_img" src="{{url('img/noavatar.png')}}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="upload_id" value="">
                         <div id="single-upload" class="btn-upload m-t-xs">
@@ -84,12 +82,8 @@
                         </div>
                     </div>
                 </li>
-
-
-                <li>
-                    <input type="hidden" name="org_id" value="{{Auth::user()->or}}">
-                    <button type="submit" class="btn btn-success">添加</button>
-                </li>
+                <input type="hidden" name="org_id" value="{{Auth::user()->or}}">
+                <button type="submit" class="btn btn-primary">添加</button>
             </form>
         </div>
     </div>
@@ -139,7 +133,7 @@
                     },
                     tel: {
                         required: true,
-                        phoneUS: true
+                        maxlength:20
                     }
                 },
                 /*ajax提交*/

@@ -36,4 +36,7 @@ class Process extends Model
     public function otherAsset(){
         return $this->belongsTo('App\Models\Asset\OtherAsset','other');
     }
+    public function classify(){
+        return $this->belongsTo('App\Models\Repair\Classify');
+    }
 }

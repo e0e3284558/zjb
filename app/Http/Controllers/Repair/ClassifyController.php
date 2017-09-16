@@ -17,7 +17,10 @@ class ClassifyController extends Controller
      */
     public function index()
     {
-        $data = Classify::where('org_id', Auth::user()->org_id)->OrderBy('sorting', 'desc')->get();
+        $data = Classify::where('org_id', Auth::user()->org_id)
+            ->OrderBy('sorting', 'desc')
+            ->OrderBy('created_at', 'desc')
+            ->get();
         return view('repair.classify.index', compact('data'));
     }
 
@@ -52,17 +55,6 @@ class ClassifyController extends Controller
                 'data' => null, 'url' => ''
             ]);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

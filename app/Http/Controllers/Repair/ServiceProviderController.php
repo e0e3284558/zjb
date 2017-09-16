@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Http\Requests\ServiceProviderRequest;
+use App\Models\Repair\Process;
 use App\Models\Repair\ServiceProvider;
 use App\Models\Repair\ServiceWorker;
 use Illuminate\Http\Request;
@@ -19,7 +21,9 @@ class ServiceProviderController extends Controller
     public function index()
     {
         $data = [];
-        $serviceProvider = ServiceProvider::with('org')->get()->toArray();
+        $serviceProvider = ServiceProvider::with('org')
+            ->orderBy('created_at', 'desc')
+            ->get()->toArray();
         foreach ($serviceProvider as $a) {
             if (($a['org'])) {
                 if ($a['org'][0]['id'] == Auth::user()->org_id) {
@@ -56,7 +60,7 @@ class ServiceProviderController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServiceProviderRequest $request)
     {
         $serviceProvider = new ServiceProvider;
         $serviceProvider->name = $request->name;
@@ -92,8 +96,10 @@ class ServiceProviderController extends Controller
     {
         $data = ServiceProvider::find($id);
         $serviceWorker = $data->service_worker()->get();
-
-        return response()->view('repair.service_provider.show', compact('data', 'serviceWorker'));
+        $processProvider = Process::where('service_provider_id', $data->id)->get();
+        return response()->view('repair.service_provider.show',
+            compact('data', 'serviceWorker', 'processProvider')
+        );
     }
 
     /**
@@ -115,7 +121,7 @@ class ServiceProviderController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServiceProviderRequest $request, $id)
     {
         $res = ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id', ''));
         //修改服务商信息
@@ -140,9 +146,9 @@ class ServiceProviderController extends Controller
     public function destroy($id)
     {
         if (DB::table('org_service_provider')
-                ->where('org_id', Auth::user()->org_id)
-                ->where('service_provider_id',$id)
-                ->delete()) {
+            ->where('org_id', Auth::user()->org_id)
+            ->where('service_provider_id', $id)
+            ->delete()) {
             return response()->json([
                 'code' => 1,
                 'message' => '移除成功'

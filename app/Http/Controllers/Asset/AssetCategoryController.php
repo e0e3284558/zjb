@@ -60,7 +60,7 @@ class AssetCategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $arr = [
-            'category_code' => data("dHis").rand("1000","9999"),
+            'category_code' => date("dHis").rand("1000","9999"),
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,
             'created_at' => date("Y-m-d H:i:s")
@@ -149,7 +149,6 @@ class AssetCategoryController extends Controller
     {
         if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
             $list = AssetCategory::where("pid",$id)->first();
-
             if($list!=null){
                 $message = [
                     'code'=>0,

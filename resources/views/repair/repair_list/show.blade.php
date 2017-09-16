@@ -28,19 +28,20 @@
             @endif
         </tr>
         <tr role="row">
-            <td class="td-bg"><label for="inputEmail3" class="control-label">报修原因</label></td>
-            <td colspan="5">{{$info->remarks}}</td>
+            <td><label class="control-label">所在场地</label></td>
+            <td>{{$info->area_id?$info->area->name:""}}</td>
+            <td><label class="control-label">报修项类别</label></td>
+            <td>{{$info->asset_classify_id?$info->category->name:""}}</td>
+            <td><label class="control-label">报修原因</label></td>
+            <td>{{$info->remarks}}</td>
         </tr>
         <tr>
-            <td><label class="control-label">所属公司</label></td>
-            <td>{{$info->org->name}}</td>
             <td><label class="control-label">用户评分</label></td>
             <td>
                 @for($i=0;$i<$info->score;$i++)
                     <i class="fa fa-star" style="color:#e8bd0d;"></i>
                 @endfor
             </td>
-            {{--<td>{{$info->score}}</td>--}}
             <td><label class="control-label">用户评价</label></td>
             <td>{{$info->appraisal}}</td>
         </tr>

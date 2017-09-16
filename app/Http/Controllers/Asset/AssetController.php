@@ -7,6 +7,7 @@ use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\AssetFile;
+use App\Models\Asset\Supplier;
 use App\Models\File\File;
 use App\Models\Asset\Source;
 use App\Models\User\Department;
@@ -59,7 +60,7 @@ class AssetController extends Controller
         if($request->name){
             $map[] = ['name','like','%'.$request->name.'%'];
         }
-        $list = Asset::with('category','org','user','admin','source','department','useDepartment','area')->where($map)->orderBy("id","desc")->paginate(5);
+        $list = Asset::with('category','org','user','admin','source','department','useDepartment','area','supplier')->where($map)->orderBy("id","desc")->paginate(5);
 
         foreach ($list as $key=>$value){
             //图片
@@ -90,11 +91,14 @@ class AssetController extends Controller
         $list3 = User::where("org_id",$org_id)->get();
         //场地
         $list4 = Area::where("org_id",$org_id)->get();
+        $list4 = $this->test($list4);
         //来源
-        $list5 = Source::where("org_id",$org_id)->get();
+//        $list5 = Source::where("org_id",$org_id)->get();
         //所属部门
         $list6 = Department::where("org_id",$org_id)->get();
-        return response()->view("asset.asset.add",compact("list1","list2","list3","list4","list5","list6","org_id"));
+        //供应商
+        $list7 = Supplier::where("org_id",$org_id)->get();
+        return response()->view("asset.asset.add",compact("list1","list2","list3","list4","list6","org_id","list7"));
     }
 
     /**
@@ -105,7 +109,7 @@ class AssetController extends Controller
      */
     public function store(AssetRequest $request)
     {
-        $code = date("dHis").rand("10000","99999");
+        $code = $request->code?$request->code:date("dHis").rand("10000","99999");
         $request->offsetSet("code",$code);
         $arr = $request->except("_token","img","file_id");
 
@@ -116,6 +120,7 @@ class AssetController extends Controller
 
 
         $arr['created_at'] = date("Y-m-d H:i:s");
+        $arr['org_id'] = Auth::user()->org_id;
         $info = Asset::insertGetId($arr);
 
         if($request->file_id){
@@ -149,7 +154,7 @@ class AssetController extends Controller
      */
     public function show($id)
     {
-        $info = Asset::with('category','org','user','admin','source','department','useDepartment','area')->find($id);
+        $info = Asset::with('category','org','user','admin','department','useDepartment','area')->find($id);
         //图片
         $file = Asset::find($info->id)->file()->first();
         $info->img_path = $file["path"];
@@ -178,17 +183,18 @@ class AssetController extends Controller
             //区域
             $list4 = Area::where("org_id",$org_id)->get();
             //来源
-            $list5 = Source::where("org_id",$org_id)->get();
+//            $list5 = Source::where("org_id",$org_id)->get();
             //使用部门
             $list6 = Department::where("org_id",$org_id)->get();
             //图片
             $file = Asset::find($id)->file()->first();
+            //供应商
+            $list7 = Supplier::where("org_id",$org_id)->get();
             if($file){
                 $info->img_path = $file->path;
                 $file_id = $file->id;
             }
-
-            return response()->view("asset.asset.edit", compact("info","img_path", "list1", "list2", "list3", "list4", "list5","list6"));
+            return response()->view("asset.asset.edit", compact("info","img_path", "list1", "list2", "list3", "list4","list6","list7"));
         }else{
             return redirect("home");
         }

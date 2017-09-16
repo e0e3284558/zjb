@@ -3,7 +3,6 @@
 @section('breadcrumb')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <!-- <h2></h2> -->
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ route('home') }}">控制面板</a>
@@ -30,43 +29,40 @@
                     <div class="ibox-title">
                         <h5>维修列表</h5>
                     </div>
-
-
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <div class="panel-options">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab-1" data-toggle="tab">等待派工</a></li>
-                                    <li class=""><a href="#tab-2" data-toggle="tab">正在维修</a></li>
-                                    <li class=""><a href="#tab-3" data-toggle="tab">维修完成</a></li>
-                                    <li class=""><a href="#tab-4" data-toggle="tab">全部维修</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="panel-body">
+                    <div class="ibox-content">
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab-1" data-toggle="tab">等待派工</a></li>
+                                <li class=""><a href="#tab-2" data-toggle="tab">正在维修</a></li>
+                                <li class=""><a href="#tab-3" data-toggle="tab">维修完成</a></li>
+                                <li class=""><a href="#tab-4" data-toggle="tab">待评价</a></li>
+                                <li class=""><a href="#tab-5" data-toggle="tab">全部维修</a></li>
+                            </ul>
 
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
-                                    <div class="ibox-content">
+                                    <div class="panel-body">
                                         <table class="table">
                                             <thead>
                                             <tr>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
                                                 <th>报修人</th>
-                                                <th>资产</th>
-                                                <th>分类</th>
-                                                <th>照片</th>
-                                                <th>备注</th>
-                                                {{--<th>上次维修工</th>--}}
-                                                {{--<th>维修建议</th>--}}
-                                                <th>当前状态</th>
+                                                <th>报修场地</th>
+                                                <th>报修项目</th>
+                                                <th>报修分类</th>
+                                                <th>报修照片</th>
+                                                <th>报修备注</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             @foreach($data1 as $v)
                                                 <tr>
+                                                    <td role="gridcell">
+                                                        <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                    </td>
                                                     <td>{{$v->user->name}}</td>
+                                                    <td>{{$v->area->name}}</td>
                                                     @if($v->other==1)
                                                         @if($v->otherAsset)
                                                             <td>{{$v->otherAsset->name}}</td>
@@ -81,73 +77,63 @@
                                                         <td>通用报修</td>
                                                     @endif
 
-                                                    @if(collect($v->img)->isEmpty())
-                                                        <td>用户未上传图片</td>
-                                                    @else
-                                                        <td>
-                                                            @foreach($v->img as $k=>$img)
-                                                                <?php
-                                                                if ($k > 3) break;
-                                                                ?>
-                                                                <img src='{{url("$img->path")}}' alt=""
-                                                                     class="img-circle-b">
-                                                            @endforeach
-                                                        </td>
-                                                    @endif
-                                                    <td>{{$v->remarks}}</td>
-                                                    {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                    {{--<td>{{$v->suggest}}</td>--}}
                                                     <td>
-                                                        @if($v->status==1)
-                                                            等待分派维修中
-                                                        @endif
-                                                        @if($v->status==20 ||$v->status==4)
-                                                            已分派维修工
-                                                        @endif
-                                                        @if($v->status==10)
-                                                            已完成维修
+                                                        @if(!collect($v->img)->isEmpty())
+                                                            <span class="cursor_pointer"
+                                                                  onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
+                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                  title="详情">详情</span>
                                                         @endif
                                                     </td>
+                                                    <td>{{$v->remarks}}</td>
+
                                                     <td>
-                                                        @if($v->status==1)
-                                                            <button class="btn btn-success btn-sm pull-left"
-                                                                    onclick="assign('{{$v->id}}')"
-                                                                    data-toggle="modal"
-                                                                    data-target=".bs-example-modal-lg">
-                                                                分派维修
-                                                            </button>
+                                                        @if($v->status=='4' || $v->status=='7')
+                                                            <button class="btn btn-danger btn-sm pull-left" data-toggle="modal"
+                                                                    data-target=".bs-example-modal-md"
+                                                                    onclick="reason('{{$v->id}}')">查看原因</button>
                                                         @endif
+                                                        <button class="btn btn-success btn-sm pull-left"
+                                                                onclick="assign('{{$v->id}}')"
+                                                                data-toggle="modal"
+                                                                data-target=".bs-example-modal-lg">
+                                                            分派维修
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
                                         </table>
-
+                                        <button type="button" onclick="edit()" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            批量分派
+                                        </button>
                                     </div>
                                 </div>
-
-
                                 <div class="tab-pane" id="tab-2">
-                                    <div class="tab-pane active" id="tab-1">
-                                        <div class="ibox-content">
+                                    <div class="tab-pane" id="tab-1">
+                                        <div class="panel-body">
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all2" ></th>
                                                     <th>报修人</th>
-                                                    <th>资产</th>
-                                                    <th>分类</th>
-                                                    <th>照片</th>
-                                                    <th>备注</th>
-                                                    {{--<th>上次维修工</th>--}}
-                                                    {{--<th>维修建议</th>--}}
-                                                    <th>当前状态</th>
+                                                    <th>报修场地</th>
+                                                    <th>报修项目</th>
+                                                    <th>报修分类</th>
+                                                    <th>报修照片</th>
+                                                    <th>报修备注</th>
+                                                    <th>当前维修人员</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($data2 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>{{$v->user->name}}</td>
+                                                        <td>{{get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -162,33 +148,17 @@
                                                             <td>通用报修</td>
                                                         @endif
 
-                                                        @if(collect($v->img)->isEmpty())
-                                                            <td>用户未上传图片</td>
-                                                        @else
-                                                            <td>
-                                                                @foreach($v->img as $k=>$img)
-                                                                    <?php
-                                                                    if ($k > 3) break;
-                                                                    ?>
-                                                                    <img src='{{url("$img->path")}}' alt=""
-                                                                         class="img-circle-b">
-                                                                @endforeach
-                                                            </td>
-                                                        @endif
-                                                        <td>{{$v->remarks}}</td>
-                                                        {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                        {{--<td>{{$v->suggest}}</td>--}}
                                                         <td>
-                                                            @if($v->status==1)
-                                                                等待分派维修中
-                                                            @endif
-                                                            @if($v->status==20 ||$v->status==4)
-                                                                已分派维修工
-                                                            @endif
-                                                            @if($v->status==10)
-                                                                已完成维修
+                                                            @if(!collect($v->img)->isEmpty())
+                                                                <span class="cursor_pointer"
+                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
+                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      title="详情">详情</span>
                                                             @endif
                                                         </td>
+                                                        <td>{{$v->remarks}}</td>
+                                                        <td>{{get_area($v->area_id)}}</td>
+
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
@@ -197,6 +167,8 @@
                                                             </button>
 
                                                             <button class="btn btn-info btn-sm left"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-md"
                                                                     onclick="success({{$v->id}})">
                                                                 完成维修
                                                             </button>
@@ -205,23 +177,31 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
-
+                                            <button class="btn btn-warning btn-sm left"
+                                                    data-toggle="modal"
+                                                    data-target=".bs-example-modal-lg"
+                                                    onclick="edit()">重新分派
+                                            </button>
+                                            <button type="button" onclick="batchSuccess()" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                                批量完成
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="tab-pane" id="tab-3">
-                                    <div class="tab-pane active" id="tab-1">
-                                        <div class="ibox-content">
+                                    <div class="tab-pane" id="tab-1">
+                                        <div class="panel-body">
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all3" ></th>
                                                     <th>报修人</th>
-                                                    <th>资产</th>
-                                                    <th>分类</th>
-                                                    <th>照片</th>
-                                                    <th>备注</th>
-                                                    <th>维修工</th>
+                                                    <th>报修场地</th>
+                                                    <th>报修资产</th>
+                                                    <th>报修分类</th>
+                                                    <th>报修照片</th>
+                                                    <th>报修备注</th>
+                                                    <th>维修人员</th>
                                                     <th>服务商</th>
                                                     <th>评分</th>
                                                     <th>评价</th>
@@ -230,7 +210,11 @@
                                                 <tbody>
                                                 @foreach($data3 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>{{$v->user->name}}</td>
+                                                        <td>{{get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -245,19 +229,14 @@
                                                             <td>通用报修</td>
                                                         @endif
 
-                                                        @if(collect($v->img)->isEmpty())
-                                                            <td>用户未上传图片</td>
-                                                        @else
-                                                            <td>
-                                                                @foreach($v->img as $k=>$img)
-                                                                    <?php
-                                                                    if ($k > 3) break;
-                                                                    ?>
-                                                                    <img src='{{url("$img->path")}}' alt=""
-                                                                         class="img-circle-b">
-                                                                @endforeach
-                                                            </td>
-                                                        @endif
+                                                        <td>
+                                                            @if(!collect($v->img)->isEmpty())
+                                                                <span class="cursor_pointer"
+                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
+                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      title="详情">详情</span>
+                                                            @endif
+                                                        </td>
                                                         <td>{{$v->remarks}}</td>
                                                         @if($v->serviceWorker)
                                                             <td>{{$v->serviceWorker->name}}</td>
@@ -278,31 +257,33 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
-
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-4">
-                                    <div class="tab-pane active" id="tab-1">
-                                        <div class="ibox-content">
+                                    <div class="tab-pane" id="tab-1">
+                                        <div class="panel-body">
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all4" ></th>
                                                     <th>报修人</th>
-                                                    <th>资产</th>
-                                                    <th>分类</th>
-                                                    <th>照片</th>
-                                                    <th>备注</th>
-                                                    {{--<th>上次维修工</th>--}}
-                                                    {{--<th>维修建议</th>--}}
-                                                    <th>当前状态</th>
+                                                    <th>报修场地</th>
+                                                    <th>报修项目</th>
+                                                    <th>报修分类</th>
+                                                    <th>报修照片</th>
+                                                    <th>报修备注</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($data3 as $v)
+                                                @foreach($data4 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>{{$v->user->name}}</td>
+                                                        <td>{{get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
                                                             @if($v->otherAsset)
                                                                 <td>{{$v->otherAsset->name}}</td>
@@ -317,77 +298,122 @@
                                                             <td>通用报修</td>
                                                         @endif
 
-                                                        @if(collect($v->img)->isEmpty())
-                                                            <td>用户未上传图片</td>
-                                                        @else
-                                                            <td>
-                                                                @foreach($v->img as $k=>$img)
-                                                                    <?php
-                                                                    if ($k > 3) break;
-                                                                    ?>
-                                                                    <img src='{{url("$img->path")}}' alt=""
-                                                                         class="img-circle-b">
-                                                                @endforeach
-                                                            </td>
-                                                        @endif
-                                                        <td>{{$v->remarks}}</td>
-                                                        {{--<td>{{@$v->serviceWorker->name}}</td>--}}
-                                                        {{--<td>{{$v->suggest}}</td>--}}
                                                         <td>
-                                                            @if($v->status==1)
-                                                                等待分派维修中
-                                                            @endif
-                                                            @if($v->status==20 ||$v->status==4)
-                                                                已分派维修工
-                                                            @endif
-                                                            @if($v->status==10)
-                                                                已完成维修
+                                                            @if(!collect($v->img)->isEmpty())
+                                                                <span class="cursor_pointer"
+                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
+                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      title="详情">详情</span>
                                                             @endif
                                                         </td>
+                                                        <td>{{$v->remarks}}</td>
+
                                                         <td>
-                                                            @if($v->status==1 || $v->status==10 || $v->status==0)
-                                                                @if($v->status==1)
-                                                                    <button class="btn btn-success btn-sm pull-left"
-                                                                            onclick="assign('{{$v->id}}')"
-                                                                            data-toggle="modal"
-                                                                            data-target=".bs-example-modal-lg">
-                                                                        分派维修
-                                                                    </button>
-                                                                @endif
-                                                                @if($v->status==10)
-
-                                                                    @if($v->appraisal)
-                                                                        <button class="btn btn-primary btn-sm  pull-left">
-                                                                            已评价
-                                                                        </button>
-                                                                    @else
-                                                                        <button class="btn btn-primary btn-sm  pull-left">
-                                                                            维修完成
-                                                                        </button>
-                                                                    @endif
-                                                                @endif
-                                                                @if($v->status==0)
-                                                                    <label class="btn btn-danger btn-sm pull-left">不可再修</label>
-                                                                @endif
-                                                            @else
-
-                                                                <button class="btn btn-warning btn-sm pull-left"
-                                                                        data-toggle="modal"
-                                                                        data-target=".bs-example-modal-lg"
-                                                                        onclick="change_status({{$v->id}})">重新分派
-                                                                </button>
-
-                                                                <button class="btn btn-info btn-sm pull-left"
-                                                                        onclick="success({{$v->id}})">
-                                                                    完成维修
-                                                                </button>
+                                                            @if($v->status=='5')
+                                                                <span class="label label-primary" >待评价</span>
                                                             @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab-5">
+                                    <div class="tab-pane" id="tab-1">
+                                        <div class="panel-body">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all5" ></th>
+                                                    <th>状态</th>
+                                                    <th>报修人</th>
+                                                    <th>报修场地</th>
+                                                    <th>报修项目</th>
+                                                    <th>报修分类</th>
+                                                    <th>报修照片</th>
+                                                    <th>报修备注</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($data5 as $v)
+                                                    <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
+                                                        <td>
+                                                            @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                <span class="label label-default" >待分派</span>
+                                                            @elseif($v->status=='2')
+                                                                <span class="label label-info" >待服务</span>
+                                                            @elseif($v->status=='3')
+                                                                <span class="label label-primary" >维修中</span>
+                                                            @elseif($v->status=='5')
+                                                                <span class="label label-primary" >待评价</span>
+                                                            @elseif($v->status=='6')
+                                                                <span class="label label-success" >已完成</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{$v->user->name}}</td>
+                                                        <td>{{get_area($v->area_id)}}</td>
+                                                        @if($v->other==1)
+                                                            @if($v->otherAsset)
+                                                                <td>{{$v->otherAsset->name}}</td>
+                                                            @endif
+                                                        @else
+                                                            <td>{{$v->asset->name}}</td>
+                                                        @endif
 
+                                                        @if($v->category)
+                                                            <td>{{$v->category->name}}</td>
+                                                        @else
+                                                            <td>通用报修</td>
+                                                        @endif
+
+                                                        <td>
+                                                            @if(!collect($v->img)->isEmpty())
+                                                                <span class="cursor_pointer"
+                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
+                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      title="详情">详情</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{$v->remarks}}</td>
+
+                                                        <td>
+                                                            @if($v->status=='1')
+                                                                <button class="btn btn-success btn-sm pull-left"
+                                                                        onclick="assign('{{$v->id}}')"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg">
+                                                                    分派维修
+                                                                </button>
+                                                            @elseif($v->status=='4' || $v->status=='7')
+                                                                <button class="btn btn-danger btn-sm pull-left" data-toggle="modal"
+                                                                        data-target=".bs-example-modal-md"
+                                                                        onclick="reason('{{$v->id}}')">查看原因</button>
+                                                                <button class="btn btn-success btn-sm pull-left"
+                                                                        onclick="assign('{{$v->id}}')"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg">
+                                                                    分派维修
+                                                                </button>
+                                                            @elseif($v->status=='2')
+                                                                <span class="label label-info" >待服务</span>
+                                                            @elseif($v->status=='3')
+                                                                <span class="label label-primary" >维修中</span>
+                                                            @elseif($v->status=='5')
+                                                                <span class="label label-primary" >待评价</span>
+                                                            @elseif($v->status=='6')
+                                                                <span class="label label-success" >已完成</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -403,6 +429,62 @@
     </div>
 
     <script>
+        $("document").ready(function () {
+            $('.i-checks,#all1,#all2,#all3,#all4,#all5').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue'
+            });
+
+            function all(id) {
+                $(id).on('ifChecked ifUnchecked', function(event){
+                    if(event.type == 'ifChecked'){
+                        $(this).parents('thead').next('tbody').find('.i-checks').iCheck('check');
+                    }else{
+                        $(this).parents('thead').next('tbody').find('.i-checks').iCheck('uncheck');
+                    }
+                });
+            }
+            all("#all1");
+            all("#all2");
+            all("#all3");
+            all("#all4");
+            all("#all5");
+        });
+
+        function str(message) {
+            var messages = "<div class='modal-header'>" +
+                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
+                "<span aria-hidden='true'>&times;</span></button> </div> " +
+                "<div class='modal-body'>" +
+                message +
+                "</div><div class='modal-footer'> <button type='button' class='btn btn-primary' data-dismiss='modal'>确定</button> </div>"
+            return messages;
+        }
+
+        //批量分派
+        function edit() {
+            if($("tbody input[type='checkbox']:checked").length >= 1){
+
+                var arr = [];
+                $("tbody input[type='checkbox']:checked").each(function() {
+                    //判断
+                    var id = $(this).val();
+                    arr.push(id);
+                });
+
+                $.ajax({
+                    type: "get",
+                    url: '{{url('repair/create_repair/edit')}}/'+arr,
+
+                    success: function (data) {
+                        $(".modal-content").html(data);
+                    }
+                });
+
+            }else{
+                $(".modal-content").html(str("请选择数据"));
+            }
+        }
+
         function assign(id) {
             var url = '{{url("repair/create_repair/assign_worker/")}}/' + id;
             $.ajax({
@@ -410,6 +492,15 @@
                 "type": 'get',
                 success: function (data) {
                     $(".bs-example-modal-lg .modal-content").html(data);
+                }
+            })
+        }
+
+        function showImg(url) {
+            $.ajax({
+                "url": url,
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
             })
         }
@@ -425,43 +516,38 @@
             })
         }
 
-        function success(cid) {
-            swal({
-                    title: "确认要完成维修吗？",
-                    text: "",
-                    type: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#0e9aef",
-                    cancelButtonText: "取消",
-                    confirmButtonText: "确认",
-                    closeOnConfirm: false
-                },
-                function () {
-                    //发异步删除数据
-                    $.ajax({
-                        type: "post",
-                        url: '{{url('repair/create_repair/success')}}/' + cid,
-                        data: {
-                            "_token": '{{csrf_token()}}'
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            if (data.code == 1) {
-                                swal({
-                                    title: "",
-                                    text: data.message,
-                                    type: "success",
-                                    timer: 1000,
-                                }, function () {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal("", data.message, "error");
-                            }
-                        }
-                    });
+        function reason(id) {
+            var url = '{{url("repair/create_repair/reason/")}}/' + id;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
                 }
-            );
+            })
         }
+
+        function success(cid) {
+            var url = '{{url('repair/create_repair/success')}}/' + cid;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
+                }
+            })
+        }
+
+        function batchSuccess(cid) {
+            var url = '{{url('repair/create_repair/success')}}/' + cid;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
+                }
+            })
+        }
+
     </script>
 @endsection

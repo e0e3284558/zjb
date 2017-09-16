@@ -3,105 +3,54 @@
     </button>
     <h5>分派维修工</h5>
 </div>
-<form class="form-horizontal" action="" method="post">
+<form class="form-horizontal" id="forms" action="" method="post">
     <div class="modal-body">
         <div class="dd" id="nestable2">
             {{csrf_field()}}
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>需要维修的资产类型</label>
-                                <input type="text" class="form-control" disabled
-                                       @if ($process->category)
-                                       value="{{$process->category->name}}"
-                                       @else
-                                       value="通用报修"
-                                        @endif
-                                >
-                            </div>
-                        </li>
-                    </div>
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>选择服务商</label>
-                                <select name="service_provider_id" id="provider" class="form-control">
-                                    <option value="">-----请选择服务商-----</option>
-                                    @foreach($serviceProvider as $v)
-                                        <option value="{{$v['id']}}">{{$v['name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </li>
-                    </div>
+                    <li class="dd-item">
+                        <div class="dd-handle ">
+                            <label>选择服务商</label>
+                            <select name="service_provider_id" id="provider" class="form-control">
+                                <option value="">-----请选择服务商-----</option>
+                                @foreach($serviceProvider as $v)
+                                    <option value="{{$v['id']}}">{{$v['name']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>需要维修的资产</label>
-                                <input type="text" class="form-control" disabled
-                                       @if($process->other==1)
-                                       @if($process->otherAsset)
-                                       value="{{$process->otherAsset->name}}"
-                                       @endif
-                                       @else
-                                       value="{{$process->asset->name}}"
-                                        @endif
-                                >
-                            </div>
-                        </li>
-                    </div>
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>选择维修工类型</label>
-                                <select name="classify_id" id="" class="form-control"
-                                        onchange="change_classify(this.value)">
-                                    <option value="">-----请选择类型-----</option>
-                                    @foreach($classify as $v)
-                                        <option value="{{$v->id}}">{{$v->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </li>
-                    </div>
+                    <li class="dd-item">
+                        <div class="dd-handle ">
+                            <label>选择维修工类型</label>
+                            <select name="classify_id" id="" class="form-control"
+                                    onchange="change_classify(this.value)">
+                                <option value="">-----请选择类型-----</option>
+                                @foreach($classify as $v)
+                                    <option value="{{$v->id}}">{{$v->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-6">
-                        <li class="dd-item">
-                            <div class="dd-handle ">
-                                <label>被维修人备注</label>
-                                <input type="text" class="form-control" disabled value="{{$process->remarks}}">
-                            </div>
-                        </li>
-                    </div>
-                    <div class="col-lg-6">
                         <li class="dd-item">
                             <div class="dd-handle ">
                                 <label>选择维修工</label>
                                 <select name="service_worker_id" class="form-control" id="service_worker">
                                     <option value="">请选择分类信息</option>
                                 </select>
-                                <input type="hidden" name="id" value="{{$process->id}}">
+                                <input type="hidden" name="str" value="{{$str}}">
                             </div>
                         </li>
                     </div>
-                </div>
             </div>
         </div>
     </div>
 
     <div class="modal-footer">
-        <button type="button" onclick="del({{$process->id}})" class="btn btn-warning pull-left">取消工单</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="submit" class="btn btn-success" id="btn_action">分配</button>
     </div>
@@ -129,7 +78,7 @@
     $(document).ready(function () {
         zjb.initAjax();
         var l = $("#btn_action").ladda();
-        var forms = $(".form-horizontal");
+        var forms = $("#forms");
         /*字段验证*/
         forms.validate(
             {
@@ -151,7 +100,7 @@
                 /*ajax提交*/
                 submitHandler: function (form) {
                     jQuery.ajax({
-                        url: '{{url('repair/create_repair/confirm_worker')}}',
+                        url: '{{url('repair/create_repair/update')}}',
                         type: 'POST',
                         dataType: 'json',
                         data: forms.serialize(),

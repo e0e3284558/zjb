@@ -40,8 +40,14 @@
                                 @foreach($data as $v)
                                     <li class="dd-item">
                                         <div class="dd-handle" title="{{$v->comment}}">
-                                            <span class="label label-info"><i
-                                                        class="{{$v->icon}}"></i></span>{{$v->name}}
+                                            @if($v->enabled)
+                                                <span class="label label-info">
+                                                    <i class="{{$v->icon}}"></i></span>
+                                            @else
+                                                <span class="label label-info" style="background-color: red">
+                                                    <i class="fa fa-ban"></i></span>
+                                            @endif
+                                            {{$v->name}}
                                             <span class="span-icon-right">
                                     <i class="fa fa-edit"
                                        onclick="edit('{{url('repair/classify/'.$v->id.'/edit')}}')"></i>

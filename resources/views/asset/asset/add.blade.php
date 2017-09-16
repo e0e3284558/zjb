@@ -12,9 +12,9 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">资产条码</label>
+                    <label for="code" class="col-sm-4 control-label">资产编号</label>
                     <div class="col-sm-8">
-                        <input type="text" name="code" disabled class="form-control" id="inputEmail3" placeholder="资产条码">
+                        <input type="text" name="code" class="form-control" placeholder="资产编号">
                     </div>
                 </div>
             </div>
@@ -106,54 +106,20 @@
         <div class="row" >
             <div class="col-md-4" >
                 <div class="form-group">
-                    <label for="admin_id" class="col-sm-4 control-label">管理员</label>
+                    <label for="supplier_id" class="col-sm-4 control-label">供应商</label>
                     <div class="col-sm-8">
-                        <select name="admin_id" class="form-control select2">
-                            @foreach($list3 as $v)
+                        <select id="supplier_id" data-error-container="#error-block" name="supplier_id" class="form-control select2">
+                            <option value="" >请选择</option>
+                            @foreach($list7 as $v)
                                 <option value="{{$v->id}}">{{$v->name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="source_id" class="col-sm-4 control-label">来源</label>
-                    <div class="col-sm-8">
-                        <select name="source_id" class="form-control select2">
-                            @foreach($list5 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="supplier" class="col-sm-4 control-label">供应商</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="supplier" class="form-control" id="inputEmail3" placeholder="供应商">
-                    </div>
-                </div>
-            </div>
-            {{--<div class="col-md-4">--}}
-                {{--<div class="form-group" style="position: relative;" >--}}
-                    {{--<label for="use_department_id" class="col-sm-4 control-label">使用部门</label>--}}
-                    {{--<div class="col-sm-8">--}}
-                        {{--<select id="use_department_id" name="use_department_id" class="form-control select2">--}}
-                            {{--<option value="">请选择</option>--}}
-                            {{--@foreach($list6 as $v)--}}
-                                {{--<option value="{{$v->id}}">{{$v->name}}</option>--}}
-                            {{--@endforeach--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
         </div>
 
         <div class="row">
-
             <div class="col-md-8" >
                 <div class="form-group">
                     <label for="remarks" class="col-sm-2 control-label">备注</label>
@@ -175,7 +141,6 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="org_id" value="{{$org_id}}">
         </div>
     </form>
 </div>
@@ -209,7 +174,7 @@
 
         $('.datepicker').datepicker({
             language: "zh-CN",
-            format: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
             autoclose:true
         });
         zjb.initAjax();

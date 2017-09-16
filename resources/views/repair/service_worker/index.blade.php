@@ -38,6 +38,14 @@
                                             onclick="add('{{url("repair/service_worker/create")}}')">添加维修工
                                     </button>
                                 </li>
+                                <a href="{{url('repair/service_worker')}}">
+                                    <li class="dd-item">
+                                        <div class="dd-handle" title="{{Auth::user()->name}}下的所有维修人员">
+                                            <span class="label label-info"><i class="fa fa-users"></i></span>
+                                            所有维修人员
+                                        </div>
+                                    </li>
+                                </a>
                                 @foreach($data as $v)
                                     <li class="dd-item">
                                         <div class="dd-handle" title="{{$v->comment}}"
