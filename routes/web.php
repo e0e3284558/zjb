@@ -21,6 +21,11 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
+//Route::get()
+
+//cas
+Route::get('cas/{uuid}/{type?}','Cas\DefaultController@index')->name('cas');
+
 //--------------------------------------------------------------------------
 //认证路由结束
 
@@ -29,7 +34,7 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 //--------------------------------------------------------------------------
 
 Route::get('/home', 'Portal\IndexController@index')->name('home');
-
+Route::get('/worker','Portal\ServiceWorkerController@index')->name('worker');
 
 //--------------------------------------------------------------------------
 //门户模块路由结束

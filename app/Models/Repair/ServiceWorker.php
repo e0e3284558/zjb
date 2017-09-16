@@ -2,9 +2,10 @@
 
 namespace App\Models\Repair;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceWorker extends Model
+class ServiceWorker extends Authenticatable
 {
     //分类多对多关联
     public function classify()

@@ -5,7 +5,7 @@
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
         <div class="alert alert-danger display-hide" id="error-block">
-            <button class="close" data-close="alert"></button>
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
             请更正下列输入错误：
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -96,10 +96,7 @@
                     <label for="department_id" class="col-sm-4 control-label">所属部门</label>
                     <div class="col-sm-8">
                         <select id="department_id" data-error-container="#error-block" name="department_id" class="form-control select2">
-                            <option value="">请选择</option>
-                            @foreach($list6 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
+                             {!! department_select('',1) !!}
                         </select>
                     </div>
                 </div>
