@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\OtherAssetRequest;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\AssetFile;
 use App\Models\Asset\File;
@@ -52,7 +53,7 @@ class OtherAssetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OtherAssetRequest $request)
     {
         $arr = [
             'code' => date("mdis").rand(1000,9999),
@@ -107,7 +108,7 @@ class OtherAssetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OtherAssetRequest $request, $id)
     {
         $arr = [
             'name' => $request->name,
@@ -155,44 +156,17 @@ class OtherAssetController extends Controller
 
     //下载模板
     function downloadModel(){
-
-        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        $cellData = [
-            ['资产类别id','类别名称'],
-        ];
-        $arr = [];
-        foreach ($list as $key=>$value){
-            $arr['id'] = $value->id;
-            $arr['name'] = $value->name;
-            array_push($cellData,$arr);
-        }
-        $lists = [['资产类别','报修项名称','备注']];
-        Excel::create('其他报修项模板', function($excel) use ($lists,$cellData){
-
-            // sheet1
-            $excel->sheet('sheet1', function($sheet) use ($lists){
+        $cellData = [['报修项名称','备注']];
+        Excel::create('其他报修项模板', function($excel) use ($cellData){
+            $excel->sheet('sheet1', function($sheet) use ($cellData){
                 $sheet->setPageMargin(array(
-                    0.25, 0.30,0.30
+                    0.30,0.30
                 ));
                 $sheet->setWidth(array(
-                    'A' => 10, 'B' => 40,'C' => 40
-                ));
-                $sheet->cells('A1:C1', function($row) {
-                    $row->setBackground('#cfcfcf');
-                });
-                $sheet->rows($lists);
-            });
-
-            // sheet2
-            $excel->sheet('sheet2', function($sheet) use ($cellData){
-                $sheet->setPageMargin(array(
-                    0.25, 0.30,
-                ));
-                $sheet->setWidth(array(
-                    'A' => 10, 'B' => 40,
+                    'A' => 40, 'B' => 40
                 ));
                 $sheet->cells('A1:B1', function($row) {
-                    $row->setBackground('#cfcfcf');
+                    $row->setBackground('#dfdfdf');
                 });
                 $sheet->rows($cellData);
             });
@@ -205,10 +179,9 @@ class OtherAssetController extends Controller
     }
 
     function import(Request $request){
-//        dd($request->filepath);
-        $filePath =  'uploads/file/201709/05/59adff0f5762d.xls';
+        $filePath =  $request->file_path;
         Excel::load($filePath, function($reader) {
-            $data = $reader->first();
+            $data = $reader->all();
             $org_id = Auth::user()->org_id;
             foreach ($data as $k=>$v){
                 $arr = $v->toArray();
@@ -217,12 +190,12 @@ class OtherAssetController extends Controller
                 $arr['org_id'] = $org_id;
                 OtherAsset::insert($arr);
             }
-            $message = [
-                'code'=>'1',
-                'message'=> '数据导入成功'
-            ];
-            return response()->json($message);
         });
+        $message = [
+            'code'=>'1',
+            'message'=> '数据导入成功'
+        ];
+        return response()->json($message);
     }
 
 }

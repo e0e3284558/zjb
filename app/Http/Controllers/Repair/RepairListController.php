@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Repair;
 
+use App\Http\Requests\RepairListRequest;
 use App\Models\Repair\Process;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -72,7 +73,7 @@ class RepairListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RepairListRequest $request, $id)
     {
         $info = Process::where("id",$id)->update($request->except("_method","_token"));
         $message = [];

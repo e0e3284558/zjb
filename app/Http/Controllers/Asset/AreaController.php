@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\AreaRequest;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\User\Org;
@@ -58,7 +59,7 @@ class AreaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AreaRequest $request)
     {
         $arr = [
             'name' => $request->name,
@@ -76,8 +77,12 @@ class AreaController extends Controller
             $arr['pid'] = "0";
             $arr['path'] = "";
         }
-        QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],config('filesystems.disks.area_qrcodes.root').$arr['uid'].'.png');
 
+        // QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],config('filesystems.disks.area_qrcodes.root').$arr['uid'].'.png');
+
+        QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],public_path('uploads/area/'.$arr['uid'].'.png'));
+
+        $arr['qrcode_path'] = 'uploads/area/'.$arr['uid'].'.png';
         $info = Area::insertGetId($arr);
         if($info){
             $message = [
@@ -129,7 +134,7 @@ class AreaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AreaRequest $request, $id)
     {
         $user_org = Auth::user()->org_id;
         $info = Area::find($id);

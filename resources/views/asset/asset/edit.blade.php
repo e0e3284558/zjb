@@ -36,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4" >
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-4 control-label">资产名称<span style="color:red;">*</span></label>
                     <div class="col-sm-8">

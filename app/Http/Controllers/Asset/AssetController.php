@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\AssetRequest;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
@@ -102,7 +103,7 @@ class AssetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AssetRequest $request)
     {
         $code = date("dHis").rand("10000","99999");
         $request->offsetSet("code",$code);
@@ -111,8 +112,10 @@ class AssetController extends Controller
         $arr['asset_uid'] = Uuid::generate()->string;
         QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
 
+        $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
+
+
         $arr['created_at'] = date("Y-m-d H:i:s");
-//        $arr['asset_status_id'] = "1";
         $info = Asset::insertGetId($arr);
 
         if($request->file_id){
@@ -198,7 +201,7 @@ class AssetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AssetRequest $request, $id)
     {
         if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
             $arr = $request->except("_token","_method",'file_id');

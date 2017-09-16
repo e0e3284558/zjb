@@ -65,17 +65,18 @@
                                               action="{{url('repair/create_repair')}}">
                                         {{csrf_field()}}
                                         <!-- 根据位置 -->
-                                            <div class="form-group">
+                                            <div class="form-group slt">
                                                 <label class="col-sm-2 control-label">选择资产位置</label>
-                                                <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="area_id"
-                                                            onchange="select_asset(this.value)">
-                                                        <option value="">请选择</option>
+                                                <div class="col-sm-2">
+                                                    <select class="form-control m-b" name="area_id[]"
+                                                            onchange="select_asset(this)">
+                                                        <option value="0">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
+
                                             </div>
 
                                             <div class="form-group"><label class="col-sm-2 control-label">选择资产</label>
@@ -88,7 +89,7 @@
 
                                             <div class="form-group"><label class="col-sm-2 control-label">选择报修类别</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="classify_id" id="asset">
+                                                    <select class="form-control m-b" name="classify_id">
                                                         <option value="">请选择报修类别</option>
                                                         @foreach($classify as $v)
                                                             <option value="{{$v->id}}">{{$v->name}}</option>
@@ -140,10 +141,10 @@
                                         <!-- 根据位置 -->
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">报修位置</label>
-                                                <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="area_id"
-                                                            onchange="select_asset(this.value)">
-                                                        <option value="">请选择</option>
+                                                <div class="col-sm-2">
+                                                    <select class="form-control m-b" name="area_id[]"
+                                                            onchange="select_asset2(this)">
+                                                        <option value="0">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
@@ -205,14 +206,90 @@
         </div>
     </div>
     <script>
-        function select_asset(id) {
+        function select_asset(obj) {
+            o = $(obj);
+            //清除
+            ids = o.val();
+            if (ids == "0") {
+                o.parent("div").nextAll("div").remove();
+                id = o.parent("div").prev('div').find('select').val();
+            } else {
+                id = ids;
+            }
             url = '{{url('repair/create_repair/select_asset')}}/' + id;
             jQuery("#asset").empty();
             $.ajax({
                 "url": url,
                 "type": 'get',
+                'dataType': 'json',
                 success: function (data) {
-                    $("#asset").append(data);
+                    $("#asset").append(data.asset);
+                    if (ids != "0") {
+
+                        //创建select
+                        select1 = $("<div class='col-sm-2'></div>");
+                        select = $("<select name='area_id[]' class='form-control m-b' onchange='select_asset(this)' ></select>");
+                        select1.append(select);
+                        if (data.area != '') {
+                            if (data.area.length > 0) {
+                                //遍历
+                                ini = '<option value="0">请选择 </option>';
+                                select.append(ini);
+                                for (var i = 0; i < data.area.length; i++) {
+                                    //把遍历出来数据添加到option
+                                    info = '<option value="' + data.area[i].id + '">' + data.area[i].name + '</option>';
+                                    //把当前info数据添加到创建的select
+                                    select.append(info);
+                                }
+                                //把带有数据的select 追加
+                                o.parent("div").after(select1);
+
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        //通用报修
+        function select_asset2(obj) {
+            o = $(obj);
+            //清除
+            ids = o.val();
+            if (ids == "0") {
+                o.parent("div").nextAll("div").remove();
+                id = o.parent("div").prev('div').find('select').val();
+            } else {
+                id = ids;
+            }
+            url = '{{url('repair/create_repair/select_asset')}}/' + id;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                'dataType': 'json',
+                success: function (data) {
+                    if (ids != "0") {
+                        //创建select
+                        select1 = $("<div class='col-sm-2'></div>");
+                        select = $("<select name='area_id[]' class='form-control m-b' onchange='select_asset2(this)' ></select>");
+                        select1.append(select);
+                        if (data.area != '') {
+                            if (data.area.length > 0) {
+                                //遍历
+                                ini = '<option value="0">请选择 </option>';
+                                select.append(ini);
+                                for (var i = 0; i < data.area.length; i++) {
+                                    //把遍历出来数据添加到option
+                                    info = '<option value="' + data.area[i].id + '">' + data.area[i].name + '</option>';
+                                    //把当前info数据添加到创建的select
+                                    select.append(info);
+                                }
+                                //把带有数据的select 追加
+                                o.parent("div").after(select1);
+
+                            }
+                        }
+                    }
                 }
             })
         }
@@ -228,27 +305,37 @@
             forms.validate(
                 {
                     rules: {
-                        username: {
+                        asset_id: {
                             required: true,
-                            minlength: 6,
-                            maxlength: 20
+                            digits: true,
+                            min: 1
                         },
-                        password: {
+                        classify_id: {
                             required: true,
-                            minlength: 6,
-                            maxlength: 20
+                            digits: true,
+                            min: 1
                         },
-                        name: {
-                            required: true
+                        remarks: {
+                            maxlength: 191
+                        }
+                    },
+                    messages: {
+                        asset_id: {
+                            required: "必须选择一个资产，如果没有资产请检查资产位置中的资产是否存在",
+                            digits: "检查浏览器是否正常",
+                            min: "检查浏览器是否正常"
                         },
-                        tel: {
-                            required: true,
-                            phoneUS: true
+                        classify_id: {
+                            required: "必须选择一个分类",
+                            digits: "检查浏览器是否正常",
+                            min: "检查浏览器是否正常"
+                        },
+                        remarks: {
+                            maxlength: "问题描述不可超过191字符"
                         }
                     },
                     /*ajax提交*/
                     submitHandler: function (form) {
-
                         jQuery.ajax({
                             url: '{{url('repair/create_repair')}}',
                             type: 'POST',
@@ -284,7 +371,6 @@
             );
 
 
-            zjb.initAjax();
             var l = $("#btn2").ladda();
             var forms2 = $("#general_repair");
             $('#btn2').click(function () {
@@ -293,9 +379,30 @@
             /*字段验证*/
             forms2.validate(
                 {
+                    rules: {
+                        asset_id: {
+                            required: true,
+                            digits: true,
+                            min: 1
+                        },
+                        remarks: {
+                            maxlength: 191
+                        }
+                    },
+                    messages: {
+                        asset_id: {
+                            required: "必须选择一个资产，如果没有资产请检查资产位置中的资产是否存在",
+                            digits: "检查浏览器是否正常",
+                            min: "检查浏览器是否正常"
+                        },
+                        remarks: {
+                            maxlength: "问题描述不可超过191字符"
+                        }
+
+                    },
+
                     /*ajax提交*/
                     submitHandler: function (form) {
-
                         jQuery.ajax({
                             url: '{{url('repair/create_repair')}}',
                             type: 'POST',
@@ -328,7 +435,8 @@
                         return false;
                     }
                 }
-            );
+            )
+            ;
 
             //资产报修图片上传
             zjb.imageUpload({
@@ -353,9 +461,11 @@
                 fileDelete: function (fileId, uploader) {
                 }
             });
-        });
+        })
+        ;
         //通用报修图片上传
         var isset = 0;
+
         function newImg() {
             if (isset !== 1) {
                 isset = 1;

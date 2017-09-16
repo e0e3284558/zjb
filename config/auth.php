@@ -45,6 +45,11 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'service_workers' => [
+            'driver' => 'session',
+            'provider' => 'service_workers',
+        ],
     ],
 
     /*
@@ -68,6 +73,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User\User::class,
+        ],
+
+        'service_workers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Repair\ServiceWorker::class,
         ],
 
         // 'users' => [
@@ -97,6 +107,13 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
         ],
+
+        'service_workers' => [
+            'provider' => 'service_workers',
+            'table' => 'service_worker_password_resets',
+            'expire' => 60,
+        ],
+
     ],
 
 ];
