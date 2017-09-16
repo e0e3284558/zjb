@@ -14,15 +14,15 @@
                             <div class="col-sm-3">选择维修结果：</div>
                             <div class="col-sm-9">
                                 <div class=" icheck pull-left" style="margin-right: 10px"><label>
-                                        <input type="radio" value="20" name="status" checked="">
+                                        <input type="radio" value="5" name="status" checked="">
                                         <i></i> 已修好
                                     </label>
                                     <input type="hidden" value="{{$data->id}}" name="id">
                                 </div>
-                                <div class=" icheck pull-left"><label> <input type="radio" name="status" value="0"> <i></i>未修好
+                                <div class=" icheck pull-left"><label> <input type="radio" name="status" value="0"> <i></i>取消工单
                                     </label>
                                 </div>
-                                <div class=" icheck pull-left"><label> <input type="radio" name="status" value="1"> <i></i>等待重新分派
+                                <div class=" icheck pull-left"><label> <input type="radio" name="status" value="1"> <i></i>重新分派
                                     </label>
                                 </div>
 

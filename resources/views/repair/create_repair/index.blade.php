@@ -45,6 +45,7 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
@@ -57,6 +58,9 @@
                                             <tbody>
                                             @foreach($data1 as $v)
                                                 <tr>
+                                                    <td role="gridcell">
+                                                        <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                    </td>
                                                     <td>{{$v->user->name}}</td>
                                                     <td>{{$v->area->name}}</td>
                                                     @if($v->other==1)
@@ -100,6 +104,9 @@
                                             @endforeach
                                             </tbody>
                                         </table>
+                                        <button type="button" onclick="edit()" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                            批量分派
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
@@ -108,6 +115,7 @@
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all2" ></th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
@@ -121,6 +129,9 @@
                                                 <tbody>
                                                 @foreach($data2 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>{{$v->user->name}}</td>
                                                         <td>{{get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
@@ -166,16 +177,24 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                            <button class="btn btn-warning btn-sm left"
+                                                    data-toggle="modal"
+                                                    data-target=".bs-example-modal-lg"
+                                                    onclick="edit()">重新分派
+                                            </button>
+                                            <button type="button" onclick="batchSuccess()" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                                批量完成
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="tab-pane" id="tab-3">
                                     <div class="tab-pane" id="tab-1">
                                         <div class="panel-body">
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all3" ></th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修资产</th>
@@ -191,6 +210,9 @@
                                                 <tbody>
                                                 @foreach($data3 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>{{$v->user->name}}</td>
                                                         <td>{{get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
@@ -244,6 +266,7 @@
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all4" ></th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
@@ -256,6 +279,9 @@
                                                 <tbody>
                                                 @foreach($data4 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>{{$v->user->name}}</td>
                                                         <td>{{get_area($v->area_id)}}</td>
                                                         @if($v->other==1)
@@ -300,6 +326,7 @@
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all5" ></th>
                                                     <th>状态</th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
@@ -313,6 +340,9 @@
                                                 <tbody>
                                                 @foreach($data5 as $v)
                                                     <tr>
+                                                        <td role="gridcell">
+                                                            <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        </td>
                                                         <td>
                                                             @if($v->status=='1' || $v->status=='4' || $v->status=='7')
                                                                 <span class="label label-default" >待分派</span>
@@ -399,6 +429,62 @@
     </div>
 
     <script>
+        $("document").ready(function () {
+            $('.i-checks,#all1,#all2,#all3,#all4,#all5').iCheck({
+                checkboxClass: 'icheckbox_minimal-blue'
+            });
+
+            function all(id) {
+                $(id).on('ifChecked ifUnchecked', function(event){
+                    if(event.type == 'ifChecked'){
+                        $(this).parents('thead').next('tbody').find('.i-checks').iCheck('check');
+                    }else{
+                        $(this).parents('thead').next('tbody').find('.i-checks').iCheck('uncheck');
+                    }
+                });
+            }
+            all("#all1");
+            all("#all2");
+            all("#all3");
+            all("#all4");
+            all("#all5");
+        });
+
+        function str(message) {
+            var messages = "<div class='modal-header'>" +
+                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
+                "<span aria-hidden='true'>&times;</span></button> </div> " +
+                "<div class='modal-body'>" +
+                message +
+                "</div><div class='modal-footer'> <button type='button' class='btn btn-primary' data-dismiss='modal'>确定</button> </div>"
+            return messages;
+        }
+
+        //批量分派
+        function edit() {
+            if($("tbody input[type='checkbox']:checked").length >= 1){
+
+                var arr = [];
+                $("tbody input[type='checkbox']:checked").each(function() {
+                    //判断
+                    var id = $(this).val();
+                    arr.push(id);
+                });
+
+                $.ajax({
+                    type: "get",
+                    url: '{{url('repair/create_repair/edit')}}/'+arr,
+
+                    success: function (data) {
+                        $(".modal-content").html(data);
+                    }
+                });
+
+            }else{
+                $(".modal-content").html(str("请选择数据"));
+            }
+        }
+
         function assign(id) {
             var url = '{{url("repair/create_repair/assign_worker/")}}/' + id;
             $.ajax({
@@ -451,5 +537,17 @@
                 }
             })
         }
+
+        function batchSuccess(cid) {
+            var url = '{{url('repair/create_repair/success')}}/' + cid;
+            $.ajax({
+                "url": url,
+                "type": 'get',
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
+                }
+            })
+        }
+
     </script>
 @endsection

@@ -77,8 +77,14 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     //完成报修
     Route::get('create_repair/success/{id}', 'CreateRepairController@success');
     Route::post('create_repair/success_store', 'CreateRepairController@successStore');
+    //批量完成
+    Route::get('create_repair/batch_success/{str}', 'CreateRepairController@batchSuccess');
+    Route::post('create_repair/batch_success_store', 'CreateRepairController@batchSuccessStore');
     //修改状态为不可再修
     Route::post('create_repair/del/{id}', 'CreateRepairController@del');
+    //批量分派
+    Route::get('create_repair/edit/{arr}', 'CreateRepairController@edit');
+    Route::post('create_repair/update', 'CreateRepairController@update');
     //创建报修
     Route::resource('create_repair', 'CreateRepairController');
     //选择分类
@@ -92,6 +98,7 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
 
     //根据选择条件选取维修工
     Route::post('create_repair/select_worker', 'CreateRepairController@selectWorker');
+
     //选中维修工进行派工
     Route::post('create_repair/confirm_worker', 'CreateRepairController@confirmWorker');
 
