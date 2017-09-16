@@ -144,6 +144,44 @@ class CreateRepairController extends Controller
         }
     }
 
+    public function edit($str){
+        //获取当前登录公司下的所有服务商
+        $serviceProvider = ServiceProvider::with('org')->get()->toArray();
+        foreach ($serviceProvider as $a) {
+            if (($a['org'])) {
+                if ($a['org'][0]['id'] == Auth::user()->org_id) {
+                    $data[] = $a;
+                }
+            }
+        }
+        $serviceProvider = $data;
+        //获取当前登录公司下的所有分类
+        $classify = Classify::where('org_id', Auth::user()->org_id)
+            ->where('enabled',1)
+            ->OrderBy('sorting', 'desc')
+            ->get();
+        //循环输出已获取分类的所有维修工
+        foreach ($classify as $v) {
+            $serviceWorker[] = $v->serviceWorker()->get();
+        }
+        return response()->view("repair.create_repair.batch_assign",compact('classify', 'serviceWorker', 'serviceProvider','str'));
+    }
+
+    public function update(Request $request){
+        $arr = explode(',',$request->str);
+        foreach ($arr as $v){
+            $list = [
+                'service_worker_id' => $request->service_worker_id,
+                'service_provider_id' => $request->service_provider_id,
+                'status' => 2
+            ];
+            $info = Process::where("id",$v)->update($list);
+        }
+        return response()->json([
+            'status' => 1, 'message' => '分派成功'
+        ]);
+    }
+
     /**
      * 分配维修工
      * @param $id
@@ -219,7 +257,7 @@ class CreateRepairController extends Controller
         $repair = Process::find($request['id']);
         $repair->service_worker_id = $request['service_worker_id'];
         $repair->service_provider_id = $request['service_provider_id'];
-        $repair->status = 3;
+        $repair->status = 2;
         if ($repair->save()) {
             return response()->json([
                 'status' => 1, 'message' => '分派成功'
@@ -295,6 +333,18 @@ class CreateRepairController extends Controller
             ]);
         }
     }
+
+
+    //批量完成维修
+    public function batchSuccess($str){
+        dd($str);
+    }
+
+    //完成报修
+    public function batchSuccessStore(Request $request){
+
+    }
+
 
     /**
      * 将该条记录的状态值改为0，不可再修，报废处理
