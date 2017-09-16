@@ -159,12 +159,13 @@
                             }
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            if (xhr.status == 422 && textStatus == 'error') {
-                                $.each(xhr.responseJSON, function (i, v) {
-                                    toastr.error(v[0], '警告');
+                            if(xhr.status == 422 && textStatus =='error'){
+                                _$error = xhr.responseJSON.errors;
+                                $.each(_$error,function(i,v){
+                                    toastr.error(v[0],'警告');
                                 });
-                            } else {
-                                toastr.error('请求出错，稍后重试', '警告');
+                            }else{
+                                toastr.error('请求出错，稍后重试','警告');
                             }
                         }
                     });

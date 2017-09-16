@@ -45,7 +45,7 @@
                 <li class="dd-item">
                     <div class="dd-handle ">
                         <img id="thumb_img" src="{{ get_img_path($data->upload_id) }}" alt="" class="img-lg">
-                        <input type="hidden" id="upload_id" name="upload_id" value="">
+                        <input type="hidden" id="upload_id" name="upload_id" value="{{$data->upload_id}}">
                         <div id="single-upload" class="btn-upload m-t-xs">
                             <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 更新图片</div>
                             <div id="single-upload-file-list"></div>
@@ -54,7 +54,7 @@
                 </li>
                 <li class="dd-item">
                     <div class="dd-handle ">
-                        <label>维修人员维修种类</label>
+                        <label>擅长维修项目</label>
                         @foreach($classifies as $k=>$v)
                             @if(!$v->deleted_at)
                                 <label class="checkbox-inline i-checkbox">
@@ -88,9 +88,7 @@
                     </div>
                 </li>
                 <li>
-                    <input type="hidden" name="org_id" value="{{session('org_id',0)}}">
                     <button type="submit" class="btn btn-success">编辑</button>
-
                 </li>
             </form>
         </div>
@@ -169,12 +167,13 @@
                             }
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            if (xhr.status == 422 && textStatus == 'error') {
-                                $.each(xhr.responseJSON, function (i, v) {
-                                    toastr.error(v[0], '警告');
+                            if(xhr.status == 422 && textStatus =='error'){
+                                _$error = xhr.responseJSON.errors;
+                                $.each(_$error,function(i,v){
+                                    toastr.error(v[0],'警告');
                                 });
-                            } else {
-                                toastr.error('请求出错，稍后重试', '警告');
+                            }else{
+                                toastr.error('请求出错，稍后重试','警告');
                             }
                         }
                     });
