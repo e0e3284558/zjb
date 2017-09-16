@@ -67,8 +67,9 @@
 
 
                                             <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
-                                                <div class="col-sm-10"><input type="text" name="remarks"
-                                                                              class="form-control"></div>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="3" name="remarks"></textarea>
+                                                </div>
                                             </div>
                                             <input type="hidden" name="other" value="0">
                                             <div class="form-group">
@@ -131,8 +132,8 @@
 
                                             <input type="hidden" name="other" value="1">
                                             <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
-                                                <div class="col-sm-10"><input type="text" name="remarks"
-                                                                              class="form-control"></div>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" rows="3" name="remarks"></textarea>
                                             </div>
 
                                             <div class="form-group">
