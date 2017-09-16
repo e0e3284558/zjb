@@ -87,11 +87,19 @@
                                                 <img alt="image" class="img-circle" src="{{get_avatar($v->user_id)}}">
                                             </a>
                                             <div class="media-body ">
-                                                <small class="pull-right">{{(time()-strtotime($v->updated_at))/(60*60*24)}}</small>
+                                                <small class="pull-right">{{intval((time()-strtotime($v->updated_at))/(60*60*24))}}
+                                                    天前
+                                                </small>
                                                 {{$v->appraisal}}
                                             </div>
+                                            <div class="media-bottom pull-left">
+                                                <small class="pull-right">
+                                                    @for($i=0;$i< $v->score;$i++ )
+                                                        <i class="fa fa-star" style="color:#e8bd0d;"></i>
+                                                    @endfor
+                                                </small>
+                                            </div>
                                         </div>
-
                                     </div>
                                 @endforeach
 
