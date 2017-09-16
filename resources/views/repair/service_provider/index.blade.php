@@ -138,24 +138,23 @@
 
                     @endforeach
                 </div> -->
-                 @foreach($data as $k=>$v)
+                 @foreach($serviceProvider as $k=>$v)
                     <div class="col-md-6">
                         <div class="ibox">
                             <div class="ibox-title">
                                 <span class="label label-primary pull-right">编辑</span>
-                                <h5>{{$v['name']}}</h5>
+                                <h5>{{$v->name}}</h5>
                             </div>
-                            <div class="ibox-content">
+                            <div class="ibox-content h-150">
+                                <!-- {{dump($v)}} -->
                                 <div class="team-members">
-                                    @if(isset($service_worker[$k]))
-                                        @foreach($service_worker[$k] as $img)
-                                            @foreach($img as $a)
-                                                @if($a['upload_id']!==null)
-                                                    {!! avatar_circle($a['upload_id'],'') !!}
-                                                @else
-                                                    {!! avatar_circle(null,$a['name'] )!!}
-                                                @endif
-                                            @endforeach
+                                    @if(isset($v->service_worker))
+                                        @foreach($v->service_worker as $img)
+                                            @if($img->upload_id)
+                                                {!! avatar_circle($img->upload_id,'') !!}
+                                            @else
+                                                {!! avatar_circle(null,$img->name )!!}
+                                            @endif
                                         @endforeach
                                     @endif
                                 </div>
