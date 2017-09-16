@@ -26,17 +26,17 @@ class ServiceWorkerRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'username' => 'required|min:6|max:20|unique:service_workers'.Request('id'),
+                    'username' => 'required|min:6|max:20|unique:service_workers',
                     'password' => 'required|min:6|max:20',
                     'name' => 'required|min:2|max:10',
-                    'tel' => 'required|numeric|digits:11|unique:service_workers'.Request('id'),
+                    'tel' => 'required|numeric|digits:11|unique:service_workers',
                 ];
             case 'PUT':
                 return [
-                    'username' => 'required|min:6|max:20|unique:service_workers'.Request('id'),
+                    'username' => 'required|min:6|max:20|unique:service_workers,username,'.Request('service_worker'),
                     'password' => 'nullable|min:6',
                     'name' => 'required|min:2|max:10',
-                    'tel' => 'required|numeric|digits:11|unique:service_workers'.Request('id'),
+                    'tel' => 'required|numeric|digits:11|unique:service_workers,tel,'.Request('service_worker'),
                 ];
         }
 
