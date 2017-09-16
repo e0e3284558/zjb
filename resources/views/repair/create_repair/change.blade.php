@@ -1,10 +1,10 @@
 <div class="ibox">
     <div class="ibox-title">
-        <h5>分派维修工</h5>
+        <h5>分派维修人员</h5>
     </div>
     <div class="ibox-content">
         <p class="m-b-lg">
-            重新分派维修工。
+            重新分派维修人员。
         </p>
 
         <div class="dd" id="nestable2">
@@ -63,7 +63,7 @@
                         <div class="col-lg-6">
                             <li class="dd-item">
                                 <div class="dd-handle ">
-                                    <label>选择维修工类型</label>
+                                    <label>选择维修人员类型</label>
                                     <select name="" id="" class="form-control" onchange="change_classify(this.value)">
                                         <option value="">-----请选择类型-----</option>
                                         @foreach($classify as $v)
@@ -89,7 +89,7 @@
                         <div class="col-lg-6">
                             <li class="dd-item">
                                 <div class="dd-handle ">
-                                    <label>选择维修工</label>
+                                    <label>选择维修人员</label>
                                     <select name="service_worker_id" class="form-control" id="service_worker">
                                         <option value="">请选择分类信息</option>
                                     </select>

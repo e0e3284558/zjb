@@ -75,7 +75,7 @@
                             <div class="ibox-content">
                                 <div class="team-members">
                                     <div class="form-group">
-                                        维修工成员
+                                        维修成员
                                     </div>
                                     @if(isset($service_worker[$k]))
                                         @foreach($service_worker[$k] as $img)
@@ -133,7 +133,7 @@
         }
 
 
-        /*更新所选分类的维修工*/
+        /*更新所选分类的维修人员*/
         function serviceProvider(id) {
             url = '{{url('repair/service_provider')}}/' + id;
             $.ajax({

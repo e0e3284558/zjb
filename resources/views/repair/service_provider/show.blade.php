@@ -87,11 +87,25 @@
                                                 <img alt="image" class="img-circle" src="{{get_avatar($v->user_id)}}">
                                             </a>
                                             <div class="media-body ">
-                                                <small class="pull-right">{{(time()-strtotime($v->updated_at))/(60*60*24)}}</small>
+                                                @if($day=intval((time()-strtotime($v->updated_at))/(60*60*24)))
+                                                    <small class="pull-right">{{$day}}天前</small>
+                                                @else
+                                                    @if($hour=intval((time()-strtotime($v->updated_at))/(60*60)))
+                                                        <small class="pull-right">{{$hour}}小时前</small>
+                                                    @else
+                                                        <small class="pull-right">{{intval((time()-strtotime($v->updated_at))/(60))}}分钟前</small>
+                                                    @endif
+                                                @endif
                                                 {{$v->appraisal}}
                                             </div>
+                                            <div class="media-bottom pull-left">
+                                                <small class="pull-right">
+                                                    @for($i=0;$i< $v->score;$i++ )
+                                                        <i class="fa fa-star" style="color:#e8bd0d;"></i>
+                                                    @endfor
+                                                </small>
+                                            </div>
                                         </div>
-
                                     </div>
                                 @endforeach
 
@@ -121,7 +135,7 @@
                                                     <span class="label label-success"><i
                                                                 class="fa fa-check"></i> 待评价</span>
                                                     @break
-                                                    @case(10)
+                                                    @case(6)
                                                     <span class="label label-primary" title="{{$v->appraisal}}"><i
                                                                 class="fa fa-check"></i> 已评价</span>
                                                     @break
@@ -154,7 +168,7 @@
 
 <script type="text/javascript">
 
-    /*更新所选分类的维修工*/
+    /*更新所选分类的维修人员*/
     function edit(id) {
         url = '{{url('repair/service_provider')}}/' + id + '/edit';
         $.ajax({

@@ -14,7 +14,7 @@
                 </li>
 
                 <li class="active">
-                    <strong>维修工列表</strong>
+                    <strong>维修人员列表</strong>
                 </li>
             </ol>
         </div>
@@ -35,7 +35,7 @@
                             <ol class="dd-list">
                                 <li>
                                     <button class="btn btn-primary"
-                                            onclick="add('{{url("repair/service_worker/create")}}')">添加维修工
+                                            onclick="add('{{url("repair/service_worker/create")}}')">添加维修人员
                                     </button>
                                 </li>
                                 <a href="{{url('repair/service_worker')}}">
@@ -124,7 +124,7 @@
 
     <script type="text/javascript">
 
-        /*更新所选分类的维修工*/
+        /*更新所选分类的维修人员*/
         function serviceWorker(id) {
             url = '{{url('repair/service_worker')}}/' + id;
             $.ajax({
