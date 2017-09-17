@@ -117,12 +117,12 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair','middleware' => 'aut
     Route::get('process/showImg/{id}','ProcessController@showImg');
     //接收维修单
     Route::post('process/create/{id}', 'ProcessController@create');
-    //填写维修结果
-    Route::get('process/refuse/{id}', 'ProcessController@refuse');
+    //加载拒绝维修单视图
+    Route::get('process/refuse/{str}', 'ProcessController@refuse');
     //批量接收维修单
     Route::get('process/batchEdit/{str}', 'ProcessController@batchEdit');
     //批量拒绝维修单
-    Route::get('process/batchRefuse/{str}', 'ProcessController@batchRefuse');
+    Route::post('process/batchRefuse/{str}', 'ProcessController@batchRefuse');
     Route::resource('process', 'ProcessController');
 });
 //-------------------------------------------------------------------------

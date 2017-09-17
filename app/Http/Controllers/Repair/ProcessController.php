@@ -149,35 +149,36 @@ class ProcessController extends Controller
      * @return \Illuminate\Http\Response
      * 拒接接收维修单
      */
-    public function refuse($id)
+    public function refuse($str)
     {
-        $info = Process::where('id', $id)->update(['status' => '4']);
-        $message = [];
-        if ($info) {
-            $message = [
-                'code' => 1,
-                'message' => '成功'
-            ];
-        } else {
-            $message = [
-                'code' => 0,
-                'message' => '失败'
-            ];
-        }
-        return response()->json($message);
+        return response()->view("repair.process.refuse",compact('str'));
+//        $info = Process::where('id', $id)->update(['status' => '4']);
+//        $message = [];
+//        if ($info) {
+//            $message = [
+//                'code' => 1,
+//                'message' => '成功'
+//            ];
+//        } else {
+//            $message = [
+//                'code' => 0,
+//                'message' => '失败'
+//            ];
+//        }
+//        return response()->json($message);
     }
 
     /**
+     * @param Request $request
      * @param $str
      * @return \Illuminate\Http\JsonResponse
      * 批量拒接接收维修单
      */
-    public function BatchRefuse($str)
+    public function BatchRefuse(Request $request,$str)
     {
-        dd($str);
         $arr = explode(',', $str);
         foreach ($arr as $v) {
-            $info = Process::where('id', $v)->update(['status' => '4']);
+            $info = Process::where('id', $v)->update(['status' => '4','suggest'=>$request->suggest]);
         }
         $message = [];
         if ($info) {
