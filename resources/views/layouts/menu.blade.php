@@ -19,7 +19,7 @@
         <li class="{{ active_class(if_route('service_worker.index'))}}"><a
                     href="{{ url('repair/service_worker?app_groups=repair') }}"><i
                         class="fa fa-angle-right"></i>
-                维修工管理</a>
+                维修人员管理</a>
         </li>
         <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                     href="{{ url('repair/create_repair?app_groups=repair') }}"><i
