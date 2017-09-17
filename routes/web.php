@@ -180,12 +180,12 @@ Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth']
 //-------------------------------------------------------------------------
 //文件管理模块路由结束
 
-//维修工登录
+//个人信息及密码修改
 //-------------------------------------------------------------------------
 
-//Route::group(['namespace' => 'Repair'], function () {
-//    Route::resource('work_login', 'WorkerLoginController');
-//});
+Route::group(['prefix' => 'users', 'namespace' => 'User'], function () {
+    Route::resource('pensonal', 'PensonalController');
+});
 
 //-------------------------------------------------------------------------
 //维修工登录

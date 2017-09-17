@@ -77,7 +77,7 @@
                                                     <td>
                                                         @if(!collect($v->img)->isEmpty())
                                                             <span class="cursor_pointer"
-                                                                  onclick="showImg('{{url('repair/process/showImg')}}/{{$v->id}}')"
+                                                                  onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
                                                                   data-toggle="modal" data-target=".bs-example-modal-md"
                                                                   title="详情">详情</span>
                                                         @endif
@@ -133,7 +133,7 @@
                                                     <td>
                                                         @if(!collect($v->img)->isEmpty())
                                                             <span class="cursor_pointer"
-                                                                  onclick="showImg('{{url('repair/process/showImg')}}/{{$v->id}}')"
+                                                                  onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
                                                                   data-toggle="modal" data-target=".bs-example-modal-md"
                                                                   title="详情">详情</span>
                                                         @endif
