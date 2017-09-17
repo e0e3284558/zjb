@@ -30,12 +30,12 @@
                     <div class="ibox-content">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab-1" data-toggle="tab">新增报修单</a></li>
-                                <li class=""><a href="#tab-2" data-toggle="tab">待评价</a></li>
-                                <li class=""><a href="#tab-3" data-toggle="tab">全部报修单</a></li>
+                                <li class="@if (request()->active=='new' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">新增报修单</a></li>
+                                <li class="@if (request()->active=='wait') active  @endif"><a href="#tab-2" data-toggle="tab">待评价</a></li>
+                                <li class="@if (request()->active=='all') active  @endif"><a href="#tab-3" data-toggle="tab">全部报修单</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab-1">
+                                <div class="tab-pane @if (request()->active=='new' || !request()->active) active  @endif" id="tab-1">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -94,8 +94,9 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="page-header">{{ $list1->appends(['active' => 'new'])->links() }}</div>
                                 </div>
-                                <div class="tab-pane" id="tab-2">
+                                <div class="tab-pane @if (request()->active=='wait') active  @endif" id="tab-2">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -157,8 +158,9 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="page-header">{{ $list2->appends(['active' => 'wait'])->links() }}</div>
                                 </div>
-                                <div class="tab-pane" id="tab-3">
+                                <div class="tab-pane @if (request()->active=='all') active  @endif" id="tab-3">
                                     <div class="tab-pane" id="tab-1">
                                         <div class="panel-body">
                                             <table class="table">
@@ -211,6 +213,7 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="page-header">{{ $list3->appends(['active' => 'all'])->links() }}</div>
                                 </div>
                             </div>
                         </div>

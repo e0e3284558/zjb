@@ -34,7 +34,7 @@
                                 <li class="@if (request()->active=='end') active  @endif"><a href="#tab-3" data-toggle="tab">已结束工单</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab-1">
+                                <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif" id="tab-1">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -122,7 +122,7 @@
                                     </div>
                                     <div class="page-header">{{ $list1->appends(['active' => 'wait'])->links() }}</div>
                                 </div>
-                                <div class="tab-pane" id="tab-2">
+                                <div class="tab-pane @if (request()->active=='result') active  @endif" id="tab-2">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -200,7 +200,7 @@
                                     </div>
                                     <div class="page-header">{{ $list2->appends(['active' => 'result'])->links() }}</div>
                                 </div>
-                                <div class="tab-pane" id="tab-3">
+                                <div class="tab-pane @if (request()->active=='end') active  @endif" id="tab-3">
                                     <div class="tab-pane" id="tab-3">
                                         <div class="panel-body">
                                             <table class="table">

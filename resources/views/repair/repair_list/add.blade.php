@@ -159,7 +159,7 @@
                                 type: "success",
                                 timer: 1000,
                             },function () {
-                                window.location.href="{{url('/repair/repair_list?')}}"
+                                window.location.href="{{url('/repair/repair_list?active=wait')}}"
                             });
                         }else{
                             swal("", data.message, "error");
