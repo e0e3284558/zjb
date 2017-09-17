@@ -18,15 +18,16 @@ class RepairListController extends Controller
     public function index()
     {
         //新工单
-        $list1 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("user_id",Auth::user()->id)->orderBy('id','desc')->where("status","2")->orWhere('status','1')->orWhere('status','7')->orWhere('status','4')->get();
+        $list1 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("user_id",Auth::user()->id)
+            ->orderBy('id','desc')->where("status","2")->orWhere('status','1')->orWhere('status','7')->orWhere('status','4')->get();
         //待评价
-        $list2 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("user_id",Auth::user()->id)->orderBy('id','desc')->where("status","5")->get();
+        $list2 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("user_id",Auth::user()->id)
+            ->orderBy('id','desc')->where("status","5")->get();
         //全部工单
         $list3 = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("user_id",Auth::user()->id)->orderBy('id','desc')->get();
         $list = Process::with('org','user','admin','asset','otherAsset','category','serviceWorker','serviceProvider')
                          ->where("user_id",Auth::user()->id)->orderBy('id','desc')->get();
-//        return view("repair.process.index",compact("list1","list2","list3"));
-        return view("repair.repair_list.index",compact("list1","list2","list3","list"));
+        return view("repair.repair_list.index",compact("list1","list2","list3"));
     }
 
     /**
