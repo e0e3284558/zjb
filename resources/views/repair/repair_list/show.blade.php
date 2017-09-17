@@ -8,28 +8,36 @@
         <tbody>
         <tr role="row">
             <td><label class="control-label">报修项名称</label></td>
-            @if($info->other=="0")
-                <td>{{$info->asset->name}}</td>
-            @else
-                <td>{{$info->otherAsset->name}}</td>
-            @endif
-            <td><label class="control-label">维修服务商</label></td>
-            @if($info->serviceProvider)
-                <td>{{$info->serviceProvider->name}}</td>
-            @else
-                <td>待分派中...</td>
-            @endif
+            <td>
+                @if($info->other=="0")
+                    {{$info->asset->name}}
+                @else
+                    {{$info->otherAsset->name}}
+                @endif
+            </td>
+            <td><label class="control-label">所在场地</label></td>
+            <td>{{$info->area_id?get_area($info->area_id):""}}</td>
 
-            <td><label class="control-label">维修人员</label></td>
-            @if($info->serviceWorker)
-                <td>{{$info->serviceWorker->name}}</td>
-            @else
-                <td>待分派中...</td>
-            @endif
         </tr>
         <tr role="row">
-            <td><label class="control-label">所在场地</label></td>
-            <td>{{$info->area_id?$info->area->name:""}}</td>
+            <td><label class="control-label">维修服务商</label></td>
+            <td>
+                @if($info->serviceProvider)
+                    {{$info->serviceProvider->name}}
+                @else
+                    待分派中...
+                @endif
+            </td>
+            <td><label class="control-label">维修人员</label></td>
+            <td>
+            @if($info->serviceWorker)
+                {{$info->serviceWorker->name}}
+            @else
+                待分派中...
+            @endif
+            </td>
+        </tr>
+        <tr role="row">
             <td><label class="control-label">报修项类别</label></td>
             <td>{{$info->asset_classify_id?$info->category->name:""}}</td>
             <td><label class="control-label">报修原因</label></td>
