@@ -45,12 +45,14 @@
                             </ul>
 
                             <div class="tab-content">
-                                <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif" id="tab-1" >
+                                <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif"
+                                     id="tab-1">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1">
+                                                </th>
                                                 <th>状态</th>
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
@@ -69,15 +71,13 @@
                                                     </td>
                                                     <td>
                                                         @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                            <span class="label label-info" >待分派</span>
+                                                            <span class="label label-info">待分派</span>
                                                         @endif
                                                     </td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->other==1)
-                                                        @if($v->otherAsset)
-                                                            <td>{{$v->otherAsset->name}}</td>
-                                                        @endif
+                                                    @if($v->classify && (!$v->asset_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
@@ -110,7 +110,8 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary"
+                                                data-toggle="modal" data-target=".bs-example-modal-lg">
                                             批量分派
                                         </button>
                                     </div>
@@ -119,7 +120,7 @@
 
                                 </div>
                                 <div class="tab-pane @if (request()->active=='doing') active  @endif" id="tab-2">
-                                    <div class="tab-pane" >
+                                    <div class="tab-pane">
                                         <div class="panel-body">
                                             <table class="table">
                                                 <thead>
@@ -145,10 +146,8 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->asset_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
@@ -194,7 +193,9 @@
                                                     data-target=".bs-example-modal-lg"
                                                     onclick="edit(this)">重新分派
                                             </button>
-                                            <button type="button" onclick="batchSuccess(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-md">
+                                            <button type="button" onclick="batchSuccess(this)"
+                                                    class="btn btn-sm btn-primary" data-toggle="modal"
+                                                    data-target=".bs-example-modal-md">
                                                 批量完成
                                             </button>
                                         </div>
@@ -203,7 +204,7 @@
                                 </div>
 
                                 <div class="tab-pane @if (request()->active=='assess') active  @endif" id="tab-3">
-                                    <div class="tab-pane" >
+                                    <div class="tab-pane">
                                         <div class="panel-body">
                                             <table class="table">
                                                 <thead>
@@ -228,13 +229,12 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->asset_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
+
 
                                                         @if($v->classify_id && $v->classify)
                                                             <td>{{$v->classify->name}}</td>
@@ -268,7 +268,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane @if (request()->active=='success') active  @endif" id="tab-4">
-                                    <div class="tab-pane" >
+                                    <div class="tab-pane">
                                         <div class="panel-body">
                                             <table class="table">
                                                 <thead>
@@ -277,7 +277,7 @@
                                                                id="all3"></th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
-                                                    <th>报修资产</th>
+                                                    <th>报修项目</th>
                                                     <th>报修分类</th>
                                                     <th>报修照片</th>
                                                     <th>报修备注</th>
@@ -296,10 +296,8 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->asset_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
@@ -368,11 +366,13 @@
                                                     <tr>
                                                         <td role="gridcell">
                                                             @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                                <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                                <input type="checkbox" class="i-checks" name="id"
+                                                                       value="{{$v->id}}">
                                                             @elseif($v->status=='2')
-                                                                <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                                <input type="checkbox" class="i-checks" name="id"
+                                                                       value="{{$v->id}}">
                                                             @elseif($v->status=='3')
-                                                                <input type="checkbox" class="i-checks" disabled >
+                                                                <input type="checkbox" class="i-checks" disabled>
                                                             @elseif($v->status=='5')
                                                                 <input type="checkbox" class="i-checks" disabled>
                                                             @elseif($v->status=='6')
@@ -384,32 +384,32 @@
                                                         </td>
                                                         <td>
                                                             @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                                <span class="label label-info" >待分派</span>
+                                                                <span class="label label-info">待分派</span>
                                                             @elseif($v->status=='2')
-                                                                <span class="label label-primary" >待服务</span>
+                                                                <span class="label label-primary">待服务</span>
                                                             @elseif($v->status=='3')
-                                                                <span class="label label-warning" >维修中</span>
+                                                                <span class="label label-warning">维修中</span>
                                                             @elseif($v->status=='5')
-                                                                <span class="label label-default" >待评价</span>
+                                                                <span class="label label-default">待评价</span>
                                                             @elseif($v->status=='6')
-                                                                <span class="label label-success" >已完成</span>
+                                                                <span class="label label-success">已完成</span>
                                                             @elseif($v->status=='0')
-                                                                <span class="label label-danger" >工单已取消</span>
+                                                                <span class="label label-danger">工单已取消</span>
                                                             @endif
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->asset_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
-                                                            <td>{{$v->asset->name}}</td>
+                                                            @if($v->asset)
+                                                                <td>{{$v->asset->name}}</td>
+                                                            @endif
                                                         @endif
 
                                                         @if($v->classify_id && $v->classify)
                                                             <td>{{$v->classify->name}}</td>
-                                                            @else
+                                                        @else
                                                             <td></td>
                                                         @endif
 
@@ -463,9 +463,6 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
-                                            <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
-                                                批量分派
-                                            </button>
                                         </div>
                                     </div>
                                     <div class="page-header">{{ $data5->appends(['active' => 'all'])->links() }}</div>
@@ -514,13 +511,13 @@
 
         //批量分派
         function edit(obj) {
-            if($(obj).prev('table').find("tbody input[type='checkbox']:checked").length >= 1){
+            if ($(obj).prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
                 var arr = [];
-                $(obj).prev('table').find("tbody input[type='checkbox']:checked").each(function() {
+                $(obj).prev('table').find("tbody input[type='checkbox']:checked").each(function () {
 
                     //判断
                     var id = $(this).val();
-                    if(id!='on'){
+                    if (id != 'on') {
                         arr.push(id);
                     }
                 });
@@ -592,9 +589,9 @@
         }
 
         function batchSuccess(obj) {
-            if($(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").length >= 1){
+            if ($(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
                 var arr = [];
-                $(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").each(function() {
+                $(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").each(function () {
                     //判断
                     var id = $(this).val();
                     arr.push(id);
@@ -607,7 +604,7 @@
                         $(".bs-example-modal-md .modal-content").html(data);
                     }
                 })
-            }else{
+            } else {
                 $(".modal-content").html(str("请选择数据"));
             }
         }

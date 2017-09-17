@@ -30,12 +30,12 @@
                     <div class="ibox-content">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab-1" data-toggle="tab">新增报修单</a></li>
-                                <li class=""><a href="#tab-2" data-toggle="tab">待评价</a></li>
-                                <li class=""><a href="#tab-3" data-toggle="tab">全部报修单</a></li>
+                                <li class="@if (request()->active=='new' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">新增报修单</a></li>
+                                <li class="@if (request()->active=='wait') active  @endif"><a href="#tab-2" data-toggle="tab">待评价</a></li>
+                                <li class="@if (request()->active=='all') active  @endif"><a href="#tab-3" data-toggle="tab">全部报修单</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab-1">
+                                <div class="tab-pane @if (request()->active=='new' || !request()->active) active  @endif" id="tab-1">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -60,10 +60,9 @@
                                                         @endif
                                                     </td>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->other==1)
-                                                        @if($v->otherAsset)
-                                                            <td>{{$v->otherAsset->name}}</td>
-                                                        @endif
+
+                                                    @if($v->classify && (!$v->asset_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
@@ -71,7 +70,7 @@
                                                     @if($v->classify)
                                                         <td>{{$v->classify?$v->classify->name:""}}</td>
                                                     @else
-                                                        <td>无分类</td>
+                                                        <td>等待派分</td>
                                                     @endif
 
                                                     <td>
@@ -95,8 +94,9 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="page-header">{{ $list1->appends(['active' => 'new'])->links() }}</div>
                                 </div>
-                                <div class="tab-pane" id="tab-2">
+                                <div class="tab-pane @if (request()->active=='wait') active  @endif" id="tab-2">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -114,20 +114,16 @@
                                             @foreach($list2 as $v)
                                                 <tr>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    <td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                {{$v->otherAsset->name}}
-                                                            @endif
-                                                        @else
-                                                            {{$v->asset->name}}
-                                                        @endif
-                                                    </td>
+                                                    @if($v->classify && (!$v->asset_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
+                                                    @else
+                                                        <td>{{$v->asset->name}}</td>
+                                                    @endif
                                                     <td>
                                                         @if($v->classify)
                                                             {{$v->classify?$v->classify->name:""}}
                                                         @else
-                                                            无分类
+                                                            等待派分
                                                         @endif
                                                     </td>
                                                     <td>
@@ -149,8 +145,10 @@
 
                                                     <td>
                                                         @if($v->status=="5")
-                                                            <button class="btn btn-primary" onclick="edit('{{$value->id}}')"
-                                                                    data-toggle="modal" data-target=".bs-example-modal-md">
+                                                            <button class="btn btn-primary"
+                                                                    onclick="edit('{{$v->id}}')"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-md">
                                                                 评价
                                                             </button>
                                                         @endif
@@ -160,8 +158,9 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="page-header">{{ $list2->appends(['active' => 'wait'])->links() }}</div>
                                 </div>
-                                <div class="tab-pane" id="tab-3">
+                                <div class="tab-pane @if (request()->active=='all') active  @endif" id="tab-3">
                                     <div class="tab-pane" id="tab-1">
                                         <div class="panel-body">
                                             <table class="table">
@@ -178,28 +177,26 @@
                                                 <tbody>
                                                 @foreach($list3 as $v)
                                                     <tr>
-                                                        <td>
-                                                            @if($v->other==1)
-                                                                @if($v->otherAsset)
-                                                                    {{$v->otherAsset->name}}
-                                                                @endif
-                                                            @else
-                                                                {{$v->asset->name}}
-                                                            @endif
-                                                        </td>
+                                                        @if($v->classify && (!$v->asset_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
+                                                        @else
+                                                            <td>{{$v->asset->name}}</td>
+                                                        @endif
+                                                        
                                                         <td>{{@get_area($v->area_id)}}</td>
 
                                                         @if($v->classify)
                                                             <td>{{$v->classify?$v->classify->name:""}}</td>
                                                         @else
-                                                            <td>无分类</td>
+                                                            <td>等待派分</td>
                                                         @endif
 
                                                         <td>
                                                             @if(!collect($v->img)->isEmpty())
                                                                 <span class="cursor_pointer"
                                                                       onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      data-toggle="modal"
+                                                                      data-target=".bs-example-modal-md"
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
@@ -216,6 +213,7 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="page-header">{{ $list3->appends(['active' => 'all'])->links() }}</div>
                                 </div>
                             </div>
                         </div>

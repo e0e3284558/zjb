@@ -28,7 +28,9 @@ class ProcessController extends Controller
         //工单已经结束
         $list3 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("service_worker_id", auth('service_workers')->user()->id)
-            ->where("status", "6")->orWhere('status', "0")
+            ->where("status", "6")
+            ->orWhere('status', "0")
+            ->orWhere('status', "5")
             ->paginate(10);
         return view("repair.process.index", compact("list1", "list2", "list3"));
     }
