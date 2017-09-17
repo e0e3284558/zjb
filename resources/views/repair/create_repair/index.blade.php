@@ -74,10 +74,8 @@
                                                     </td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->other==1)
-                                                        @if($v->otherAsset)
-                                                            <td>{{$v->otherAsset->name}}</td>
-                                                        @endif
+                                                    @if($v->classify && (!$v->aseet_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
@@ -145,14 +143,11 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->aseet_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-
                                                         @if($v->classify_id && $v->classify)
                                                             <td>{{$v->classify->name}}</td>
                                                         @else
@@ -228,10 +223,8 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->aseet_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
@@ -277,7 +270,7 @@
                                                                id="all3"></th>
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
-                                                    <th>报修资产</th>
+                                                    <th>报修项目</th>
                                                     <th>报修分类</th>
                                                     <th>报修照片</th>
                                                     <th>报修备注</th>
@@ -296,10 +289,8 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        @if($v->classify && (!$v->aseet_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
@@ -399,10 +390,9 @@
                                                         </td>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+                                                        
+                                                        @if($v->classify && (!$v->aseet_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif

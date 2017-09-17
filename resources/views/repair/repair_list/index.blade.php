@@ -60,10 +60,9 @@
                                                         @endif
                                                     </td>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->other==1)
-                                                        @if($v->otherAsset)
-                                                            <td>{{$v->otherAsset->name}}</td>
-                                                        @endif
+
+                                                    @if($v->classify && (!$v->aseet_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
@@ -114,15 +113,11 @@
                                             @foreach($list2 as $v)
                                                 <tr>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    <td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                {{$v->otherAsset->name}}
-                                                            @endif
-                                                        @else
-                                                            {{$v->asset->name}}
-                                                        @endif
-                                                    </td>
+                                                    @if($v->classify && (!$v->aseet_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
+                                                    @else
+                                                        <td>{{$v->asset->name}}</td>
+                                                    @endif
                                                     <td>
                                                         @if($v->classify)
                                                             {{$v->classify?$v->classify->name:""}}
@@ -149,8 +144,10 @@
 
                                                     <td>
                                                         @if($v->status=="5")
-                                                            <button class="btn btn-primary" onclick="edit('{{$value->id}}')"
-                                                                    data-toggle="modal" data-target=".bs-example-modal-md">
+                                                            <button class="btn btn-primary"
+                                                                    onclick="edit('{{$value->id}}')"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-md">
                                                                 评价
                                                             </button>
                                                         @endif
@@ -178,15 +175,12 @@
                                                 <tbody>
                                                 @foreach($list3 as $v)
                                                     <tr>
-                                                        <td>
-                                                            @if($v->other==1)
-                                                                @if($v->otherAsset)
-                                                                    {{$v->otherAsset->name}}
-                                                                @endif
-                                                            @else
-                                                                {{$v->asset->name}}
-                                                            @endif
-                                                        </td>
+                                                        @if($v->classify && (!$v->aseet_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
+                                                        @else
+                                                            <td>{{$v->asset->name}}</td>
+                                                        @endif
+                                                        
                                                         <td>{{@get_area($v->area_id)}}</td>
 
                                                         @if($v->classify)
@@ -199,7 +193,8 @@
                                                             @if(!collect($v->img)->isEmpty())
                                                                 <span class="cursor_pointer"
                                                                       onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                      data-toggle="modal"
+                                                                      data-target=".bs-example-modal-md"
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
