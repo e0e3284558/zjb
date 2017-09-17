@@ -145,29 +145,39 @@ class ServiceProviderController extends Controller
      */
     public function destroy($id)
     {
-        if (DB::table('org_service_provider')
-            ->where('org_id', Auth::user()->org_id)
-            ->where('service_provider_id', $id)
-            ->where('status', 0)
-            ->delete()) {
-            if (ServiceProvider::find($id)->delete()) {
-                return response()->json([
-                    'code' => 1,
-                    'message' => '成功删除该服务商'
-                ]);
+        if (DB::table('service_provider_service_worker')
+            ->where('service_provider_id',$id)
+            ->where('status',0)
+            ->get()->isEmpty()
+        ) {
+            if (DB::table('org_service_provider')
+                ->where('org_id', Auth::user()->org_id)
+                ->where('service_provider_id', $id)
+                ->where('status', 0)
+                ->delete()) {
+                if (ServiceProvider::find($id)->delete()) {
+                    return response()->json([
+                        'code' => 1,
+                        'message' => '成功删除该服务商'
+                    ]);
+                } else {
+                    return response()->json([
+                        'code' => 1,
+                        'message' => '已移除与服务商关联关系'
+                    ]);
+                }
+
             } else {
                 return response()->json([
-                    'code' => 1,
-                    'message' => '已移除与服务商关联关系'
+                    'code' => 0,
+                    'message' => '移除失败，请稍候重试'
                 ]);
             }
-
-        } else {
+        }else{
             return response()->json([
                 'code' => 0,
-                'message' => '移除失败，请稍候重试'
+                'message' => '当前服务商下有维修人员，请将所有维修人员移除后再移除该服务商'
             ]);
         }
-
     }
 }

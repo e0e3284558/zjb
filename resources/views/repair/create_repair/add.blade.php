@@ -121,9 +121,9 @@
 
                                             <div class="form-group"><label class="col-sm-2 control-label">报修项</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="asset_id" id="asset">
+                                                    <select class="form-control m-b" name="classify_id" id="asset">
                                                         <option value="">请选择</option>
-                                                        @foreach($other as $v)
+                                                        @foreach($classify as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
                                                     </select>
