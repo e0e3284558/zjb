@@ -58,10 +58,8 @@
                                                     </td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->other==1)
-                                                        @if($v->otherAsset)
-                                                            <td>{{$v->otherAsset->name}}</td>
-                                                        @endif
+                                                    @if($v->classify && (!$v->asset_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
@@ -144,10 +142,8 @@
                                                     <td role="gridcell"><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->other==1)
-                                                        @if($v->otherAsset)
-                                                            <td>{{$v->otherAsset->name}}</td>
-                                                        @endif
+                                                    @if($v->classify && (!$v->asset_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
@@ -199,12 +195,6 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        {{--<button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
-                                            {{--批量接单--}}
-                                        {{--</button>--}}
-                                        {{--<button type="button" onclick="edit(this)" class="btn btn-sm btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
-                                            {{--批量拒单--}}
-                                        {{--</button>--}}
                                     </div>
                                     <div class="page-header">{{ $list2->appends(['active' => 'result'])->links() }}</div>
                                 </div>
@@ -229,13 +219,13 @@
                                                     <tr>
                                                         <td>{{$v->user_id?$v->user->name:""}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->other==1)
-                                                            @if($v->otherAsset)
-                                                                <td>{{$v->otherAsset->name}}</td>
-                                                            @endif
+
+                                                        @if($v->classify_id && (!$v->asset_id))
+                                                            <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
+
 
                                                         @if($v->classify)
                                                             <td>{{$v->classify?$v->classify->name:""}}</td>

@@ -61,7 +61,7 @@
                                                     </td>
                                                     <td>{{@get_area($v->area_id)}}</td>
 
-                                                    @if($v->classify && (!$v->aseet_id))
+                                                    @if($v->classify && (!$v->asset_id))
                                                         <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
@@ -70,7 +70,7 @@
                                                     @if($v->classify)
                                                         <td>{{$v->classify?$v->classify->name:""}}</td>
                                                     @else
-                                                        <td>无分类</td>
+                                                        <td>等待派分</td>
                                                     @endif
 
                                                     <td>
@@ -113,7 +113,7 @@
                                             @foreach($list2 as $v)
                                                 <tr>
                                                     <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->classify && (!$v->aseet_id))
+                                                    @if($v->classify && (!$v->asset_id))
                                                         <td>{{$v->classify->name}}(场地报修)</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
@@ -122,7 +122,7 @@
                                                         @if($v->classify)
                                                             {{$v->classify?$v->classify->name:""}}
                                                         @else
-                                                            无分类
+                                                            等待派分
                                                         @endif
                                                     </td>
                                                     <td>
@@ -145,7 +145,7 @@
                                                     <td>
                                                         @if($v->status=="5")
                                                             <button class="btn btn-primary"
-                                                                    onclick="edit('{{$value->id}}')"
+                                                                    onclick="edit('{{$v->id}}')"
                                                                     data-toggle="modal"
                                                                     data-target=".bs-example-modal-md">
                                                                 评价
@@ -175,7 +175,7 @@
                                                 <tbody>
                                                 @foreach($list3 as $v)
                                                     <tr>
-                                                        @if($v->classify && (!$v->aseet_id))
+                                                        @if($v->classify && (!$v->asset_id))
                                                             <td>{{$v->classify->name}}(场地报修)</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
@@ -186,7 +186,7 @@
                                                         @if($v->classify)
                                                             <td>{{$v->classify?$v->classify->name:""}}</td>
                                                         @else
-                                                            <td>无分类</td>
+                                                            <td>等待派分</td>
                                                         @endif
 
                                                         <td>
