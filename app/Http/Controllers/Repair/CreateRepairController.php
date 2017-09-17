@@ -29,25 +29,25 @@ class CreateRepairController extends Controller
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '1')->orWhere('status', '4')->orWhere('status','7')->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(10);
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '3')
             ->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(10);
         //获取已完成的报修
         $data3 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '6')
             ->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(10);
         //待评价
         $data4 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '5')
             ->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(10);
         //当前公司下的全部的报修
         $data5 = Process::where('org_id', Auth::user()->org_id)->latest()
-            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(2);
+            ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(10);
 
         return view('repair.create_repair.index', compact('data1', 'data2', 'data3','data4','data5'));
     }

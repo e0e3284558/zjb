@@ -29,9 +29,9 @@
                     <div class="ibox-content">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab-1" data-toggle="tab">待服务</a></li>
-                                <li class=""><a href="#tab-2" data-toggle="tab">待填写维修结果</a></li>
-                                <li class=""><a href="#tab-3" data-toggle="tab">已结束工单</a></li>
+                                <li class="@if (request()->active=='wait' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">待服务</a></li>
+                                <li class="@if (request()->active=='result') active  @endif"><a href="#tab-2" data-toggle="tab">待填写维修结果</a></li>
+                                <li class="@if (request()->active=='end') active  @endif"><a href="#tab-3" data-toggle="tab">已结束工单</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab-1">
@@ -120,6 +120,7 @@
                                             批量拒单
                                         </button>
                                     </div>
+                                    <div class="page-header">{{ $list1->appends(['active' => 'wait'])->links() }}</div>
                                 </div>
                                 <div class="tab-pane" id="tab-2">
                                     <div class="panel-body">
@@ -205,6 +206,7 @@
                                             {{--批量拒单--}}
                                         {{--</button>--}}
                                     </div>
+                                    <div class="page-header">{{ $list2->appends(['active' => 'result'])->links() }}</div>
                                 </div>
                                 <div class="tab-pane" id="tab-3">
                                     <div class="tab-pane" id="tab-1">
@@ -263,6 +265,7 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="page-header">{{ $list3->appends(['active' => 'end'])->links() }}</div>
                                 </div>
                             </div>
                         </div>

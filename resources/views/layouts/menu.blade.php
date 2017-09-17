@@ -19,7 +19,7 @@
         <li class="{{ active_class(if_route('service_worker.index'))}}"><a
                     href="{{ url('repair/service_worker?app_groups=repair') }}"><i
                         class="fa fa-angle-right"></i>
-                维修工管理</a>
+                维修人员管理</a>
         </li>
         <li class="{{ active_class(if_route('create_repair.index'))}}"><a
                     href="{{ url('repair/create_repair?app_groups=repair') }}"><i
@@ -39,14 +39,14 @@
 </li>
 @endif
 @if(Auth::user()->is_org_admin=="0")
+    <li class="{{ active_class(if_route('repair_list.index'))}}"><a
+                href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
+            报修记录</a>
+    </li>
     <li class="{{ active_class(if_route('create_repair.create'))}}"><a
                 href="{{ url('repair/create_repair/create?app_groups=repair') }}"><i
                     class="fa fa-angle-right"></i>
             我要报修</a>
-    </li>
-    <li class="{{ active_class(if_route('repair_list.index'))}}"><a
-                href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
-            报修记录</a>
     </li>
 @endif
 @if(auth('service_workers')->user())
