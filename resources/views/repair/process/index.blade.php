@@ -94,7 +94,8 @@
                                                             <button class="btn btn-primary" onclick="edit('{{$v->id}}')">
                                                                 接单
                                                             </button>&nbsp;<button class="btn btn-danger"
-                                                                                   onclick="refuse('{{$v->id}}')">拒绝
+                                                                                   onclick="refuse('{{$v->id}}')"
+                                                                                   data-toggle="modal" data-target=".bs-example-modal-md">拒绝
                                                             </button>
                                                         @elseif($v->status=="3")
                                                             <button class="btn btn-primary" onclick="add('{{$v->id}}')"
@@ -116,7 +117,8 @@
                                         <button type="button" onclick="batch_edit(this)" class="btn btn-sm btn-primary">
                                             批量接单
                                         </button>
-                                        <button type="button" onclick="batch_refuse(this)" class="btn btn-sm btn-danger" >
+                                        <button type="button" onclick="batch_refuse(this)" class="btn btn-sm btn-danger"
+                                                data-toggle="modal" data-target=".bs-example-modal-md" >
                                             批量拒单
                                         </button>
                                     </div>
@@ -209,7 +211,7 @@
                                     <div class="page-header">{{ $list2->appends(['active' => 'result'])->links() }}</div>
                                 </div>
                                 <div class="tab-pane" id="tab-3">
-                                    <div class="tab-pane" id="tab-1">
+                                    <div class="tab-pane" id="tab-3">
                                         <div class="panel-body">
                                             <table class="table">
                                                 <thead>
@@ -402,38 +404,13 @@
 
 
         function refuse(id) {
-            swal({
-                    title: "确认要拒绝此报修项吗？",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    cancelButtonText: "取消",
-                    confirmButtonText: "确认",
-                    closeOnConfirm: false
-                },
-                function () {
-                    //发异步删除数据
-                    $.ajax({
-                        type: "get",
-                        url: '{{url('repair/process/refuse')}}/' + id,
-                        dataType: "json",
-                        success: function (data) {
-                            if (data.code == 1) {
-                                swal({
-                                    title: "",
-                                    text: data.message,
-                                    type: "success",
-                                    timer: 1000,
-                                }, function () {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal("", data.message, "error");
-                            }
-                        }
-                    });
-                });
+            $.ajax({
+                type: "get",
+                url: '{{url('repair/process/refuse')}}/' + id,
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
+                }
+            });
         }
 
         function batch_refuse(obj) {
@@ -447,38 +424,13 @@
                         arr.push(id);
                     }
                 });
-                swal({
-                        title: "确认要拒绝这些维修单吗？",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        cancelButtonText: "取消",
-                        confirmButtonText: "确认",
-                        closeOnConfirm: false
-                    },
-                    function () {
-                        //发异步删除数据
-                        $.ajax({
-                            type: "get",
-                            url: '{{url('repair/process/batchRefuse')}}/' + arr,
-                            dataType: "json",
-                            success: function (data) {
-                                if (data.code == 1) {
-                                    swal({
-                                        title: "",
-                                        text: data.message,
-                                        type: "success",
-                                        timer: 1000,
-                                    }, function () {
-                                        window.location.reload();
-                                    });
-                                } else {
-                                    swal("", data.message, "error");
-                                }
-                            }
-                        });
-                    });
+                $.ajax({
+                    type: "get",
+                    url: '{{url('repair/process/refuse')}}/' + arr,
+                    success: function (data) {
+                        $(".bs-example-modal-md .modal-content").html(data);
+                    }
+                });
             }else{
                 alert("请选择数据");
             }
