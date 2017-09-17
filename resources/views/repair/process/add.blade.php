@@ -14,16 +14,18 @@
         <div class="row" >
             <div class="col-md-12" >
                 <div class="form-group" >
-                    <label class="col-sm-2 control-label">维修结果</label>
+                    <div class="col-sm-2 control-label">维修结果</div>
                     <div class="col-sm-8">
-                        <div class=" icheck pull-left" style="margin-right: 10px"><label>
-                                <input type="radio" value="5" name="status" checked="">
-                                <i></i> 已修好
+                        <div class="icheck pull-left" style="margin-right: 10px">
+                            <label>
+                                <input type="radio" value="5" name="status" checked>
+                                &nbsp;&nbsp;已修好
                             </label>
                         </div>
-                        <div class=" icheck pull-left" style="margin-right: 10px"><label>
-                                <input type="radio" value="7" name="status" checked="">
-                                <i></i> 未修好
+                        <div class=" icheck pull-left" style="margin-right: 10px">
+                            <label>
+                                <input type="radio" value="7" name="status" >
+                                &nbsp;&nbsp;未修好
                             </label>
                         </div>
                     </div>
@@ -34,7 +36,7 @@
         <div class="row">
             <div class="col-md-12" >
                 <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">维修建议</label>
+                    <div class="col-sm-2 control-label">维修建议</div>
                     <div class="col-sm-10">
                         <textarea class="form-control" name="suggest" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
@@ -51,32 +53,6 @@
 
     $( document ).ready( function () {
 
-
-        zjb.singleImageUpload({
-            uploader:'singleUpload',
-            picker:'single-upload',
-            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-            server: '{{ route("image.upload") }}',
-            formData: {
-                '_token':'{{ csrf_token() }}'
-            },
-            errorMsgHiddenTime:2000,
-
-            uploadSuccess:function(file,response){
-                //上传完成触发时间
-                $('#upload_id').val(response.data.id);
-                $('#thumb_img').attr({src:response.data.url});
-                window.setTimeout(function () {
-                    $('#'+file.id).remove();
-                }, 2000);
-            }
-        });
-
-        $('.datepicker').datepicker({
-            language: "zh-CN",
-            format: 'yyyy/mm/dd',
-            autoclose:true
-        });
         zjb.initAjax();
         var process_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', process_form);
@@ -84,34 +60,12 @@
             process_form.submit();
         });
         process_form.validate( {
-//            rules: {
-//                category_id:"required",
-//                name:"required",
-//                area_id:"required",
-//                money:{
-//                    number:true,
-//                    min:0
-//                },
-//                buy_time:"required",
-//                use_time: {
-//                    min: 1,
-//                    digits:true
-//                }
-//            },
-//            messages: {
-//                category_id:"资产类别不能为空",
-//                name:"资产名称不能为空",
-//                area_id:'所在场地不能为空',
-//                money:{
-//                    number:"必须为数值类型",
-//                    min:"金额必须为大于零的有效数字"
-//                },
-//                buy_time:"购入时间不能为空",
-//                use_time: {
-//                    min: "请输入一个有效整数",
-//                    digits:"请输入一个正整数"
-//                }
-//            },
+            rules: {
+                status:"required"
+            },
+            messages: {
+                category_id:"请选择维修结果"
+            },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input

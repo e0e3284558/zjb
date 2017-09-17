@@ -53,7 +53,9 @@
                                             <tbody>
                                             @foreach($list1 as $v)
                                                 <tr>
-                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                    <td role="gridcell">
+                                                        <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                    </td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->other==1)
@@ -64,10 +66,10 @@
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
 
-                                                    @if($v->category)
-                                                        <td>{{$v->category->name}}</td>
+                                                    @if($v->classify)
+                                                        <td>{{$v->classify?$v->classify->name:""}}</td>
                                                     @else
-                                                        <td>通用报修</td>
+                                                        <td>无分类</td>
                                                     @endif
 
                                                     <td>
@@ -81,7 +83,10 @@
                                                     <td>{{$v->remarks}}</td>
 
                                                     <td>
-                                                        <span>点击查看详情</span>
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/process')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-md"
+                                                              title="详情">点击查看详情</span>
                                                     </td>
 
                                                     <td>
@@ -108,10 +113,10 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                        <button type="button" onclick="batch_edit(this)" class="btn btn-sm btn-primary">
                                             批量接单
                                         </button>
-                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
+                                        <button type="button" onclick="batch_refuse(this)" class="btn btn-sm btn-danger" >
                                             批量拒单
                                         </button>
                                     </div>
@@ -135,7 +140,7 @@
                                             <tbody>
                                             @foreach($list2 as $v)
                                                 <tr>
-                                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                    <td role="gridcell"><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->other==1)
@@ -146,10 +151,10 @@
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
 
-                                                    @if($v->category)
-                                                        <td>{{$v->category->name}}</td>
+                                                    @if($v->classify)
+                                                        <td>{{$v->classify?$v->classify->name:""}}</td>
                                                     @else
-                                                        <td>通用报修</td>
+                                                        <td>无分类</td>
                                                     @endif
 
                                                     <td>
@@ -163,7 +168,10 @@
                                                     <td>{{$v->remarks}}</td>
 
                                                     <td>
-                                                        <span>点击查看详情</span>
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/process')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-md"
+                                                              title="详情">点击查看详情</span>
                                                     </td>
 
                                                     <td>
@@ -190,12 +198,12 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">
-                                            批量接单
-                                        </button>
-                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
-                                            批量拒单
-                                        </button>
+                                        {{--<button type="button" onclick="edit(this)" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
+                                            {{--批量接单--}}
+                                        {{--</button>--}}
+                                        {{--<button type="button" onclick="edit(this)" class="btn btn-sm btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
+                                            {{--批量拒单--}}
+                                        {{--</button>--}}
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-3">
@@ -227,10 +235,10 @@
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
 
-                                                        @if($v->category)
-                                                            <td>{{$v->category->name}}</td>
+                                                        @if($v->classify)
+                                                            <td>{{$v->classify?$v->classify->name:""}}</td>
                                                         @else
-                                                            <td>通用报修</td>
+                                                            <td>无分类</td>
                                                         @endif
 
                                                         <td>
@@ -243,7 +251,12 @@
                                                         </td>
                                                         <td>{{$v->remarks}}</td>
                                                         <td>{{@get_area($v->area_id)}}</td>
-                                                        <td>查看详情</td>
+                                                        <td>
+                                                            <span class="cursor_pointer"
+                                                                  onclick="show('{{url('repair/process')}}/{{$v->id}}')"
+                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                  title="详情">点击查看详情</span>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -336,6 +349,55 @@
             );
         }
 
+        function batch_edit(obj) {
+            if($(obj).prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
+                var arr = [];
+                $(obj).prev('table').find("tbody input[type='checkbox']:checked").each(function () {
+
+                    //判断
+                    var id = $(this).val();
+                    if (id != 'on') {
+                        arr.push(id);
+                    }
+                });
+                swal({
+                        title: "确认要接收维修单吗？",
+                        text: "",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        cancelButtonText: "取消",
+                        confirmButtonText: "确认",
+                        closeOnConfirm: false
+                    },
+                    function () {
+                        $.ajax({
+                            type: "get",
+                            url: '{{url('repair/process/batchEdit')}}/' + arr,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code == 1) {
+                                    swal({
+                                        title: "",
+                                        text: data.message,
+                                        type: "success",
+                                        timer: 1000,
+                                    }, function () {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal("", data.message, "error");
+                                }
+                            }
+                        });
+                    }
+                );
+            }else{
+                alert("请选择数据");
+            }
+        }
+
+
         function refuse(id) {
             swal({
                     title: "确认要拒绝此报修项吗？",
@@ -371,11 +433,68 @@
                 });
         }
 
+        function batch_refuse(obj) {
+            if($(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
+                var arr = [];
+                $(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").each(function () {
+
+                    //判断
+                    var id = $(this).val();
+                    if (id != 'on') {
+                        arr.push(id);
+                    }
+                });
+                swal({
+                        title: "确认要拒绝这些维修单吗？",
+                        text: "",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        cancelButtonText: "取消",
+                        confirmButtonText: "确认",
+                        closeOnConfirm: false
+                    },
+                    function () {
+                        //发异步删除数据
+                        $.ajax({
+                            type: "get",
+                            url: '{{url('repair/process/batchRefuse')}}/' + arr,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code == 1) {
+                                    swal({
+                                        title: "",
+                                        text: data.message,
+                                        type: "success",
+                                        timer: 1000,
+                                    }, function () {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    swal("", data.message, "error");
+                                }
+                            }
+                        });
+                    });
+            }else{
+                alert("请选择数据");
+            }
+        }
+
         function add(id) {
             $.ajax({
                 url: '{{url('repair/process/create')}}/' + id,
                 type: "post",
                 data: {},
+                success: function (data) {
+                    $(".bs-example-modal-md .modal-content").html(data);
+                }
+            })
+        }
+
+        function show(url) {
+            $.ajax({
+                "url": url,
                 success: function (data) {
                     $(".bs-example-modal-md .modal-content").html(data);
                 }

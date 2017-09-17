@@ -60,6 +60,13 @@ class ProcessController extends Controller
     }
 
 
+    public function show($id){
+//        dd($id);
+        $info = Process::with('org','user','admin','area','otherAsset','asset','category','serviceWorker','serviceProvider')->find($id);
+        return response()->view("repair.process.show",compact('info'));
+    }
+
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -86,6 +93,30 @@ class ProcessController extends Controller
     }
 
     /**
+     * @param $str
+     * @return \Illuminate\Http\JsonResponse
+     * 批量接收维修单
+     */
+    public function batchEdit($str){
+        $arr = explode(',',$str);
+        foreach ($arr as $v){
+            $info = Process::where("id",$v)->update(['status'=>'3']);
+        }
+//        $message = [];
+//        if($info){
+            $message = [
+                'code' => '1',
+                'message' => '成功'
+            ];
+//        }else{
+//            $message = [
+//                'code' => '0',
+//                'message' => '失败'
+//            ];
+//        }
+        return response()->json($message);
+    }
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -107,6 +138,33 @@ class ProcessController extends Controller
     public function refuse($id)
     {
         $info = Process::where('id',$id)->update(['status'=>'4']);
+        $message = [];
+        if($info){
+            $message = [
+                'code' => 1,
+                'message' => '成功'
+            ];
+        }else{
+            $message = [
+                'code' => 0,
+                'message' => '失败'
+            ];
+        }
+        return response()->json($message);
+    }
+
+    /**
+     * @param $str
+     * @return \Illuminate\Http\JsonResponse
+     * 批量拒接接收维修单
+     */
+    public function BatchRefuse($str)
+    {
+        dd($str);
+        $arr = explode(',',$str);
+        foreach ($arr as $v){
+            $info = Process::where('id',$v)->update(['status'=>'4']);
+        }
         $message = [];
         if($info){
             $message = [
