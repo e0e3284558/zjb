@@ -31,7 +31,7 @@
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='wait' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">待服务</a></li>
                                 <li class="@if (request()->active=='result') active  @endif"><a href="#tab-2" data-toggle="tab">待填写维修结果</a></li>
-                                <li class="@if (request()->active=='end') active  @endif"><a href="#tab-3" data-toggle="tab">已结束工单</a></li>
+                                <li class="@if (request()->active=='end') active  @endif"><a href="#tab-3" data-toggle="tab">已结束维修单</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif" id="tab-1">
@@ -46,7 +46,7 @@
                                                 <th>报修分类</th>
                                                 <th>报修照片</th>
                                                 <th>报修原因</th>
-                                                <th>工单详情</th>
+                                                <th>维修单详情</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -134,7 +134,7 @@
                                                 <th>报修分类</th>
                                                 <th>报修照片</th>
                                                 <th>报修原因</th>
-                                                <th>工单详情</th>
+                                                <th>维修单详情</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -213,7 +213,7 @@
                                                     <th>报修照片</th>
                                                     <th>报修原因</th>
                                                     <th>当前维修人员</th>
-                                                    <th width="18%">工单详情</th>
+                                                    <th width="18%">维修单详情</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>

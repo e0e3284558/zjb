@@ -135,13 +135,22 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     //资产分类
     Route::get('asset_category/add_son/{id}', 'AssetCategoryController@add');
     Route::get('asset_category/find/{id}', 'AssetCategoryController@find');
-    Route::get('asset_category/export', 'AssetCategoryController@export');
+//    Route::get('asset_category/export', 'AssetCategoryController@export');
+    Route::get('asset_category/downloadModel', 'AssetCategoryController@downloadModel');
+    Route::get('asset_category/add_import', 'AssetCategoryController@add_import');
+    Route::post('asset_category/import', 'AssetCategoryController@import');
     Route::resource('asset_category', 'AssetCategoryController');
 
+    //场地管理
     Route::get('area/add_son/{id}', 'AreaController@add');
     Route::get('area/prints', 'AreaController@prints');
-    Route::get('area/export', 'AreaController@export');
+//    Route::get('area/export', 'AreaController@export');
+//    Route::get('area/downloadModel', 'AreaController@downloadModel');
+
     Route::get('area/downloadModel', 'AreaController@downloadModel');
+    Route::get('area/add_import', 'AreaController@add_import');
+    Route::post('area/import', 'AreaController@import');
+
     Route::resource('area', 'AreaController');
 
     //其他报修项
@@ -152,11 +161,17 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
 
     //资产管理
     Route::get('asset/show_img/{file_id}', 'AssetController@show_img');
-    Route::get('asset/add_copy/{id}', 'AssetController@add_copy');
-    Route::post('asset/copy', 'AssetController@copy');
+//    Route::get('asset/add_copy/{id}', 'AssetController@add_copy');
+//    Route::post('asset/copy', 'AssetController@copy');
+    Route::get('asset/downloadModel', 'AssetController@downloadModel');
+    Route::get('asset/add_import', 'AssetController@add_import');
+    Route::post('asset/import', 'AssetController@import');
     Route::resource('asset', 'AssetController');
 
     //供应商管理
+    Route::get('supplier/downloadModel', 'SupplierController@downloadModel');
+    Route::get('supplier/add_import', 'SupplierController@add_import');
+    Route::post('supplier/import', 'SupplierController@import');
     Route::resource("supplier",'SupplierController');
 
     //附件信息

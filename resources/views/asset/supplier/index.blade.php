@@ -66,6 +66,16 @@
                             <button type="button" onclick="dlt()" class="btn btn-danger">
                                 <i class="fa  fa-trash-o"></i> 删除
                             </button>
+                            <div class="dropup inline">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-print"></i>更多操作
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><a class="btn btn-default" id="printBarcode download" href="{{url('supplier/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
+                                    <li><a class="btn btn-default" id="print download" href="{{url('supplier/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入其他供应商</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
