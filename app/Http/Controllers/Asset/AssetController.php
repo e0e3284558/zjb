@@ -20,7 +20,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Webpatser\Uuid\Uuid;
-
+use Excel;
 class AssetController extends Controller
 {
     /**
@@ -281,44 +281,186 @@ class AssetController extends Controller
     }
 
 
-    public function add_copy($id){
-        return response()->view("asset.asset.copy",compact('id'));
+//    public function add_copy($id){
+//        return response()->view("asset.asset.copy",compact('id'));
+//    }
+//
+//    public function copy(Request $request){
+//        $info = Asset::find($request->id)->toArray();
+//        array_shift($info);
+//        //图片
+//        $file = Asset::find($request->id)->file()->first();
+//
+//        if($request->num>99){
+//            $message = [
+//                'code' => 0,
+//                'message' => '最多复制99个'
+//            ];
+//        }else{
+//            for ($i=0;$i<$request->num;$i++){
+//                $info['code'] = date("dHis").rand("10000","99999");
+//                $info['asset_uid'] = Uuid::generate()->string;
+//                $info['created_at'] = date("Y-m-d H:i:s");
+//                $asset_id = Asset::insertGetId($info);
+//                QrCode::format('png')->size("100")->margin(0)->generate($info['asset_uid'],public_path('uploads/asset/'.$info['asset_uid'].'.png'));
+//                if($file){
+//                    $file_arr = [
+//                        'asset_id' => $asset_id,
+//                        'file_id' => $file->id,
+//                        'org_id' => Auth::user()->org_id
+//                    ];
+//                    AssetFile::insert($file_arr);
+//                }
+//            }
+//            $message = [
+//                'code' => 1,
+//                'message' => '复制成功'
+//            ];
+//        }
+//
+//        return response()->json($message);
+//    }
+
+
+    //下载模板
+    public function downloadModel(){
+        $cellData1 = [['资产编号(code)','资产名称(name)','资产类别(category_id)','规格型号(spec)',
+            '计量单位(calculate)','金额(money)元','购入时间(buy_time)','所在场地(area_id)',
+            '所属部门(department_id)','供应商(supplier_id)','资产备注(remarks)']];
+        //资产类别
+        $cellData2 = [['资产类别名称','类别编号']];
+        $list2 = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        foreach ($list2 as $k=>$v){
+            $arr = [
+                $list2[$k]->name,$list2[$k]->id
+            ];
+            array_push($cellData2,$arr);
+        }
+        //所在场地
+        $cellData3 = [['场地名称','场地编号']];
+        $list3 = Area::where("org_id",Auth::user()->org_id)->get();
+        foreach ($list3 as $k=>$v){
+            $arr = [
+                $list3[$k]->name,$list3[$k]->id
+            ];
+            array_push($cellData3,$arr);
+        }
+        //所属部门
+        $cellData4 = [['部门名称','部门编号']];
+        $list4 = Department::where("org_id",Auth::user()->org_id)->get();
+        foreach ($list4 as $k=>$v){
+            $arr = [
+                $list4[$k]->name,$list4[$k]->id
+            ];
+            array_push($cellData4,$arr);
+        }
+        //供应商
+        $cellData5 = [['供应商名称','供应商编号']];
+        $list5 = Supplier::where("org_id",Auth::user()->org_id)->get();
+        foreach ($list5 as $k=>$v){
+            $arr = [
+                $list5[$k]->name,$list5[$k]->id
+            ];
+            array_push($cellData5,$arr);
+        }
+        Excel::create('资产录入模板', function($excel) use ($cellData1,$cellData2,$cellData3,$cellData4,$cellData5){
+
+            // Our first sheet
+            $excel->sheet('资产录入', function($sheet1) use ($cellData1){
+                $sheet1->setPageMargin(array(
+                    0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30
+                ));
+                $sheet1->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40, 'D' => 40, 'E' => 40,
+                    'F' => 40, 'G' => 40, 'H' => 40, 'I' => 40, 'J' => 40, 'K' => 40
+                ));
+                $sheet1->cells('A1:K1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet1->rows($cellData1);
+            });
+
+            //资产类别
+            $excel->sheet('资产类别', function($sheet2) use ($cellData2){
+                $sheet2->setPageMargin(array(
+                    0.30,0.30
+                ));
+                $sheet2->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet2->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet2->rows($cellData2);
+            });
+            //所在场地
+            $excel->sheet('所在场地', function($sheet3) use ($cellData3){
+                $sheet3->setPageMargin(array(
+                    0.30,0.30
+                ));
+                $sheet3->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet3->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet3->rows($cellData3);
+            });
+            //所属部门
+            $excel->sheet('所属部门', function($sheet4) use ($cellData4){
+                $sheet4->setPageMargin(array(
+                    0.30,0.30
+                ));
+                $sheet4->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet4->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet4->rows($cellData4);
+            });
+            //服务商
+            $excel->sheet('供应商', function($sheet5) use ($cellData5){
+                $sheet5->setPageMargin(array(
+                    0.30,0.30
+                ));
+                $sheet5->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet5->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet5->rows($cellData5);
+            });
+
+        })->export('xls');
     }
 
-    public function copy(Request $request){
-        $info = Asset::find($request->id)->toArray();
-        array_shift($info);
-        //图片
-        $file = Asset::find($request->id)->file()->first();
+    public function add_import(){
+        return response()->view('asset.asset.add_import');
+    }
 
-        if($request->num>99){
-            $message = [
-                'code' => 0,
-                'message' => '最多复制99个'
-            ];
-        }else{
-            for ($i=0;$i<$request->num;$i++){
-                $info['code'] = date("dHis").rand("10000","99999");
-                $info['asset_uid'] = Uuid::generate()->string;
-                $info['created_at'] = date("Y-m-d H:i:s");
-                $asset_id = Asset::insertGetId($info);
-                QrCode::format('png')->size("100")->margin(0)->generate($info['asset_uid'],public_path('uploads/asset/'.$info['asset_uid'].'.png'));
-                if($file){
-                    $file_arr = [
-                        'asset_id' => $asset_id,
-                        'file_id' => $file->id,
-                        'org_id' => Auth::user()->org_id
-                    ];
-                    AssetFile::insert($file_arr);
+    public function import(Request $request){
+        $filePath =  $request->file_path;
+        Excel::selectSheets('资产录入')->load($filePath, function($reader) {
+            $data = $reader->all();
+            $org_id = Auth::user()->org_id;
+            foreach ($data as $k=>$v){
+                $arr = $v->toArray();
+                if(!$arr['code']){
+                    $arr['code'] = date('dHis').rand("1000",'9999');
                 }
+                $arr['asset_uid'] = Uuid::generate()->string;
+                $arr['org_id'] = $org_id;
+                Asset::insert($arr);
             }
-            $message = [
-                'code' => 1,
-                'message' => '复制成功'
-            ];
-        }
-
+        });
+        $message = [
+            'code'=>'1',
+            'message'=> '资产数据导入成功'
+        ];
         return response()->json($message);
     }
+
 
 }
