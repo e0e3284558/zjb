@@ -47,7 +47,6 @@
                 return val;
             },
             hoverOnClear: false
-
         });
         $(".caption").css("display","none");
         zjb.singleImageUpload({

@@ -34,7 +34,7 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-    <button type="button" class="btn btn-success" id="submitAssetsForm">保存</button>
+    <button type="submit" class="btn btn-success">保存</button>
 </div>
 </form>
 <script type="text/javascript">

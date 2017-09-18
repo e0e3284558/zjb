@@ -116,8 +116,6 @@
                                         </button>
                                     </div>
                                     <div class="page-header">{{ $data1->appends(['active' => 'wait'])->links() }}</div>
-
-
                                 </div>
                                 <div class="tab-pane @if (request()->active=='doing') active  @endif" id="tab-2">
                                     <div class="tab-pane">
