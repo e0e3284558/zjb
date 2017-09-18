@@ -30,9 +30,12 @@
                     <div class="ibox-content">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="@if (request()->active=='new' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">待服务工单</a></li>
-                                <li class="@if (request()->active=='wait') active  @endif"><a href="#tab-2" data-toggle="tab">待评价</a></li>
-                                <li class="@if (request()->active=='all') active  @endif"><a href="#tab-3" data-toggle="tab">所有工单</a></li>
+                                <li class="@if (request()->active=='new' || !request()->active) active  @endif">
+                                    <a href="{{url('repair/repair_list?app_groups=repair&active=new')}}">待服务工单</a></li>
+                                <li class="@if (request()->active=='wait') active  @endif">
+                                    <a href="{{url('repair/repair_list?app_groups=repair&active=wait')}}" >待评价</a></li>
+                                <li class="@if (request()->active=='all') active  @endif">
+                                    <a href="{{url('repair/repair_list?app_groups=repair&active=all')}}" >所有工单</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @if (request()->active=='new' || !request()->active) active  @endif" id="tab-1">

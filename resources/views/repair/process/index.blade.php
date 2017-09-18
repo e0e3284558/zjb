@@ -29,9 +29,12 @@
                     <div class="ibox-content">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="@if (request()->active=='wait' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">待服务</a></li>
-                                <li class="@if (request()->active=='result') active  @endif"><a href="#tab-2" data-toggle="tab">待填写维修结果</a></li>
-                                <li class="@if (request()->active=='end') active  @endif"><a href="#tab-3" data-toggle="tab">已结束维修单</a></li>
+                                <li class="@if (request()->active=='wait' || !request()->active) active  @endif">
+                                    <a href="{{url('repair/process?app_groups=repair&active=wait')}}" >待服务</a></li>
+                                <li class="@if (request()->active=='result') active  @endif">
+                                    <a href="{{url('repair/process?app_groups=repair&active=result')}}">待填写维修结果</a></li>
+                                <li class="@if (request()->active=='end') active  @endif">
+                                    <a href="{{url('repair/process?app_groups=repair&active=end')}}">已结束维修单</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif" id="tab-1">

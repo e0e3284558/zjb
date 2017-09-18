@@ -33,15 +33,15 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='wait' || !request()->active) active  @endif">
-                                    <a href="#tab-1" data-toggle="tab">等待派工</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}" >等待派工</a></li>
                                 <li class="@if (request()->active=='doing') active  @endif">
-                                    <a href="#tab-2" data-toggle="tab">正在维修</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=doing')}}" >正在维修</a></li>
                                 <li class="@if (request()->active=='assess') active  @endif">
-                                    <a href="#tab-3" data-toggle="tab">待评价</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=assess')}}" >待评价</a></li>
                                 <li class="@if (request()->active=='success') active  @endif">
-                                    <a href="#tab-4" data-toggle="tab">维修完成</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=success')}}" >维修完成</a></li>
                                 <li class="@if (request()->active=='all') active  @endif">
-                                    <a href="#tab-5" data-toggle="tab">全部维修</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=all')}}" >全部维修</a></li>
                             </ul>
 
                             <div class="tab-content">
