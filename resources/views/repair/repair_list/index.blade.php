@@ -43,9 +43,9 @@
                                                 <th>状态</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
-                                                <th>报修分类</th>
+                                                {{--<th>报修分类</th>--}}
                                                 <th>报修照片</th>
-                                                <th>报修原因</th>
+                                                {{--<th>报修原因</th>--}}
                                                 <th>维修单详情</th>
                                             </tr>
                                             </thead>
@@ -67,11 +67,11 @@
                                                         <td>{{@$v->asset->name}}</td>
                                                     @endif
 
-                                                    @if($v->classify)
-                                                        <td>{{$v->classify?$v->classify->name:""}}</td>
-                                                    @else
-                                                        <td>等待派分</td>
-                                                    @endif
+                                                    {{--@if($v->classify)--}}
+                                                        {{--<td>{{$v->classify?$v->classify->name:""}}</td>--}}
+                                                    {{--@else--}}
+                                                        {{--<td>等待派分</td>--}}
+                                                    {{--@endif--}}
 
                                                     <td>
                                                         @if(!collect($v->img)->isEmpty())
@@ -81,7 +81,7 @@
                                                                   title="详情">详情</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{$v->remarks}}</td>
+{{--                                                    <td>{{$v->remarks}}</td>--}}
 
                                                     <td>
                                                         <span class="cursor_pointer"
@@ -103,9 +103,9 @@
                                             <tr>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
-                                                <th>报修分类</th>
+                                                {{--<th>报修分类</th>--}}
                                                 <th>报修照片</th>
-                                                <th>报修原因</th>
+                                                {{--<th>报修原因</th>--}}
                                                 <th>维修单详情</th>
                                                 <th>填写评价</th>
                                             </tr>
@@ -119,13 +119,13 @@
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
-                                                    <td>
-                                                        @if($v->classify)
-                                                            {{$v->classify?$v->classify->name:""}}
-                                                        @else
-                                                            等待派分
-                                                        @endif
-                                                    </td>
+                                                    {{--<td>--}}
+                                                        {{--@if($v->classify)--}}
+                                                            {{--{{$v->classify?$v->classify->name:""}}--}}
+                                                        {{--@else--}}
+                                                            {{--等待派分--}}
+                                                        {{--@endif--}}
+                                                    {{--</td>--}}
                                                     <td>
                                                         @if(!collect($v->img)->isEmpty())
                                                             <span class="cursor_pointer"
@@ -134,11 +134,11 @@
                                                                   title="详情">详情</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{$v->remarks}}</td>
+{{--                                                    <td>{{$v->remarks}}</td>--}}
 
                                                     <td>
                                                         <span class="cursor_pointer"
-                                                              onclick="show('{{url('repair/process')}}/{{$v->id}}')"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-md"
                                                               title="详情">点击查看详情</span>
                                                     </td>
@@ -168,9 +168,9 @@
                                                 <tr>
                                                     <th>报修项目</th>
                                                     <th>报修场地</th>
-                                                    <th>报修分类</th>
+                                                    {{--<th>报修分类</th>--}}
                                                     <th>报修照片</th>
-                                                    <th>报修原因</th>
+                                                    {{--<th>报修原因</th>--}}
                                                     <th width="18%">维修单详情</th>
                                                 </tr>
                                                 </thead>
@@ -185,11 +185,11 @@
                                                         
                                                         <td>{{@get_area($v->area_id)}}</td>
 
-                                                        @if($v->classify)
-                                                            <td>{{$v->classify?$v->classify->name:""}}</td>
-                                                        @else
-                                                            <td>等待派分</td>
-                                                        @endif
+                                                        {{--@if($v->classify)--}}
+                                                            {{--<td>{{$v->classify?$v->classify->name:""}}</td>--}}
+                                                        {{--@else--}}
+                                                            {{--<td>等待派分</td>--}}
+                                                        {{--@endif--}}
 
                                                         <td>
                                                             @if(!collect($v->img)->isEmpty())
@@ -200,7 +200,7 @@
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{$v->remarks}}</td>
+{{--                                                        <td>{{$v->remarks}}</td>--}}
                                                         <td>
                                                             <span class="cursor_pointer"
                                                                   onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"

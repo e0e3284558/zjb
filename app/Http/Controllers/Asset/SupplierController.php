@@ -18,10 +18,21 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $list = Supplier::with('category','org')->where("org_id",Auth::user()->org_id)->get();
+        $org_id = Auth::user()->org_id;
+        $map = [
+            ['org_id','=',$org_id]
+        ];
+//        if($request->category_id){
+//            $map[] = ['category_id','=',$request->category_id];
+//        }
+        if($request->name){
+            $map[] = ['name','like','%'.$request->name.'%'];
+        }
+        $list = Supplier::with('category','org')->where($map)->orderBy("id","desc")->paginate(5);
         $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list = $list->appends(array('name'=>$request->name,'app_groups'=>'asset'));
         return view("asset.supplier.index",compact("list","category_list"));
     }
 

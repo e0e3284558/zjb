@@ -33,7 +33,7 @@
                         <div class="ibox-content margin-padding-0">
                             <div class="ibox-content-wrapper">
                                 <div class="scroller">
-                                    <div class="input-group" style="padding: 5px 10px;">
+                                    <div class="input-group" style="padding: 5px 0px;">
                                         <span class="input-group-addon" >
                                             类别搜索：
                                         </span>
@@ -58,7 +58,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <li><a class="btn btn-default" id="printBarcode download" href="{{url('asset_category/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
                                         <li><a class="btn btn-default" id="print download" href="{{url('asset_category/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入资产分类</a></li>
-                                        <li><a class="btn btn-default" id="print download" href="{{url('asset_category/export')}}"><i class="fa fa-sign-in"></i> 导出资产分类</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('asset_category/export')}}"><i class="fa fa-sign-out"></i> 导出资产分类</a></li>
                                     </ul>
                                 </div>
                             </div>
