@@ -322,7 +322,57 @@ class AssetController extends Controller
 //    }
 
 
-    //下载模板
+    /**
+     * 供应商管理  数据导出
+     */
+    public function export(){
+
+        $list = Asset::where("org_id",Auth::user()->org_id)->get();
+        $cellData = [['资产编号','资产名称','资产类别','规格型号', '计量单位','金额(元)',
+            '购入时间','所在场地(area_id)', '所属部门','供应商','资产备注']];
+        $arr = [];
+        foreach ($list as $key=>$value){
+            $arr['code'] = $value->code;
+            $arr['name'] = $value->name;
+            $arr['category'] = AssetCategory::where("id",$value->category_id)->value("name");
+            $arr['spec'] = $value->spec;
+            $arr['calculate'] = $value->calculate;
+            $arr['money'] = $value->money;
+            $arr['buy_time'] = $value->buy_time;
+
+            $arr['area_id'] = "";
+            $str = (Area::where("id",$value->area_id)->value('path')).$value->area_id;
+            $str = explode(",",$str);
+            foreach ($str as $k=>$v){
+                $arr['area_id'] .= Area::where("id",$v)->value("name")." / ";
+            }
+            $arr['area_id'] = trim($arr['area_id']," / ");
+            $arr['department_id'] = Department::where("id",$value->department_id)->where("org_id",Auth::user()->org_id)->value("name");
+            $arr['supplier_id'] = Supplier::where("id",$value->supplier_id)->where("org_id",Auth::user()->org_id)->value("name");
+            $arr['remarks'] = $value->remarks;
+            array_push($cellData,$arr);
+        }
+        Excel::create('资产管理_'.date("YmdHis"),function($excel) use ($cellData){
+            $excel->sheet('资产管理', function($sheet) use ($cellData){
+                $sheet->setPageMargin(array(
+                    0.25, 0.30, 0.25, 0.30
+                ));
+                $sheet->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40, 'D' => 40, 'E' => 40,
+                    'F' => 40, 'G' => 40, 'H' => 40, 'I' => 40, 'J' => 40, 'K' => 40
+                ));
+                $sheet->cells('A1:K1', function($row) {
+                    $row->setBackground('#cfcfcf');
+                });
+                $sheet->rows($cellData);
+            });
+        })->export('xlsx');
+        return ;
+    }
+
+    /**
+     * 下载模板
+     */
     public function downloadModel(){
         $cellData1 = [['资产编号(code)','资产名称(name)','资产类别(category_id)','规格型号(spec)',
             '计量单位(calculate)','金额(money)元','购入时间(buy_time)','所在场地(area_id)',
@@ -368,7 +418,7 @@ class AssetController extends Controller
             // Our first sheet
             $excel->sheet('资产录入', function($sheet1) use ($cellData1){
                 $sheet1->setPageMargin(array(
-                    0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30,0.30
+                    0.30,0.30,0.30,0.30
                 ));
                 $sheet1->setWidth(array(
                     'A' => 40, 'B' => 40, 'C' => 40, 'D' => 40, 'E' => 40,

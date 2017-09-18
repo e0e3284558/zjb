@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Repair;
 
 use App\Http\Requests\RepairListRequest;
 use App\Models\Repair\Process;
+use App\Models\Repair\ServiceProvider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,18 +26,18 @@ class RepairListController extends Controller
             ->orWhere('status', '1')
             ->orWhere('status', '7')
             ->orWhere('status', '4')
-            ->paginate(10);
+            ->paginate(10, ['*'],'page');
         //待评价
         $list2 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id", Auth::user()->id)
             ->orderBy('id', 'desc')
             ->where("status", "5")
-            ->paginate(10);
+            ->paginate(10, ['*'],'page');
         //全部工单
         $list3 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id", Auth::user()->id)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10, ['*'],'page');
         return view("repair.repair_list.index", compact("list1", "list2", "list3"));
     }
 
@@ -106,6 +107,10 @@ class RepairListController extends Controller
             'status' => '6'
         ];
         $info = Process::where("id", $id)->update($arr);
+        $service_provider_id=Process::find($id)->service_provider_id;
+        $provider=ServiceProvider::find($service_provider_id);
+        $score=($provider->score+$request->score)/(($provider->about?$provider->about:1)+1);
+        ServiceProvider::where('id',$service_provider_id)->increment('bout',1,['score'=>$score]);
         $message = [];
         if ($info) {
             $message = [

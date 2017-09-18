@@ -111,7 +111,7 @@
                                                 <div class="col-sm-2">
                                                     <select class="form-control m-b" name="area_id[]"
                                                             onchange="select_asset2(this)">
-                                                        <option value="0">请选择</option>
+                                                        <option value="">请选择</option>
                                                         @foreach($area as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
@@ -246,7 +246,7 @@
                         if (data.area != '') {
                             if (data.area.length > 0) {
                                 //遍历
-                                ini = '<option value="0">请选择 </option>';
+                                ini = '<option value="">请选择 </option>';
                                 select.append(ini);
                                 for (var i = 0; i < data.area.length; i++) {
                                     //把遍历出来数据添加到option
@@ -345,7 +345,12 @@
             forms2.validate(
                 {
                     rules: {
-                        asset_id: {
+                        "area_id[]": {
+                            required: true,
+                            digits: true,
+                            min: 1
+                        },
+                        classify_id: {
                             required: true,
                             digits: true,
                             min: 1
@@ -355,11 +360,17 @@
                         }
                     },
                     messages: {
-                        asset_id: {
-                            required: "必须选择一个资产，如果没有资产请检查资产位置中的资产是否存在",
-                            digits: "检查浏览器是否正常",
-                            min: "检查浏览器是否正常"
+                        "area_id[]": {
+                            required: "必须选择一个报修位置",
+                            digits: "必须选择一个正确报修位置",
+                            min: "必须选择一个正确报修位置"
                         },
+                        classify_id: {
+                            required: "必须选择一个报修项目",
+                            digits: "必须选择一个正确报修项目",
+                            min: "必须选择一个正确报修项目"
+                        },
+
                         remarks: {
                             maxlength: "问题描述不可超过191字符"
                         }

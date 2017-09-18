@@ -33,6 +33,17 @@
                     <div class="ibox-content margin-padding-0">
                         <div class="ibox-content-wrapper">
                             <div class="scroller" style="padding: 0 5px;">
+                                <form action="{{url('supplier')}}" method="get" id="forms" >
+                                    <input type="hidden" name="app_groups" value="asset">
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                    <div class="input-group" style="padding: 5px 0px;">
+                                        <span class="input-group-addon" >搜索：</span>
+                                        <input type="input" name="name" class="input-md form-control" id="input-search" placeholder="供应商名">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-md btn-success" id="btn-search">查找</button>
+                                        </span>
+                                    </div>
+                                </form>
                                 <table style="width: 100%;" class="table table-striped table-bordered table-hover dataTables-example dataTable" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" role="grid">
                                     <thead>
                                     <tr role="row">
@@ -53,6 +64,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                {{ $list->links() }}
                             </div>
                         </div>
                         <div class="form-actions border-top ">
@@ -74,6 +86,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <li><a class="btn btn-default" id="printBarcode download" href="{{url('supplier/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
                                     <li><a class="btn btn-default" id="print download" href="{{url('supplier/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入其他供应商</a></li>
+                                    <li><a class="btn btn-default" id="print download" href="{{url('supplier/export')}}"><i class="fa fa-sign-out"></i> 导出供应商数据</a></li>
                                 </ul>
                             </div>
                         </div>

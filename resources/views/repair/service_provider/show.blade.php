@@ -65,6 +65,8 @@
                             <dd>{{$data->user}}</dd>
                             <dt>服务商电话:</dt>
                             <dd>{{$data->tel}}</dd>
+                            <dt>总完成维修次数:</dt>
+                            <dd>{{$data->bout}}</dd>
                         </dl>
                     </div>
                     <div class="col-lg-7" id="cluster_info">
@@ -87,10 +89,10 @@
                         <dl class="dl-horizontal">
                             <dt>好评率:</dt>
                             <dd>
-                                <div class="progress m-b-sm">
-                                    <div style="width: 97%;" class="progress-bar progress-bar-info"></div>
+                                <div class="progres">
+                                    <input id="input-21f" type="text" disabled value="{{$data->score}}"
+                                           data-min=0 data-max=5 data-step=0.01 data-size="xs" data-error-container="#error-block" title="">
                                 </div>
-                                <small>综合好评率为 <strong>97%</strong></small>
                             </dd>
                         </dl>
                     </div>
@@ -101,24 +103,28 @@
                             <div class="panel-heading">
                                 <div class="panel-options">
                                     <ul class="nav nav-tabs">
-                                        <li class="@if (request()->active=='appraisal' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">客户评价</a></li>
-                                        <li class="@if (request()->active=='record') active  @endif"><a href="#tab-2" data-toggle="tab">维修记录</a></li>
+                                        <li class="@if (request()->active=='appraisal' || !request()->active) active  @endif">
+                                            <a href="#tab-1" data-toggle="tab">客户评价</a></li>
+                                        <li class="@if (request()->active=='record') active  @endif"><a href="#tab-2"
+                                                                                                        data-toggle="tab">维修记录</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
 
                             <div class="panel-body">
                                 <div class="tab-content">
-                                    <div class="tab-pane @if (request()->active=='appraisal' || !request()->active) active  @endif" id="tab-1">
+                                    <div class="tab-pane @if (request()->active=='appraisal' || !request()->active) active  @endif"
+                                         id="tab-1">
                                         @foreach($processProvider1 as $v)
                                             <div class="feed-activity-list">
-                                                <div class="feed-element"  style="padding-top: 12px">
+                                                <div class="feed-element" style="padding-top: 12px">
                                                     <div class="pull-left">
-                                                        <a href="#" >
+                                                        <a href="#">
                                                             <img alt="image" class="img-circle"
                                                                  src="{{get_avatar($v->user_id)}}">
                                                         </a>
-                                                        <span class="block" >{{$v->user->name}}</span>
+                                                        <span class="block">{{$v->user->name}}</span>
                                                     </div>
                                                     <div class="media-body ">
                                                         @if($day=intval((time()-strtotime($v->updated_at))/(60*60*24)))
@@ -153,7 +159,7 @@
                                                 </div>
                                             </div>
                                         @endforeach
-                                            <div class="page-header">{{ $processProvider1->appends(['active' => 'appraisal'])->links() }}</div>
+                                        <div class="page-header">{{ $processProvider1->appends(['active' => 'appraisal'])->links() }}</div>
 
                                     </div>
                                     <div class="tab-pane @if (request()->active=='record') active  @endif" id="tab-2">
@@ -223,6 +229,17 @@
 
     <script type="text/javascript">
 
+        $(document).ready(function () {
+//            $("#input-21f").css("display","none");
+//            $(".clear-rating .glyphicon-minus-sign").css("display","none");
+            $("#input-21f").rating({
+                starCaptions: function (val) {
+                    return val;
+                }
+            });
+
+        });
+
         /*更新所选分类的维修人员*/
         function edit(id) {
             url = '{{url('repair/service_provider')}}/' + id + '/edit';
@@ -234,6 +251,7 @@
                 }
             })
         }
+
 
         /*删除*/
         function del(id) {

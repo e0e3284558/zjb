@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" disabled name="buy_time" value="{{date("Y/m/d")}}" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
@@ -110,11 +110,11 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group" style="position: relative;" >
-                    <label class="col-sm-4 control-label">使用部门</label>
+                    <label class="col-sm-4 control-label">所属部门</label>
                     <div class="col-sm-8">
-                        <select id="use_department_id" name="use_department_id" class="form-control select2">
+                        <select id="department_id" name="department_id" class="form-control select2">
                             @foreach($list6 as $v)
-                                @if($v->id== $info->use_department_id)
+                                @if($v->id== $info->department_id)
                                     <option selected value="{{$v->id}}">{{$v->name}}</option>
                                 @else
                                     <option value="{{$v->id}}">{{$v->name}}</option>
@@ -144,7 +144,7 @@
                             @if($info->img_path)
                                 <img id="thumb_img" src="{{url($info->img_path)}}" alt="" width="160px" height="120px">
                             @else
-                                <img id="thumb_img" src="{{url('uploads/imgs/nopicture.jpg')}}" alt="" width="160px" height="120px">
+                                暂无图片
                             @endif
                             <!--用来存放item-->
                             <div id="fileList" class="uploader-list"></div>
@@ -167,6 +167,11 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
+        $('.datepicker').datepicker({
+            language: "zh-CN",
+            format: 'yyyy-mm-dd',
+            autoclose:true
+        });
         zjb.initAjax();
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
@@ -181,7 +186,6 @@
                     number:true,
                     min:0
                 },
-                use_org_id:"required",
                 use_time: {
                     min: 1,
                     digits:true
@@ -194,7 +198,6 @@
                     number:"必须为数值类型",
                     min:"金额必须为大于零的有效数字"
                 },
-                use_org_id:"请选择使用公司",
                 use_time: {
                     min: "请输入一个有效整数",
                     digits:"请输入一个正整数"
