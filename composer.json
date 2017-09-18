@@ -28,6 +28,7 @@
         "maatwebsite/excel": "~2.1.0",
         "orangehill/iseed": "dev-master",
         "overtrue/laravel-lang": "~3.0",
+        "overtrue/pinyin": "~3.0",
         "prettus/l5-repository": "^2.6",
         "propaganistas/laravel-phone": "^3.0",
         "simplesoftwareio/simple-qrcode": "~1",

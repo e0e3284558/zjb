@@ -95,14 +95,25 @@
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs">
                                     {{--<strong class="font-bold">{{Auth::user()->name}}}}</strong>--}}
-                             </span> <span class="text-muted text-xs block">单位管理员 <b class="caret"></b></span> </span>
+                             {{--</span> <span class="text-muted text-xs block">单位管理员 <b class="caret"></b></span> </span>--}}
+                             </span> <span class="text-muted text-xs block">
+                                    @if(auth('service_workers')->user())
+                                        {{auth('service_workers')->user()->name}}
+                                    @else
+                                        {{Auth::user()->name}}
+                                    @endif
+                                    <b class="caret"></b></span> </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">个人资料</a></li>
-                            <li><a href="contacts.html">修改密码</a></li>
-                            <li><a href="mailbox.html">设置中心</a></li>
+                            @if(auth('service_workers')->user())
+                                <li><a href="{{url('users/pensonal')}}/{{auth('service_workers')->user()->id}}" data-toggle="modal" data-target=".bs-example-modal-md">个人资料</a></li>
+                                <li><a href="{{url('users/pensonal')}}/{{auth('service_workers')->user()->id}}/edit" data-toggle="modal" data-target=".bs-example-modal-md">修改信息</a></li>
+                            @else
+                                <li><a href="{{url('users/pensonal')}}/{{Auth::user()->id}}" data-toggle="modal" data-target=".bs-example-modal-md">个人资料</a></li>
+                                <li><a href="{{url('users/pensonal')}}/{{Auth::user()->id}}/edit" data-toggle="modal" data-target=".bs-example-modal-md">修改信息</a></li>
+                            @endif
                             <li class="divider"></li>
-                            <li><a href="login.html">退出</a></li>
+                            <li><a href="{{ route('logout') }}">退出</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">

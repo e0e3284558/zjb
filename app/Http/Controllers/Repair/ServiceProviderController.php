@@ -21,26 +21,10 @@ class ServiceProviderController extends Controller
     public function index()
     {
         $data = [];
-        $serviceProvider = ServiceProvider::with('org','service_worker')
+        $serviceProvider = ServiceProvider::with('org', 'service_worker')
             ->orderBy('created_at', 'desc')
             ->get();
-        // foreach ($serviceProvider as $a) {
-        //     if (($a['org'])) {
-        //         if ($a['org'][0]['id'] == Auth::user()->org_id) {
-        //             $data[] = $a;
-        //         }
-        //     }
-        // }
-        // $data = collect($data);
-        // //获取服务商下面的维修工
-        // foreach ($data as $k => $v) {
-        //     $worker_id = DB::table('service_provider_service_worker')
-        //         ->where('service_provider_id', $v['id'])->get();
-        //     foreach ($worker_id as $value) {
-        //         $service_worker[$k][] = ServiceWorker::where('id', $value->service_worker_id)->get()->toArray();
 
-        //     }
-        // }
         return view('repair.service_provider.index', compact('data', 'serviceProvider'));
     }
 
@@ -96,9 +80,10 @@ class ServiceProviderController extends Controller
     {
         $data = ServiceProvider::find($id);
         $serviceWorker = $data->service_worker()->get();
-        $processProvider = Process::where('service_provider_id', $data->id)->get();
+        $processProvider1 = Process::where('service_provider_id', $data->id)->latest()->paginate(10);
+        $processProvider2 = $processProvider1;
         return response()->view('repair.service_provider.show',
-            compact('data', 'serviceWorker', 'processProvider')
+            compact('data', 'serviceWorker', 'processProvider1','processProvider2')
         );
     }
 
@@ -145,20 +130,39 @@ class ServiceProviderController extends Controller
      */
     public function destroy($id)
     {
-        if (DB::table('org_service_provider')
-            ->where('org_id', Auth::user()->org_id)
-            ->where('service_provider_id', $id)
-            ->delete()) {
-            return response()->json([
-                'code' => 1,
-                'message' => '移除成功'
-            ]);
-        } else {
+        if (DB::table('service_provider_service_worker')
+            ->where('service_provider_id',$id)
+            ->where('status',0)
+            ->get()->isEmpty()
+        ) {
+            if (DB::table('org_service_provider')
+                ->where('org_id', Auth::user()->org_id)
+                ->where('service_provider_id', $id)
+                ->where('status', 0)
+                ->delete()) {
+                if (ServiceProvider::find($id)->delete()) {
+                    return response()->json([
+                        'code' => 1,
+                        'message' => '成功删除该服务商'
+                    ]);
+                } else {
+                    return response()->json([
+                        'code' => 1,
+                        'message' => '已移除与服务商关联关系'
+                    ]);
+                }
+
+            } else {
+                return response()->json([
+                    'code' => 0,
+                    'message' => '移除失败，请稍候重试'
+                ]);
+            }
+        }else{
             return response()->json([
                 'code' => 0,
-                'message' => '移除失败，请稍候重试'
+                'message' => '当前服务商下有维修人员，请将所有维修人员移除后再移除该服务商'
             ]);
         }
-
     }
 }

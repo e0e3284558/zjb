@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+use Excel;
+
 class SupplierController extends Controller
 {
     /**
@@ -152,4 +154,73 @@ class SupplierController extends Controller
             return redirect("home");
         }
     }
+
+    //下载模板
+    public function downloadModel(){
+        $cellData = [['供应商名称(name)','供应商类别(category_id)','备注(remarks)']];
+        $cellData2 = [['类别名称','类别编号']];
+        //类别
+        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        foreach ($list as $k=>$v){
+            $arr = [
+                $list[$k]->name,$list[$k]->id
+            ];
+            array_push($cellData2,$arr);
+        }
+        Excel::create('供应商模板', function($excel) use ($cellData,$cellData2){
+
+            // Our first sheet
+            $excel->sheet('sheet1', function($sheet1) use ($cellData){
+                $sheet1->setPageMargin(array(
+                    0.30,0.30,0.30
+                ));
+                $sheet1->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40
+                ));
+                $sheet1->cells('A1:C1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet1->rows($cellData);
+            });
+
+            // Our second sheet
+            $excel->sheet('资产类别', function($sheet2) use ($cellData2){
+                $sheet2->setPageMargin(array(
+                    0.30,0.30
+                ));
+                $sheet2->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet2->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet2->rows($cellData2);
+            });
+
+
+        })->export('xls');
+    }
+
+    public function add_import(){
+        return response()->view('asset.supplier.add_import');
+    }
+
+    public function import(Request $request){
+        $filePath =  $request->file_path;
+        Excel::selectSheets('sheet1')->load($filePath, function($reader) {
+            $data = $reader->all();
+            $org_id = Auth::user()->org_id;
+            foreach ($data as $k=>$v){
+                $arr = $v->toArray();
+                $arr['org_id'] = $org_id;
+                Supplier::insert($arr);
+            }
+        });
+        $message = [
+            'code'=>'1',
+            'message'=> '数据导入成功'
+        ];
+        return response()->json($message);
+    }
+
 }

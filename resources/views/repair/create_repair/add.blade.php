@@ -64,20 +64,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">报修类别</label>
-                                                <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="classify_id">
-                                                        <option value="">请选择</option>
-                                                        @foreach($classify as $v)
-                                                            <option value="{{$v->id}}">{{$v->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+
 
                                             <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
-                                                <div class="col-sm-10"><input type="text" name="remarks"
-                                                                              class="form-control"></div>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" name="remarks" style="resize: none" rows="3"></textarea>
+                                                </div>
                                             </div>
                                             <input type="hidden" name="other" value="0">
                                             <div class="form-group">
@@ -129,28 +121,20 @@
 
                                             <div class="form-group"><label class="col-sm-2 control-label">报修项</label>
                                                 <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="asset_id" id="asset">
+                                                    <select class="form-control m-b" name="classify_id" id="asset">
                                                         <option value="">请选择</option>
-                                                        @foreach($other as $v)
+                                                        @foreach($classify as $v)
                                                             <option value="{{$v['id']}}">{{$v['name']}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group"><label class="col-sm-2 control-label">报修类别</label>
-                                                <div class="col-sm-10">
-                                                    <select class="form-control m-b" name="classify_id">
-                                                        <option value="">请选择</option>
-                                                        @foreach($classify as $v)
-                                                            <option value="{{$v->id}}">{{$v->name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
+
                                             <input type="hidden" name="other" value="1">
                                             <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
-                                                <div class="col-sm-10"><input type="text" name="remarks"
-                                                                              class="form-control"></div>
+                                                <div class="col-sm-10">
+                                                    <textarea class="form-control" name="remarks" style="resize: none" rows="3"></textarea>
+                                                </div>
                                             </div>
 
                                             <div class="form-group">
@@ -292,11 +276,6 @@
                 {
                     rules: {
                         asset_id: {
-                            required: true,
-                            digits: true,
-                            min: 1
-                        },
-                        classify_id: {
                             required: true,
                             digits: true,
                             min: 1

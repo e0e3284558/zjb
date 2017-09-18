@@ -15,8 +15,24 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $list = Process::with('org','user','admin','asset','category','serviceWorker','serviceProvider')->where("service_worker_id",session('worker')->id)->get();
-        return view("repair.process.index",compact("list"));
+        //新工单
+        $list1 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
+            ->where("service_worker_id", auth('service_workers')->user()->id)
+            ->where("status", "2")
+            ->paginate(10);
+        //待填写维修结果
+        $list2 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
+            ->where("service_worker_id", auth('service_workers')->user()->id)
+            ->where("status", "3")->orWhere('status', "0")
+            ->paginate(10);
+        //工单已经结束
+        $list3 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
+            ->where("service_worker_id", auth('service_workers')->user()->id)
+            ->where("status", "6")
+            ->orWhere('status', "0")
+            ->orWhere('status', "5")
+            ->paginate(10);
+        return view("repair.process.index", compact("list1", "list2", "list3"));
     }
 
     /**
@@ -26,50 +42,60 @@ class ProcessController extends Controller
      */
     public function create($id)
     {
-        return view("repair.process.add",compact("id"));
+        return view("repair.process.add", compact("id"));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * 填写维修结果
      */
     public function store(Request $request)
     {
-        $info = Process::where("id",$request->id)->update($request->except('id','_token'));
+        $info = Process::where("id", $request->id)->update($request->except('id', '_token'));
         $message = [];
-        if($info){
+        if ($info) {
             $message = [
                 'code' => '1',
                 'message' => '成功'
             ];
-        }else{
+        } else {
             $message = [
                 'code' => '0',
                 'message' => '失败'
             ];
         }
         return response()->json($message);
+    }
+
+
+    public function show($id)
+    {
+//        dd($id);
+        $info = Process::with('org', 'user', 'admin', 'area', 'otherAsset', 'asset', 'category', 'serviceWorker', 'serviceProvider')->find($id);
+        return response()->view("repair.process.show", compact('info'));
     }
 
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
+     * 接收维修单
      */
     public function edit($id)
     {
-        $info = Process::where("id",$id)->update(['status'=>'3']);
+        $info = Process::where("id", $id)->update(['status' => '3']);
         $message = [];
-        if($info){
+        if ($info) {
             $message = [
                 'code' => '1',
                 'message' => '成功'
             ];
-        }else{
+        } else {
             $message = [
                 'code' => '0',
                 'message' => '失败'
@@ -79,10 +105,36 @@ class ProcessController extends Controller
     }
 
     /**
+     * @param $str
+     * @return \Illuminate\Http\JsonResponse
+     * 批量接收维修单
+     */
+    public function batchEdit($str)
+    {
+        $arr = explode(',', $str);
+        foreach ($arr as $v) {
+            $info = Process::where("id", $v)->update(['status' => '3']);
+        }
+//        $message = [];
+//        if($info){
+        $message = [
+            'code' => '1',
+            'message' => '成功'
+        ];
+//        }else{
+//            $message = [
+//                'code' => '0',
+//                'message' => '失败'
+//            ];
+//        }
+        return response()->json($message);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -93,19 +145,48 @@ class ProcessController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
+     * 拒接接收维修单
      */
-    public function refuse($id)
+    public function refuse($str)
     {
-        $info = Process::where('id',$id)->update(['status'=>'4']);
+        return response()->view("repair.process.refuse",compact('str'));
+//        $info = Process::where('id', $id)->update(['status' => '4']);
+//        $message = [];
+//        if ($info) {
+//            $message = [
+//                'code' => 1,
+//                'message' => '成功'
+//            ];
+//        } else {
+//            $message = [
+//                'code' => 0,
+//                'message' => '失败'
+//            ];
+//        }
+//        return response()->json($message);
+    }
+
+    /**
+     * @param Request $request
+     * @param $str
+     * @return \Illuminate\Http\JsonResponse
+     * 批量拒接接收维修单
+     */
+    public function BatchRefuse(Request $request,$str)
+    {
+        $arr = explode(',', $str);
+        foreach ($arr as $v) {
+            $info = Process::where('id', $v)->update(['status' => '4','suggest'=>$request->suggest]);
+        }
         $message = [];
-        if($info){
+        if ($info) {
             $message = [
                 'code' => 1,
                 'message' => '成功'
             ];
-        }else{
+        } else {
             $message = [
                 'code' => 0,
                 'message' => '失败'
@@ -114,7 +195,14 @@ class ProcessController extends Controller
         return response()->json($message);
     }
 
-    public function refuse_reason(){
-
+    /**
+     * @param $id
+     * @return \Illuminate\Http\Response
+     * 报修图片显示
+     */
+    public function showImg($id)
+    {
+        $list = Process::where("id", $id)->with("img")->first()->img;
+        return response()->view("repair.repair_list.showImg", compact('list'));
     }
 }

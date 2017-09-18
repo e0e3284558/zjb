@@ -1,42 +1,51 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">填写维修结果</h4>
-</div>
-</div>
-<form class="form-horizontal" action='{{url("repair/create_repair/success_store")}}' method="post">
-<div class="modal-body">
-    {{csrf_field()}}
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="form-group">
-                <div class="col-sm-3">选择维修结果：</div>
-                <div class="col-sm-9">
-                    <div class=" icheck pull-left" style="margin-right: 10px"><label>
-                            <input type="radio" value="5" name="status" checked="">
-                            <i></i> 已修好
-                        </label>
-                        <input type="hidden" value="{{$data->id}}" name="id">
-                    </div>
-                    <div class=" icheck pull-left"><label> <input type="radio" name="status" value="7"> <i></i>未修好
-                        </label>
+<div class="ibox">
+    <div class="ibox-title">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        <h5>填写批量维修结果</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="dd" id="nestable2">
+            <form class="form-horizontal" action='{{url("repair/create_repair/batch_success_store")}}' method="post">
+                {{csrf_field()}}
+                <input type="hidden" value="{{$str}}" name="str">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <div class="col-sm-3">维修结果：</div>
+                            <div class="col-sm-9">
+                                <div class=" icheck pull-left" style="margin-right: 10px"><label>
+                                        <input type="radio" value="5" name="status" checked="">
+                                        <i></i> 已修好
+                                    </label>
+                                </div>
+                                <div class=" icheck pull-left"><label> <input type="radio" name="status" value="0"> <i></i>取消工单
+                                    </label>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3">维修记录：</div>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" name="result" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <button class="btn btn-success">确认</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-            </div>
-            <div class="form-group">
-                <div class="col-sm-3">填写维修记录：</div>
-                <div class="col-sm-8">
-                    <textarea class="form-control" name="result" style="resize: none" rows="3"></textarea>
-                </div>
-            </div>
+
+            </form>
         </div>
     </div>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-    <button type="submit" class="btn btn-success">保存</button>
-</div>
-</form>
 <script type="text/javascript">
     $(document).ready(function () {
         zjb.initAjax();

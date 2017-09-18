@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">填写维修结果</h4>
+    <h4 class="modal-title" id="myModalLabel">填写原因</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -9,36 +9,14 @@
             请更正下列输入错误：
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <input type="hidden" name="id" value="{{$id}}">
-
-        <div class="row" >
-            <div class="col-md-12" >
-                <div class="form-group" >
-                    <div class="col-sm-2 control-label">维修结果</div>
-                    <div class="col-sm-8">
-                        <div class="icheck pull-left" style="margin-right: 10px">
-                            <label>
-                                <input type="radio" value="5" name="status" checked>
-                                &nbsp;&nbsp;已修好
-                            </label>
-                        </div>
-                        <div class=" icheck pull-left" style="margin-right: 10px">
-                            <label>
-                                <input type="radio" value="7" name="status" >
-                                &nbsp;&nbsp;未修好
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <input type="hidden" name="str" value="{{$str}}">
 
         <div class="row">
             <div class="col-md-12" >
                 <div class="form-group">
-                    <div class="col-sm-2 control-label">维修建议</div>
+                    <div class="col-sm-2 control-label">拒单原因</div>
                     <div class="col-sm-10">
-                        <textarea class="form-control" name="suggest" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
+                        <textarea class="form-control" name="suggest" rows="3" style="height: 120px;resize: none;" placeholder="拒单说明 ..."></textarea>
                     </div>
                 </div>
             </div>
@@ -106,7 +84,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('repair/process')}}",
+                    url:"{{url('repair/process/batchRefuse/'.$str)}}",
                     data:process_form.serialize(),
                     type:"post",
                     dataType:"json",
@@ -137,7 +115,7 @@
                                 type: "success",
                                 timer: 1000,
                             },function () {
-                                window.location.href="{{url('/repair/process?active=result')}}"
+                                window.location.reload();
                             });
                         }else{
                             swal("", data.message, "error");
@@ -147,4 +125,48 @@
             }
         } );
     } );
+</script>
+
+<script type="text/javascript" >
+    //查找是否还有子类别
+    function find(id) {
+        $.ajax({
+            url:'{{url('asset_category/find')}}'+"/"+id,
+            type:"get",
+            data:{id:id},
+            dataType:"json",
+            success:function (data) {
+                if(data.code){
+                    $("#type_id option:first").prop("selected","selected");
+                    alert("只能选择子分类....");
+                }
+            }
+        })
+    }
+</script>
+
+<script type="text/javascript" >
+    // 初始化Web Uploader
+    {{--var uploader = WebUploader.create({--}}
+        {{--// 选完文件后，是否自动上传。--}}
+        {{--auto: true,--}}
+        {{--// swf文件路径--}}
+        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
+        {{--// 文件接收服务端。--}}
+        {{--server: '{{url('upload/uploadFile')}}',--}}
+        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
+        {{--// 选择文件的按钮。可选。--}}
+        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
+        {{--pick: '#filePicker',--}}
+        {{--// 只允许选择图片文件。--}}
+        {{--accept: {--}}
+            {{--title: 'Images',--}}
+            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
+            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
+        {{--}--}}
+    {{--});--}}
+    {{--uploader.on('uploadSuccess', function (file, response) {--}}
+        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
+        {{--$('#upload_id').attr('value', response.id);--}}
+    {{--});--}}
 </script>

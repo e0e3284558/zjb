@@ -100,8 +100,8 @@
     height: 64px;
 }
 .carousel-inner>.item>img{
-    width: 400px;
-    height: 300px;
+    max-width: 400px;
+    max-height: 300px;
     margin: 0 auto;
 }
 .carousel-control{
@@ -8235,4 +8235,13 @@ Custom color buttons
 .project-people img {
     width: 45px;
     height: 45px;
+}
+.h-100 {
+    min-height: 100px;
+}
+.h-80 {
+    min-height: 80px;
+}
+.h-x-50 {
+    height: 50px;
 }

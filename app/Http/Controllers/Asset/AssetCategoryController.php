@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 use Excel;
+use Overtrue\Pinyin\Pinyin;
 
 class AssetCategoryController extends Controller
 {
@@ -59,7 +60,14 @@ class AssetCategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+//        $pinyin = new Pinyin();
+        //获取公司名称
+//        $org_name = Org::find(Auth::user()->org_id)->name;
+//        $str = mb_substr($pinyin->abbr($org_name),0,3).mb_substr($pinyin->abbr($request->name),0,3);
+//        $ss = AssetCategory::where("org_id",Auth::user()->org_id)->orderBy();
+//        dd($ss);
         $arr = [
+//            'category_code' => $str,
             'category_code' => date("dHis").rand("1000","9999"),
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,
@@ -201,34 +209,112 @@ class AssetCategoryController extends Controller
     /**
      * 导出资产类别  数据
      */
-    public function export(){
+//    public function export(){
+//
+//        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+//        $cellData = [
+//            ['资产类别名称','父类别','所属公司'],
+//        ];
+//        $arr = [];
+//        foreach ($list as $key=>$value){
+//            $arr['name'] = $value->name;
+//            $arr['path'] = $value->path;
+//            $arr['org_id'] = $value->org->name;
+//            array_push($cellData,$arr);
+//        }
+//
+//        Excel::create('资产分类_'.date("YmdHis"),function($excel) use ($cellData){
+//            $excel->sheet('score', function($sheet) use ($cellData){
+//                $sheet->setPageMargin(array(
+//                    0.25, 0.30, 0.25, 0.30
+//                ));
+//                $sheet->setWidth(array(
+//                    'A' => 40, 'B' => 40, 'C' => 40
+//                ));
+//                $sheet->cells('A1:C1', function($row) {
+//                    $row->setBackground('#cfcfcf');
+//                });
+//                $sheet->rows($cellData);
+//            });
+//        })->export('xls');
+//        return ;
+//    }
 
+
+    //下载模板
+    public function downloadModel(){
+        $cellData = [['资产类别名称(name)','父类(pid)']];
+        $cellData2 = [['资产类别名称','类别编号']];
+        //类别
         $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        $cellData = [
-            ['资产类别名称','父类别','所属公司'],
-        ];
-        $arr = [];
-        foreach ($list as $key=>$value){
-            $arr['name'] = $value->name;
-            $arr['path'] = $value->path;
-            $arr['org_id'] = $value->org->name;
-            array_push($cellData,$arr);
+        foreach ($list as $k=>$v){
+            $arr = [
+                $list[$k]->name,$list[$k]->id
+            ];
+            array_push($cellData2,$arr);
         }
+        Excel::create('资产类别模板', function($excel) use ($cellData,$cellData2){
 
-        Excel::create('资产分类_'.date("YmdHis"),function($excel) use ($cellData){
-            $excel->sheet('score', function($sheet) use ($cellData){
-                $sheet->setPageMargin(array(
-                    0.25, 0.30, 0.25, 0.30
+            // Our first sheet
+            $excel->sheet('sheet1', function($sheet1) use ($cellData){
+                $sheet1->setPageMargin(array(
+                    0.30,0.30
                 ));
-                $sheet->setWidth(array(
-                    'A' => 40, 'B' => 40, 'C' => 40
+                $sheet1->setWidth(array(
+                    'A' => 40, 'B' => 40
                 ));
-                $sheet->cells('A1:C1', function($row) {
-                    $row->setBackground('#cfcfcf');
+                $sheet1->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
                 });
-                $sheet->rows($cellData);
+                $sheet1->rows($cellData);
             });
+
+            // Our second sheet
+            $excel->sheet('资产类别', function($sheet2) use ($cellData2){
+                $sheet2->setPageMargin(array(
+                    0.30,0.30
+                ));
+                $sheet2->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet2->cells('A1:B1', function($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet2->rows($cellData2);
+            });
+
+
         })->export('xls');
-        return ;
     }
+
+    public function add_import(){
+        return response()->view('asset.asset_category.add_import');
+    }
+
+    public function import(Request $request){
+        $filePath =  $request->file_path;
+        Excel::selectSheets('sheet1')->load($filePath, function($reader) {
+            $data = $reader->all();
+            $org_id = Auth::user()->org_id;
+            foreach ($data as $k=>$v){
+                $arr = $v->toArray();
+                $arr['category_code'] = date("dHis").rand("1000",'9999');
+                if($arr['pid']=='0'){
+                    $arr['path'] = '';
+                }else{
+                    $path = AssetCategory::where("id",$arr['pid'])->value("path");
+                    $arr['path'] = $path.$arr['pid'].',';
+                }
+                $arr['status'] = "1";
+                $arr['org_id'] = $org_id;
+                AssetCategory::insert($arr);
+            }
+        });
+        $message = [
+            'code'=>'1',
+            'message'=> '数据导入成功'
+        ];
+        return response()->json($message);
+    }
+
 }
