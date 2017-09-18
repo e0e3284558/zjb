@@ -3,7 +3,7 @@
         <div class="col-lg-4">
             <div class="contact-box center-version">
 
-                <a href="profile.html">
+                <a href="#">
 
                     @if($v->upload_id!==null)
                         <img alt="image" class="img-circle m-t-xs img-responsive center-block"
