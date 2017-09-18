@@ -20,9 +20,9 @@ class DefaultController extends Controller
 //        dump($org);
         //cas认证地址
         $cas_host = 'authserver.whit.edu.cn';//$org->cas_host;
-        $cas_port = 80;//$org->cas_port;
+        $cas_port = 443;//$org->cas_port;
         $cas_context = 'authserver';//$org->cas_context;
-        phpCAS::setDebug(storage_path('logs/cas.log'));
+//        phpCAS::setDebug(storage_path('logs/cas.log'));
         phpCAS::client(CAS_VERSION_2_0, $cas_host, $cas_port, $cas_context,false);
         //设置no ssl，即忽略证书检查.如果需要ssl，请用 phpCAS::setCasServerCACert()设置ssl证书，
         phpCAS::setNoCasServerValidation();
@@ -47,10 +47,13 @@ class DefaultController extends Controller
                 return redirect('/home');
             }else{
                 //用户不存在
-                dump('no user');
+                echo '认证失败，无此用户信息请联系管理员';
+                exit;
             }
         }elseif($type == 'admin'){
             //管理人员登录
+            echo '认证失败，请联系管理员';
+            exit;
         }elseif($type == 'worker'){
             //维修工登录
             $user = ServiceWorker::where('username',$username)->first();
@@ -61,10 +64,12 @@ class DefaultController extends Controller
                 }
             }else{
                 //维修工不存在
-
+                echo '认证失败，无此用户信息请联系管理员';
+                exit;
             }
         }else{
-           echo '参数有误';
+            echo '认证失败，无此用户信息请联系管理员';
+            exit;
         }
    }
 }
