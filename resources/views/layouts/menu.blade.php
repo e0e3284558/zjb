@@ -80,10 +80,12 @@
                     class="fa arrow"></span></a>
 
         <ul class="nav nav-second-level collapse">
+            <li class="{{ active_class(if_route('asset.index') && if_query('app_groups','asset')) }}"><a
+                        href="{{ route('asset.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产管理</a>
+            </li>
             <li class="{{ active_class(if_route('asset_category.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('asset_category.index',['app_groups'=>'asset']) }}"><i
-                            class="fa fa-angle-right"></i>
-                    资产类别</a></li>
+                            class="fa fa-angle-right"></i>资产类别</a></li>
             <li class="{{ active_class(if_route('area.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('area.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 场地管理</a>
             </li>
@@ -91,9 +93,6 @@
                         {{--href="{{ route('other_asset.index',['app_groups'=>'asset']) }}"><i--}}
                             {{--class="fa fa-angle-right"></i>--}}
                     {{--维修项目</a></li>--}}
-            <li class="{{ active_class(if_route('asset.index') && if_query('app_groups','asset')) }}"><a
-                        href="{{ route('asset.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产管理</a>
-            </li>
             <li class="{{ active_class(if_route('supplier.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('supplier.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 供应商管理</a>
             </li>

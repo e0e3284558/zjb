@@ -74,6 +74,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <li><a class="btn btn-default" id="printBarcode download" href="{{url('supplier/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
                                     <li><a class="btn btn-default" id="print download" href="{{url('supplier/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入其他供应商</a></li>
+                                    <li><a class="btn btn-default" id="print download" href="{{url('supplier/export')}}"><i class="fa fa-sign-in"></i> 导出供应商数据</a></li>
                                 </ul>
                             </div>
                         </div>

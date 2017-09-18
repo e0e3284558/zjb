@@ -58,6 +58,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <li><a class="btn btn-default" id="printBarcode download" href="{{url('asset_category/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
                                         <li><a class="btn btn-default" id="print download" href="{{url('asset_category/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入资产分类</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('asset_category/export')}}"><i class="fa fa-sign-in"></i> 导出资产分类</a></li>
                                     </ul>
                                 </div>
                             </div>

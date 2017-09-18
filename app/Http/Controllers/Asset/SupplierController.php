@@ -155,7 +155,42 @@ class SupplierController extends Controller
         }
     }
 
-    //下载模板
+    /**
+     * 供应商管理  数据导出
+     */
+    public function export(){
+
+        $list = Supplier::where("org_id",Auth::user()->org_id)->get();
+        $cellData = [
+            ['供应商名称','供应商类别','备注'],
+        ];
+        $arr = [];
+        foreach ($list as $key=>$value){
+            $arr['name'] = $value->name;
+            $arr['category'] = AssetCategory::where("id",$value->category_id)->value("name");
+            $arr['remarks'] = $value->remarks;
+            array_push($cellData,$arr);
+        }
+        Excel::create('供应商列表_'.date("YmdHis"),function($excel) use ($cellData){
+            $excel->sheet('供应商', function($sheet) use ($cellData){
+                $sheet->setPageMargin(array(
+                    0.25, 0.30, 0.25, 0.30
+                ));
+                $sheet->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40
+                ));
+                $sheet->cells('A1:C1', function($row) {
+                    $row->setBackground('#cfcfcf');
+                });
+                $sheet->rows($cellData);
+            });
+        })->export('xlsx');
+        return ;
+    }
+
+    /**
+     * 下载模板
+     */
     public function downloadModel(){
         $cellData = [['供应商名称(name)','供应商类别(category_id)','备注(remarks)']];
         $cellData2 = [['类别名称','类别编号']];

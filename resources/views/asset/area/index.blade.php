@@ -59,6 +59,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <li><a class="btn btn-default" id="printBarcode download" href="{{url('area/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
                                         <li><a class="btn btn-default" id="print download" href="{{url('area/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入场地管理</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('area/export')}}"><i class="fa fa-sign-in"></i> 导出场地数据</a></li>
                                     </ul>
                                 </div>
                                 {{--<div class="dropup inline">--}}
