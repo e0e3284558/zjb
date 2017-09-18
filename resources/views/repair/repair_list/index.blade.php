@@ -30,9 +30,9 @@
                     <div class="ibox-content">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="@if (request()->active=='new' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">新增报修单</a></li>
+                                <li class="@if (request()->active=='new' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">待服务工单</a></li>
                                 <li class="@if (request()->active=='wait') active  @endif"><a href="#tab-2" data-toggle="tab">待评价</a></li>
-                                <li class="@if (request()->active=='all') active  @endif"><a href="#tab-3" data-toggle="tab">全部报修单</a></li>
+                                <li class="@if (request()->active=='all') active  @endif"><a href="#tab-3" data-toggle="tab">所有工单</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @if (request()->active=='new' || !request()->active) active  @endif" id="tab-1">
@@ -93,6 +93,7 @@
                                             @endforeach
                                             </tbody>
                                         </table>
+                                        <a href="{{ url('repair/create_repair/create?app_groups=repair') }}" class="btn btn-primary btn-sm">我要报修</a>
                                     </div>
                                     <div class="page-header">{{ $list1->appends(['active' => 'new'])->links() }}</div>
                                 </div>
