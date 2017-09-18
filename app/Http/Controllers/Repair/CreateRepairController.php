@@ -33,6 +33,7 @@ class CreateRepairController extends Controller
         //获取正在维修中的报修
         $data2 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '3')
+            ->orWhere('status', '2')
             ->latest()
             ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker')->paginate(10);
         //获取已完成的报修
