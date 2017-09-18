@@ -6,9 +6,9 @@
 <div class="modal-body">
     <form action="{{url('users/pensonal/'.$data->id)}}" id="AddUserForm" class="form-horizontal " method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label class="control-label col-md-3">用户名<span class="required">*</span></label>
+            <label class="control-label col-md-3">用户名</label>
             <div class="col-md-8">
-            <input type="text" value="{{ $data->username }}" name="username" class="form-control">
+            <input type="text" value="{{ $data->username }}" disabled class="form-control">
             </div>
         </div>
         <div class="form-group">

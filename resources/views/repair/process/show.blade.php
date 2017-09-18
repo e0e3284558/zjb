@@ -20,7 +20,7 @@
 
         </tr>
         <tr>
-            <td><label class="control-label">报修原因</label></td>
+            <td><label class="control-label">报修故障</label></td>
             <td>{{$info->remarks}}</td>
         </tr>
         <tr>

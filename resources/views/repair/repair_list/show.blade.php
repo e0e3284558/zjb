@@ -40,7 +40,7 @@
         <tr role="row">
             <td><label class="control-label">报修项类别</label></td>
             <td>{{$info->asset_classify_id?$info->category->name:""}}</td>
-            <td><label class="control-label">报修原因</label></td>
+            <td><label class="control-label">报修故障</label></td>
             <td>{{$info->remarks}}</td>
         </tr>
         <tr>
