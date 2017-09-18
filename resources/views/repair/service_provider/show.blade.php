@@ -101,23 +101,25 @@
                             <div class="panel-heading">
                                 <div class="panel-options">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a href="#tab-1" data-toggle="tab">客户评价</a></li>
-                                        <li class=""><a href="#tab-2" data-toggle="tab">维修记录</a></li>
+                                        <li class="@if (request()->active=='appraisal' || !request()->active) active  @endif"><a href="#tab-1" data-toggle="tab">客户评价</a></li>
+                                        <li class="@if (request()->active=='record') active  @endif"><a href="#tab-2" data-toggle="tab">维修记录</a></li>
                                     </ul>
                                 </div>
                             </div>
 
                             <div class="panel-body">
-
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="tab-1">
-                                        @foreach($processProvider as $v)
+                                    <div class="tab-pane @if (request()->active=='appraisal' || !request()->active) active  @endif" id="tab-1">
+                                        @foreach($processProvider1 as $v)
                                             <div class="feed-activity-list">
-                                                <div class="feed-element">
-                                                    <a href="#" class="pull-left">
-                                                        <img alt="image" class="img-circle"
-                                                             src="{{get_avatar($v->user_id)}}">
-                                                    </a>
+                                                <div class="feed-element"  style="padding-top: 12px">
+                                                    <div class="pull-left">
+                                                        <a href="#" >
+                                                            <img alt="image" class="img-circle"
+                                                                 src="{{get_avatar($v->user_id)}}">
+                                                        </a>
+                                                        <span class="block" >{{$v->user->name}}</span>
+                                                    </div>
                                                     <div class="media-body ">
                                                         @if($day=intval((time()-strtotime($v->updated_at))/(60*60*24)))
                                                             <small class="pull-right">{{$day}}天前</small>
@@ -125,39 +127,49 @@
                                                             @if($hour=intval((time()-strtotime($v->updated_at))/(60*60)))
                                                                 <small class="pull-right">{{$hour}}小时前</small>
                                                             @else
-                                                                <small class="pull-right">{{intval((time()-strtotime($v->updated_at))/(60))}}
-                                                                    分钟前
-                                                                </small>
+                                                                @if($minter=intval((time()-strtotime($v->updated_at))/(60)))
+                                                                    <small class="pull-right">
+                                                                        {{$minter}}分钟前
+                                                                    </small>
+                                                                @else
+                                                                    刚刚
+                                                                @endif
                                                             @endif
                                                         @endif
-                                                        {{$v->appraisal}}
+                                                        {{$v->appraisal?$v->appraisal:'用户暂未评价'}}
                                                     </div>
-                                                    <div class="media-bottom pull-left">
+                                                    <div class="media-bottom pull-left" style="padding-top: 15px">
                                                         <small class="pull-right">
                                                             @for($i=0;$i< $v->score;$i++ )
-                                                                <i class="fa fa-star" style="color:#e8bd0d;"></i>
+                                                                <i class="fa fa-star"
+                                                                   @if($v->score>3)
+                                                                   style="color:#e8bd0d"
+                                                                   @else
+                                                                   style="color:#dbdfb0"
+                                                                @endif"></i>
                                                             @endfor
                                                         </small>
                                                     </div>
                                                 </div>
                                             </div>
                                         @endforeach
+                                            <div class="page-header">{{ $processProvider1->appends(['active' => 'appraisal'])->links() }}</div>
 
                                     </div>
-                                    <div class="tab-pane" id="tab-2">
-
+                                    <div class="tab-pane @if (request()->active=='record') active  @endif" id="tab-2">
                                         <table class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th>当前状态</th>
                                                 <th>报修人</th>
-                                                <th>报修公司</th>
+                                                <th>维修人员</th>
                                                 <th>维修场地</th>
+                                                <th>维修项目</th>
                                                 <th>当前操作完成时间</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($processProvider as $v)
+                                            @foreach($processProvider2 as $v)
                                                 <tr>
                                                     <td>
                                                         @switch($v->status)
@@ -179,11 +191,18 @@
                                                         {{get_username($v->user_id)}}
                                                     </td>
                                                     <td>
-                                                        {{get_org($v->org_id)}}
+                                                        {{$v->serviceWorker->name}}
                                                     </td>
                                                     <td>
                                                         {{get_area($v->area_id)}}
                                                     </td>
+                                                    @if($v->classify && (!$v->asset_id))
+                                                        <td>{{$v->classify->name}}(场地报修)</td>
+                                                    @else
+                                                        @if($v->asset)
+                                                            <td>{{$v->asset->name}}</td>
+                                                        @endif
+                                                    @endif
                                                     <td>
                                                         {{$v->updated_at}}
                                                     </td>
@@ -191,6 +210,7 @@
                                             @endforeach
                                             </tbody>
                                         </table>
+                                        <div class="page-header">{{ $processProvider2->appends(['active' => 'record'])->links() }}</div>
                                     </div>
                                 </div>
                             </div>
