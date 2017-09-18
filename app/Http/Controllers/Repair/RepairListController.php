@@ -26,18 +26,18 @@ class RepairListController extends Controller
             ->orWhere('status', '1')
             ->orWhere('status', '7')
             ->orWhere('status', '4')
-            ->paginate(10);
+            ->paginate(10, ['*'],'page');
         //待评价
         $list2 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id", Auth::user()->id)
             ->orderBy('id', 'desc')
             ->where("status", "5")
-            ->paginate(10);
+            ->paginate(10, ['*'],'page');
         //全部工单
         $list3 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id", Auth::user()->id)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10, ['*'],'page');
         return view("repair.repair_list.index", compact("list1", "list2", "list3"));
     }
 

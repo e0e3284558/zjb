@@ -166,6 +166,7 @@
                                             <table class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th>报修状态</th>
                                                     <th>报修项目</th>
                                                     <th>报修场地</th>
                                                     {{--<th>报修分类</th>--}}
@@ -177,6 +178,17 @@
                                                 <tbody>
                                                 @foreach($list3 as $v)
                                                     <tr>
+                                                        <td>
+                                                            @if($v->status=='1' || $v->status=='7' || $v->status=='4')
+                                                                <span class="label label-info">待分派</span>
+                                                            @elseif($v->status=='2')
+                                                                <span class="label label-primary">待服务</span>
+                                                            @elseif($v->status=='5')
+                                                                <span class="label label-primary">待评价</span>
+                                                            @elseif($v->status=='6')
+                                                                <span class="label label-primary">已完成</span>
+                                                            @endif
+                                                        </td>
                                                         @if($v->classify && (!$v->asset_id))
                                                             <td>{{$v->classify->name}}</td>
                                                         @else
