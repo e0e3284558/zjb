@@ -31,9 +31,6 @@
             <td colspan="3" >
                 @if(!collect($info->img)->isEmpty())
                     @foreach($list as $k=>$img)
-                        <?php
-                        if ($k > 4) break;
-                        ?>
                             <a href="{{url("$img->path")}}" data-lightbox="roadtrip">
                                 <img src="{{url("$img->path")}}" style="max-width: 50px;max-height: 50px;margin: 5px;">
                             </a>
