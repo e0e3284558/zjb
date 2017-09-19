@@ -30,6 +30,7 @@ class ProcessController extends Controller
             ->where("service_worker_id", auth('service_workers')->user()->id)
             ->where("status", "6")
             ->orWhere('status', "5")
+            ->orWhere('status', "0")
             ->paginate(10);
         return view("repair.process.index", compact("list1", "list2", "list3"));
     }
