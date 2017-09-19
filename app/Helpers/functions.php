@@ -283,7 +283,7 @@ function avatar_circle($img_path, $name)
  */
 function id_to_img($id)
 {
-    if ($id != null) {
+    if ($id) {
         return \App\Models\File\File::find($id)->path;
     }else{
         return url('img/noavatar.png');
@@ -403,9 +403,8 @@ if (!function_exists('get_org')) {
 if (!function_exists('get_avatar')) {
     function get_avatar($id)
     {
-
         $avatar = \App\Models\User\User::find($id)->avatar;
-        return id_to_img($avatar);
+        return id_to_img(intval($avatar));
     }
 }
 
