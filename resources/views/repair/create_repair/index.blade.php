@@ -33,15 +33,19 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='wait' || !request()->active) active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}" >等待派工</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}">等待派工</a>
+                                </li>
                                 <li class="@if (request()->active=='doing') active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=doing')}}" >正在维修</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=doing')}}">正在维修</a>
+                                </li>
                                 <li class="@if (request()->active=='assess') active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=assess')}}" >待评价</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=assess')}}">待评价</a>
+                                </li>
                                 <li class="@if (request()->active=='success') active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=success')}}" >维修完成</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=success')}}">维修完成</a>
+                                </li>
                                 <li class="@if (request()->active=='all') active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=all')}}" >全部维修</a></li>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=all')}}">全部维修</a></li>
                             </ul>
 
                             <div class="tab-content">
@@ -57,8 +61,6 @@
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
-                                                <th>报修照片</th>
-                                                <th>报修故障</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -82,20 +84,10 @@
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
                                                     <td>
-                                                        @if(!collect($v->img)->isEmpty())
-                                                            <span class="cursor_pointer"
-                                                                  onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
-                                                                  title="详情">详情</span>
-                                                        @endif
-                                                    </td>
-                                                    <td title="{{$v->remarks}}">{{mb_substr($v->remarks,0,30)}}</td>
-
-                                                    <td>
                                                         @if($v->status=='4' || $v->status=='7')
                                                             <button class="btn btn-danger btn-sm pull-left"
                                                                     data-toggle="modal"
-                                                                    data-target=".bs-example-modal-md"
+                                                                    data-target=".bs-example-modal-lg"
                                                                     onclick="reason('{{$v->id}}')">查看原因
                                                             </button>
                                                         @endif
@@ -128,10 +120,7 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    <th>报修分类</th>
-                                                    <th>报修照片</th>
-                                                    <th>报修故障</th>
-                                                    <th>当前维修人员</th>
+                                                    <th>维修人员</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -150,23 +139,7 @@
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
 
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-
-                                                        <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
-                                                                      title="详情">详情</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{$v->remarks}}</td>
-                                                        <td>{{@get_area($v->area_id)}}</td>
+                                                        <td>{{$v->serviceWorker->name}}</td>
 
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
@@ -177,7 +150,7 @@
 
                                                             <button class="btn btn-info btn-sm left"
                                                                     data-toggle="modal"
-                                                                    data-target=".bs-example-modal-md"
+                                                                    data-target=".bs-example-modal-lg"
                                                                     onclick="success({{$v->id}})">
                                                                 完成维修
                                                             </button>
@@ -193,7 +166,7 @@
                                             </button>
                                             <button type="button" onclick="batchSuccess(this)"
                                                     class="btn btn-sm btn-primary" data-toggle="modal"
-                                                    data-target=".bs-example-modal-md">
+                                                    data-target=".bs-example-modal-lg">
                                                 批量完成
                                             </button>
                                         </div>
@@ -212,10 +185,9 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    <th>报修分类</th>
-                                                    <th>报修照片</th>
-                                                    <th>报修故障</th>
-                                                    <th>操作</th>
+                                                    <th>维修人员</th>
+                                                    <th>服务商</th>
+                                                    <th>状态</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -232,24 +204,6 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-
-
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-
-                                                        <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
-                                                                      title="详情">详情</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{$v->remarks}}</td>
                                                         <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
                                                         <td>{{$v->serviceProvider?$v->serviceProvider->name:""}}</td>
                                                         <td>
@@ -276,9 +230,6 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    <th>报修分类</th>
-                                                    <th>报修照片</th>
-                                                    <th>报修故障</th>
                                                     <th>维修人员</th>
                                                     <th>服务商</th>
                                                     <th>评分</th>
@@ -299,22 +250,6 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-                                                        <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
-                                                                      title="详情">详情</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{$v->remarks}}</td>
                                                         @if($v->serviceWorker)
                                                             <td>{{$v->serviceWorker->name}}</td>
                                                         @else
@@ -353,9 +288,7 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    <th>报修分类</th>
-                                                    <th>报修照片</th>
-                                                    <th>报修故障</th>
+                                                    <th>维修人员</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
@@ -404,24 +337,11 @@
                                                                 <td>{{$v->asset->name}}</td>
                                                             @endif
                                                         @endif
-
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
+                                                        @if($v->serviceWorker)
+                                                            <td>{{$v->serviceWorker->name}}</td>
+                                                            @else
                                                             <td></td>
                                                         @endif
-
-                                                        <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
-                                                                      title="详情">详情</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{$v->remarks}}</td>
-
                                                         <td>
                                                             @if($v->status=='1')
                                                                 <button class="btn btn-success btn-sm pull-left"
@@ -433,7 +353,7 @@
                                                             @elseif($v->status=='4' || $v->status=='7')
                                                                 <button class="btn btn-danger btn-sm pull-left"
                                                                         data-toggle="modal"
-                                                                        data-target=".bs-example-modal-md"
+                                                                        data-target=".bs-example-modal-lg"
                                                                         onclick="reason('{{$v->id}}')">查看原因
                                                                 </button>
                                                                 <button class="btn btn-success btn-sm pull-left"
@@ -548,7 +468,7 @@
             $.ajax({
                 "url": url,
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -570,7 +490,7 @@
                 "url": url,
                 "type": 'get',
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -581,7 +501,7 @@
                 "url": url,
                 "type": 'get',
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -599,7 +519,7 @@
                     "url": url,
                     "type": 'get',
                     success: function (data) {
-                        $(".bs-example-modal-md .modal-content").html(data);
+                        $(".bs-example-modal-lg .modal-content").html(data);
                     }
                 })
             } else {

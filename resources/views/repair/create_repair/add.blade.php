@@ -56,7 +56,7 @@
 
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">资产</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修资产</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="asset_id" id="asset">
                                                         <option value="">请选择</option>
@@ -119,7 +119,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">报修项</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修项目</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="classify_id" id="asset">
                                                         <option value="">请选择</option>
@@ -131,7 +131,7 @@
                                             </div>
 
                                             <input type="hidden" name="other" value="1">
-                                            <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修故障</label>
                                                 <div class="col-sm-10">
                                                     <textarea class="form-control" name="remarks" style="resize: none" rows="3"></textarea>
                                                 </div>
