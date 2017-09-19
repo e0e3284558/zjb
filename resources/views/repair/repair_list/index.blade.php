@@ -151,6 +151,8 @@
                                                                 <span class="label label-primary">待评价</span>
                                                             @elseif($v->status=='6')
                                                                 <span class="label label-primary">已完成</span>
+                                                            @elseif($v->status=='0')
+                                                                <span class="label label-danger">工单关闭</span>
                                                             @endif
                                                         </td>
                                                         @if($v->classify && (!$v->asset_id))

@@ -87,7 +87,7 @@
                     <label class="col-sm-4 control-label">供应商</label>
                     <div class="col-sm-8">
                         <select id="supplier_id" data-error-container="#error-block" name="supplier_id" class="form-control select2">
-                            <option>请选择</option>
+                            <option value="">请选择</option>
                             @foreach($list7 as $v)
                                 @if($v->id==$info->supplier_id)
                                     <option value="{{$v->id}}" selected>{{$v->name}}</option>
