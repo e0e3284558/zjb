@@ -7,24 +7,21 @@
     <table id="example1" class="table table-bordered" role="grid" aria-describedby="example1_info">
         <tbody>
         <tr role="row">
-            <td><label class="control-label">报修项名称</label></td>
+            <td><label class="control-label">报修项目</label></td>
             <td>
                 @if($info->other=="0")
                     {{$info->asset->name}}
                 @else
-                    {{$info->otherAsset->name}}
+                    {{$info->asset_classify_id?$info->category->name:""}}
                 @endif
             </td>
             <td><label class="control-label">所在场地</label></td>
             <td>{{$info->area_id?get_area($info->area_id):""}}</td>
-
         </tr>
 
         <tr role="row">
-            <td><label class="control-label">报修项类别</label></td>
-            <td>{{$info->asset_classify_id?$info->category->name:""}}</td>
             <td><label class="control-label">报修故障</label></td>
-            <td>{{$info->remarks}}</td>
+            <td colspan="3">{{$info->remarks}}</td>
         </tr>
         <tr>
             <td><label class="control-label">报修图片</label></td>

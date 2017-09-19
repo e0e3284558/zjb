@@ -31,7 +31,7 @@ class IndexController extends Controller
     {
         $worker_count = 0;
         $user = Auth::user();
-        if ($user->is_org_admin == "0") {
+        if (!$user->is_org_admin) {
             return redirect('repair/repair_list');
         }
         $user_count = User::where('org_id', $user->org_id)->count();

@@ -51,9 +51,9 @@ class PensonalController extends Controller
     public function show($id)
     {
         if(auth('service_workers')->user()){
-            $data = ServiceWorker::find($id);
+            $data = ServiceWorker::find(get_current_login_user_info('id','service_workers'));
         }else{
-            $data = User::find($id);
+            $data = User::find(get_current_login_user_info('id'));
         }
         $data->depatment_id = Department::where("id",$data->department_id)->value("name");
         return response()->view('user.pensonal.show', compact('data'));
@@ -68,9 +68,9 @@ class PensonalController extends Controller
     public function edit($id)
     {
         if(auth('service_workers')->user()){
-            $data = ServiceWorker::find($id);
+            $data = ServiceWorker::find(get_current_login_user_info('service_workers'));
         }else{
-            $data = User::find($id);
+            $data = User::find(get_current_login_user_info('id'));
         }
         return response()->view('user.pensonal.edit', compact('data'));
     }
@@ -86,15 +86,15 @@ class PensonalController extends Controller
     public function update(Request $request, $id)
     {
         if(auth('service_workers')->user()){
-            $user = ServiceWorker::find($id);
-            $user->username = $request->username;
+            $user = ServiceWorker::find(get_current_login_user_info('id','service_workers'));
+            // $user->username = $request->username;
             $user->name = $request->name;
             if ($request->password != null) $user->password = bcrypt($request->password);
             $user->tel = $request->tel;
 //            $user->email = $request->email;
         }else{
-            $user = User::find($id);
-            $user->username = $request->username;
+            $user = User::find(get_current_login_user_info('id'));
+            // $user->username = $request->username;
             $user->name = $request->name;
             if ($request->password != null) $user->password = bcrypt($request->password);
             $user->tel = $request->tel;
