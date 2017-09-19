@@ -120,7 +120,7 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    <th>当前维修人员</th>
+                                                    <th>维修人员</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -139,7 +139,7 @@
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
 
-                                                        <td>{{@get_area($v->area_id)}}</td>
+                                                        <td>{{$v->serviceWorker->name}}</td>
 
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
