@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Models\Asset\Asset;
+use App\Models\Asset\Supplier;
 use App\Models\Repair\Process;
 use App\Models\User\User;
 use Illuminate\Http\Request;
@@ -55,8 +57,19 @@ class IndexController extends Controller
             ->where('status', 5)
             ->orWhere('status', 6)
             ->count();
+        $asset_num=Asset::where('org_id',$user->org_id)->count();
+        $supplier_num=Supplier::where('org_id',$user->org_id)->count();
+
         return view('portal.index', compact(
-            'user_count', 'provider_count', 'process_count', 'worker_count','wait','progress','end'
+            'user_count',
+            'provider_count',
+            'process_count',
+            'worker_count',
+            'wait',
+            'progress',
+            'end',
+            'asset_num',
+            'supplier_num'
         ));
     }
 }
