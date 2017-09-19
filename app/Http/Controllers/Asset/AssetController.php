@@ -70,6 +70,7 @@ class AssetController extends Controller
         }
         //资产类别
         $category_list = AssetCategory::where("org_id",$org_id)->get();
+        $category_list = $this->test($category_list);
         $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
         return view("asset.asset.index",compact("list","category_list"));
     }
