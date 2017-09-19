@@ -28,6 +28,7 @@
                         <h5>维修列表</h5>
                     </div>
                     <div class="ibox-content">
+                        <a href="{{ url('repair/create_repair/create?app_groups=repair') }}" class="btn btn-primary btn-sm">我要报修</a>
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='new' || !request()->active) active  @endif">
@@ -77,7 +78,7 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        <a href="{{ url('repair/create_repair/create?app_groups=repair') }}" class="btn btn-primary btn-sm">我要报修</a>
+                                        
                                     </div>
                                     <div class="page-header">{{ $list1->appends(['active' => 'new'])->links() }}</div>
                                 </div>
