@@ -284,7 +284,7 @@ function avatar_circle($img_path, $name)
 function id_to_img($id)
 {
     if ($id != null) {
-        return \App\Models\File\File::find($id)->value('path');
+        return \App\Models\File\File::find($id)->path;
     }else{
         return url('img/noavatar.png');
     }
