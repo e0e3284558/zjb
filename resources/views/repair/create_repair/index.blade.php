@@ -83,15 +83,16 @@
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
+
                                                     <td>
                                                         @if($v->status=='4' || $v->status=='7')
-                                                            <button class="btn btn-danger btn-sm pull-left"
+                                                            <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
                                                                     data-target=".bs-example-modal-lg"
                                                                     onclick="reason('{{$v->id}}')">查看原因
                                                             </button>
                                                         @endif
-                                                        <button class="btn btn-success btn-sm pull-left"
+                                                        <button class="btn btn-info btn-sm left"
                                                                 onclick="assign('{{$v->id}}')"
                                                                 data-toggle="modal"
                                                                 data-target=".bs-example-modal-lg">
