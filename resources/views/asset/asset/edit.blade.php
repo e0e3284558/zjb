@@ -113,13 +113,14 @@
                     <label class="col-sm-4 control-label">所属部门</label>
                     <div class="col-sm-8">
                         <select id="department_id" name="department_id" class="form-control select2">
-                            @foreach($list6 as $v)
-                                @if($v->id== $info->department_id)
-                                    <option selected value="{{$v->id}}">{{$v->name}}</option>
-                                @else
-                                    <option value="{{$v->id}}">{{$v->name}}</option>
-                                @endif
-                            @endforeach
+                            {{--@foreach($list6 as $v)--}}
+                                {{--@if($v->id== $info->department_id)--}}
+                                    {{--<option selected value="{{$v->id}}">{{$v->name}}</option>--}}
+                                {{--@else--}}
+                                    {{--<option value="{{$v->id}}">{{$v->name}}</option>--}}
+                                {{--@endif--}}
+                            {{--@endforeach--}}
+                            {!! department_select($info->department_id,1) !!}
                         </select>
                     </div>
                 </div>
@@ -144,7 +145,7 @@
                             @if($info->img_path)
                                 <img id="thumb_img" src="{{url($info->img_path)}}" alt="" width="160px" height="120px">
                             @else
-                                暂无图片
+                                <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
                             @endif
                             <!--用来存放item-->
                             <div id="fileList" class="uploader-list"></div>

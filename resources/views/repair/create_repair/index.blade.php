@@ -33,10 +33,10 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='wait' || !request()->active) active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}">等待派工</a>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}">待派工</a>
                                 </li>
                                 <li class="@if (request()->active=='doing') active  @endif">
-                                    <a href="{{url('repair/create_repair?app_groups=repair&active=doing')}}">正在维修</a>
+                                    <a href="{{url('repair/create_repair?app_groups=repair&active=doing')}}">维修中</a>
                                 </li>
                                 <li class="@if (request()->active=='assess') active  @endif">
                                     <a href="{{url('repair/create_repair?app_groups=repair&active=assess')}}">待评价</a>
@@ -251,8 +251,8 @@
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
                                                     <th>维修人员</th>
-                                                    <th>维修单详情</th>
                                                     <th>服务商</th>
+                                                    <th>维修单详情</th>
                                                     <th>评分</th>
                                                     <th>评价</th>
                                                 </tr>
@@ -272,11 +272,7 @@
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
                                                         <td>
-                                                        <span class="cursor_pointer"
-                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
-                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
-                                                              title="详情">点击查看详情</span>
-                                                        </td>
+
                                                         @if($v->serviceWorker)
                                                             <td>{{$v->serviceWorker->name}}</td>
                                                         @else
@@ -287,6 +283,11 @@
                                                         @else
                                                             <td>服务商已被移除</td>
                                                         @endif
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
+                                                        </td>
                                                         <td>
                                                             @for($i=0;$i<$v->score;$i++)
                                                                 <i class="fa fa-star" style="color:#e8bd0d;"></i>

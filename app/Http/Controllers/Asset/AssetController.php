@@ -93,8 +93,6 @@ class AssetController extends Controller
         //场地
         $list4 = Area::where("org_id",$org_id)->get();
         $list4 = $this->test($list4);
-        //来源
-//        $list5 = Source::where("org_id",$org_id)->get();
         //所属部门
         $list6 = Department::where("org_id",$org_id)->get();
         //供应商
@@ -181,8 +179,9 @@ class AssetController extends Controller
             $list2 = Org::where("id", $org_id)->get();
             //管理员
             $list3 = User::where("org_id", $org_id)->get();
-            //区域
+            //场地
             $list4 = Area::where("org_id",$org_id)->get();
+            $list4 = $this->test($list4);
             //来源
 //            $list5 = Source::where("org_id",$org_id)->get();
             //使用部门
