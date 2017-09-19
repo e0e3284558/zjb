@@ -84,6 +84,7 @@
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
+
                                                     <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
@@ -91,19 +92,19 @@
                                                               title="详情">点击查看详情</span>
                                                     </td>
                                                     <td>
-                                                        @if($v->status=='4' || $v->status=='7')
-                                                            <button class="btn btn-danger btn-sm pull-left"
-                                                                    data-toggle="modal"
-                                                                    data-target=".bs-example-modal-lg"
-                                                                    onclick="reason('{{$v->id}}')">查看原因
-                                                            </button>
-                                                        @endif
-                                                        <button class="btn btn-success btn-sm pull-left"
+                                                        <button class="btn btn-info btn-sm left"
                                                                 onclick="assign('{{$v->id}}')"
                                                                 data-toggle="modal"
                                                                 data-target=".bs-example-modal-lg">
                                                             分派维修
                                                         </button>
+                                                        @if($v->status=='4' || $v->status=='7')
+                                                            <button class="btn btn-warning btn-sm left"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-lg"
+                                                                    onclick="reason('{{$v->id}}')">查看原因
+                                                            </button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
