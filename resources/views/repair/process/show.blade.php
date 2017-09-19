@@ -7,7 +7,7 @@
     <table id="example1" class="table table-bordered" role="grid" aria-describedby="example1_info">
         <tbody>
         <tr role="row">
-            <td><label class="control-label">报修项名称</label></td>
+            <td><label class="control-label">报修项目</label></td>
             @if($info->other=="0")
                 <td>{{$info->asset->name}}</td>
             @else
@@ -24,9 +24,25 @@
             <td>{{$info->remarks}}</td>
         </tr>
         <tr>
+            <td><label class="control-label">报修图片</label></td>
+            <td>
+                @if(!collect($info->img)->isEmpty())
+                    @foreach($list as $k=>$img)
+                        <?php
+                        if ($k > 4) break;
+                        ?>
+                        <a href="{{url("$img->path")}}" data-lightbox="roadtrip">
+                            <img src="{{url("$img->path")}}" style="max-width: 50px;max-height: 50px;margin: 5px;">
+                        </a>
+                    @endforeach
+                @endif
+            </td>
+        </tr>
+        <tr>
             <td><label class="control-label">报修人</label></td>
             <td>{{$info->user_id?$info->user->name:""}}</td>
         </tr>
+
         </tbody>
     </table>
 </div>
