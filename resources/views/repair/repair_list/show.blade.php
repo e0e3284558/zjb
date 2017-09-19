@@ -12,7 +12,7 @@
                 @if($info->other=="0")
                     {{$info->asset->name}}
                 @else
-                    {{$info->otherAsset->name}}
+                    {{$info->classify_id?$info->classify->name:""}}
                 @endif
             </td>
             <td><label class="control-label">所在场地</label></td>

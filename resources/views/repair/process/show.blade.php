@@ -11,7 +11,7 @@
             @if($info->other=="0")
                 <td>{{$info->asset->name}}</td>
             @else
-                <td>{{$info->otherAsset->name}}</td>
+                <td>{{$info->classify_id?$info->classify->name:""}}</td>
             @endif
         </tr>
         <tr role="row">
