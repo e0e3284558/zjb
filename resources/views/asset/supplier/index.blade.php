@@ -54,14 +54,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($list as $k=>$v)
+                                    @if(count($list)>0)
+                                        @foreach($list as $k=>$v)
+                                            <tr>
+                                                <td><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
+                                                <td><span class="cursor_pointer" href="{{url('supplier')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-md" >{{$v->name}}</span></td>
+                                                <td>{{$v->category->name}}</td>
+                                                <td>{{$v->remarks}}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
                                         <tr>
-                                            <td><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
-                                            <td><span class="cursor_pointer" href="{{url('supplier')}}/{{$v->id}}" data-toggle="modal" data-target=".bs-example-modal-md" >{{$v->name}}</span></td>
-                                            <td>{{$v->category->name}}</td>
-                                            <td>{{$v->remarks}}</td>
+                                            <td colspan="4" style="text-align: center" >暂无数据</td>
                                         </tr>
-                                    @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
                                 {{ $list->links() }}

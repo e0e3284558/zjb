@@ -18,6 +18,30 @@
             <div class="col-lg-3">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
+                        <a href="{{url('asset?app_groups=asset')}}"> <span class="label label-primary pull-right">详情</span></a>
+                        <h5>资产</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{$asset_num}}</h1>
+                        <small>资产数量</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <a href="{{url('supplier?app_groups=asset')}}"> <span class="label label-success pull-right">详情</span></a>
+                        <h5>供应商</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{$supplier_num}}</h1>
+                        <small>供应商数量</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
                         <a href="{{url('repair/create_repair?app_groups=repair&active=all')}}"><span class="label label-info pull-right">详情</span></a>
                         <h5>报修</h5>
                     </div>
@@ -54,7 +78,7 @@
             <div class="col-lg-3">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}"><span class="label label-success pull-right">详情</span></a>
+                        <a href="{{url('repair/create_repair?app_groups=repair&active=wait')}}"><span class="label label-info pull-right">详情</span></a>
                         <h5>等待维修</h5>
                     </div>
                     <div class="ibox-content">

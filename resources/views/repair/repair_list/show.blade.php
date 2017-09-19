@@ -9,10 +9,10 @@
         <tr role="row">
             <td><label class="control-label">报修项目</label></td>
             <td>
-                @if($info->other=="0")
+                @if(!$info->other)
                     {{$info->asset->name}}
                 @else
-                    {{$info->asset_classify_id?$info->category->name:""}}
+                    {{$info->classify_id?$info->classify->name:""}}
                 @endif
             </td>
             <td><label class="control-label">所在场地</label></td>
