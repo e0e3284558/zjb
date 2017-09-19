@@ -92,6 +92,12 @@
                                                               title="详情">点击查看详情</span>
                                                     </td>
                                                     <td>
+                                                        <button class="btn btn-info btn-sm left"
+                                                                onclick="assign('{{$v->id}}')"
+                                                                data-toggle="modal"
+                                                                data-target=".bs-example-modal-lg">
+                                                            分派维修
+                                                        </button>
                                                         @if($v->status=='4' || $v->status=='7')
                                                             <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
@@ -99,12 +105,6 @@
                                                                     onclick="reason('{{$v->id}}')">查看原因
                                                             </button>
                                                         @endif
-                                                        <button class="btn btn-info btn-sm left"
-                                                                onclick="assign('{{$v->id}}')"
-                                                                data-toggle="modal"
-                                                                data-target=".bs-example-modal-lg">
-                                                            分派维修
-                                                        </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
