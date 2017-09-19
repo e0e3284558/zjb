@@ -104,6 +104,11 @@ class CreateRepairController extends Controller
             if ($area_id == 0) {
                 $area_id = $request->area_id[count($request->area_id) - 2];
             }
+        }else{
+            return response()->json([
+                'status' => 0, 'message' => '请选择场地位置',
+                'data' => null, 'url' => ''
+            ]);
         }
         $category_id = null;
         if ($request->other == 0) {
