@@ -39,11 +39,10 @@ class LoginController extends Controller
     {
         $request = request();
         if($request->type == 'worker'){
+//            $request->offsetSet('type','worker');
             $this->redirectTo = '/worker';
-            $this->username = 'username';
             $this->guard = 'service_workers';
         }
-
         $this->middleware('guest:'.$this->guard)->except('logout');
     }
 

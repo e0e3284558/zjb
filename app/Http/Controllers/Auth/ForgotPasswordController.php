@@ -27,6 +27,8 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
+        echo '已关闭';
+        exit;
         $this->middleware('guest');
     }
 }
