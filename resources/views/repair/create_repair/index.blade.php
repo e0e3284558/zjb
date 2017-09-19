@@ -127,8 +127,8 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    <th>当前维修人员</th>
                                                     <th>维修单详情</th>
+                                                    <th>维修人员</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -146,13 +146,13 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-                                                        <td>{{@get_area($v->area_id)}}</td>
                                                         <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
                                                         </td>
+                                                        <td>{{$v->serviceWorker->name}}</td>
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
@@ -198,7 +198,9 @@
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
                                                     <th>维修单详情</th>
-                                                    <th>操作</th>
+                                                    <th>维修人员</th>
+                                                    <th>服务商</th>
+                                                    <th>状态</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
