@@ -125,7 +125,7 @@
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->classify && (!$v->asset_id))
-                                                        <td>{{$v->classify->name}}(场地报修)</td>
+                                                        <td>{{$v->classify->name}}</td>
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif

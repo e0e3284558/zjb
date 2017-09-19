@@ -113,13 +113,14 @@
                     <label class="col-sm-4 control-label">所属部门</label>
                     <div class="col-sm-8">
                         <select id="department_id" name="department_id" class="form-control select2">
-                            @foreach($list6 as $v)
-                                @if($v->id== $info->department_id)
-                                    <option selected value="{{$v->id}}">{{$v->name}}</option>
-                                @else
-                                    <option value="{{$v->id}}">{{$v->name}}</option>
-                                @endif
-                            @endforeach
+                            {{--@foreach($list6 as $v)--}}
+                                {{--@if($v->id== $info->department_id)--}}
+                                    {{--<option selected value="{{$v->id}}">{{$v->name}}</option>--}}
+                                {{--@else--}}
+                                    {{--<option value="{{$v->id}}">{{$v->name}}</option>--}}
+                                {{--@endif--}}
+                            {{--@endforeach--}}
+                            {!! department_select($info->department_id,1) !!}
                         </select>
                     </div>
                 </div>

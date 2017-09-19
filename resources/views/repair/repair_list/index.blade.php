@@ -147,6 +147,8 @@
                                                                 <span class="label label-info">待分派</span>
                                                             @elseif($v->status=='2')
                                                                 <span class="label label-primary">待服务</span>
+                                                            @elseif($v->status=='3')
+                                                                <span class="label label-primary">维修中</span>
                                                             @elseif($v->status=='5')
                                                                 <span class="label label-primary">待评价</span>
                                                             @elseif($v->status=='6')
