@@ -85,7 +85,7 @@
             </li>
             <li class="{{ active_class(if_route('asset_category.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('asset_category.index',['app_groups'=>'asset']) }}"><i
-                            class="fa fa-angle-right"></i>资产类别</a></li>
+                            class="fa fa-angle-right"></i> 资产类别</a></li>
             <li class="{{ active_class(if_route('area.index') && if_query('app_groups','asset')) }}"><a
                         href="{{ route('area.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 场地管理</a>
             </li>
