@@ -36,7 +36,7 @@
         <div class="row">
             <div class="col-md-12" >
                 <div class="form-group">
-                    <div class="col-sm-2 control-label">维修建议</div>
+                    <div class="col-sm-2 control-label">维修记录</div>
                     <div class="col-sm-10">
                         <textarea class="form-control" name="suggest" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>

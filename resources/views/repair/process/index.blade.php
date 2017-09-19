@@ -32,9 +32,9 @@
                                 <li class="@if (request()->active=='wait' || !request()->active) active  @endif">
                                     <a href="{{url('repair/process?app_groups=repair&active=wait')}}" >待服务</a></li>
                                 <li class="@if (request()->active=='result') active  @endif">
-                                    <a href="{{url('repair/process?app_groups=repair&active=result')}}">待填写维修结果</a></li>
+                                    <a href="{{url('repair/process?app_groups=repair&active=result')}}">维修中</a></li>
                                 <li class="@if (request()->active=='end') active  @endif">
-                                    <a href="{{url('repair/process?app_groups=repair&active=end')}}">已结束维修单</a></li>
+                                    <a href="{{url('repair/process?app_groups=repair&active=end')}}">已完成</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif" id="tab-1">
@@ -46,9 +46,6 @@
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
-                                                {{--<th>报修分类</th>--}}
-                                                <th>报修照片</th>
-                                                {{--<th>报修原因</th>--}}
                                                 <th>维修单详情</th>
                                                 <th>操作</th>
                                             </tr>
@@ -66,41 +63,24 @@
                                                     @else
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
-
-                                                    {{--@if($v->classify)--}}
-                                                        {{--<td>{{$v->classify?$v->classify->name:""}}</td>--}}
-                                                    {{--@else--}}
-                                                        {{--<td>无分类</td>--}}
-                                                    {{--@endif--}}
-
-                                                    <td>
-                                                        @if(!collect($v->img)->isEmpty())
-                                                            <span class="cursor_pointer"
-                                                                  onclick="showImg('{{url('repair/process/showImg')}}/{{$v->id}}')"
-                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
-                                                                  title="详情">详情</span>
-                                                        @endif
-                                                    </td>
-{{--                                                    <td>{{$v->remarks}}</td>--}}
-
                                                     <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/process')}}/{{$v->id}}')"
-                                                              data-toggle="modal" data-target=".bs-example-modal-md"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
                                                     </td>
 
                                                     <td>
                                                         @if($v->status=="2")
-                                                            <button class="btn btn-primary" onclick="edit('{{$v->id}}')">
+                                                            <button class="btn btn-sm btn-primary" onclick="edit('{{$v->id}}')">
                                                                 接单
-                                                            </button>&nbsp;<button class="btn btn-danger"
+                                                            </button>&nbsp;<button class="btn btn-sm btn-danger"
                                                                                    onclick="refuse('{{$v->id}}')"
-                                                                                   data-toggle="modal" data-target=".bs-example-modal-md">拒绝
+                                                                                   data-toggle="modal" data-target=".bs-example-modal-lg">拒绝
                                                             </button>
                                                         @elseif($v->status=="3")
                                                             <button class="btn btn-primary" onclick="add('{{$v->id}}')"
-                                                                    data-toggle="modal" data-target=".bs-example-modal-md">
+                                                                    data-toggle="modal" data-target=".bs-example-modal-lg">
                                                                 填写报修结果
                                                             </button>
                                                         @elseif($v->status=='5')
@@ -119,7 +99,7 @@
                                             批量接单
                                         </button>
                                         <button type="button" onclick="batch_refuse(this)" class="btn btn-sm btn-danger"
-                                                data-toggle="modal" data-target=".bs-example-modal-md" >
+                                                data-toggle="modal" data-target=".bs-example-modal-lg" >
                                             批量拒单
                                         </button>
                                     </div>
@@ -134,9 +114,6 @@
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
-                                                {{--<th>报修分类</th>--}}
-                                                <th>报修照片</th>
-                                                {{--<th>报修原因</th>--}}
                                                 <th>维修单详情</th>
                                                 <th>操作</th>
                                             </tr>
@@ -153,32 +130,10 @@
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
 
-                                                    {{--@if($v->classify)--}}
-                                                        {{--<td>{{$v->classify?$v->classify->name:""}}</td>--}}
-                                                    {{--@else--}}
-                                                        {{--<td>无分类</td>--}}
-                                                    {{--@endif--}}
-
-                                                    <td>
-                                                        @if(!collect($v->img)->isEmpty())
-                                                            <span class="cursor_pointer"
-                                                                  onclick="showImg('{{url('repair/process/showImg')}}/{{$v->id}}')"
-                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
-                                                                  title="详情">详情</span>
-                                                        @endif
-                                                    </td>
-{{--                                                    <td>{{$v->remarks}}</td>--}}
-
-                                                    {{--<td>--}}
-                                                        {{--<span class="cursor_pointer"--}}
-                                                              {{--onclick="show('{{url('repair/process')}}/{{$v->id}}')"--}}
-                                                              {{--data-toggle="modal" data-target=".bs-example-modal-md"--}}
-                                                              {{--title="详情">点击查看详情</span>--}}
-                                                    {{--</td>--}}
                                                     <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/process')}}/{{$v->id}}')"
-                                                              data-toggle="modal" data-target=".bs-example-modal-md"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
                                                     </td>
 
@@ -191,7 +146,7 @@
                                                             </button>
                                                         @elseif($v->status=="3")
                                                             <button class="btn btn-primary" onclick="add('{{$v->id}}')"
-                                                                    data-toggle="modal" data-target=".bs-example-modal-md">
+                                                                    data-toggle="modal" data-target=".bs-example-modal-lg">
                                                                 填写报修结果
                                                             </button>
                                                         @elseif($v->status=='5')
@@ -218,10 +173,6 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
-                                                    {{--<th>报修分类</th>--}}
-                                                    <th>报修照片</th>
-                                                    {{--<th>报修原因</th>--}}
-                                                    <th>报修位置</th>
                                                     <th width="18%">维修单详情</th>
                                                 </tr>
                                                 </thead>
@@ -232,30 +183,14 @@
                                                         <td>{{@get_area($v->area_id)}}</td>
 
                                                         @if($v->classify_id && (!$v->asset_id))
-                                                            <td>{{$v->classify->name}}(场地报修)</td>
+                                                            <td>{{$v->classify->name}}</td>
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-                                                        {{--@if($v->classify)--}}
-                                                            {{--<td>{{$v->classify?$v->classify->name:""}}</td>--}}
-                                                        {{--@else--}}
-                                                            {{--<td>无分类</td>--}}
-                                                        {{--@endif--}}
-
-                                                        <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal" data-target=".bs-example-modal-md"
-                                                                      title="详情">详情</span>
-                                                            @endif
-                                                        </td>
-{{--                                                        <td>{{$v->remarks}}</td>--}}
-                                                        <td>{{@get_area($v->area_id)}}</td>
                                                         <td>
                                                             <span class="cursor_pointer"
                                                                   onclick="show('{{url('repair/process')}}/{{$v->id}}')"
-                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                  data-toggle="modal" data-target=".bs-example-modal-lg"
                                                                   title="详情">点击查看详情</span>
                                                         </td>
                                                     </tr>
@@ -405,7 +340,7 @@
                 type: "get",
                 url: '{{url('repair/process/refuse')}}/' + id,
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             });
         }
@@ -425,7 +360,7 @@
                     type: "get",
                     url: '{{url('repair/process/refuse')}}/' + arr,
                     success: function (data) {
-                        $(".bs-example-modal-md .modal-content").html(data);
+                        $(".bs-example-modal-lg .modal-content").html(data);
                     }
                 });
             }else{
@@ -439,7 +374,7 @@
                 type: "post",
                 data: {},
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -448,17 +383,7 @@
             $.ajax({
                 "url": url,
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
-        }
-
-        function showImg(url) {
-            $.ajax({
-                "url": url,
-                "type":"get",
-                success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }

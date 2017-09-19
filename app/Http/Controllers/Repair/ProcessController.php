@@ -73,9 +73,9 @@ class ProcessController extends Controller
 
     public function show($id)
     {
-//        dd($id);
         $info = Process::with('org', 'user', 'admin', 'area', 'otherAsset', 'asset', 'category', 'serviceWorker', 'serviceProvider')->find($id);
-        return response()->view("repair.process.show", compact('info'));
+        $list = Process::where("id", $id)->with("img")->first()->img;
+        return response()->view("repair.process.show", compact('info',"list"));
     }
 
 
@@ -152,20 +152,6 @@ class ProcessController extends Controller
     public function refuse($str)
     {
         return response()->view("repair.process.refuse",compact('str'));
-//        $info = Process::where('id', $id)->update(['status' => '4']);
-//        $message = [];
-//        if ($info) {
-//            $message = [
-//                'code' => 1,
-//                'message' => '成功'
-//            ];
-//        } else {
-//            $message = [
-//                'code' => 0,
-//                'message' => '失败'
-//            ];
-//        }
-//        return response()->json($message);
     }
 
     /**
