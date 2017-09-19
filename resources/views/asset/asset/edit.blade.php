@@ -144,7 +144,7 @@
                             @if($info->img_path)
                                 <img id="thumb_img" src="{{url($info->img_path)}}" alt="" width="160px" height="120px">
                             @else
-                                暂无图片
+                                <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
                             @endif
                             <!--用来存放item-->
                             <div id="fileList" class="uploader-list"></div>
