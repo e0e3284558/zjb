@@ -90,7 +90,7 @@
                             <dt>好评率:</dt>
                             <dd>
                                 <div class="progres">
-                                    <input id="input-21f" type="text" disabled value="{{$data->score}}"
+                                    <input id="input-21f" type="text" class="hide" disabled value="{{$data->score}}"
                                            data-min=0 data-max=5 data-step=0.01 data-size="xs" data-error-container="#error-block" title="">
                                 </div>
                             </dd>
@@ -119,11 +119,9 @@
                                         @foreach($processProvider1 as $v)
                                             <div class="feed-activity-list">
                                                 <div class="feed-element" style="padding-top: 12px">
-                                                    <div class="pull-left">
-                                                        <a href="#">
+                                                    <div class="pull-left text-center">
                                                             <img alt="image" class="img-circle"
                                                                  src="{{get_avatar($v->user_id)}}">
-                                                        </a>
                                                         <span class="block">{{$v->user->name}}</span>
                                                     </div>
                                                     <div class="media-body ">

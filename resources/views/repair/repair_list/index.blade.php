@@ -197,15 +197,6 @@
             })
         }
 
-        function showImg(url) {
-            $.ajax({
-                "url": url,
-                success: function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
-                }
-            })
-        }
-
         function edit(id) {
             $.ajax({
                 url: "{{url('repair/repair_list')}}/" + id + '/edit',

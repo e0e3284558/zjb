@@ -31,11 +31,11 @@
                     <div class="ibox-content" >
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
-                                <li class="" onclick="newImg()"><a href="#tab-2" data-toggle="tab">场地报修</a></li>
+                                <li class="active" ><a href="#tab-2" data-toggle="tab">场地报修</a></li>
+                                <li class="" onclick="newImg()"><a href="#tab-1" data-toggle="tab">资产报修</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tab-1">
+                                <div class="tab-pane " id="tab-1">
                                     <div class="panel-body">
                                         <form method="post" class="form-horizontal"
                                               id="asset_repair"
@@ -66,7 +66,7 @@
 
 
 
-                                            <div class="form-group"><label class="col-sm-2 control-label">问题描述</label>
+                                            <div class="form-group"><label class="col-sm-2 control-label">报修故障</label>
                                                 <div class="col-sm-10">
                                                     <textarea class="form-control" name="remarks" style="resize: none" rows="3"></textarea>
                                                 </div>
@@ -101,7 +101,7 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="tab-2">
+                                <div class="tab-pane active" id="tab-2">
                                     <div class="panel-body">
                                         <form method="post" class="form-horizontal" id="general_repair">
                                         {{csrf_field()}}
@@ -266,7 +266,7 @@
 
         $(document).ready(function () {
             zjb.initAjax();
-            var l = $("#btn1").ladda();
+            var lz = $("#btn1").ladda();
             var forms = $("#asset_repair");
             $('#btn1').click(function () {
                 forms.submit();
@@ -307,10 +307,10 @@
                             dataType: 'json',
                             data: forms.serialize(),
                             beforeSend: function () {
-                                l.ladda('start');
+                                lz.ladda('start');
                             },
                             complete: function (xhr, textStatus) {
-                                l.ladda('stop');
+                                lz.ladda('stop');
                             },
                             success: function (data, textStatus, xhr) {
                                 if (data.status) {
@@ -416,8 +416,8 @@
 
             //资产报修图片上传
             zjb.imageUpload({
-                uploader: 'imageUploadInstance',
-                picker: 'image-upload-instance',
+                uploader: 'imageUploadInstance2',
+                picker: 'image-upload-instance2',
                 swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                 server: '{{ route("image.upload") }}',
                 isAutoInsertInput: true,//上传成功是否自动创建input存储区域
@@ -446,8 +446,8 @@
             if (isset !== 1) {
                 isset = 1;
                 zjb.imageUpload({
-                    uploader: 'imageUploadInstance2',
-                    picker: 'image-upload-instance2',
+                    uploader: 'imageUploadInstance',
+                    picker: 'image-upload-instance',
                     swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
                     server: '{{ route("image.upload") }}',
                     isAutoInsertInput: true,//上传成功是否自动创建input存储区域
