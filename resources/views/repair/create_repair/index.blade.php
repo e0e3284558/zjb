@@ -61,6 +61,7 @@
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
+                                                <th>维修单详情</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -84,19 +85,12 @@
                                                         <td>{{$v->asset->name}}</td>
                                                     @endif
                                                     <td>
-<<<<<<< HEAD
-                                                        @if(!collect($v->img)->isEmpty())
-                                                            <span class="cursor_pointer"
-                                                                  onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                  data-toggle="modal" data-target=".bs-example-modal-lg"
-                                                                  title="详情">详情</span>
-                                                        @endif
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
                                                     </td>
-                                                    <td title="{{$v->remarks}}">{{mb_substr($v->remarks,0,30)}}</td>
-
                                                     <td>
-=======
->>>>>>> 227e7979aa134a9f714ab4ca77e9204c565121f9
                                                         @if($v->status=='4' || $v->status=='7')
                                                             <button class="btn btn-danger btn-sm pull-left"
                                                                     data-toggle="modal"
@@ -134,6 +128,7 @@
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
                                                     <th>当前维修人员</th>
+                                                    <th>维修单详情</th>
                                                     <th width="18%">操作</th>
                                                 </tr>
                                                 </thead>
@@ -151,28 +146,13 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-
-<<<<<<< HEAD
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-
-                                                        <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-lg"
-                                                                      title="详情">详情</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>{{$v->remarks}}</td>
-=======
->>>>>>> 227e7979aa134a9f714ab4ca77e9204c565121f9
                                                         <td>{{@get_area($v->area_id)}}</td>
-
+                                                        <td>
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
+                                                        </td>
                                                         <td>
                                                             <button class="btn btn-warning btn-sm left"
                                                                     data-toggle="modal"
@@ -217,6 +197,7 @@
                                                     <th>报修人</th>
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
+                                                    <th>维修单详情</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
@@ -234,27 +215,12 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-<<<<<<< HEAD
-
-
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-
                                                         <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-lg"
-                                                                      title="详情">详情</span>
-                                                            @endif
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
                                                         </td>
-                                                        <td>{{$v->remarks}}</td>
-=======
->>>>>>> 227e7979aa134a9f714ab4ca77e9204c565121f9
                                                         <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
                                                         <td>{{$v->serviceProvider?$v->serviceProvider->name:""}}</td>
                                                         <td>
@@ -282,6 +248,7 @@
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
                                                     <th>维修人员</th>
+                                                    <th>维修单详情</th>
                                                     <th>服务商</th>
                                                     <th>评分</th>
                                                     <th>评价</th>
@@ -301,25 +268,12 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-<<<<<<< HEAD
-
-                                                        @if($v->classify_id && $v->classify)
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
                                                         <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-lg"
-                                                                      title="详情">详情</span>
-                                                            @endif
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
                                                         </td>
-                                                        <td>{{$v->remarks}}</td>
-=======
->>>>>>> 227e7979aa134a9f714ab4ca77e9204c565121f9
                                                         @if($v->serviceWorker)
                                                             <td>{{$v->serviceWorker->name}}</td>
                                                         @else
@@ -359,6 +313,7 @@
                                                     <th>报修场地</th>
                                                     <th>报修项目</th>
                                                     <th>维修人员</th>
+                                                    <th>维修单详情</th>
                                                     <th>操作</th>
                                                 </tr>
                                                 </thead>
@@ -412,21 +367,12 @@
                                                             @else
                                                             <td></td>
                                                         @endif
-<<<<<<< HEAD
-
                                                         <td>
-                                                            @if(!collect($v->img)->isEmpty())
-                                                                <span class="cursor_pointer"
-                                                                      onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                      data-toggle="modal"
-                                                                      data-target=".bs-example-modal-lg"
-                                                                      title="详情">详情</span>
-                                                            @endif
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
                                                         </td>
-                                                        <td>{{$v->remarks}}</td>
-
-=======
->>>>>>> 227e7979aa134a9f714ab4ca77e9204c565121f9
                                                         <td>
                                                             @if($v->status=='1')
                                                                 <button class="btn btn-success btn-sm pull-left"
@@ -549,7 +495,7 @@
             })
         }
 
-        function showImg(url) {
+        function show(url) {
             $.ajax({
                 "url": url,
                 success: function (data) {
