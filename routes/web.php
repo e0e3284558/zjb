@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('/home');
+Route::get('/', function (Request $request) {
+    return view('auth.login');
 });
 
 //认证路由开始

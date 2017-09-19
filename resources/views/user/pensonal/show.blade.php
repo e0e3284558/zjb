@@ -31,17 +31,6 @@
             </div>
         </div>
 
-        {{--<div class="form-group">--}}
-            {{--<label class="control-label col-md-3">--}}
-                {{--所属部门--}}
-            {{--</label>--}}
-            {{--<div class="col-md-8">--}}
-                {{--<input type="text" value="{{ $data->department_id }}" disabled class="form-control">--}}
-                {{--<select name="department_id" class="form-control select2">--}}
-                    {{--{!! department_select($data->department_id,1) !!}--}}
-                {{--</select>--}}
-            {{--</div>--}}
-        {{--</div>--}}
     </form>
 </div>
 <div class="modal-footer">
