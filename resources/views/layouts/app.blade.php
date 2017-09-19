@@ -263,7 +263,7 @@
                 <strong></strong>
             </div> -->
             <div>
-                <strong>Copyright</strong> 安徽这就办信息技术有限责任公司 &copy; 2017
+                <strong>Copyright</strong> <!-- 安徽这就办信息技术有限责任公司 --> &copy; 2017
             </div>
         </div>
 
@@ -670,7 +670,7 @@
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqGrid/jquery.jqGrid.min.js') }}"></script>
         
     <!-- jsTree -->
-    <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jsTree.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/jsTree/jstree.min.js') }}"></script>
 
     <!-- jqValidate -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/jqueryValidate/jquery.validate.min.js') }}"></script>

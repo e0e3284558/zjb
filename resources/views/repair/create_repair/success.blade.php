@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="form-group">
-                <div class="col-sm-3">选择维修结果：</div>
+                <div class="col-sm-3">维修结果：</div>
                 <div class="col-sm-9">
                     <div class=" icheck pull-left" style="margin-right: 10px"><label>
                             <input type="radio" value="5" name="status" checked="">
@@ -24,7 +24,7 @@
 
             </div>
             <div class="form-group">
-                <div class="col-sm-3">填写维修记录：</div>
+                <div class="col-sm-3">维修记录：</div>
                 <div class="col-sm-8">
                     <textarea class="form-control" name="result" style="resize: none" rows="3"></textarea>
                 </div>

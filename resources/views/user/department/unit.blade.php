@@ -61,12 +61,22 @@
 					 	</div>
 					 	<div class="hr-line-dashed"></div>
 					 	<div class="form-group">
+					 		<label class="col-md-3 control-label">UUID</label>
+					 		<div class="col-md-7">
+					 			<div class="form-control-static">
+					 			{{ $unit->uuid }}
+					 			</div>
+					 		</div>
+					 	</div>
+					 	<div class="hr-line-dashed"></div>
+					 	<div class="form-group">
 					 		<label class="col-md-3 control-label">单位全称<span class="required">*</span></label>
 					 		<div class="col-md-7">
 					 			<input type="text" name="name" value="{{ $unit->name }}" class="form-control">
 					 			<span class="help-block">请填写单位全称</span>
 					 		</div>
 					 	</div>
+					 	<div class="hr-line-dashed"></div>
 					 	<div class="form-group">
 					 		<label class="col-md-3 control-label">单位简称<span class="required">*</span></label>
 					 		<div class="col-md-7">

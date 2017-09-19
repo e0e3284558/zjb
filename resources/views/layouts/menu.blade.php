@@ -67,9 +67,9 @@
                         href="{{ route('users.departments',['app_groups'=>'users']) }}"><i
                             class="fa fa-angle-right"></i>
                     组织机构</a></li>
-            <li class="{{ active_class(if_route('users.groups')) }}"><a
+            <!-- <li class="{{ active_class(if_route('users.groups')) }}"><a
                         href="{{ route('users.groups',['app_groups'=>'users']) }}"><i class="fa fa-angle-right"></i>
-                    角色管理</a></li>
+                    角色管理</a></li> -->
             <li class="{{ active_class(if_route('users.index')) }}"><a
                         href="{{ route('users.index',['app_groups'=>'users']) }}"><i class="fa fa-angle-right"></i> 用户列表</a>
             </li>
