@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-md-12" >
                 <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">评论建议</label>
+                    <label for="remarks" class="col-sm-2 control-label">评论内容</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" name="appraisal" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
