@@ -65,6 +65,8 @@
     <!-- star-rating -->
     <link rel="stylesheet" href="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.css')}}">
 
+    <!-- lightbox2 -->
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/lightbox2/dist/css/lightbox.min.css')}}">
     <!-- Animate -->
     <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet">
 
@@ -714,6 +716,9 @@
 
     <!-- star-rating -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.js')}}" ></script>
+
+    <!-- lightbox2 -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/lightbox2/dist/js/lightbox.min.js')}}" ></script>
 
     <!-- Custom and plugin javascript -->    
     <script src="{{ asset('assets/js/inspinia.js') }}" type="text/javascript"></script>

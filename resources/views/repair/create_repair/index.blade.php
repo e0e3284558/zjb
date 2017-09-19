@@ -85,7 +85,7 @@
                                                         @if(!collect($v->img)->isEmpty())
                                                             <span class="cursor_pointer"
                                                                   onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
-                                                                  data-toggle="modal" data-target=".bs-example-modal-md"
+                                                                  data-toggle="modal" data-target=".bs-example-modal-lg"
                                                                   title="详情">详情</span>
                                                         @endif
                                                     </td>
@@ -95,7 +95,7 @@
                                                         @if($v->status=='4' || $v->status=='7')
                                                             <button class="btn btn-danger btn-sm pull-left"
                                                                     data-toggle="modal"
-                                                                    data-target=".bs-example-modal-md"
+                                                                    data-target=".bs-example-modal-lg"
                                                                     onclick="reason('{{$v->id}}')">查看原因
                                                             </button>
                                                         @endif
@@ -161,7 +161,7 @@
                                                                 <span class="cursor_pointer"
                                                                       onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
                                                                       data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
+                                                                      data-target=".bs-example-modal-lg"
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
@@ -177,7 +177,7 @@
 
                                                             <button class="btn btn-info btn-sm left"
                                                                     data-toggle="modal"
-                                                                    data-target=".bs-example-modal-md"
+                                                                    data-target=".bs-example-modal-lg"
                                                                     onclick="success({{$v->id}})">
                                                                 完成维修
                                                             </button>
@@ -193,7 +193,7 @@
                                             </button>
                                             <button type="button" onclick="batchSuccess(this)"
                                                     class="btn btn-sm btn-primary" data-toggle="modal"
-                                                    data-target=".bs-example-modal-md">
+                                                    data-target=".bs-example-modal-lg">
                                                 批量完成
                                             </button>
                                         </div>
@@ -245,7 +245,7 @@
                                                                 <span class="cursor_pointer"
                                                                       onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
                                                                       data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
+                                                                      data-target=".bs-example-modal-lg"
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
@@ -310,7 +310,7 @@
                                                                 <span class="cursor_pointer"
                                                                       onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
                                                                       data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
+                                                                      data-target=".bs-example-modal-lg"
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
@@ -416,7 +416,7 @@
                                                                 <span class="cursor_pointer"
                                                                       onclick="showImg('{{url('repair/repair_list/showImg')}}/{{$v->id}}')"
                                                                       data-toggle="modal"
-                                                                      data-target=".bs-example-modal-md"
+                                                                      data-target=".bs-example-modal-lg"
                                                                       title="详情">详情</span>
                                                             @endif
                                                         </td>
@@ -433,7 +433,7 @@
                                                             @elseif($v->status=='4' || $v->status=='7')
                                                                 <button class="btn btn-danger btn-sm pull-left"
                                                                         data-toggle="modal"
-                                                                        data-target=".bs-example-modal-md"
+                                                                        data-target=".bs-example-modal-lg"
                                                                         onclick="reason('{{$v->id}}')">查看原因
                                                                 </button>
                                                                 <button class="btn btn-success btn-sm pull-left"
@@ -548,7 +548,7 @@
             $.ajax({
                 "url": url,
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -570,7 +570,7 @@
                 "url": url,
                 "type": 'get',
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -581,7 +581,7 @@
                 "url": url,
                 "type": 'get',
                 success: function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
+                    $(".bs-example-modal-lg .modal-content").html(data);
                 }
             })
         }
@@ -599,7 +599,7 @@
                     "url": url,
                     "type": 'get',
                     success: function (data) {
-                        $(".bs-example-modal-md .modal-content").html(data);
+                        $(".bs-example-modal-lg .modal-content").html(data);
                     }
                 })
             } else {
