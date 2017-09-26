@@ -1,37 +1,88 @@
-<div class="pt20"></div>
-<form id="signupForm1" class="form-horizontal" method="post" >
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="name">场地名称<span class="required">*</span></label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" id="name" name="name" placeholder="场地名称" />
-        </div>
+<div class="ibox m-b-none">
+    <div class="ibox-title">
+        <h5>场地添加</h5>
     </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="remarks">备注</label>
-        <div class="col-sm-8">
-            <textarea class="form-control" name="remarks" cols="5" style="resize: none;" placeholder="添加备注"></textarea>
-        </div>
+    <div class="ibox-content margin-padding-0 relative-ibox-content">
+        <form action="{{ url('area') }}" class="padding-20" method="post" id="dep-form">
+            <div class="form-group">
+                <label class="control-label">
+                    上级场地<span class="required">*</span>
+                </label>
+                <div>
+                    <select name="pid" class="form-control select2" data-error-container="#pid-error">
+                        {!! area_select() !!}
+                    </select>
+                    <span class="help-block" id="pid-error">请选择上级场地</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    场地编码<span class="required">*</span>
+                </label>
+                <div>
+                    <input type="text" placeholder="场地编码" name="code" value="" class="form-control">
+                    <span class="help-block">请输入场地编码</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    场地名称<span class="required">*</span>
+                </label>
+                <div>
+                    <input type="text" placeholder="场地名称" name="name" value="" class="form-control">
+                    <span class="help-block">请输入场地名称</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            
+            <!-- <div class="form-group">
+                <label class="control-label">
+                    排序
+                </label>
+                <div class="">
+                    <input type="number" placeholder="排序" name="sort" value="0" class="form-control">
+                </div>
+            </div> -->
+            <div class="form-group">
+                <label class="control-label" for="remarks">备注</label>
+                <div>
+                    <textarea class="form-control" name="remarks" cols="5"  placeholder="场地备注"></textarea>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    状态
+                </label>
+                <div>
+                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="icheck" value="1" checked> 可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0"> 不可用 </label>
+                </div>
+            </div>
+            <div class="form-actions border-top ">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-success blue ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
+                <button type="reset" class="btn btn-default" id="cannel">取消</button>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label" ></label>
-        <div class="col-sm-8">
-            <button type="submit" class="btn btn-success pull-right">保存</button>
-        </div>
-    </div>
-</form>
+</div>
+
 
 <script type="text/javascript">
-    $.validator.setDefaults( {
-
-    } );
     $( document ).ready( function () {
-        $( "#signupForm1" ).validate( {
+        var l = $("button[type='submit']").ladda();
+        var forms = $( "#dep-form" );
+        forms.validate( {
             rules: {
-                name: "required"
+                pid: "required",
+                name: "required",
+                code: "required",
+                status: "required"
             },
             messages: {
-                name: "请输出场地名称"
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -67,46 +118,40 @@
                     .closest('.form-group').removeClass('has-error'); // set success class to the control group
             },
             submitHandler: function () {
-                //表单验证之后ajax上传数据
-                $.ajax({
-                    url:"{{url('area')}}",
-                    data:$('#signupForm1').serialize(),
-                    type:"post",
-                    dataType:"json",
-                    beforeSend:function () {
-                        zjb.blockUI();
+                jQuery.ajax({
+                    url: forms.attr('action'),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: forms.serialize(),
+                    beforeSend: function(){
+                        l.ladda('start');
                     },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        if(jqXHR.status == 422){
-                            var arr = "";
-                            for (var i in jqXHR.responseJSON){
-                                var xarr = jqXHR.responseJSON[i];
-                                for (var j=0;j<xarr.length;j++){
-                                    var str = xarr[j];
-                                    arr += str+",";
-                                }
-                            }
-                            swal("",arr.substring(0,arr.length-1), "error");
+                    complete: function(xhr, textStatus) {
+                        // zjb.unblockUI();
+                        l.ladda('stop');
+                    },
+                    success: function(data, textStatus, xhr) {
+                        if(data.status){
+                            toastr.success(data.message);
+                            //重新载入左侧树形菜单
+                            $.fn.zTree.getZTreeObj("departments-tree").reAsyncChildNodes(null, "refresh");
+                            zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("area/create") }}',{},false);
+                        }else{
+                           toastr.error(data.message,'警告'); 
                         }
                     },
-                    complete:function () {
-                        zjb.unblockUI();
-                    },
-                    success:function (data) {
-                        if(data.code){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                window.location.reload();
+                    error: function(xhr, textStatus, errorThrown) {
+                        if(xhr.status == 422 && textStatus =='error'){
+                            _$error = xhr.responseJSON.errors;
+                            $.each(_$error,function(i,v){
+                                toastr.error(v[0],'警告');
                             });
                         }else{
-                            swal("", data.message, "error");
+                            toastr.error('请求出错，稍后重试','警告');
                         }
                     }
-                })
+                });
+                return false;
             }
         });
 

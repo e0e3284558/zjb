@@ -78,7 +78,7 @@ $(document).ready(function() {
             enable: true,
             url:"{!! url('users/departments?tree=1') !!}",
             autoParam:["id", "level=lv"],
-            otherParam:{},  
+            otherParam:{'name':function(){return $('#search-name').val()}},  
             dataFilter: null,
             type:'get'
         },
@@ -109,13 +109,7 @@ $(document).ready(function() {
 
     $("#search-dep").click(function(){
         var treeObj = $.fn.zTree.getZTreeObj("departments-tree");
-        var value = $('#search-name').val();
-        nodeList = treeObj.getNodesByParamFuzzy('name', value);
-        nodes = treeObj.getNodes();
-        console.log(nodes);
-        console.log(nodeList);
-        treeObj.hideNodes(nodes[0].children);
-        treeObj.showNodes(nodeList);
+        treeObj.reAsyncChildNodes(null, "refresh");
     });
 } );
 </script>
