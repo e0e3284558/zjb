@@ -9,9 +9,6 @@
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 @foreach($list as $k=>$img)
-                    <?php
-                    if ($k > 4) break;
-                    ?>
                     @if($k=="0")
                         <li data-target="#carousel-example-generic" data-slide-to="{{$k}}" class="active"></li>
                     @else
@@ -23,9 +20,6 @@
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
                 @foreach($list as $k=>$img)
-                    <?php
-                    if ($k > 4) break;
-                    ?>
                     @if($k=="0")
                         <div class="item active">
                             <img src="{{url("$img->path")}}" class="img-show">

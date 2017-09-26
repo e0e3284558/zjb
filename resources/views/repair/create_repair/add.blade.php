@@ -425,7 +425,7 @@
                 formData: {
                     '_token': '{{ csrf_token() }}'
                 },
-                fileNumLimit: 10,
+                fileNumLimit: 5,
                 uploadComplete: function (file, uploader) {
                 },
                 uploadError: function (file, uploader) {
@@ -455,7 +455,7 @@
                     formData: {
                         '_token': '{{ csrf_token() }}'
                     },
-                    fileNumLimit: 10,
+                    fileNumLimit: 5,
                     uploadComplete: function (file, uploader) {
                     },
                     uploadError: function (file, uploader) {

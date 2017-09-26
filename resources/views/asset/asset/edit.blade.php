@@ -113,13 +113,6 @@
                     <label class="col-sm-4 control-label">所属部门</label>
                     <div class="col-sm-8">
                         <select id="department_id" name="department_id" class="form-control select2">
-                            {{--@foreach($list6 as $v)--}}
-                                {{--@if($v->id== $info->department_id)--}}
-                                    {{--<option selected value="{{$v->id}}">{{$v->name}}</option>--}}
-                                {{--@else--}}
-                                    {{--<option value="{{$v->id}}">{{$v->name}}</option>--}}
-                                {{--@endif--}}
-                            {{--@endforeach--}}
                             {!! department_select($info->department_id,1) !!}
                         </select>
                     </div>
@@ -140,17 +133,15 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">照片</label>
                     <div class="col-sm-8">
-                        <!--dom结构部分-->
-                        <div id="uploader-demo">
-                            @if($info->img_path)
-                                <img id="thumb_img" src="{{url($info->img_path)}}" alt="" width="160px" height="120px">
-                            @else
-                                <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
-                            @endif
-                            <!--用来存放item-->
-                            <div id="fileList" class="uploader-list"></div>
-                            <div id="filePicker">选择图片</div>
-                                <input type="hidden" name="file_id" id="upload_id" value="">
+                        @if($info->img_path)
+                            <img id="thumb_img" src="{{url($info->img_path)}}" alt="" width="160px" height="120px">
+                        @else
+                            <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
+                        @endif
+                        <input type="hidden" id="upload_id" name="file_id" value="">
+                        <div id="single-upload" class="btn-upload m-t-xs">
+                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
+                            <div id="single-upload-file-list"></div>
                         </div>
                     </div>
                 </div>
@@ -173,6 +164,27 @@
             format: 'yyyy-mm-dd',
             autoclose:true
         });
+
+        zjb.singleImageUpload({
+            uploader:'singleUpload',
+            picker:'single-upload',
+            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+            server: '{{ route("image.upload") }}',
+            formData: {
+                '_token':'{{ csrf_token() }}'
+            },
+            errorMsgHiddenTime:2000,
+
+            uploadSuccess:function(file,response){
+                //上传完成触发时间
+                $('#upload_id').val(response.data.id);
+                $('#thumb_img').attr({src:response.data.url});
+                window.setTimeout(function () {
+                    $('#'+file.id).remove();
+                }, 2000);
+            }
+        });
+
         zjb.initAjax();
         var assets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', assets_form);
@@ -298,55 +310,4 @@
             }
         })
     }
-
-    //查找部门
-    function seldep(id) {
-        $.ajax({
-            "url":'{{url('asset/sel')}}'+"/"+id,
-            "type":"get",
-            'data':{id:id},
-            'dataType':"json",
-            success:function (data) {
-                var select = $("#use_department_id");
-                if(data.length>0){
-                    select.append("<option value=''>请选择</option>");
-                    //遍历
-                    for (var i = 0; i < data.length; i++) {
-                        //把遍历出来数据添加到option
-                        info = '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-                        //把当前info数据添加到创建的select
-                        select.append(info);
-                    }
-                    //把带有数据的select 追加
-                    o.after(select);
-                }
-            }
-        })
-    }
-</script>
-
-<script>
-    // 初始化Web Uploader
-    var uploader = WebUploader.create({
-        // 选完文件后，是否自动上传。
-        auto: true,
-        // swf文件路径
-        swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',
-        // 文件接收服务端。
-        server: '{{url('upload/uploadFile')}}',
-        formData: {"_token": "{{ csrf_token() }}"},
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: '#filePicker',
-        // 只允许选择图片文件。
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/*'
-        }
-    });
-    uploader.on('uploadSuccess', function (file, response) {
-        $('#thumb_img').attr('src', '/' + response.path);
-        $('#upload_id').attr('value', response.id);
-    });
 </script>
