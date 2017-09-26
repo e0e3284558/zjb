@@ -4,61 +4,54 @@
     <h4 class="modal-title">创建用户</h4>
 </div>
 <div class="modal-body">
-    <form action="{{url('users/default/store')}}" id="AddUserForm" class="form-horizontal " method="post"
+    <form action="{{url('users/groups/store')}}" id="AddUserForm" class="form-horizontal " method="post"
           enctype="multipart/form-data">
         <div class="form-group">
-            <label class="control-label col-md-3">用户名<span class="required">*</span></label>
-            <div class="col-md-8">
-                <input type="text" value="" name="username" class="form-control">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-3">登录密码<span class="required">*</span></label>
-            <div class="col-md-8">
-                <input type="password" value="" name="password" class="form-control">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-3">姓名<span class="required">*</span></label>
+            <label class="control-label col-md-3">角色名称<span class="required">*</span></label>
             <div class="col-md-8">
                 <input type="text" value="" name="name" class="form-control">
             </div>
         </div>
+
         <div class="form-group">
-            <label class="control-label col-md-3">邮箱<span class="required">*</span></label>
+            <label class="control-label col-md-3">显示名称<span class="required">*</span></label>
             <div class="col-md-8">
-                <input type="email" value="" name="email" class="form-control">
+                <input type="text" value="" name="display_name" class="form-control">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-3">手机号<span class="required">*</span></label>
+            <label class="control-label col-md-3">拥有权限<span class="required">*</span></label>
             <div class="col-md-8">
-                <input type="text" value="" name="tel" minlength="11" maxlength="11" class="form-control">
-            </div>
-        </div>
+                <ul id="treeDemo" class="ztree"></ul>
+                <SCRIPT LANGUAGE="JavaScript">
+                    $(document).ready(function () {
+                        // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+                        var setting = {
+                            callback: {
+                                //onClick: zTreeOnClick
+                            },
+                            check:{
+                                enable: true,
+                                chkboxType :{ "Y" : "ps", "N" : "ps" }
+                            },
+                            data: {
+                                simpleData: {
+                                    enable: true,
+                                    idKey: "id",
+                                    pIdKey: "parent_id",
+                                    rootPId: 0
+                                },
+                                key:{
+                                    name:'display_name'
+                                }
+                            }
+                        };
+                        var treeNodes = {!! $permission !!};
+                        $.fn.zTree.init($("#treeDemo"), setting, treeNodes);
 
-        <div class="form-group">
-            <label class="control-label col-md-3">
-                所属部门
-            </label>
-            <div class="col-md-8">
-                <select name="department_id" class="form-control select2">
-                    {!! department_select('',1) !!}
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3">
-                所属角色
-            </label>
-            <div class="col-md-8">
-                <select name="role" class="form-control select2">
-                    @foreach($role as $v)
-                        <option value="{{$v->name}}">{{$v->display_name}}</option>
-                    @endforeach
-                </select>
+                    });
+                </SCRIPT>
             </div>
         </div>
     </form>
@@ -74,42 +67,37 @@
         zjb.initAjax();
         var assets_form = $("#AddUserForm");
         $('#submitUserForm').click(function () {
+            var tree = $.fn.zTree.getZTreeObj("treeDemo");
+            var selectedNodes = tree.getCheckedNodes(true);
+            permission_name = [];
+            $.each(selectedNodes,function (i,v) {
+                permission_name.push(v.name);
+            });
             assets_form.submit();
         });
         assets_form.validate({
             rules: {
-                username: {
+                name: {
                     required: true,
                     minlength: 4,
                     maxlength: 30
                 },
-                password: {
+                display_name: {
                     required: true,
-                    minlength: 6
-                },
-                tel: {
-                    required: true
-                },
-                name: {
-                    required: true
-                },
-                email: {
-                    required: true,
-                    email: true
+                    minlength: 4,
+                    maxlength: 30
                 }
             },
             messages: {
-                username: {
-                    required: '请填写用户帐号',
-                    minlength: '帐号最少不能小于4个字符',
-                    maxlength: '帐号最多不能多于30个字符'
+                name: {
+                    required: '请填写角色名称',
+                    minlength: '角色名称不能小于4个字符',
+                    maxlength: '角色名称不能多于30个字符'
                 },
-                password: {
-                    required: '请填写登录密码',
-                    minlength: '密码最少不能小于6个字符'
-                },
-                tel: {
-                    required: '请填写手机号码'
+                display_name: {
+                    required: '请填写显示名称',
+                    minlength: '显示名称不能小于4个字符',
+                    maxlength: '显示名称不能多于30个字符'
                 }
             },
             errorElement: 'span', //default input error message container
@@ -148,10 +136,12 @@
                     .closest('.form-group').removeClass('has-error'); // set success class to the control group
             },
             submitHandler: function () {
+//                console.log(assets_form.serialize());
+
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url: "{{url('users/default/store')}}",
-                    data: assets_form.serialize(),
+                    url: "{{url('users/groups/store')}}",
+                    data: assets_form.serialize()+'&permission='+permission_name,
                     type: "post",
                     dataType: "json",
                     beforeSend: function () {
@@ -173,18 +163,7 @@
                     success: function (data) {
                         if (data.status) {
                             toastr.success(data.message);
-                            $("#operationModal").modal('hide');
-                            //重载table
-                            table.reload('dataUser');
-
-                            // swal({
-                            //     title: "",
-                            //     text: data.message,
-                            //     type: "success",
-                            //     timer: 1000,
-                            // }, function () {
-                            //     window.location.reload();
-                            // });
+                            location.reload(true);
                         } else {
                             toastr.error(data.message, '警告');
                         }

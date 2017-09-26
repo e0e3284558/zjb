@@ -29,10 +29,12 @@
     <div class="modal-dialog modal-md  animated bounceInDown" aria-hidden="true" role="document">
         <div class="modal-content">
             <div class="progress m-b-none">
-              <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+              <div class="progress-bar progress-bar-info progress-bar-striped active"
+                   role="progressbar" aria-valuenow="100" aria-valuemin="0"
+                   aria-valuemax="100" style="width: 100%">
                 <span class="sr-only">100% Complete</span>
               </div>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
@@ -64,7 +66,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-6">
               <div class="form-group">
@@ -83,7 +85,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -111,15 +113,16 @@
     <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
     <div class="row">
       <div class="col-sm-7">
-        <a href="{{ route('users.create') }}" data-toggle="modal" data-target="#operationModal" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
+        <a href="{{ route('users.create') }}" data-toggle="modal" data-target="#operationModal"
+           class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
         <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
         <button href="" class="btn red btn-delete">
         <i class="fa fa-trash"></i> 删除</button>
       </div>
       <div class="col-sm-5">
         <div class="input-group">
-          <input type="text" id="search-text" placeholder="用户名、姓名、邮箱、电话" class="form-control"> 
-          <span class="input-group-btn"> 
+          <input type="text" id="search-text" placeholder="用户名、姓名、邮箱、电话" class="form-control">
+          <span class="input-group-btn">
           <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button> 
           <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
           <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
@@ -143,7 +146,7 @@
           <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
         </tr>
       </thead>
-    </table> 
+    </table>
     <script type="text/html" id="departmentTpl">
       @{{# if(d.department){  }}
           @{{d.department.name}}
@@ -199,7 +202,7 @@
                           timer: 2000,
                           confirmButtonText: "确定"
                         });
-                        // toastr.error(data.message,'警告'); 
+                        // toastr.error(data.message,'警告');
                     }
                 }, function(xhr, textStatus, errorThrown) {
                     if(xhr.status == 422 && textStatus =='error'){
@@ -235,9 +238,9 @@
               }
             });
             $(".btn-edit").click(function(){
-              var checkStatus = table.checkStatus('dataUser'); 
+              var checkStatus = table.checkStatus('dataUser');
               if(checkStatus.data.length != 1){
-                toastr.error('请选择一条要操作的数据','警告'); 
+                toastr.error('请选择一条要操作的数据','警告');
               }else{
                 var data = checkStatus.data[0];
                 $("#operationModal").modal('show');
@@ -246,9 +249,9 @@
             });
 
             $(".btn-delete").click(function(){
-              var checkStatus = table.checkStatus('dataUser'); 
+              var checkStatus = table.checkStatus('dataUser');
               if(checkStatus.data.length <= 0){
-                toastr.error('请选择要操作的数据','警告'); 
+                toastr.error('请选择要操作的数据','警告');
               }else{
                 //获取所有选中的行的id
                 var ids  = [];
@@ -278,7 +281,7 @@
             $('#refreshTable').click(function(){
               tableReload({});
             })
-        }); 
+        });
     });
     </script>
 </div>

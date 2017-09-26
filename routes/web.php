@@ -65,6 +65,17 @@ Route::group(['prefix' => 'users', 'namespace' => 'User', 'middleware' => 'auth'
 
 
     Route::get('groups', 'GroupsController@index')->name('users.groups');
+    Route::get('groups/create', 'GroupsController@create')->name('users.groups.create');
+    Route::post('groups/store', 'GroupsController@store')->name('users.groups.store');
+    Route::get('groups/edit', 'GroupsController@edit')->name('users.groups.edit');
+    Route::put('groups/{id}', 'GroupsController@update')->name('users.groups.update');
+    Route::delete('groups/delete', 'GroupsController@destroy')->name('users.groups.destroy');
+
+
+
+    Route::get('permission/edit', 'PermissionController@edit')->name('users.permission.edit');
+    Route::delete('permission/delete', 'PermissionController@destroy')->name('users.permission.destroy');
+    Route::resource('permission', 'PermissionController');
 });
 //-------------------------------------------------------------------------
 //用户模块路由结束

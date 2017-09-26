@@ -11,11 +11,11 @@
                 </li>
 
                 <li>
-                    <a href="javascript:;">角色管理</a>
+                    <a href="javascript:;">权限管理</a>
                 </li>
 
                 <li class="active">
-                    <strong>角色列表</strong>
+                    <strong>权限列表</strong>
                 </li>
             </ol>
         </div>
@@ -42,10 +42,10 @@
         <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
             <div class="row">
                 <div class="col-md-8">
-                    <a href="{{ route('users.groups.create') }}" data-toggle="modal" data-target=".bs-example-modal-lg"
+                    <a href="{{ route('permission.create') }}" data-toggle="modal" data-target=".bs-example-modal-lg"
                        class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
 
-                    <a href="{{ route('users.groups') }}" class="btn default ">修改</a>
+                    <a href="{{ route('permission.index') }}" class="btn default ">修改</a>
                     <a href="" class="btn red ">删除</a>
                 </div>
                 <div class="col-md-4">
@@ -59,16 +59,14 @@
                 </div>
             </div>
         </div>
-        <table class="layui-table" lay-filter="data-user"
-               lay-data="{id:'dataUser',height: 'full-194',
-           url:'{{ route("users.groups") }}',
-           page:true,
-           limit:15,response:{countName: 'total'}}">
+        <table class="layui-table" lay-filter="data-permission"
+               lay-data="{id:'dataUser',height: 'full-194', url:'{{ route("permission.index") }}',
+           page:true,limit:15,response:{countName: 'total'}}">
             <thead>
             <tr>
                 <th lay-data="{fixed:'left',checkbox:true}"></th>
                 <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-                <th lay-data="{field:'name', width:80}">角色名称</th>
+                <th lay-data="{field:'name', width:177}">权限名称</th>
                 <th lay-data="{field:'guard_name', width:177}">守卫名称</th>
                 <th lay-data="{field:'display_name', width:177}">显示名称</th>
                 <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
@@ -80,28 +78,33 @@
             <a class="btn red btn-xs" lay-event="del">删除</a>
         </script>
         <script type="text/javascript">
+            var table;
+            var curObj;
+            var curTrObj;
+            var curData;
             $(document).ready(function () {
-                var deleteUser = function(id,obj){
+                var deleteUser = function (id, obj) {
                     swal({
                             title: "确定要删除吗?",
                             text: "",
                             type: "warning",
                             showCancelButton: true,
-                            cancelButtonText:'取消',
+                            cancelButtonText: '取消',
                             confirmButtonText: "确定",
-                            showLoaderOnConfirm:true,
+                            showLoaderOnConfirm: true,
                             closeOnConfirm: false
                         },
-                        function(){
+                        function () {
                             // swal.close();
-                            zjb.ajaxPostData('', '{{route("users.groups.destroy")}}', {
-                                '_method':'DELETE',
-                                'id':id
-                            }, function(data, textStatus, xhr) {
+                            zjb.ajaxPostData('', '{{route("users.permission.destroy")}}', {
+                                '_method': 'DELETE',
+                                'id': id
+                            }, function (data, textStatus, xhr) {
                                 console.log(table);
-                                if(data.status){
-                                    // toastr.success(data.message);
-                                    if(obj){obj.del();}else{
+                                if (data.status) {
+                                    if (obj) {
+                                        obj.del();
+                                    } else {
                                         //刷新当前页面
                                         $(".layui-laypage-btn")[0].click();
                                     }
@@ -112,7 +115,7 @@
                                         timer: 1000,
                                         confirmButtonText: "确定"
                                     });
-                                }else{
+                                } else {
                                     swal({
                                         title: data.message,
                                         text: "",
@@ -122,88 +125,84 @@
                                     });
                                     // toastr.error(data.message,'警告');
                                 }
-                            }, function(xhr, textStatus, errorThrown) {
-                                if(xhr.status == 422 && textStatus =='error'){
+                            }, function (xhr, textStatus, errorThrown) {
+                                if (xhr.status == 422 && textStatus == 'error') {
                                     _$error = xhr.responseJSON.errors;
-                                    $.each(_$error,function(i,v){
-                                        toastr.error(v[0],'警告');
+                                    $.each(_$error, function (i, v) {
+                                        toastr.error(v[0], '警告');
                                     });
-                                }else{
-                                    toastr.error('请求出错，稍后重试','警告');
+                                } else {
+                                    toastr.error('请求出错，稍后重试', '警告');
                                 }
                             });
                         });
                 };
-
-                var table;
                 $('#operationModal').on('hidden.bs.modal', function () {
                     $(this).find(".modal-content").html('');
                     $(this).removeData();
                 });
                 layui.use(['laytpl', 'table'], function () {
                     table = layui.table;
-                    table.on('checkbox(data-user)', function (obj) {
-                        console.log(obj);
+                    table.on('checkbox(data-permission)', function (obj) {
                     });
-                });
-                table.on('tool(data-user)', function (obj) {
-                    curObj = obj;
-                    curData = obj.data; //获得当前行数据
-                    var event = obj.event; //获得 lay-event 对应的值
-                    curTrObj = obj.tr; //获得当前行 tr 的DOM对象
-                    if (event == 'edit') {
-                        $("#operationModal").modal('show');
-                        zjb.ajaxGetHtml($('#operationModal .modal-content'),
-                            '{{url("users/groups/edit")}}', {'id': curData.id}, true);
-                    } else if (event == 'del') {
-                        deleteUser(curData.id, curObj);
-                    }
-                });
-                $(".btn-edit").click(function () {
-                    var checkStatus = table.checkStatus('dataUser');
-                    if (checkStatus.data.length != 1) {
-                        toastr.error('请选择一条要操作的数据', '警告');
-                    } else {
-                        var data = checkStatus.data[0];
-                        $("#operationModal").modal('show');
-                        zjb.ajaxGetHtml($('#operationModal .modal-content'),
-                            '{{url("users/groups/edit")}}', {'id': data.id}, true);
-                    }
-                });
+                    table.on('tool(data-permission)', function (obj) {
+                        curObj = obj;
+                        curData = obj.data; //获得当前行数据
+                        var event = obj.event; //获得 lay-event 对应的值
+                        curTrObj = obj.tr; //获得当前行 tr 的DOM对象
+                        if (event == 'edit') {
+                            $("#operationModal").modal('show');
+                            zjb.ajaxGetHtml($('#operationModal .modal-content'),
+                                '{{url("users/permission/edit")}}', {'id': curData.id}, true);
+                        } else if (event == 'del') {
+                            deleteUser(curData.id, curObj);
+                        }
+                    });
+                    $(".btn-edit").click(function () {
+                        var checkStatus = table.checkStatus('dataUser');
+                        if (checkStatus.data.length != 1) {
+                            toastr.error('请选择一条要操作的数据', '警告');
+                        } else {
+                            var data = checkStatus.data[0];
+                            $("#operationModal").modal('show');
+                            zjb.ajaxGetHtml($('#operationModal .modal-content'), '{{url("users/default/edit")}}', {'id': data.id}, true);
+                        }
+                    });
 
-                $(".btn-delete").click(function () {
-                    var checkStatus = table.checkStatus('dataUser');
-                    if (checkStatus.data.length <= 0) {
-                        toastr.error('请选择要操作的数据', '警告');
-                    } else {
-                        //获取所有选中的行的id
-                        var ids = [];
-                        $.each(checkStatus.data, function (i, v) {
-                            ids.push(v.id);
+                    $(".btn-delete").click(function () {
+                        var checkStatus = table.checkStatus('dataUser');
+                        if (checkStatus.data.length <= 0) {
+                            toastr.error('请选择要操作的数据', '警告');
+                        } else {
+                            //获取所有选中的行的id
+                            var ids = [];
+                            $.each(checkStatus.data, function (i, v) {
+                                ids.push(v.id);
+                            });
+                            // console.log(ids);
+                            deleteUser(ids);
+                        }
+                    });
+                    var tableReload = function (query) {
+                        table.reload('dataUser', {
+                            where: query
                         });
-                        // console.log(ids);
-                        deleteUser(ids);
                     }
+                    $("#simple-search").click(function () {
+                        var searchText = $('#search-text').val();
+                        tableReload({
+                            search: searchText
+                        });
+                    })
+                    $("#submitSearch").click(function () {
+                        var query = $("#searchForm").serializeJSON();
+                        $("#advancedSearch").modal('hide');
+                        tableReload(query);
+                    })
+                    $('#refreshTable').click(function () {
+                        tableReload({});
+                    })
                 });
-                var tableReload = function (query) {
-                    table.reload('dataUser', {
-                        where: query
-                    });
-                }
-                $("#simple-search").click(function () {
-                    var searchText = $('#search-text').val();
-                    tableReload({
-                        search: searchText
-                    });
-                })
-                $("#submitSearch").click(function () {
-                    var query = $("#searchForm").serializeJSON();
-                    $("#advancedSearch").modal('hide');
-                    tableReload(query);
-                })
-                $('#refreshTable').click(function () {
-                    tableReload({});
-                })
             });
         </script>
     </div>
