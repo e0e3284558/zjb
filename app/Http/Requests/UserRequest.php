@@ -44,11 +44,11 @@ class UserRequest extends FormRequest
             case 'PATCH':
             {
                 return [
-                    'username'=>'bail|required|min:4|max:40|unique:users,username,'.Request('id'),
+                    'username'=>'bail|required|min:4|max:40|unique:users,username,'.request('id'),
                     'password'=>'bail|nullable|min:6',
                     'name'=>'bail|required',
-                    'email'=>'bail|required|email|unique:users,email,'.Request('id'),
-                    'tel'=>'bail|required|unique:users,tel,'.Request('id'),
+                    'email'=>'bail|required|email|unique:users,email,'.request('id'),
+                    'tel'=>'bail|required|unique:users,tel,'.request('id'),
 //                   'status'=>'bail|required',
                 ];
             }

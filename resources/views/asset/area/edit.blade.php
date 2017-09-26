@@ -1,212 +1,216 @@
-<div class="pt20"></div>
-<form id="signupForm1" class="form-horizontal" method="post" >
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-    <input type="hidden" name="_method" value="PUT">
-    <input type="hidden" name="id" value="{{$info->id}}" >
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="name">场地名称<span style=" color:red">*</span></label>
-        <div class="col-sm-8">
-            <input type="text" name="name" value="{{$info->name}}" class="form-control" placeholder="区域名称">
-        </div>
+<div class="ibox m-b-none">
+    <div class="ibox-title">
+        <h5>场地编辑</h5>
     </div>
-    @if(!empty($parent_info))
-        <div class="form-group">
-            <label class="col-sm-3 control-label" for="">父级场地</label>
-            <div class="col-sm-8">
-                <input disabled type="text" value="{{$parent_info->name}}" class="form-control">
+    <div class="ibox-content margin-padding-0 relative-ibox-content">
+        <form action="{{ url('area/'.$area->id) }}" class="padding-20" method="post" id="dep-form">
+            <div class="form-group">
+                <label class="control-label">
+                    上级场地
+                </label>
+                <div>
+                    <select name="pid" class="form-control select2" data-error-container="#pid-error">
+                        {!! area_select($area->pid) !!}
+                    </select>
+                    <span class="help-block" id="pid-error">请选择上级场地</span>
+                </div>
             </div>
-        </div>
-    @endif
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="remarks">备注</label>
-        <div class="col-sm-8">
-            <textarea class="form-control" name="remarks" cols="4" style="resize: none;" placeholder="添加备注">{{$info->remarks}}</textarea>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label" ></label>
-        <div class="col-sm-8">
-            <a style="margin: 0 5px;" class="btn btn-default pull-right" onclick="adds('{{$info->id}}')" >添加子类</a>
-            <a style="margin: 0 5px;" class="btn btn-danger pull-right" onclick="dlt('{{$info->id}}')" >删除</a>
-            <button style="margin: 0 5px;" type="submit" class="btn btn-success pull-right">保存</button>
-        </div>
-    </div>
-
-    {{--<div class="form-group" >
-        <label class="col-sm-3 control-label" >场地标签</label>
-        <div class="col-sm-8">
-            <div style="text-align: center" >
-                <img src="{{ asset(config('filesystems.disks.area_qrcodes.base_path') .'/'. $info['uid'].'.png') }}" alt="">
-                <p>场地名称：{{$info->name}}</p>
-                <p>所在公司：{{$org->name}}</p>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    场地编码<span class="required">*</span>
+                </label>
+                <div>
+                    <input type="text" placeholder="场地编码" name="code" value="{{$area->code}}" class="form-control">
+                    <span class="help-block">请输入场地编码</span>
+                </div>
             </div>
-        </div>
-    </div>
-    --}}
-
-    {{--<div class="form-group" >--}}
-        {{--<label class="col-sm-3 control-label" >场地标签</label>--}}
-        {{--<div class="col-sm-8">--}}
-            {{--<div style="text-align: center" >--}}
-                {{--<img src="{{asset($info->qrcode_path)}}" alt="">--}}
-                {{--<p>场地名称：{{$info->name}}</p>--}}
-                {{--<p>所在公司：{{$org->name}}</p>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-
-</form>
-
-<script type="text/javascript">
-    $( document ).ready( function () {
-        $( "#signupForm1" ).validate( {
-            rules: {
-                name: "required"
-            },
-            messages: {
-                name: "请输出类别名称"
-            },
-            errorElement: 'span', //default input error message container
-            errorClass: 'help-block', // default input error message class
-            focusInvalid: false, // do not focus the last invalid input
-            ignore: "",
-            errorPlacement: function ( error, element ) {
-                if (element.parent(".input-group").length > 0) {
-                    error.insertAfter(element.parent(".input-group"));
-                } else if (element.attr("data-error-container")) {
-                    error.appendTo(element.attr("data-error-container"));
-                } else if (element.parents('.radio-list').length > 0) {
-                    error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-                } else if (element.parents('.radio-inline').length > 0) {
-                    error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-                } else if (element.parents('.checkbox-list').length > 0) {
-                    error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-                } else if (element.parents('.checkbox-inline').length > 0) {
-                    error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-                } else {
-                    error.insertAfter(element); // for other inputs, just perform default behavior
-                }
-            },
-            highlight: function (element) { // hightlight error inputs
-                $(element)
-                    .closest('.form-group').addClass('has-error'); // set error class to the control group
-            },
-            unhighlight: function (element) { // revert the change done by hightlight
-                $(element)
-                    .closest('.form-group').removeClass('has-error'); // set error class to the control group
-            },
-            success: function (label) {
-                label
-                    .closest('.form-group').removeClass('has-error'); // set success class to the control group
-            },
-            submitHandler: function () {
-                //表单验证之后ajax上传数据
-                $.ajax({
-                    url:"{{url('area/'.$info->id)}}",
-                    data:$('#signupForm1').serialize(),
-                    type:"post",
-                    dataType:"json",
-                    beforeSend:function () {
-                        zjb.blockUI();
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    场地名称
+                </label>
+                <div>
+                    <input type="text" placeholder="部门名称" name="name" value="{{$area->name}}" class="form-control">
+                    <span class="help-block">请输入部门名称</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label" for="remarks">备注</label>
+                <div>
+                    <textarea class="form-control" name="remarks" cols="5"  placeholder="场地备注">{{$area->remarks}}</textarea>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    状态
+                </label>
+                <div>
+                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="icheck" value="1" {{ $area->status ? 'checked' : '' }}> 可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0" {{ $area->status ? '' : 'checked' }}> 不可用 </label>
+                </div>
+            </div>
+            {{-- <div class="form-group">
+                <label class="control-label">
+                    排序
+                </label>
+                <div class="">
+                    <input type="number" placeholder="排序" name="sort" value="{{ $area->sort }}" class="form-control">
+                </div>
+            </div>--}}
+            <div class="form-actions border-top ">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+                <input type="hidden" name="id" value="{{ $area->id }}">
+                <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
+                <button type="button" class="btn btn-danger ladda-button" id="delete" data-style="expand-left">删除</button>
+                <button type="button" class="btn btn-default" id="cannel">取消</button>
+            </div>
+        </form>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var forms = $('#dep-form');
+                var l = $("button[type='submit']").ladda();
+                $('#cannel').click(function(){
+                    zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("area/create") }}',{},false);
+                });
+                $('#delete').click(function(){
+                    var dl = $("#delete").ladda();
+                    swal({
+                      title: "确定要删除吗?",
+                      text: "",
+                      type: "warning",
+                      showCancelButton: true,
+                      cancelButtonText:'取消',
+                      confirmButtonText: "确定",
+                      closeOnConfirm: false
                     },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        if(jqXHR.status == 422){
-                            var arr = "";
-                            for (var i in jqXHR.responseJSON){
-                                var xarr = jqXHR.responseJSON[i];
-                                for (var j=0;j<xarr.length;j++){
-                                    var str = xarr[j];
-                                    arr += str+",";
+                    function(){
+                        swal.close();
+                        jQuery.ajax({
+                            url: forms.attr('action'),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                '_method':'DELETE'
+                            },
+                            beforeSend: function(){
+                                // zjb.blockUI();
+                                dl.ladda('start');
+                                $('.form-actions button').attr({'disabled':'disabled'});
+                            },
+                            complete: function(xhr, textStatus) {
+                                // zjb.unblockUI();
+                                dl.ladda('stop');
+                                $('.form-actions button').removeAttr('disabled');
+                            },
+                            success: function(data, textStatus, xhr) {
+                                if(data.status){
+                                    toastr.success(data.message);
+                                    $('#cannel').click();
+                                    //重新载入左侧树形菜单
+                                    $.fn.zTree.getZTreeObj("departments-tree").reAsyncChildNodes(null, "refresh");
+                                }else{
+                                    toastr.error(data.message,'警告'); 
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                                if(xhr.status == 422 && textStatus =='error'){
+                                    _$error = xhr.responseJSON.errors;
+                                    $.each(_$error,function(i,v){
+                                        toastr.error(v[0],'警告');
+                                    });
+                                }else{
+                                    toastr.error('请求出错，稍后重试','警告');
                                 }
                             }
-                            swal("",arr.substring(0,arr.length-1), "error");
-                        }
-
+                        });  
+                    });
+                });
+                forms.validate({
+                    errorElement: 'span', //default input error message container
+                    errorClass: 'help-block', // default input error message class
+                    focusInvalid: false, // do not focus the last invalid input
+                    ignore: "",
+                    rules: {
+                        pid: "required",
+                        name: "required",
+                        code: "required",
+                        status: "required"
                     },
-                    complete:function () {
-                        zjb.unblockUI();
+                    messages:{},
+                    invalidHandler: function (event, validator) { //display error alert on form submit
                     },
-                    success:function (data) {
-                        if(data.code){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                window.location.reload();
-                            });
-                        }else{
-                            swal("", data.message, "error");
+                    errorPlacement: function (error, element) { // render error placement for each input type
+                        if (element.parent(".input-group").length > 0) {
+                            error.insertAfter(element.parent(".input-group"));
+                        } else if (element.attr("data-error-container")) { 
+                            error.appendTo(element.attr("data-error-container"));
+                        } else if (element.parents('.radio-list').length > 0) { 
+                            error.appendTo(element.parents('.radio-list').attr("data-error-container"));
+                        } else if (element.parents('.radio-inline').length > 0) { 
+                            error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
+                        } else if (element.parents('.checkbox-list').length > 0) {
+                            error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
+                        } else if (element.parents('.checkbox-inline').length > 0) { 
+                            error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
+                        } else {
+                            error.insertAfter(element); // for other inputs, just perform default behavior
                         }
-                    }
-                })
-            }
-        });
-
-    });
-    /*删除*/
-    function dlt(id){
-    swal({
-            title: "确认要删除该场地吗？",
-            text: "",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            cancelButtonText: "取消",
-            confirmButtonText: "确认",
-            closeOnConfirm: false
-        },
-        function(){
-            //发异步删除数据
-            $.ajax({
-                type:"post",
-                url:'{{url('area')}}'+'/'+id,
-                data:{
-                    "_token":'{{csrf_token()}}',
-                    '_method':'delete'
-                },
-                dataType:"json",
-                success: function (data) {
-                    if(data.code==1){
-                        swal({
-                            title: "",
-                            text: data.message,
-                            type: "success",
-                            timer: 1000,
-                        },function () {
-                            window.location.reload();
+                    },
+                    highlight: function (element) { // hightlight error inputs
+                        $(element)
+                            .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    },
+                    unhighlight: function (element) { // revert the change done by hightlight
+                        $(element)
+                            .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    },
+                    success: function (label) {
+                        label
+                            .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                    },
+                    submitHandler: function (form) {
+                        jQuery.ajax({
+                            url: forms.attr('action'),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: forms.serialize(),
+                            beforeSend: function(){
+                                // zjb.blockUI();
+                                l.ladda('start');
+                            },
+                            complete: function(xhr, textStatus) {
+                                // zjb.unblockUI();
+                                l.ladda('stop');
+                            },
+                            success: function(data, textStatus, xhr) {
+                                if(data.status){
+                                    toastr.success(data.message);
+                                    //重新载入左侧树形菜单
+                                    $.fn.zTree.getZTreeObj("departments-tree").reAsyncChildNodes(null, "refresh");
+                                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("area/".$area->id."/edit") }}',{},false);
+                                }else{
+                                   toastr.error(data.message,'警告'); 
+                                }
+                            },
+                            error: function(xhr, textStatus, errorThrown) {
+                                if(xhr.status == 422 && textStatus =='error'){
+                                    _$error = xhr.responseJSON.errors;
+                                    $.each(_$error,function(i,v){
+                                        toastr.error(v[0],'警告');
+                                    });
+                                }else{
+                                    toastr.error('请求出错，稍后重试','警告');
+                                }
+                            }
                         });
-                    }else{
-                        swal("", data.message, "error");
+                        return false;
                     }
-                }
+                });
             });
-        });
-
-    }
-
-
-    //打印
-    function prints() {
-        $.ajax({
-            url:'{{url('area/prints')}}',
-            type:"get",
-            /*success:function (data) {
-                $("#right_content").html(data);
-            }*/
-        })
-    }
-
-
-    /*加载添加视图*/
-    function adds(id) {
-        $.ajax({
-            url:'{{url('area/add_son')}}/'+id,
-            type:"get",
-            success:function (data) {
-                $("#right_content").html(data);
-            }
-        })
-    }
-</script>
+        </script>
+    </div>
+</div>
