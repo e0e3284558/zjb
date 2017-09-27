@@ -72,7 +72,8 @@ class RepairListController extends Controller
     {
         $info = Process::with('org', 'user', 'admin', 'area', 'otherAsset', 'asset', 'category', 'serviceWorker', 'serviceProvider')->find($id);
         $list = Process::where("id", $id)->with("img")->first()->img;
-        return response()->view("repair.repair_list.show", compact('info',"list"));
+        $list1 = Process::where("id", $id)->with("worker_img")->first()->worker_img;
+        return response()->view("repair.repair_list.show", compact('info',"list","list1"));
     }
 
 

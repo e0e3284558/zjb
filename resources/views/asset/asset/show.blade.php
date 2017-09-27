@@ -35,7 +35,9 @@
                 <td class="td-bg" ><label class="control-label">图片</label></td>
                 <td colspan="2" >
                     @if($info->img_path)
-                        <img id="image" src="{{$info->img_path}}" style="height: 100px;">
+                        <a href="{{url("$info->img_path")}}" data-lightbox="roadtrip">
+                            <img id="image" src="{{$info->img_path}}" style="height: 50px;">
+                        </a>
                     @else
                         <span>暂无图片</span>
                     @endif

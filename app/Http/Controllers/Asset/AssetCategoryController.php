@@ -60,15 +60,8 @@ class AssetCategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-//        $pinyin = new Pinyin();
-        //获取公司名称
-//        $org_name = Org::find(Auth::user()->org_id)->name;
-//        $str = mb_substr($pinyin->abbr($org_name),0,3).mb_substr($pinyin->abbr($request->name),0,3);
-//        $ss = AssetCategory::where("org_id",Auth::user()->org_id)->orderBy();
-//        dd($ss);
         $arr = [
-//            'category_code' => $str,
-            'category_code' => date("dHis").rand("1000","9999"),
+            'category_code' => $request->category_code,
             'name' => $request->name,
             'org_id' => Auth::user()->org_id,
             'created_at' => date("Y-m-d H:i:s")
@@ -248,7 +241,7 @@ class AssetCategoryController extends Controller
 
     //下载模板
     public function downloadModel(){
-        $cellData = [['资产类别名称(name)','父类(pid)']];
+        $cellData = [['资产类别名称','父类']];
         $cellData2 = [['资产类别名称','类别编号']];
         //类别
         $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
@@ -299,19 +292,25 @@ class AssetCategoryController extends Controller
     public function import(Request $request){
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
-            $data = $reader->all();
+            $data = $reader->getsheet(0)->toArray();
             $org_id = Auth::user()->org_id;
             foreach ($data as $k=>$v){
-                $arr = $v->toArray();
-                $arr['category_code'] = date("dHis").rand("1000",'9999');
+                if($k==0){
+                    continue;
+                }
+                $arr = [
+                    'name' => $v[0],
+                    'pid' => $v[1],
+                    'category_code' => date("dHis").rand("1000",'9999'),
+                    'status' => '1',
+                    'org_id' => $org_id
+                ];
                 if($arr['pid']=='0'){
                     $arr['path'] = '';
                 }else{
                     $path = AssetCategory::where("id",$arr['pid'])->value("path");
                     $arr['path'] = $path.$arr['pid'].',';
                 }
-                $arr['status'] = "1";
-                $arr['org_id'] = $org_id;
                 AssetCategory::insert($arr);
             }
         });

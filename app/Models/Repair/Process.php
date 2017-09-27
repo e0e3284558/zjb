@@ -28,7 +28,10 @@ class Process extends Model
         return $this->belongsTo('App\Models\Repair\ServiceProvider');
     }
     public function img(){
-        return $this->belongsToMany('App\Models\File\File');
+        return $this->belongsToMany('App\Models\File\File')->withPivot('is_worker')->wherePivot('is_worker',null);
+    }
+    public function worker_img(){
+        return $this->belongsToMany('App\Models\File\File')->withPivot('is_worker')->wherePivot('is_worker',"1");
     }
     public function area(){
         return $this->belongsTo('App\Models\Asset\Area');

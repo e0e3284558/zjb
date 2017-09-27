@@ -50,29 +50,38 @@ class AssetController extends Controller
      */
     public function index(Request $request)
     {
-        $org_id = Auth::user()->org_id;
-        $map = [
-            ['org_id','=',$org_id]
-        ];
-        if($request->category_id){
-            $map[] = ['category_id','=',$request->category_id];
-        }
-        if($request->name){
-            $map[] = ['name','like','%'.$request->name.'%'];
-        }
-        $list = Asset::with('category','org','user','admin','source','department','useDepartment','area','supplier')->where($map)->orderBy("id","desc")->paginate(5);
+        if ($request->ajax()) {
+            $org_id = Auth::user()->org_id;
+            $map = [
+                ['org_id', '=', $org_id]
+            ];
+//            if ($request->category_id) {
+//                $map[] = ['category_id', '=', $request->category_id];
+//            }
+            if ($request->search) {
+                $map[] = ['name', 'like', '%' . $request->search . '%'];
+            }
+            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
 
-        foreach ($list as $key=>$value){
-            //图片
-            $list[$key]['file'] = Asset::find($value->id)->file()->first();
-            $list[$key]['img_path'] = $list[$key]['file']["path"];
-            $list[$key]['file_id'] = $list[$key]['file']['id'];
+//            foreach ($data as $key => $value) {
+//                //图片
+//                $data[$key]['file'] = Asset::find($value->id)->file()->first();
+//                $data[$key]['img_path'] = '<img class="cursor_pointer img-md"  src="'.$data[$key]['file']["path"].'" data-toggle="modal" data-target=".bs-example-modal-md" />';
+//                $data[$key]['file_id'] = $data[$key]['file']['id'];
+//            }
+
+            $data = $data->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
         }
+        return view("asset.asset.index");
         //资产类别
-        $category_list = AssetCategory::where("org_id",$org_id)->get();
-        $category_list = $this->test($category_list);
-        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
-        return view("asset.asset.index",compact("list","category_list"));
+//        $category_list = AssetCategory::where("org_id",$org_id)->get();
+//        $category_list = $this->test($category_list);
+//        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
+
+//        return view("asset.asset.index",compact("list","category_list"));
     }
 
     /**
@@ -108,8 +117,13 @@ class AssetController extends Controller
      */
     public function store(AssetRequest $request)
     {
-        $code = $request->code?$request->code:date("dHis").rand("10000","99999");
-        $request->offsetSet("code",$code);
+        if(!$request->code){
+            //公司code+资产类别code+日期随机值
+            $org_code = Org::where("id",Auth::user()->org_id)->value("code");
+            $category_code = AssetCategory::where("id",$request->category_id)->value("category_code");
+            $code = $org_code.$category_code.rand('00001','99999');
+            $request->offsetSet("code",$code);
+        }
         $arr = $request->except("_token","img","file_id");
 
         $arr['asset_uid'] = Uuid::generate()->string;
@@ -119,6 +133,7 @@ class AssetController extends Controller
 
 
         $arr['created_at'] = date("Y-m-d H:i:s");
+        $arr['status'] = "1";
         $arr['org_id'] = Auth::user()->org_id;
         $info = Asset::insertGetId($arr);
 
@@ -228,12 +243,12 @@ class AssetController extends Controller
 
             if($info){
                 $message = [
-                    'code' => 1,
+                    'status' => 1,
                     'message' => '资产信息修改成功'
                 ];
             }else{
                 $message = [
-                    'code' => 0,
+                    'status' => 0,
                     'message' => '资产信息修改失败'
                 ];
             }
@@ -258,12 +273,12 @@ class AssetController extends Controller
                 }
                 if($info){
                     $message = [
-                        'code' => 1,
+                        'status' => 1,
                         'message' => '删除成功'
                     ];
                 }else{
                     $message = [
-                        'code' => '0',
+                        'status' => '0',
                         'message' => '删除失败'
                     ];
                 }
@@ -493,15 +508,31 @@ class AssetController extends Controller
     public function import(Request $request){
         $filePath =  $request->file_path;
         Excel::selectSheets('资产录入')->load($filePath, function($reader) {
-            $data = $reader->all();
+            $data = $reader->getsheet(0)->toArray();
+            dd($data);
             $org_id = Auth::user()->org_id;
             foreach ($data as $k=>$v){
-                $arr = $v->toArray();
+                if($k==0){
+                    continue;
+                }
+                $arr = [
+                    'code' => $v[0],
+                    'name' => $v[1],
+                    'category_id' => $v[2],
+                    'spec' => $v[3],
+                    'calculate' => $v[4],
+                    'money' => $v[5],
+                    'buy_time' => $v[6],
+                    'area_id' => $v[7],
+                    'department_id' => $v[8],
+                    'supplier_id' => $v[9],
+                    'remarks' => $v[10],
+                    'asset_uid' => Uuid::generate()->string,
+                    'org_id' => $org_id
+                ];
                 if(!$arr['code']){
                     $arr['code'] = date('dHis').rand("1000",'9999');
                 }
-                $arr['asset_uid'] = Uuid::generate()->string;
-                $arr['org_id'] = $org_id;
                 Asset::insert($arr);
             }
         });

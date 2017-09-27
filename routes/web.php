@@ -148,7 +148,6 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::get('area/downloadModel', 'AreaController@downloadModel');
     Route::get('area/add_import', 'AreaController@add_import');
     Route::post('area/import', 'AreaController@import');
-
     Route::resource('area', 'AreaController');
 
     //其他报修项
@@ -167,12 +166,30 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post('asset/import', 'AssetController@import');
     Route::resource('asset', 'AssetController');
 
+    //领用&退库
+    Route::resource('assetUse','');
+    //借用&归还
+    Route::resource('borrow','BorrowController');
+
     //供应商管理
     Route::get('supplier/export', 'SupplierController@export');
     Route::get('supplier/downloadModel', 'SupplierController@downloadModel');
     Route::get('supplier/add_import', 'SupplierController@add_import');
     Route::post('supplier/import', 'SupplierController@import');
+    Route::post("supplier/page_pro",'SupplierController@page_pro');
     Route::resource("supplier",'SupplierController');
+
+    //合同管理
+    Route::post("contract/bill_store",'ContractController@bill_store');
+    Route::get("contract/add_bill/{id}",'ContractController@add_bill');
+    Route::resource("contract",'ContractController');
+
+    //清单管理
+
+//    Route::post("bill/asset_store",'BillController@asset_store');
+    Route::get("bill/create/{id}",'BillController@create');
+//    Route::get("bill/create/{id}",'BillController@create');
+    Route::resource("bill",'BillController');
 
     //附件信息
     Route::post("upload/uploadFile", "UploadController@uploadFile");
@@ -184,9 +201,11 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
 
 //文件管理模块路由开始
 //-------------------------------------------------------------------------
-
-Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'file', 'namespace' => 'File'],function () {
     Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
+});
+Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
+//    Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
     Route::post('file_upload', 'DefaultController@fileUpload')->name('file.upload');
     Route::post('video_upload', 'DefaultController@videoUpload')->name('video.upload');
     Route::post('asset_file_upload', 'DefaultController@assetFileUpload')->name('asset.file.upload');

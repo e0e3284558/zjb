@@ -61,9 +61,9 @@ class DefaultController extends Controller
                 $file_info->path = $path;
                 $file_info->url = asset($path);
                 $file_info->size = $upload_file->getClientSize();
-                $file_info->org_id = get_current_login_user_org_id();
+//                $file_info->org_id = get_current_login_user_org_id();
                 $file_info->ip = $request->ip();
-                $file_info->user_id = get_current_login_user_info();
+//                $file_info->user_id = get_current_login_user_info();
                 $file_info->upload_mode = 'image';
                 $file_info->uniqid = $uniqid;
 

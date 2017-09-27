@@ -10,7 +10,7 @@
                     <a href="javascript:;">资产管理</a>
                 </li>
                 <li class="active">
-                    <strong>资产入库</strong>
+                    <strong>借用&归还</strong>
                 </li>
             </ol>
         </div>
@@ -23,7 +23,7 @@
         <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
             <div class="row">
                 <div class="col-sm-7">
-                    <a href="{{ url('asset/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
+                    <a href="{{ url('borrow/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
                     <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
                     <button href="" class="btn red btn-delete">
                         <i class="fa fa-trash"></i> 删除
@@ -41,36 +41,36 @@
                 </div>
             </div>
         </div>
-        <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("asset") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">
+        <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("borrow") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">
             <thead>
             <tr>
                 <th lay-data="{fixed:'left',checkbox:true}"></th>
                 <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-                <th lay-data="{field:'status', width:80, sort: true}">状态</th>
-                <th lay-data="{field:'code', width:80, sort: true}">资产编号</th>
-                <th lay-data="{field:'name', width:180, sort: true}">资产名称</th>
-                <th lay-data="{field:'category',templet: '#categoryTpl', width:180, sort: true}">资产类别</th>
-                <th lay-data="{field:'spec', width:180, sort: true}">规格型号</th>
-                <th lay-data="{field:'calculate', width:180, sort: true}">计量单位</th>
-                <th lay-data="{field:'money', width:180, sort: true}">金额(元)</th>
-                <th lay-data="{field:'area',templet: '#areaTpl', width:180, sort: true}">所在场地</th>
-                <th lay-data="{field:'buy_time', width:180, sort: true}">购入时间</th>
-                <th lay-data="{field:'created_at', width:170, sort: true}">创建时间</th>
-                <th lay-data="{field:'updated_at', width:170, sort: true}">更新时间</th>
+                <th lay-data="{field:'borrow_status', width:80, sort: true}">状态</th>
+                <th lay-data="{field:'borrow_code', width:80, sort: true}">借用单号</th>
+                <th lay-data="{field:'borrow_time', width:180, sort: true}">借用时间</th>
+                <th lay-data="{field:'borrow_user_name',templet: '#categoryTpl', width:180, sort: true}">借用人</th>
+                <th lay-data="{field:'expect_return_time', width:180, sort: true}">预计归还时间</th>
+                <th lay-data="{field:'return_time', width:180, sort: true}">实际归还时间</th>
+                {{--<th lay-data="{field:'money', width:180, sort: true}">金额(元)</th>--}}
+                {{--<th lay-data="{field:'area',templet: '#areaTpl', width:180, sort: true}">所在场地</th>--}}
+                {{--<th lay-data="{field:'buy_time', width:180, sort: true}">购入时间</th>--}}
+                {{--<th lay-data="{field:'created_at', width:170, sort: true}">创建时间</th>--}}
+                {{--<th lay-data="{field:'updated_at', width:170, sort: true}">更新时间</th>--}}
                 <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
             </tr>
             </thead>
         </table>
-        <script type="text/html" id="categoryTpl">
-            @{{# if(d.category){  }}
-                @{{d.category.name}}
-            @{{# } }}
-        </script>
-        <script type="text/html" id="areaTpl">
-            @{{# if(d.area){  }}
-            @{{d.area.name}}
-            @{{# } }}
-        </script>
+        {{--<script type="text/html" id="categoryTpl">--}}
+            {{--@{{# if(d.category){  }}--}}
+                {{--@{{d.category.name}}--}}
+            {{--@{{# } }}--}}
+        {{--</script>--}}
+        {{--<script type="text/html" id="areaTpl">--}}
+            {{--@{{# if(d.area){  }}--}}
+            {{--@{{d.area.name}}--}}
+            {{--@{{# } }}--}}
+        {{--</script>--}}
         <script type="text/html" id="barDemo">
             <a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>
             <a class="btn blue-madison btn-xs" lay-event="edit" data-toggle="modal" data-target=".bs-example-modal-lg">编辑</a>

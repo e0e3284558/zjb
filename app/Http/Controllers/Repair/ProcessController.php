@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Repair;
 use App\Models\Repair\Process;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ProcessController extends Controller
 {
@@ -54,9 +55,19 @@ class ProcessController extends Controller
      */
     public function store(Request $request)
     {
-        $info = Process::where("id", $request->id)->update($request->except('id', '_token'));
+        $info = Process::where("id", $request->id)->update($request->except('id', '_token','images'));
         $message = [];
         if ($info) {
+            if ($request->images) {
+                foreach ($request->images as $v) {
+                    if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $request->id,'is_worker'=>'1'])) {
+                        return response()->json([
+                            'status' => 0, 'message' => '图片上传失败',
+                            'data' => null, 'url' => ''
+                        ]);
+                    }
+                }
+            }
             $message = [
                 'code' => '1',
                 'message' => '成功'
@@ -75,7 +86,8 @@ class ProcessController extends Controller
     {
         $info = Process::with('org', 'user', 'admin', 'area', 'otherAsset', 'asset', 'category', 'serviceWorker', 'serviceProvider')->find($id);
         $list = Process::where("id", $id)->with("img")->first()->img;
-        return response()->view("repair.process.show", compact('info',"list"));
+        $list1 = Process::where("id", $id)->with("worker_img")->first()->worker_img;
+        return response()->view("repair.process.show", compact('info',"list","list1"));
     }
 
 

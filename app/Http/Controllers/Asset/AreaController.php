@@ -195,22 +195,6 @@ class AreaController extends Controller
         }
     }
 
-    //下载模板
-//    function downloadModel(){
-//        Excel::create('Filename', function($excel) {
-//
-//            // Our first sheet
-//            $excel->sheet('sheet1', function($sheet) {
-//
-//            });
-//
-//            // Our second sheet
-//            $excel->sheet('sheet2', function($sheet) {
-//
-//            });
-//
-//        })->export('xls');
-//    }
 
     /**
      * 场地管理  数据导出
@@ -255,7 +239,7 @@ class AreaController extends Controller
 
     //下载模板
     public function downloadModel(){
-        $cellData = [['场地名称(name)','父类(pid)','场地备注(remarks)']];
+        $cellData = [['场地名称','父类','场地备注']];
         $cellData2 = [['场地名称','场地编号']];
         //类别
         $list = Area::where("org_id",Auth::user()->org_id)->get();
@@ -306,18 +290,25 @@ class AreaController extends Controller
     public function import(Request $request){
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
-            $data = $reader->all();
+            $data = $reader->getsheet(0)->toArray();
             $org_id = Auth::user()->org_id;
             foreach ($data as $k=>$v){
-                $arr = $v->toArray();
-                $arr['uid'] = Uuid::generate()->string;
+                if($k==0){
+                    continue;
+                }
+                $arr = [
+                    'name' => $v[0],
+                    'pid' => $v[1],
+                    'uid' => Uuid::generate()->string,
+                    'remarks' => $v[2],
+                    'org_id' => $org_id
+                ];
                 if($arr['pid']=='0'){
                     $arr['path'] = '';
                 }else{
                     $path = Area::where("id",$arr['pid'])->value("path");
                     $arr['path'] = $path.$arr['pid'].',';
                 }
-                $arr['org_id'] = $org_id;
                 Area::insert($arr);
             }
         });

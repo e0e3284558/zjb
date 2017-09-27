@@ -199,7 +199,7 @@
                           timer: 2000,
                           confirmButtonText: "确定"
                         });
-                        // toastr.error(data.message,'警告'); 
+                        // toastr.error(data.message,'警告');
                     }
                 }, function(xhr, textStatus, errorThrown) {
                     if(xhr.status == 422 && textStatus =='error'){
@@ -235,9 +235,9 @@
               }
             });
             $(".btn-edit").click(function(){
-              var checkStatus = table.checkStatus('dataUser'); 
+              var checkStatus = table.checkStatus('dataUser');
               if(checkStatus.data.length != 1){
-                toastr.error('请选择一条要操作的数据','警告'); 
+                toastr.error('请选择一条要操作的数据','警告');
               }else{
                 var data = checkStatus.data[0];
                 $("#operationModal").modal('show');
@@ -246,9 +246,9 @@
             });
 
             $(".btn-delete").click(function(){
-              var checkStatus = table.checkStatus('dataUser'); 
+              var checkStatus = table.checkStatus('dataUser');
               if(checkStatus.data.length <= 0){
-                toastr.error('请选择要操作的数据','警告'); 
+                toastr.error('请选择要操作的数据','警告');
               }else{
                 //获取所有选中的行的id
                 var ids  = [];
@@ -278,7 +278,7 @@
             $('#refreshTable').click(function(){
               tableReload({});
             })
-        }); 
+        });
     });
     </script>
 </div>
