@@ -77,7 +77,11 @@
                                                             <span class="label label-info">待分派</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                    @if($v->user)
+                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                    @else
+                                                        <td></td>
+                                                    @endif
                                                     <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->classify && (!$v->asset_id))
                                                         <td>{{$v->classify->name}}</td>
@@ -140,7 +144,11 @@
                                                             <input type="checkbox" class="i-checks" name="id"
                                                                    value="{{$v->id}}">
                                                         </td>
-                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @if($v->user)
+                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @else
+                                                            <td></td>
+                                                        @endif
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->classify && (!$v->asset_id))
                                                             <td>{{$v->classify->name}}</td>
@@ -211,7 +219,11 @@
                                                             <input type="checkbox" class="i-checks" name="id"
                                                                    value="{{$v->id}}">
                                                         </td>
-                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @if($v->user)
+                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @else
+                                                            <td></td>
+                                                        @endif
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->classify && (!$v->asset_id))
                                                             <td>{{$v->classify->name}}</td>
@@ -264,7 +276,11 @@
                                                             <input type="checkbox" class="i-checks" name="id"
                                                                    value="{{$v->id}}">
                                                         </td>
-                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @if($v->user)
+                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @else
+                                                            <td></td>
+                                                        @endif
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->classify && (!$v->asset_id))
                                                             <td>{{$v->classify->name}}</td>
@@ -283,6 +299,7 @@
                                                         @else
                                                             <td>服务商已被移除</td>
                                                         @endif
+                                                        <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
@@ -357,7 +374,11 @@
                                                                 <span class="label label-danger">工单已取消</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @if($v->user)
+                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                        @else
+                                                            <td></td>
+                                                        @endif
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         @if($v->classify && (!$v->asset_id))
                                                             <td>{{$v->classify->name}}</td>
@@ -368,7 +389,7 @@
                                                         @endif
                                                         @if($v->serviceWorker)
                                                             <td>{{$v->serviceWorker->name}}</td>
-                                                            @else
+                                                        @else
                                                             <td></td>
                                                         @endif
                                                         <td>

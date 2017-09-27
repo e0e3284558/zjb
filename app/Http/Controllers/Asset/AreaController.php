@@ -25,16 +25,38 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $list = Area::where("org_id",Auth::user()->org_id)->get()->toArray();
-
-        foreach ($list as $k=>$v){
-            $list[$k]['text'] = $v['name'];
-            $list[$k]['nodeId'] = $v['id'];
+        //获取所有部门信息
+        if (request('tree') == 1) {
+            $select = $request->select;
+            $name = $request->name;
+            $where = [];
+            if($name){
+                $where[] = ['name','like',"%{$name}%"];
+            }
+            $list = Area::orgs()->where($where)->get()->toArray();
+            $org = get_current_login_user_org_info('name')->name;
+            $tempData = [
+                [
+                    'id' => 0,
+                    'pid' => -1,
+                    'text' => $org,
+                    'name' => $org,
+                    'href' => '',//编辑地址
+                    'icon' => asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/global.gif')
+                ]
+            ];
+            if ($list) {
+                foreach ($list as $key => $val) {
+                    $val['href'] = url('area/' . $val['id'] . '/edit');
+                    $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
+                    $tempData[] = $val;
+                }
+            }
+            return response()->json($tempData);
         }
-        $tree = list_to_tree($list, 'id', 'pid', 'nodes', "0");
-        return view("asset.area.index",compact("tree"));
+        return view('asset.area.index');
     }
 
     /**
@@ -46,14 +68,6 @@ class AreaController extends Controller
     {
         return response()->view("asset.area.add");
     }
-
-    public function add($id){
-        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
-            $info = Area::find($id);
-            return response()->view("asset.area.add_son",compact("info"));
-        }
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -62,41 +76,27 @@ class AreaController extends Controller
      */
     public function store(AreaRequest $request)
     {
-        $arr = [
-            'name' => $request->name,
-            'org_id' => Auth::user()->org_id,
-            'uid' => Uuid::generate()->string,
-            'remarks' => $request->remarks?$request->remarks:'',
-            'created_at' => date("Y-m-d H:i:s")
-        ];
-        if($request->pid){
-            $arr['pid'] = $request->pid;
-            $org_id = Auth::user()->org_id;
-            $arr['path'] = Area::where('org_id',$org_id)->where("id",$request->pid)->value("path");
-            $arr['path'] .= $request->pid.",";
-        }else{
-            $arr['pid'] = "0";
-            $arr['path'] = "";
+        $area = new Area();
+        $area->name = $request->name;
+        $area->status = $request->status;
+//        $area->sort = $request->sort;
+        $area->pid = $request->pid;
+        $area->remarks = $request->remarks;
+        $area->code = $request->code;
+        $area->org_id = get_current_login_user_org_id();
+        $area->uuid = Uuid::generate()->string;
+        $area->path = '';
+        if ($area->save()) {
+            return response()->json([
+                'status' => 1, 'message' => '添加成功',
+                'data' => $area->toArray(), 'url' => url('users/departments?tree=1&select=' . $area->id)
+            ]);
+        } else {
+            return response()->json([
+                'status' => 0, 'message' => '保存失败',
+                'data' => null, 'url' => ''
+            ]);
         }
-
-        // QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],config('filesystems.disks.area_qrcodes.root').$arr['uid'].'.png');
-
-        QrCode::encoding("UTF-8")->format('png')->size("100")->margin("0")->generate($arr['uid'],public_path('uploads/area/'.$arr['uid'].'.png'));
-
-        $arr['qrcode_path'] = 'uploads/area/'.$arr['uid'].'.png';
-        $info = Area::insertGetId($arr);
-        if($info){
-            $message = [
-                'code'=>1,
-                'message'=>'添加成功'
-            ];
-        }else{
-            $message = [
-                'code'=>0,
-                'message'=>'添加失败'
-            ];
-        }
-        return response()->json($message);
     }
 
     /**
@@ -118,14 +118,8 @@ class AreaController extends Controller
      */
     public function edit($id)
     {
-        $info = Area::find($id);
-        $org = Org::find(Auth::user()->org_id);
-        if($info->pid=="0"){
-            return response()->view("asset.area.edit",compact('info','org'));
-        }else{
-            $parent_info = Area::where("id",$info->pid)->where("org_id",Auth::user()->org_id)->first();
-            return response()->view('asset.area.edit',compact("info","parent_info",'org'));
-        }
+        $dep = Area::orgs()->findOrFail($id);
+        return view('asset.area.edit', ['area' => $dep]);
     }
 
     /**
@@ -137,22 +131,24 @@ class AreaController extends Controller
      */
     public function update(AreaRequest $request, $id)
     {
-        $user_org = Auth::user()->org_id;
-        $info = Area::find($id);
-        if($user_org == $info->org_id){
-            $info = Area::where("id",$id)->update($request->except('_method','_token'));
-            if($info){
-                $arr = [
-                    'code'=>1,
-                    'message'=>'修改成功'
-                ];
-            }else{
-                $arr = [
-                    'code'=>0,
-                    'message'=>'修改失败'
-                ];
-            }
-            return response()->json($arr);
+        $area = Area::orgs()->findOrFail($id);
+        $area->name = $request->name;
+        $area->pid = $request->pid;
+//        $area->sort = $request->sort;
+        $area->status = $request->status;
+        $area->remarks = $request->remarks;
+        $area->code = $request->code;
+        $area->path = '';
+        if ($area->save()) {
+            return response()->json([
+                'status' => 1, 'message' => '编辑成功',
+                'data' => $area->toArray(), 'url' => url('area?tree=1&select=' . $id)
+            ]);
+        } else {
+            return response()->json([
+                'status' => 0, 'message' => '编辑失败',
+                'data' => null, 'url' => ''
+            ]);
         }
     }
 
@@ -164,37 +160,32 @@ class AreaController extends Controller
      */
     public function destroy($id)
     {
-        if(Auth::user()->org_id == Area::where("id",$id)->value("org_id")){
-            $list = Area::where("pid",$id)->where("org_id",Auth::user()->org_id)->first();
-            if($list!=null){
-                $message = [
-                    'code'=>0,
-                    'message'=>'此场地下还有场地，不能删除'
-                ];
-            }else{
-                //判断此类别下还有资产
-                if($list = Asset::where('area_id',$id)->first()){
-                    $message = [
-                        'code'=>0,
-                        'message'=>'此场地下还有资产，不能删除'
-                    ];
-                }else{
-                    $info = Area::where("id",$id)->delete();
-                    if($info){
-                        $message = [
-                            'code'=>1,
-                            'message'=>'删除成功'
-                        ];
-                    }
-                }
-
+        $result = [
+            'status' => 1,
+            'message' => '操作成功',
+            'data' => '',
+            'url' => '',
+        ];
+        $dp = Area::orgs()->findOrFail($id);
+        if ($dp) {
+            $flag = 1;
+            //判断是否有子部门
+            if (Area::where(['pid' => $id])->first()) {
+                $result['status'] = 0;
+                $result['message'] = '存在子场地信息不能删除';
+                $flag = 0;
             }
-            return response()->json($message);
-        }else{
-            return redirect("home");
+            //删除
+            if ($flag && !$dp->delete()) {
+                $result['status'] = 0;
+                $result['message'] = '删除失败';
+            }
+        } else {
+            $result['status'] = 0;
+            $result['message'] = '操作的信息不存在';
         }
+        return response()->json($result);
     }
-
 
     /**
      * 场地管理  数据导出

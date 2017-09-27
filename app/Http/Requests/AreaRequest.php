@@ -23,15 +23,45 @@ class AreaRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name'=>'required'
-        ];
+        switch ($this->method()){
+            case 'GET':
+            case 'DELETE':
+            {
+                return [];
+            }
+            case 'POST':
+            {
+                return [
+                    'name'=>'bail|required',
+                    'code'=>'bail|required|unique:areas,code',
+                    'pid'=>'bail|required',
+                    'status'=>'bail|required',
+                ];
+            }
+            case 'PUT':
+            case 'PATCH':
+            {
+                return [
+                    'name'=>'bail|required',
+                    'code'=>'bail|required|unique:areas,code,'.request('id'),
+                    'pid'=>'bail|required|different:id',
+                    'status'=>'bail|required',
+                ];
+            }
+            default:break;
+        }
+
     }
 
     public function messages()
     {
         return [
             'name.required'=>'请输入场地名称',
+            'code.required'=>'请输入场地编码',
+            'code.unique'=>'场地编码已存在',
+            'pid.required'=>'请选择上级场地',
+            'pid.different'=> '上级场地不能为自身',
+            'status.required'=>'请选择状态',
         ];
     }
 }
