@@ -129,6 +129,20 @@ class GroupsController extends Controller
                 'message' => '请选择要操作的数据',
             ]);
         }
+        DB::table('model_has_roles')->whereIn('role_id', $id)->delete();
+        DB::table('role_has_permissions')->whereIn('role_id', $id)->delete();
+        if (Role::whereIn('id', $id)->delete()) {
+            return response()->json([
+                'message' => '删除成功',
+                'status' => 1
+            ]);
+        } else {
+            return response()->json([
+                'status' => 0,
+                'message' => '删除失败，请稍候重试',
+            ]);
+
+        }
     }
 
 
