@@ -30,10 +30,10 @@ class DefaultController extends Controller
      */
     public function index(Request $request)
     {
-        $user = get_current_login_user_info(true);
-        if (!$user->hasAnyPermission('user')) {
-            return redirect('/home');
-        }
+//        $user = get_current_login_user_info(true);
+//        if (!$user->hasAnyPermission('user')) {
+//            return redirect('/home');
+//        }
         if ($request->ajax()) {
             $search = $request->get('search');
             $department = $request->get('department_id');
