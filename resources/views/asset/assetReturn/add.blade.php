@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">借用单</h4>
+    <h4 class="modal-title" id="myModalLabel">退库</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -12,53 +12,17 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">借用人</label>
+                    <label for="code" class="col-sm-4 control-label">退库处理人<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="borrow_user_name" class="form-control" placeholder="借用人">
+                        <input type="text" disabled value="{{Auth::user()->name}}" class="form-control">
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="buy_time" class="col-sm-4 control-label">借出时间<span style="color:red;">*</span></label>
+                    <label for="use_time" class="col-sm-4 control-label">实际退库时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="borrow_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" >
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">预计归还时间<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" name="expect_return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-start-date = "0d">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">借出处理人<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" value="{{Auth::user()->name}}" disabled class="form-control" data-error-container="#error-block">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" >
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">实际归还时间<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" disabled value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">归还处理人<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" disabled class="form-control" data-error-container="#error-block" >
+                        <input type="text" name="return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
@@ -74,38 +38,40 @@
             </div>
         </div>
 
-        <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
-            <table class="table table-striped table-bordered table-hove">
-                <thead>
-                <tr>
-                    <td class="dialogtableth"><input type="checkbox"></td>
-                    <td class="dialogtableth">照片</td>
-                    <td class="dialogtableth">资产条码</td>
-                    <td class="dialogtableth">资产名称</td>
-                    <td class="dialogtableth">资产类别</td>
-                    <td class="dialogtableth">规格型号</td>
-                </tr>
-                </thead>
-                <tbody data-bind="foreach: selectedAssetList">
-                @foreach($list as $value)
+        <div class="row" >
+            <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
+                <table class="table table-striped table-bordered table-hove">
+                    <thead>
                     <tr>
-                        <td><input type="checkbox" name="borrow_asset_ids[]" value="{{$value->id}}"></td>
-                        <td>
-                            @if($value->img_path)
-                                <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
-                                    <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
-                                </a>
-                            @endif
-                        </td>
-                        <td>{{$value->code}}</td>
-                        <td>{{$value->name}}</td>
-                        <td>{{$value->category->name}}</td>
-                        <td>{{$value->spec}}</td>
+                        <td class="dialogtableth"><input type="checkbox"></td>
+                        <td class="dialogtableth">照片</td>
+                        <td class="dialogtableth">资产条码</td>
+                        <td class="dialogtableth">资产名称</td>
+                        <td class="dialogtableth">资产类别</td>
+                        <td class="dialogtableth">规格型号</td>
                     </tr>
-                @endforeach
-                </tbody>
+                    </thead>
+                    <tbody data-bind="foreach: selectedAssetList">
+                    @foreach($list as $value)
+                        <tr>
+                            <td><input type="checkbox" name="asset_ids[]" value="{{$value->id}}"></td>
+                            <td>
+                                @if($value->img_path)
+                                    <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
+                                        <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
+                                    </a>
+                                @endif
+                            </td>
+                            <td>{{$value->code}}</td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->category->name}}</td>
+                            <td>{{$value->spec}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
 
-            </table>
+                </table>
+            </div>
         </div>
 
     </form>
@@ -139,10 +105,6 @@
                     min:0
                 },
                 buy_time:"required",
-                use_time: {
-                    min: 1,
-                    digits:true
-                }
             },
             messages: {
                 category_id:"资产类别不能为空",
@@ -153,10 +115,6 @@
                     min:"金额必须为大于零的有效数字"
                 },
                 buy_time:"购入时间不能为空",
-                use_time: {
-                    min: "请输入一个有效整数",
-                    digits:"请输入一个正整数"
-                }
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -198,7 +156,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('borrow')}}",
+                    url:"{{url('asset_return')}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",

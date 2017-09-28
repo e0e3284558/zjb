@@ -177,8 +177,10 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post('asset/import', 'AssetController@import');
     Route::resource('asset', 'AssetController');
 
-    //领用&退库
-    Route::resource('assetUse','');
+    //领用
+    Route::resource('asset_use','AssetUseController');
+    //退库
+    Route::resource("asset_return",'AssetReturnController');
     //借用&归还
     Route::resource('borrow','BorrowController');
 

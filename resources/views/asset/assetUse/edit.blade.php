@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">借用单</h4>
+    <h4 class="modal-title" id="myModalLabel">归还</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -9,105 +9,25 @@
             请更正下列输入错误：
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
+        <input type="hidden" name="_method" value="PUT">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">借用人</label>
+                    <label for="buy_time" class="col-sm-4 control-label">实际归还时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="borrow_user_name" class="form-control" placeholder="借用人">
+                        <input type="text" name="return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" >
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="form-group">
-                    <label for="buy_time" class="col-sm-4 control-label">借出时间<span style="color:red;">*</span></label>
+                    <label for="code" class="col-sm-4 control-label">归还处理人</label>
                     <div class="col-sm-8">
-                        <input type="text" name="borrow_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" disabled value="{{Auth::user()->name}}" class="form-control">
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row" >
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">预计归还时间<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" name="expect_return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-start-date = "0d">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">借出处理人<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" value="{{Auth::user()->name}}" disabled class="form-control" data-error-container="#error-block">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" >
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">实际归还时间<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" disabled value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">归还处理人<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" disabled class="form-control" data-error-container="#error-block" >
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" >
-                <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">说明</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="remarks" rows="2" style="resize: none;" placeholder="备注说明 ..."></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
-            <table class="table table-striped table-bordered table-hove">
-                <thead>
-                <tr>
-                    <td class="dialogtableth"><input type="checkbox"></td>
-                    <td class="dialogtableth">照片</td>
-                    <td class="dialogtableth">资产条码</td>
-                    <td class="dialogtableth">资产名称</td>
-                    <td class="dialogtableth">资产类别</td>
-                    <td class="dialogtableth">规格型号</td>
-                </tr>
-                </thead>
-                <tbody data-bind="foreach: selectedAssetList">
-                @foreach($list as $value)
-                    <tr>
-                        <td><input type="checkbox" name="borrow_asset_ids[]" value="{{$value->id}}"></td>
-                        <td>
-                            @if($value->img_path)
-                                <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
-                                    <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
-                                </a>
-                            @endif
-                        </td>
-                        <td>{{$value->code}}</td>
-                        <td>{{$value->name}}</td>
-                        <td>{{$value->category->name}}</td>
-                        <td>{{$value->spec}}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-
-            </table>
-        </div>
-
     </form>
 </div>
 <div class="modal-footer">
@@ -198,7 +118,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('borrow')}}",
+                    url:"{{url('asset_use/'.$id)}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",

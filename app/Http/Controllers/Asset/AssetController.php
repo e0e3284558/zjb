@@ -63,6 +63,19 @@ class AssetController extends Controller
             }
             $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
 
+            foreach ($data as $k=>$v){
+                switch ($v->status){
+                    case "1":
+                        $data[$k]['status'] = '<span class="btn-sm label-info" >闲置</span>';
+                        break;
+                    case "2":
+                        $data[$k]['status'] = '<span class="btn-sm label-danger" >借出</span>';
+                        break;
+                    case "3":
+                        $data[$k]['status'] = '<span class="btn-sm label-primary" >领用</span>';
+                        break;
+                }
+            }
 //            foreach ($data as $key => $value) {
 //                //图片
 //                $data[$key]['file'] = Asset::find($value->id)->file()->first();

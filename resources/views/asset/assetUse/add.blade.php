@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">借用单</h4>
+    <h4 class="modal-title" id="myModalLabel">领用单</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -12,17 +12,17 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">借用人</label>
+                    <label for="code" class="col-sm-4 control-label">领用人<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="borrow_user_name" class="form-control" placeholder="借用人">
+                        <input type="text" name="use_name" class="form-control" placeholder="领用人">
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="buy_time" class="col-sm-4 control-label">借出时间<span style="color:red;">*</span></label>
+                    <label for="use_time" class="col-sm-4 control-label">领用时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="borrow_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" name="use_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
         <div class="row" >
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">预计归还时间<span style="color:red;">*</span></label>
+                    <label for="category_id" class="col-sm-4 control-label">预计归还时间</label>
                     <div class="col-sm-8">
                         <input type="text" name="expect_return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-start-date = "0d">
                     </div>
@@ -46,17 +46,19 @@
             </div>
         </div>
         <div class="row" >
-            <div class="col-md-6">
+            <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">实际归还时间<span style="color:red;">*</span></label>
+                    <label for="code" class="col-sm-4 control-label">领用部门<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" disabled value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <select id="department_id" data-error-container="#error-block" name="use_department_id" class="form-control select2">
+                            {!! department_select('',1) !!}
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">归还处理人<span style="color:red;">*</span></label>
+                    <label for="name" class="col-sm-4 control-label">归还处理人</label>
                     <div class="col-sm-8">
                         <input type="text" disabled class="form-control" data-error-container="#error-block" >
                     </div>
@@ -89,7 +91,7 @@
                 <tbody data-bind="foreach: selectedAssetList">
                 @foreach($list as $value)
                     <tr>
-                        <td><input type="checkbox" name="borrow_asset_ids[]" value="{{$value->id}}"></td>
+                        <td><input type="checkbox" name="asset_ids[]" value="{{$value->id}}"></td>
                         <td>
                             @if($value->img_path)
                                 <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
@@ -139,10 +141,6 @@
                     min:0
                 },
                 buy_time:"required",
-                use_time: {
-                    min: 1,
-                    digits:true
-                }
             },
             messages: {
                 category_id:"资产类别不能为空",
@@ -153,10 +151,6 @@
                     min:"金额必须为大于零的有效数字"
                 },
                 buy_time:"购入时间不能为空",
-                use_time: {
-                    min: "请输入一个有效整数",
-                    digits:"请输入一个正整数"
-                }
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -198,7 +192,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('borrow')}}",
+                    url:"{{url('asset_use')}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",

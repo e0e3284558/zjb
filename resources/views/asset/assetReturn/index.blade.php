@@ -10,7 +10,7 @@
                     <a href="javascript:;">资产管理</a>
                 </li>
                 <li class="active">
-                    <strong>借用&归还</strong>
+                    <strong>归还</strong>
                 </li>
             </ol>
         </div>
@@ -23,56 +23,40 @@
         <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
             <div class="row">
                 <div class="col-sm-7">
-                    <a href="{{ url('borrow/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
-                    <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
-                    <button href="" class="btn red btn-delete">
-                        <i class="fa fa-trash"></i> 删除
-                    </button>
+                    <a href="{{ url('asset_return/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 新增退库</a>
                 </div>
-                <div class="col-sm-5">
-                    <div class="input-group">
-                        <input type="text" id="search-text" placeholder="资产名称" class="form-control">
-                        <span class="input-group-btn">
-                          <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>
-                          <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
-                          <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
-                        </span>
-                    </div>
-                </div>
+                {{--<div class="col-sm-5">--}}
+                    {{--<div class="input-group">--}}
+                        {{--<input type="text" id="search-text" placeholder="资产名称" class="form-control">--}}
+                        {{--<span class="input-group-btn">--}}
+                          {{--<button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>--}}
+                          {{--<a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>--}}
+                          {{--<a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>--}}
+                        {{--</span>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
         </div>
-        <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("borrow") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">
+        <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("asset_return") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">
             <thead>
             <tr>
                 <th lay-data="{fixed:'left',checkbox:true}"></th>
                 <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-                <th lay-data="{field:'borrow_status', width:80, sort: true}">状态</th>
-                <th lay-data="{field:'borrow_code', width:80, sort: true}">借用单号</th>
-                <th lay-data="{field:'borrow_time', width:180, sort: true}">借用时间</th>
-                <th lay-data="{field:'borrow_user_name', width:180, sort: true}">借用人</th>
-                <th lay-data="{field:'expect_return_time', width:180, sort: true}">预计归还时间</th>
-                <th lay-data="{field:'return_time', width:180, sort: true}">实际归还时间</th>
+                <th lay-data="{field:'return_code', width:180, sort: true}">退库单号</th>
+                <th lay-data="{field:'return_time', width:180, sort: true}">退库时间</th>
+                <th lay-data="{field:'return_dispose_user_id', templet: '#userTpl', width:180, sort: true}">退库处理人</th>
+                <th lay-data="{field:'return_time', width:180, sort: true}">退库时间</th>
                 <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
             </tr>
             </thead>
         </table>
-        {{--<script type="text/html" id="statusTpl">--}}
-            {{--@{{# if(d.borrow_status=="1"){  }}--}}
-                {{--@{{d.borrow_status=="借用"}}--}}
-            {{--@{{# } }}--}}
-            {{--@{{# elseif(d.borrow_status=="2"){  }}--}}
-                {{--@{{d.borrow_status=="已归还"}}--}}
-            {{--@{{# } }}--}}
-        {{--</script>--}}
-        {{--<script type="text/html" id="areaTpl">--}}
-            {{--@{{# if(d.area){  }}--}}
-            {{--@{{d.area.name}}--}}
-            {{--@{{# } }}--}}
-        {{--</script>--}}
+        <script type="text/html" id="userTpl">
+            @{{# if(d.return_dispose_user){  }}
+            @{{d.return_dispose_user.name}}
+            @{{# } }}
+        </script>
         <script type="text/html" id="barDemo">
             <a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>
-            <a class="btn blue-madison btn-xs" lay-event="edit" data-toggle="modal" data-target=".bs-example-modal-md">归还</a>
-            <a class="btn red btn-xs" lay-event="del">删除</a>
         </script>
         <script type="text/javascript">
             var table;
@@ -93,7 +77,7 @@
                         },
                         function(){
                             // swal.close();
-                            zjb.ajaxPostData('', '{{url("asset")}}/'+id, {
+                            zjb.ajaxPostData('', '{{url("asset_return")}}/'+id, {
                                 '_method':'DELETE',
                                 'id':id
                             }, function(data, textStatus, xhr) {
@@ -133,10 +117,6 @@
                             });
                         });
                 };
-                // $('#operationModal').on('hidden.bs.modal', function () {
-                //     $(this).find(".modal-content").html('');
-                //     $(this).removeData();
-                // });
                 layui.use(['laytpl','table'], function(){
                     table = layui.table;
                     table.on('checkbox(data-user)', function(obj){
@@ -149,9 +129,9 @@
                         curTrObj = obj.tr; //获得当前行 tr 的DOM对象
                         if(event == 'edit'){
 //                            $("#operationModal").modal('show');
-                            zjb.ajaxGetHtml($(".bs-example-modal-md .modal-content"),'{{url("borrow")}}/'+curData.id+"/edit",{'id':curData.id},true);
+                            zjb.ajaxGetHtml($(".bs-example-modal-md .modal-content"),'{{url("asset_return")}}/'+curData.id+"/edit",{'id':curData.id},true);
                         }else if(event== 'detail'){
-                            zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("borrow")}}/'+curData.id,{'id':curData.id},true);
+                            zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("asset_return")}}/'+curData.id,{'id':curData.id},true);
                         }else if(event == 'del'){
                             deleteUser(curData.id,curObj);
                         }
@@ -163,7 +143,7 @@
                         }else{
                             var data = checkStatus.data[0];
 //                            $("#operationModal").modal('show');
-                            zjb.ajaxGetHtml($(".bs-example-modal-md .modal-content"),'{{url("asset")}}/'+data.id+"/edit",{'id':data.id},true);
+                            zjb.ajaxGetHtml($(".bs-example-modal-md .modal-content"),'{{url("asset_use")}}/'+data.id+"/edit",{'id':data.id},true);
                         }
                     });
 

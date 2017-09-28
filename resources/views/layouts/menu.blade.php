@@ -87,8 +87,12 @@
                         href="{{ route('asset.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 资产管理</a>
             </li>
 
-            <li class="{{ active_class(if_route('assetUse.index') && if_query('app_groups','asset')) }}"><a
-                        href="{{ route('assetUse.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 领用&退库</a>
+            <li class="{{ active_class(if_route('asset_use.index') && if_query('app_groups','asset')) }}"><a
+                        href="{{ route('asset_use.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 领用</a>
+            </li>
+
+            <li class="{{ active_class(if_route('asset_return.index') && if_query('app_groups','asset')) }}"><a
+                        href="{{ route('asset_return.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 退库</a>
             </li>
 
             <li class="{{ active_class(if_route('borrow.index') && if_query('app_groups','asset')) }}"><a
