@@ -23,7 +23,7 @@
         <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
             <div class="row">
                 <div class="col-sm-7">
-                    <a href="{{ url('asset_use/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
+                    <a href="{{ url('asset_use/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 新增领用</a>
                     <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
                     {{--<button href="" class="btn red btn-delete">--}}
                         {{--<i class="fa fa-trash"></i> 删除--}}
@@ -43,17 +43,23 @@
         </div>
         <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("asset_use") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">
             <thead>
-            <tr>
-                <th lay-data="{fixed:'left',checkbox:true}"></th>
-                <th lay-data="{field:'id', width:80, sort: true}">ID</th>
-                <th lay-data="{field:'code', width:180, sort: true}">领用单号</th>
-                <th lay-data="{field:'use_time', width:180, sort: true}">领用时间</th>
-                <th lay-data="{field:'use_name', width:180, sort: true}">领用人</th>
-                <th lay-data="{field:'expect_return_time', width:180, sort: true}">预计归还时间</th>
-                <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
-            </tr>
+                <tr>
+                    <th lay-data="{fixed:'left',checkbox:true}"></th>
+                    <th lay-data="{field:'id', width:80, sort: true}">ID</th>
+                    <th lay-data="{field:'code', width:180, sort: true}">领用单号</th>
+                    <th lay-data="{field:'use_time', width:180, sort: true}">领用时间</th>
+                    <th lay-data="{field:'use_name', width:180, sort: true}">领用人</th>
+                    <th lay-data="{field:'use_department', templet: '#departmentTpl', width:180, sort: true}">使用部门</th>
+                    <th lay-data="{field:'expect_return_time', width:180, sort: true}">预计归还时间</th>
+                    <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
+                </tr>
             </thead>
         </table>
+        <script type="text/html" id="departmentTpl">
+            @{{# if(d.use_department){  }}
+            @{{d.use_department.name}}
+            @{{# } }}
+        </script>
         <script type="text/html" id="barDemo">
             <a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>
         </script>

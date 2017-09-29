@@ -112,7 +112,7 @@ class AssetUseController extends Controller
      */
     public function show($id)
     {
-        $info = AssetUse::with("use_dispose_user","return_dispose_user")->find($id);
+        $info = AssetUse::with("use_dispose_user","use_department","return_dispose_user")->find($id);
         $arr = explode(",",$info->asset_ids);
         $list = [];
         foreach ($arr as $v){

@@ -7,6 +7,7 @@ use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\AssetFile;
+use App\Models\Asset\Bill;
 use App\Models\Asset\Supplier;
 use App\Models\File\File;
 use App\Models\Asset\Source;
@@ -308,6 +309,66 @@ class AssetController extends Controller
         return response()->view("asset.asset.showImg",compact('info'));
     }
 
+    public function contract_create(){
+        $map = [
+            'org_id' => Auth::user()->org_id,
+            'status' => "1"
+        ];
+        $list = Bill::with("category","supplier")->where($map)->get();
+        return view("asset.asset.contract_add",compact("list"));
+    }
+
+    public function contract_store(Request $request){
+
+        $info = Bill::where("id",$request->id)->first();
+
+//        dd($info);
+        $org_code = Org::where("id",Auth::user()->org_id)->value("code");
+        $category_code = AssetCategory::where("id",$info->category_id)->value("category_code");
+        $code = $org_code.$category_code.rand('00001','99999');
+
+//        dd($info->num);
+        for ($i=0;$i<$info->num;$i++){
+            $arr = [
+                'code' => $org_code.$category_code.rand('00001','99999'),
+                'name' => $info->asset_name,
+                'asset_uid' => Uuid::generate()->string,
+                'category_id' => $info->category_id,
+                'spec' => $info->spec,
+                'calculate' => $info->calculate,
+                'money' => $info->money,
+                'buy_time' => date("Y-m-d H:i:s"),
+                'area_id' => $request->area_id,
+                'remarks' => $request->remarks,
+                'org_id' => $info->org_id,
+                'department_id' => $request->department_id,
+                'created_at' => date("Y-m-d H:i:s"),
+                'supplier_id' => $info->supplier_id,
+                'status' => "1",
+                'contract_id' => $request->id
+            ];
+            QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
+            $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
+
+//            dump($arr);
+            $infos = Asset::insertGetId($arr);
+            if($infos){
+                Bill::where("id",$request->id)->update(['status' => '2']);
+            }
+            if($request->file_id){
+                $file_arr = [
+                    'asset_id' => $infos,
+                    'file_id' => $request->file_id,
+                    'org_id' => Auth::user()->org_id
+                ];
+                AssetFile::insert($file_arr);
+            }
+
+        }
+//        dd();
+
+        return response()->json(['status' => '1','message' => '合同资产录入成功']);
+    }
 
 //    public function add_copy($id){
 //        return response()->view("asset.asset.copy",compact('id'));

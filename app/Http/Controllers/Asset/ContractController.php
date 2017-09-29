@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Models\Asset\AssetCategory;
 use App\Models\Asset\Bill;
 use App\Models\Asset\Contract;
 use QrCode;
@@ -82,7 +83,8 @@ class ContractController extends Controller
 
 
     public function add_bill($contract_id){
-        return view("asset.contract.add_bill",compact("contract_id"));
+        $list1 = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        return view("asset.contract.add_bill",compact("contract_id","list1"));
     }
 
 
@@ -94,10 +96,23 @@ class ContractController extends Controller
      */
     public function bill_store(Request $request)
     {
-        $arr = $request->except("_token");
-        $arr['org_id'] = Auth::user()->org_id;
-        $arr['created_at'] = date("Y-m-d H:i:s");
-        $info = Bill::insert($arr);
+        $info=null;
+        foreach ($request->name as $k=>$v){
+            if($request->name[$k]==null){
+                continue;
+            }
+            $arr['contract_id'] = $request->contract_id;
+            $arr['asset_name'] = $request->name[$k];
+            $arr['category_id'] = $request->category_id[$k];
+            $arr['spec'] = $request->spec[$k];
+            $arr['num'] = $request->num[$k];
+            $arr['calculate'] = $request->calculate[$k];
+            $arr['money'] = $request->money[$k];
+            $arr['supplier_id'] = $request->supplier_id[$k];
+            $arr['org_id'] = Auth::user()->org_id;
+            $arr['created_at'] = date("Y-m-d H:i:s");
+            $info = Bill::insert($arr);
+        }
 
         if($info){
             $message = [
@@ -122,7 +137,9 @@ class ContractController extends Controller
      */
     public function show($id)
     {
-        $list = Bill::where("contract_id",$id)->get();
+//        dd($id);
+        $list = Bill::with("category","supplier")->where("contract_id",$id)->get();
+//        dd($list);
         return view("asset.contract.show",compact("list"));
     }
 

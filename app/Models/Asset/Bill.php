@@ -14,4 +14,15 @@ class Bill extends Model
     {
         return $this->belongsTo('App\Models\User\Org');
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Asset\AssetCategory',"category_id");
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo('App\Models\Asset\Supplier');
+    }
+
 }

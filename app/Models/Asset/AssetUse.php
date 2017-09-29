@@ -17,4 +17,9 @@ class AssetUse extends Model
         return $this->belongsTo('App\Models\User\User','return_dispose_user_id');
     }
 
+    public function use_department()
+    {
+        return $this->belongsTo('App\Models\User\Department','use_department_id');
+    }
+
 }
