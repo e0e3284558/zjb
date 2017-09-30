@@ -12,7 +12,7 @@
         <input type="hidden" name="contract_id" value="{{$contract_id}}">
         <div style="overflow-x: auto" >
             <a href="javascript:;" class="add btn btn-md btn-success" >增加一栏</a>
-            {{--<a href="javascript:;" class="reduce btn btn-xs btn-danger" >-</a>--}}
+            <a href="javascript:;" class="reduce btn btn-md btn-danger" >减去最后一栏</a>
             <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
                 <thead>
                 <tr role="row">
@@ -221,8 +221,8 @@
                 '</tr>'
             )
         });
-//        $(".reduce").click(function () {
-//
-//        })
+        $(".reduce").click(function () {
+            $(".table-bordered tbody tr:last").remove();
+        })
     });
 </script>
