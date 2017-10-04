@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">合同新增</h4>
+    <h4 class="modal-title" id="myModalLabel">领用单</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -10,72 +10,106 @@
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <div class="row">
-            <div class="col-md-6" >
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">合同名称<span style="color:red;">*</span></label>
+                    <label for="code" class="col-sm-4 control-label">领用人<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" data-error-container="#error-block" placeholder="资产名称">
+                        <input type="text" name="use_name" class="form-control" placeholder="领用人">
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" >
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">甲方</label>
+                    <label for="use_time" class="col-sm-4 control-label">领用时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="first_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" name="use_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
-
         </div>
-
+        <div class="row" >
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="category_id" class="col-sm-4 control-label">预计归还时间</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="expect_return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-start-date = "0d">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" >
+                <div class="form-group">
+                    <label for="name" class="col-sm-4 control-label">借出处理人<span style="color:red;">*</span></label>
+                    <div class="col-sm-8">
+                        <input type="text" value="{{Auth::user()->name}}" disabled class="form-control" data-error-container="#error-block">
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row" >
             <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">乙方</label>
+                    <label for="code" class="col-sm-4 control-label">领用部门<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="second_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <select id="department_id" data-error-container="#error-block" name="use_department_id" class="form-control select2">
+                            {!! department_select('',1) !!}
+                        </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">丙方</label>
+                    <label for="name" class="col-sm-4 control-label">归还处理人</label>
                     <div class="col-sm-8">
-                        <input type="text" name="third_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" disabled class="form-control" data-error-container="#error-block" >
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">备注</label>
-                    <div class="col-sm-8">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row" >
             <div class="col-md-12" >
                 <div class="form-group">
-                    <label for="Comment" class="col-sm-2 control-label">上传合同文件</label>
+                    <label for="remarks" class="col-sm-2 control-label">说明</label>
                     <div class="col-sm-10">
-                        <input type="hidden" id="upload_id" name="file_id" value="">
-                        <div id="single-file-upload-instance" class="clearfix multi-file-upload">
-                            <div id="single-file-upload-instance-file-list" class="pull-left">
-                            </div>
-                            <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                                <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
-                                选择文件
-                            </div>
-                        </div>
+                        <textarea class="form-control" name="remarks" rows="2" style="resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
+            <table class="table table-striped table-bordered table-hove">
+                <thead>
+                <tr>
+                    <td class="dialogtableth"><input type="checkbox"></td>
+                    <td class="dialogtableth">照片</td>
+                    <td class="dialogtableth">资产条码</td>
+                    <td class="dialogtableth">资产名称</td>
+                    <td class="dialogtableth">资产类别</td>
+                    <td class="dialogtableth">规格型号</td>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: selectedAssetList">
+                @foreach($list as $value)
+                    <tr>
+                        <td><input type="checkbox" name="asset_ids[]" value="{{$value->id}}"></td>
+                        <td>
+                            @if($value->img_path)
+                                <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
+                                    <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
+                                </a>
+                            @endif
+                        </td>
+                        <td>{{$value->code}}</td>
+                        <td>{{$value->name}}</td>
+                        <td>{{$value->category->name}}</td>
+                        <td>{{$value->spec}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+
+            </table>
+        </div>
+
     </form>
 </div>
 <div class="modal-footer">
@@ -85,30 +119,6 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
-
-        //单文件上传实例
-        zjb.fileUpload({
-            uploader:'singleFileUploadInstance',
-            picker:'single-file-upload-instance',
-            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-            server: '{{ route("file.upload") }}',
-            formData: {
-                '_token':'{{ csrf_token() }}'
-            },
-            fileNumLimit:1,
-            isAutoInsertInput:true,//上传成功是否自动创建input存储区域
-            storageInputName:'file',//上传成功后input存储区域的name
-            uploadComplete:function(file,uploader){},
-            uploadError:function(file,uploader){},
-            uploadSuccess:function(file,response,uploader){
-//                console.log(response.data.id);
-                $('#upload_id').val(response.data.id);
-//                console.log(uploader);
-//                $('#upload_id').val(response.data.id);
-            },
-            fileCannel:function(fileId,uploader){},
-            fileDelete:function(fileId,uploader){}
-        });
 
         $('.datepicker').datepicker({
             language: "zh-CN",
@@ -122,34 +132,26 @@
             assets_form.submit();
         });
         assets_form.validate( {
-//            rules: {
-//                category_id:"required",
-//                name:"required",
-//                area_id:"required",
-//                money:{
-//                    number:true,
-//                    min:0
-//                },
-//                buy_time:"required",
-//                use_time: {
-//                    min: 1,
-//                    digits:true
-//                }
-//            },
-//            messages: {
-//                category_id:"资产类别不能为空",
-//                name:"资产名称不能为空",
-//                area_id:'所在场地不能为空',
-//                money:{
-//                    number:"必须为数值类型",
-//                    min:"金额必须为大于零的有效数字"
-//                },
-//                buy_time:"购入时间不能为空",
-//                use_time: {
-//                    min: "请输入一个有效整数",
-//                    digits:"请输入一个正整数"
-//                }
-//            },
+            rules: {
+                category_id:"required",
+                name:"required",
+                area_id:"required",
+                money:{
+                    number:true,
+                    min:0
+                },
+                buy_time:"required",
+            },
+            messages: {
+                category_id:"资产类别不能为空",
+                name:"资产名称不能为空",
+                area_id:'所在场地不能为空',
+                money:{
+                    number:"必须为数值类型",
+                    min:"金额必须为大于零的有效数字"
+                },
+                buy_time:"购入时间不能为空",
+            },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -190,7 +192,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('contract')}}",
+                    url:"{{url('asset_use')}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",

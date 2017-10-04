@@ -184,6 +184,9 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
 //    Route::resource('other_asset', 'OtherAssetController');
 
     //资产管理
+    Route::get('asset/contract_create', 'AssetController@contract_create');
+    Route::post('asset/contract_store', 'AssetController@contract_store');
+
     Route::get('asset/show_img/{file_id}', 'AssetController@show_img');
 //    Route::get('asset/add_copy/{id}', 'AssetController@add_copy');
 //    Route::get('asset/copy', 'AssetController@copy');
@@ -193,8 +196,10 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post('asset/import', 'AssetController@import');
     Route::resource('asset', 'AssetController');
 
-    //领用&退库
-    Route::resource('assetUse','');
+    //领用
+    Route::resource('asset_use','AssetUseController');
+    //退库
+    Route::resource("asset_return",'AssetReturnController');
     //借用&归还
     Route::resource('borrow','BorrowController');
 
@@ -214,9 +219,9 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     //清单管理
 
 //    Route::post("bill/asset_store",'BillController@asset_store');
-    Route::get("bill/create/{id}",'BillController@create');
 //    Route::get("bill/create/{id}",'BillController@create');
-    Route::resource("bill",'BillController');
+//    Route::get("bill/create/{id}",'BillController@create');
+//    Route::resource("bill",'BillController');
 
     //附件信息
     Route::post("upload/uploadFile", "UploadController@uploadFile");

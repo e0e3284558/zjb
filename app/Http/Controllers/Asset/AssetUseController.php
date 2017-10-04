@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Asset;
 
 use App\Models\Asset\Asset;
-use App\Models\Asset\Borrow;
+use App\Models\Asset\AssetUse;
+use App\Models\User\Department;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class BorrowController extends Controller
+class AssetUseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,13 +29,13 @@ class BorrowController extends Controller
 //            if ($request->search) {
 //                $map[] = ['name', 'like', '%' . $request->search . '%'];
 //            }
-            $data = Borrow::where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = AssetUse::where($map)->orderBy("id", "desc")->paginate(request('limit'));
 
             foreach ($data as $key => $value) {
-                if($value->borrow_status=="1"){
-                    $data[$key]['borrow_status'] = '<span class="btn-sm label-primary" >借用</span>';
+                if($value->status=="1"){
+                    $data[$key]['status'] = '<span class="btn-sm label-primary" >领用</span>';
                 }else{
-                    $data[$key]['borrow_status'] = '<span class="btn-sm label-danger" >已归还</span>';
+                    $data[$key]['status'] = '<span class="btn-sm label-danger" >已归还</span>';
                 }
             }
 
@@ -43,7 +44,7 @@ class BorrowController extends Controller
             $data['code'] = 0;
             return response()->json($data);
         }
-        return view("asset.borrow.index");
+        return view("asset.assetUse.index");
     }
 
     /**
@@ -57,6 +58,7 @@ class BorrowController extends Controller
             'org_id' => Auth::user()->org_id,
             'status' => "1"
         ];
+//        $department_list = Department::where()->get();
         $list = Asset::with("category","file")->where($map)->get();
         foreach ($list as $key => $value) {
             //图片
@@ -64,7 +66,7 @@ class BorrowController extends Controller
             $list[$key]['img_path'] = $list[$key]['file']["path"];
             $list[$key]['file_id'] = $list[$key]['file']['id'];
         }
-        return view("asset.borrow.add",compact("list"));
+        return view("asset.assetUse.add",compact("list"));
     }
 
     /**
@@ -76,28 +78,27 @@ class BorrowController extends Controller
     public function store(Request $request)
     {
 //        dd($request->all());
-        $arr = $request->except("_token","borrow_asset_ids");
-        $arr['borrow_asset_ids'] = implode(",",$request->borrow_asset_ids);
-        $arr['borrow_status'] = "1";
-        $arr['borrow_code'] = "JY".date("Ymd").rand("0001",'9999');
+        $arr = $request->except("_token","asset_ids");
+        $arr['asset_ids'] = implode(",",$request->asset_ids);
+        $arr['status'] = "1";
+        $arr['code'] = "LY".date("Ymd").rand("0001",'9999');
         $arr['org_id'] = Auth::user()->org_id;
-        $arr['borrow_handle_user_id'] = Auth::user()->id;       //借用处理人
+        $arr['use_dispose_user_id'] = Auth::user()->id;       //领用处理人
         $arr['created_at'] = date("Y-m-d H:i:s");
+        $info = AssetUse::insert($arr);
 
-        $info = Borrow::insert($arr);
-        $message = [];
         if($info){
-            foreach ($request->borrow_asset_ids as $v){
-                Asset::where("id",$v)->update(['status'=>'2']);
+            foreach ($request->asset_ids as $v){
+                Asset::where("id",$v)->update(['status'=>"3"]);
             }
             $message = [
                 'status' => '1',
-                'message' => '借用成功'
+                'message' => '资产领用成功'
             ];
         }else{
             $message = [
                 'status' => 0,
-                'message' => '借用失败'
+                'message' => '资产领用失败，请稍后'
             ];
         }
         return response()->json($message);
@@ -111,8 +112,8 @@ class BorrowController extends Controller
      */
     public function show($id)
     {
-        $info = Borrow::with("borrow_handle_user","return_handle_user")->find($id);
-        $arr = explode(",",$info->borrow_asset_ids);
+        $info = AssetUse::with("use_dispose_user","use_department","return_dispose_user")->find($id);
+        $arr = explode(",",$info->asset_ids);
         $list = [];
         foreach ($arr as $v){
             $list[] = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier')->where("id",$v)->first();
@@ -124,8 +125,7 @@ class BorrowController extends Controller
             $list[$key]['file_id'] = $list[$key]['file']['id'];
         }
 
-        return view("asset.borrow.show",compact("info","list"));
-
+        return view("asset.assetUse.show",compact("info","list"));
     }
 
     /**
@@ -136,7 +136,7 @@ class BorrowController extends Controller
      */
     public function edit($id)
     {
-        return view("asset.borrow.edit",compact('id'));
+        return view("asset.assetUse.edit",compact('id'));
     }
 
     /**
@@ -152,12 +152,13 @@ class BorrowController extends Controller
 //        dd($request->all());
         $arr = [
             'return_time' => $request->return_time,
-            'return_handle_user_id' => Auth::user()->id,
-            'borrow_status' => "2",
+            'return_dispose_user_id' => Auth::user()->id,
+            'status' => "2",
+            "updated_at" => date("Y-m-d H:i:s")
         ];
-        $info = Borrow::where("id",$id)->update($arr);
+        $info = AssetUse::where("id",$id)->update($arr);
         if($info){
-            $ids = Borrow::where("id",$id)->value("borrow_asset_ids");
+            $ids = AssetUse::where("id",$id)->value("asset_ids");
             $ids = explode(",",$ids);
             foreach ($ids as $v){
                 Asset::where("id",$v)->update(['status'=>'1']);

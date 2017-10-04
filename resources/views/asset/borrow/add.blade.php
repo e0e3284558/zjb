@@ -26,130 +26,88 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="category_id" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <select class="form-control select2" name="category_id" data-error-container="#error-block" onchange="find(this.value)" id="category_id">
-                            <option value="">请选择</option>
-                            @foreach($list1 as $value)
-                                <option value="{{$value->id}}">{{$value->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">资产名称<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" data-error-container="#error-block" placeholder="资产名称">
-                    </div>
-                </div>
-            </div>
         </div>
-
         <div class="row" >
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="buy_time" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
+                    <label for="category_id" class="col-sm-4 control-label">预计归还时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" name="expect_return_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-start-date = "0d">
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" >
+            <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="area_id" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
+                    <label for="name" class="col-sm-4 control-label">借出处理人<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select name="area_id" class="form-control select2" data-error-container="#error-block">
-                            <option value="">请选择</option>
-                            @foreach($list4 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">规格型号</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="spec" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" value="{{Auth::user()->name}}" disabled class="form-control" data-error-container="#error-block">
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row" >
-            <div class="col-md-4" >
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">金额</label>
+                    <label for="category_id" class="col-sm-4 control-label">实际归还时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="money" class="form-control" data-error-container="#error-block" placeholder="金额">
+                        <input type="text" disabled value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" >
+            <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="calculate" class="col-sm-4 control-label">计量单位</label>
+                    <label for="name" class="col-sm-4 control-label">归还处理人<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="calculate" class="form-control" id="inputEmail3" placeholder="计量单位">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group" style="position: relative;" >
-                    <label for="department_id" class="col-sm-4 control-label">所属部门</label>
-                    <div class="col-sm-8">
-                        <select id="department_id" data-error-container="#error-block" name="department_id" class="form-control select2">
-                             {!! department_select('',1) !!}
-                        </select>
+                        <input type="text" disabled class="form-control" data-error-container="#error-block" >
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="row" >
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="supplier_id" class="col-sm-4 control-label">供应商</label>
-                    <div class="col-sm-8">
-                        <select id="supplier_id" data-error-container="#error-block" name="supplier_id" class="form-control select2">
-                            <option value="" >请选择</option>
-                            @foreach($list7 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row">
-            <div class="col-md-8" >
+            <div class="col-md-12" >
                 <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">备注</label>
+                    <label for="remarks" class="col-sm-2 control-label">说明</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4" >
-                <div class="form-group">
-                    <label for="Comment" class="col-sm-4 control-label">照片</label>
-                    <div class="col-sm-8">
-                        <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
-                        <input type="hidden" id="upload_id" name="file_id" value="">
-                        <div id="single-upload" class="btn-upload m-t-xs">
-                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
-                            <div id="single-upload-file-list"></div>
-                        </div>
+                        <textarea class="form-control" name="remarks" rows="2" style="resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
+            <table class="table table-striped table-bordered table-hove">
+                <thead>
+                <tr>
+                    <td class="dialogtableth"><input type="checkbox"></td>
+                    <td class="dialogtableth">照片</td>
+                    <td class="dialogtableth">资产条码</td>
+                    <td class="dialogtableth">资产名称</td>
+                    <td class="dialogtableth">资产类别</td>
+                    <td class="dialogtableth">规格型号</td>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: selectedAssetList">
+                @foreach($list as $value)
+                    <tr>
+                        <td><input type="checkbox" name="borrow_asset_ids[]" value="{{$value->id}}"></td>
+                        <td>
+                            @if($value->img_path)
+                                <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
+                                    <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
+                                </a>
+                            @endif
+                        </td>
+                        <td>{{$value->code}}</td>
+                        <td>{{$value->name}}</td>
+                        <td>{{$value->category->name}}</td>
+                        <td>{{$value->spec}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+
+            </table>
+        </div>
+
     </form>
 </div>
 <div class="modal-footer">
@@ -159,26 +117,6 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
-
-        zjb.singleImageUpload({
-            uploader:'singleUpload',
-            picker:'single-upload',
-            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-            server: '{{ route("image.upload") }}',
-            formData: {
-                '_token':'{{ csrf_token() }}'
-            },
-            errorMsgHiddenTime:2000,
-
-            uploadSuccess:function(file,response){
-                //上传完成触发时间
-                $('#upload_id').val(response.data.id);
-                $('#thumb_img').attr({src:response.data.url});
-                window.setTimeout(function () {
-                    $('#'+file.id).remove();
-                }, 2000);
-            }
-        });
 
         $('.datepicker').datepicker({
             language: "zh-CN",
@@ -260,7 +198,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('asset')}}",
+                    url:"{{url('borrow')}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",
@@ -284,7 +222,7 @@
                         zjb.unblockUI('#signupForm1');
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,

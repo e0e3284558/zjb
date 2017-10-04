@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">合同新增</h4>
+    <h4 class="modal-title" id="myModalLabel">资产新增</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
@@ -9,68 +9,103 @@
             请更正下列输入错误：
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <div class="row">
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label for="name" class="col-sm-4 control-label">合同名称<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" data-error-container="#error-block" placeholder="资产名称">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">甲方</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="first_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
-                    </div>
-                </div>
-            </div>
 
+        <div class="table-responsive">
+            <span style="color: red;font-size: 12px;" >*每次只能选择一条</span>
+            <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
+                <thead>
+                <tr role="row">
+                    <th>
+                        {{--<input type="radio" class="i-checks" name="checkAll" id="all" >--}}
+                    </th>
+                    <th>资产名称</th>
+                    <th>数量</th>
+                    <th style="width: 200px;" >资产类别</th>
+                    <th>规格型号</th>
+                    <th>计量单位</th>
+                    <th>单价(元)</th>
+                    <th style="width: 150px;">供应商</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if(count($list)>0)
+                    @foreach($list as $value)
+                        <tr role="row">
+
+                            <td role="gridcell" class=" icheck">
+                                <input type="radio" value="{{$value->id}}" name="id" >
+                            </td>
+
+                            {{--<td role="gridcell">--}}
+                                {{--<input type="radio" class="i-checks" name="id" value="{{$value->id}}">--}}
+                            {{--</td>--}}
+                            <td>{{$value->asset_name}}</td>
+                            <td>{{$value->num}}</td>
+                            <td>{{$value->category->name}}</td>
+                            <td>{{$value->spec}}</td>
+                            <td>{{$value->calculate}}</td>
+                            <td>{{$value->money}}</td>
+                            <td>{{$value->supplier->name}}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="10" style="text-align: center" >暂无数据</td>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
         </div>
 
         <div class="row" >
-            <div class="col-md-6" >
+            <div class="col-md-4">
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">乙方</label>
+                    <label for="buy_time" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="second_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" >
+            <div class="col-md-4" >
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">丙方</label>
+                    <label for="area_id" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="third_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <select name="area_id" class="form-control select2" data-error-container="#error-block">
+                            {!! area_select("","1") !!}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" style="position: relative;" >
+                    <label for="department_id" class="col-sm-4 control-label">所属部门</label>
+                    <div class="col-sm-8">
+                        <select id="department_id" data-error-container="#error-block" name="department_id" class="form-control select2">
+                            {!! department_select('',1) !!}
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8" >
                 <div class="form-group">
                     <label for="remarks" class="col-sm-2 control-label">备注</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-10">
                         <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row" >
-            <div class="col-md-12" >
+            <div class="col-md-4" >
                 <div class="form-group">
-                    <label for="Comment" class="col-sm-2 control-label">上传合同文件</label>
-                    <div class="col-sm-10">
+                    <label for="Comment" class="col-sm-4 control-label">照片</label>
+                    <div class="col-sm-8">
+                        <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
                         <input type="hidden" id="upload_id" name="file_id" value="">
-                        <div id="single-file-upload-instance" class="clearfix multi-file-upload">
-                            <div id="single-file-upload-instance-file-list" class="pull-left">
-                            </div>
-                            <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                                <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
-                                选择文件
-                            </div>
+                        <div id="single-upload" class="btn-upload m-t-xs">
+                            <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
+                            <div id="single-upload-file-list"></div>
                         </div>
                     </div>
                 </div>
@@ -86,28 +121,34 @@
 
     $( document ).ready( function () {
 
-        //单文件上传实例
-        zjb.fileUpload({
-            uploader:'singleFileUploadInstance',
-            picker:'single-file-upload-instance',
+//        $('.i-checks,#all').iCheck({
+//            checkboxClass: 'icheckbox_minimal-blue'
+//        });
+//        $('#all').on('ifChecked ifUnchecked', function(event){
+//            if(event.type == 'ifChecked'){
+//                $('.i-checks').iCheck('check');
+//            }else{
+//                $('.i-checks').iCheck('uncheck');
+//            }
+//        });
+        zjb.singleImageUpload({
+            uploader:'singleUpload',
+            picker:'single-upload',
             swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
-            server: '{{ route("file.upload") }}',
+            server: '{{ route("image.upload") }}',
             formData: {
                 '_token':'{{ csrf_token() }}'
             },
-            fileNumLimit:1,
-            isAutoInsertInput:true,//上传成功是否自动创建input存储区域
-            storageInputName:'file',//上传成功后input存储区域的name
-            uploadComplete:function(file,uploader){},
-            uploadError:function(file,uploader){},
-            uploadSuccess:function(file,response,uploader){
-//                console.log(response.data.id);
+            errorMsgHiddenTime:2000,
+
+            uploadSuccess:function(file,response){
+                //上传完成触发时间
                 $('#upload_id').val(response.data.id);
-//                console.log(uploader);
-//                $('#upload_id').val(response.data.id);
-            },
-            fileCannel:function(fileId,uploader){},
-            fileDelete:function(fileId,uploader){}
+                $('#thumb_img').attr({src:response.data.url});
+                window.setTimeout(function () {
+                    $('#'+file.id).remove();
+                }, 2000);
+            }
         });
 
         $('.datepicker').datepicker({
@@ -122,34 +163,34 @@
             assets_form.submit();
         });
         assets_form.validate( {
-//            rules: {
-//                category_id:"required",
-//                name:"required",
-//                area_id:"required",
-//                money:{
-//                    number:true,
-//                    min:0
-//                },
-//                buy_time:"required",
-//                use_time: {
-//                    min: 1,
-//                    digits:true
-//                }
-//            },
-//            messages: {
-//                category_id:"资产类别不能为空",
-//                name:"资产名称不能为空",
-//                area_id:'所在场地不能为空',
-//                money:{
-//                    number:"必须为数值类型",
-//                    min:"金额必须为大于零的有效数字"
-//                },
-//                buy_time:"购入时间不能为空",
-//                use_time: {
-//                    min: "请输入一个有效整数",
-//                    digits:"请输入一个正整数"
-//                }
-//            },
+            rules: {
+                category_id:"required",
+                name:"required",
+                area_id:"required",
+                money:{
+                    number:true,
+                    min:0
+                },
+                buy_time:"required",
+                use_time: {
+                    min: 1,
+                    digits:true
+                }
+            },
+            messages: {
+                category_id:"资产类别不能为空",
+                name:"资产名称不能为空",
+                area_id:'所在场地不能为空',
+                money:{
+                    number:"必须为数值类型",
+                    min:"金额必须为大于零的有效数字"
+                },
+                buy_time:"购入时间不能为空",
+                use_time: {
+                    min: "请输入一个有效整数",
+                    digits:"请输入一个正整数"
+                }
+            },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -190,7 +231,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('contract')}}",
+                    url:"{{url('asset/contract_store')}}",
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",

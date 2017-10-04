@@ -2,7 +2,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="myModalLabel">清单新增</h4>
 </div>
-<div class="modal-body">
+<div class="modal-body overflow-auto">
     <form id="signupForm1" class="form-horizontal " method="post" enctype="multipart/form-data" >
         <div class="alert alert-danger display-hide" id="error-block">
             <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -10,26 +10,41 @@
         </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <input type="hidden" name="contract_id" value="{{$contract_id}}">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">清单名称<span style="color:red;">*</span></label>
-                    <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" placeholder="清单名称">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8" >
-                <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">备注</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
-                    </div>
-                </div>
-            </div>
+        <div style="overflow-x: auto" >
+            <a href="javascript:;" class="add btn btn-md btn-success" >增加一栏</a>
+            <a href="javascript:;" class="reduce btn btn-md btn-danger" >减去最后一栏</a>
+            <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
+                <thead>
+                <tr role="row">
+                    <th>资产名称<span style="color: red;" >*</span></th>
+                    <th>数量<span style="color: red;" >*</span></th>
+                    <th style="width: 200px;" >资产类别<span style="color: red;" >*</span></th>
+                    <th>规格型号<span style="color: red;" >*</span></th>
+                    <th>计量单位<span style="color: red;" >*</span></th>
+                    <th>单价(元)<span style="color: red;" >*</span></th>
+                    <th style="width: 150px;">供应商<span style="color: red;" >*</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr >
+                    <td><input class="form-control" type="text" name="name[]" data-error-container="#error-block" ></td>
+                    <td><input class="form-control" type="text" name="num[]" data-error-container="#error-block" ></td>
+                    <td>
+                        <select class="form-control select2" name="category_id[]" data-error-container="#error-block" id="category_id">
+                            {!! category_select() !!}
+                        </select>
+                    </td>
+                    <td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block" ></td>
+                    <td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>
+                    <td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>
+                    <td>
+                        <select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">
+                            {!! supplier_select() !!}
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </form>
 </div>
@@ -74,10 +89,34 @@
         });
         assets_form.validate( {
             rules: {
-                name:"required",
+                'name[]':"required",
+                'num[]':{
+                    min:1,
+                    digits:true
+                },
+                'category_id[]':"required",
+                'spec[]':'required',
+                'calculate[]':'required',
+                'money[]':{
+                    min:0,
+                    number:true
+                },
+                'supplier_id[]':'required'
             },
             messages: {
-                name:"清单名称不能为空",
+                'name[]':"清单名称不能为空",
+                'num[]':{
+                    min:'必须为正整数',
+                    digits:"必须为正整数",
+                    'category_id[]':'请选择资产类别'
+                },
+                'spec[]':'规格型号不能为空',
+                'calculate[]':'计量单位不能为空',
+                'money[]':{
+                    min:'请输入正确单价',
+                    number:'请输入正确单价'
+                },
+                'supplier_id[]':"请选择供应商"
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -164,44 +203,26 @@
 
 <script type="text/javascript" >
     //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
+    $("document").ready(function () {
+        $(".add").click(function () {
+            $(".table-bordered tbody").append(
+                '<tr>' +
+                '<td><input class="form-control" type="text" name="name[]" data-error-container="#error-block"></td>' +
+                '<td><input class="form-control" type="text" name="num[]" data-error-container="#error-block"></td>' +
+                '<td><select class="form-control select2" name="category_id[]" data-error-container="#error-block" id="category_id">' +
+                '{!! category_select() !!}'+
+                '</select></td>' +
+                '<td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block"></td>'+
+                '<td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>'+
+                '<td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>' +
+                '<td><select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">' +
+                '{!! supplier_select() !!}' +
+                '</select></td>' +
+                '</tr>'
+            )
+        });
+        $(".reduce").click(function () {
+            $(".table-bordered tbody tr:last").remove();
         })
-    }
-</script>
-
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
+    });
 </script>

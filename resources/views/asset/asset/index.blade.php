@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-sm-7">
                     <a href="{{ url('asset/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
-                    <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
+                    <a href="{{url('asset/contract_create')}}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue-dark"><i class="fa fa-edit"></i> 合同资产录入</a>
                     <button href="" class="btn red btn-delete">
                         <i class="fa fa-trash"></i> 删除
                     </button>

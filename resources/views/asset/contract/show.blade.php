@@ -6,17 +6,27 @@
 <div class="table-responsive">
     <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
         <thead>
-            <tr role="row">
-                <th>清单名称</th>
-                <th>备注说明</th>
-            </tr>
+        <tr role="row">
+            <th>资产名称</th>
+            <th>数量</th>
+            <th style="width: 200px;" >资产类别</th>
+            <th>规格型号</th>
+            <th>计量单位</th>
+            <th>单价(元)</th>
+            <th style="width: 150px;">供应商</th>
+        </tr>
         </thead>
         <tbody>
             @if(count($list)>0)
                 @foreach($list as $value)
                     <tr role="row">
-                        <td>{{$value->name}}</td>
-                        <td>{{$value->remarks}}</td>
+                        <td>{{$value->asset_name}}</td>
+                        <td>{{$value->num}}</td>
+                        <td>{{$value->category->name}}</td>
+                        <td>{{$value->spec}}</td>
+                        <td>{{$value->calculate}}</td>
+                        <td>{{$value->money}}</td>
+                        <td>{{$value->supplier->name}}</td>
                     </tr>
                 @endforeach
             @else
