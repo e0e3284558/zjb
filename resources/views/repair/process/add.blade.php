@@ -81,8 +81,6 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
-
-
         //通用报修图片上传
         zjb.imageUpload({
             uploader: 'imageUploadInstance',

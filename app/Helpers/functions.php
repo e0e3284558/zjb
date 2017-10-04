@@ -230,7 +230,7 @@ if (!function_exists('randomClass')) {
 if (!function_exists('random_color')) {
     function random_color()
     {
-        $arr = ['default', 'blue', 'blue-madison', 'red', 'yellow','grey','green'];
+        $arr = ['default', 'blue', 'blue-madison', 'red', 'yellow', 'grey', 'green'];
         $a = array_random($arr);
         return $a;
     }
@@ -265,6 +265,16 @@ function img_circle($id, $name)
     }
 }
 
+
+function id_to_imgs($id)
+{
+    if ($id != null) {
+        return '<img class="img-md" src="' . get_img_path($id) . '">';
+    } else {
+        return '<img class="img-md" src="img/noavatar.png">';
+    }
+}
+
 /**
  * 头像返回缩略图或文字图标
  */
@@ -285,7 +295,7 @@ function id_to_img($id)
 {
     if ($id) {
         return \App\Models\File\File::find($id)->path;
-    }else{
+    } else {
         return url('img/noavatar.png');
     }
 
@@ -428,6 +438,30 @@ if (!function_exists('area_select')) {
         return $str;
     }
 }
+
+
+/**
+ * 通过分类id 获取分类名称
+ * @param $id
+ * @return string
+ *
+ */
+if (!function_exists('getCateNameByCateId')) {
+    function getCateNameByCateId($id)
+    {
+        if ($id == 0) {
+            return '顶级分类';
+        }
+        $cate = \App\Models\Consumables\Sort::find($id);
+        if (empty($cate)) {
+            return '无分类';
+        } else {
+            return $cate->name;
+        }
+    }
+}
+
+
 
 
 

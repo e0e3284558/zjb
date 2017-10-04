@@ -39,6 +39,22 @@ Route::get('/worker','Portal\ServiceWorkerController@index')->name('worker');
 //--------------------------------------------------------------------------
 //门户模块路由结束
 
+//耗材模块路由开始
+//--------------------------------------------------------------------------
+Route::group(['prefix'=>'consumables','namespace'=>'Consumables','middleware'=>'auth'],function (){
+    Route::resource('depot','DepotController');
+    Route::get('sort/{id}/createSub','SortController@createSub');
+    Route::get('sort/{id}/editName','SortController@editName');
+    Route::resource('sort','SortController');
+    Route::resource('archiving','ArchivingController');
+    Route::get('goods/edit', 'GoodsController@edit')->name('consumables.goods.edit');
+    Route::delete('goods/delete', 'GoodsController@destroy')->name('consumables.goods.destroy');
+    Route::resource('goods','GoodsController');
+});
+//--------------------------------------------------------------------------
+//耗材模块路由结束
+
+
 
 //用户模块路由开始
 //-------------------------------------------------------------------------

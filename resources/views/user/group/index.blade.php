@@ -46,7 +46,7 @@
                        class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
 
                     <a href="{{ route('users.groups') }}" class="btn default ">修改</a>
-                    <a href="" class="btn red ">删除</a>
+                    <a href="" class="btn red  btn-delete" id="">删除</a>
                 </div>
                 <div class="col-md-4">
                     <div class="input-group">
@@ -171,14 +171,14 @@
                     }
                 });
 
-                $(".btn-delete").click(function () {
+                $(".btn-delete").click(function(){
                     var checkStatus = table.checkStatus('dataUser');
-                    if (checkStatus.data.length <= 0) {
-                        toastr.error('请选择要操作的数据', '警告');
-                    } else {
+                    if(checkStatus.data.length <= 0){
+                        toastr.error('请选择要操作的数据','警告');
+                    }else{
                         //获取所有选中的行的id
-                        var ids = [];
-                        $.each(checkStatus.data, function (i, v) {
+                        var ids  = [];
+                        $.each(checkStatus.data,function(i,v){
                             ids.push(v.id);
                         });
                         // console.log(ids);
@@ -205,6 +205,9 @@
                     tableReload({});
                 })
             });
+
+
+
         </script>
     </div>
 @endsection
