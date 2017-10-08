@@ -30,10 +30,9 @@ class DefaultController extends Controller
      */
     public function index(Request $request)
     {
-//        $user = get_current_login_user_info(true);
-//        if (!$user->hasAnyPermission('user')) {
-//            return redirect('/home');
-//        }
+        if ($res = is_permission('user.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $search = $request->get('search');
             $department = $request->get('department_id');
@@ -76,12 +75,18 @@ class DefaultController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('user.add')){
+            return $res;
+        }
         $role = Role::where('org_id', Auth::user()->org_id)->get();
         return view('user.user.add', compact('role'));
     }
 
     public function store(UserRequest $request)
     {
+        if ($res = is_permission('user.add')){
+            return $res;
+        }
         $user = new User;
         $user->username = $request->username;
         $user->name = $request->name;
@@ -108,6 +113,9 @@ class DefaultController extends Controller
 
     public function show($id)
     {
+        if ($res = is_permission('user.index')){
+            return $res;
+        }
         if ($id == '*') {
             $data = User::where('org_id', Auth::user()->org_id)->with('department')->get();
         } else {
@@ -119,6 +127,9 @@ class DefaultController extends Controller
 
     public function search($value)
     {
+        if ($res = is_permission('user.index')){
+            return $res;
+        }
         if ($value) {
             $data = User::where('name', 'like', "$value%")->with('department')->get();
             return response()->view('user.user.show', compact('data'));
@@ -128,12 +139,18 @@ class DefaultController extends Controller
 
     public function edit()
     {
+        if ($res = is_permission('user.edit')){
+            return $res;
+        }
         $data = User::find(request('id'));
         $role = Role::where('org_id', Auth::user()->org_id)->get();
         $select_role = DB::table('model_has_roles')
             ->where('model_type', 'App\Models\User\User')
             ->where('model_id', $data->id)
-            ->first()->role_id;
+            ->first();
+        if ($select_role){
+            $select_role=$select_role->role_id;
+        }
         return response()->view('user.user.edit', compact('data', 'role', 'select_role'));
     }
 
@@ -145,6 +162,9 @@ class DefaultController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
+        if ($res = is_permission('user.edit')){
+            return $res;
+        }
         $user = User::find($id);
         $user->username = $request->username;
         $user->name = $request->name;
@@ -169,6 +189,9 @@ class DefaultController extends Controller
 
     public function destroy()
     {
+        if ($res = is_permission('user.del')){
+            return $res;
+        }
         $id = request('id');
         $id = array_unique((array)$id);
         if (count($id) == 1 && !current($id)) {

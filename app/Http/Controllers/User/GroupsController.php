@@ -22,6 +22,9 @@ class GroupsController extends Controller
 
     public function index(Request $request)
     {
+       if ($res = is_permission('role.index')){
+           return $res;
+       }
         if ($request->ajax()) {
             $user = Role::paginate(request('limit'));
             $data = $user->toArray();
@@ -34,6 +37,7 @@ class GroupsController extends Controller
 
     public function create()
     {
+        is_permission('role.add');
         $permission = Permission::get()->toJson();
         return view('user.group.add', compact('permission'));
     }
@@ -41,6 +45,9 @@ class GroupsController extends Controller
 
     public function store(Request $request)
     {
+        if ($res = is_permission('role.add')){
+            return $res;
+        }
         $role_res = Role::create([
             'name' => $request->name,
             'display_name' => $request->name,
@@ -71,6 +78,9 @@ class GroupsController extends Controller
 
     public function edit()
     {
+        if ($res = is_permission('role.edit')){
+            return $res;
+        }
         $permission = [];
         $permissions = [];
         $role = Role::find(request('id'));
@@ -97,6 +107,9 @@ class GroupsController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('role.edit')){
+            return $res;
+        }
         //取回Role实例
         $role = Role::find($id);
         //拆分数组
@@ -121,6 +134,9 @@ class GroupsController extends Controller
 
     public function destroy()
     {
+        if ($res = is_permission('role.del')){
+            return $res;
+        }
         $id = request('id');
         $id = array_unique((array)$id);
         if (count($id) == 1 && !current($id)) {

@@ -26,6 +26,9 @@ class CreateRepairController extends Controller
      */
     public function index()
     {
+        if ($res = is_permission('create.repair.index')){
+            return $res;
+        }
         //获取等待维修的报修
         $data1 = Process::where('org_id', Auth::user()->org_id)
             ->where('status', '1')->orWhere('status', '4')->orWhere('status','7')->latest()
@@ -60,6 +63,9 @@ class CreateRepairController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('create.repair.add')){
+            return $res;
+        }
         $area = Area::where('org_id', Auth::user()->org_id)->where('pid', 0)->get();
         $classify = Classify::where('org_id', Auth::user()->org_id)
                     ->where('enabled',1)->get();
@@ -97,6 +103,9 @@ class CreateRepairController extends Controller
      */
     public function store(CreateRepairRequest $request)
     {
+        if ($res = is_permission('create.repair.add')){
+            return $res;
+        }
         //判断场地信息是否符合规范，并处理场地信息
         if ($request->area_id !== null) {
             $area_id = $request->area_id;
@@ -150,6 +159,9 @@ class CreateRepairController extends Controller
     }
 
     public function edit($str){
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         //获取当前登录公司下的所有服务商
         $serviceProvider = ServiceProvider::with('org')->get()->toArray();
         foreach ($serviceProvider as $a) {
@@ -173,6 +185,9 @@ class CreateRepairController extends Controller
     }
 
     public function update(Request $request){
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $arr = explode(',',$request->str);
         foreach ($arr as $v){
             $list = [
@@ -194,6 +209,9 @@ class CreateRepairController extends Controller
      */
     public function assignWorker($id)
     {
+        if ($res = is_permission('create.repair.add')){
+            return $res;
+        }
         $process = Process::where('id', $id)
             ->with('user', 'img', 'asset', 'category', 'serviceWorker')->first();
         //获取当前登录公司下的所有服务商
@@ -229,6 +247,9 @@ class CreateRepairController extends Controller
      */
     public function selectWorker(CreateRepairRequest $request)
     {
+        if ($res = is_permission('create.repair.add')){
+            return $res;
+        }
         $data = [];
         $arr = [];
         //获取当前选中的维修商
@@ -259,6 +280,9 @@ class CreateRepairController extends Controller
      */
     public function confirmWorker(CreateRepairRequest $request)
     {
+        if ($res = is_permission('create.repair.add')){
+            return $res;
+        }
         $repair = Process::find($request->id);
         $repair->classify_id = $request->classify_id;
         $repair->service_worker_id = $request->service_worker_id;
@@ -282,6 +306,9 @@ class CreateRepairController extends Controller
      */
     public function changeStatus($id)
     {
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $process = Process::where('id', $id)
             ->with('user', 'img', 'asset', 'category', 'serviceWorker')->first();
         //获取当前登录公司下的所有服务商
@@ -315,6 +342,9 @@ class CreateRepairController extends Controller
      */
     public function success($id)
     {
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $data=Process::find($id);
         return response()->view('repair.create_repair.success',compact('data'));
     }
@@ -325,6 +355,9 @@ class CreateRepairController extends Controller
      */
     public function successStore(Request $request)
     {
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $process=Process::find($request->id);
         $process->status=$request->status;
         $process->result=$request->result;
@@ -347,6 +380,9 @@ class CreateRepairController extends Controller
      * 批量完成维修
      */
     public function batchSuccess($str){
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         return response()->view('repair.create_repair.batch_success',compact('str'));
     }
 
@@ -356,6 +392,9 @@ class CreateRepairController extends Controller
      * 完成报修
      */
     public function batchSuccessStore(Request $request){
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $arr = explode(',',$request->str);
         foreach ($arr as $v){
             $list = [
@@ -376,6 +415,9 @@ class CreateRepairController extends Controller
      */
     public function del($id)
     {
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $process = Process::find($id);
         $process->status = 0;
         if ($process->save()) {
@@ -389,7 +431,15 @@ class CreateRepairController extends Controller
         }
     }
 
+    /**
+     * 填写原因
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     */
     public function reason($id){
+        if ($res = is_permission('create.repair.edit')){
+            return $res;
+        }
         $info = Process::find($id);
         return response()->view("repair.create_repair.reason",compact('info'));
     }

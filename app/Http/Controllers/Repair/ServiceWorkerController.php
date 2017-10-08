@@ -21,6 +21,9 @@ class ServiceWorkerController extends Controller
      */
     public function index()
     {
+        if ($res = is_permission('service.worker.index')){
+            return $res;
+        }
         $serviceWorker = collect([]);
         //获取当前公司下的所有服务商
         $service_provider_all_id = DB::table('org_service_provider')->where('org_id', Auth::user()->org_id)->get();
@@ -43,6 +46,9 @@ class ServiceWorkerController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('service.worker.add')){
+            return $res;
+        }
         $data = Classify::where('org_id', Auth::user()->org_id)
             ->where('enabled', 1)
             ->OrderBy('sorting', 'desc')
@@ -69,7 +75,9 @@ class ServiceWorkerController extends Controller
      */
     public function store(ServiceWorkerRequest $request)
     {
-
+        if ($res = is_permission('service.worker.add')){
+            return $res;
+        }
         $serviceWorker = new ServiceWorker;
         $serviceWorker->username = $request->username;
         $serviceWorker->password = bcrypt($request->password);
@@ -101,7 +109,9 @@ class ServiceWorkerController extends Controller
      */
     public function show($id)
     {
-
+        if ($res = is_permission('service.worker.index')){
+            return $res;
+        }
         $classify = Classify::find($id);
         $data = $classify->serviceWorker()->get();
         $title = $classify->comment;
@@ -116,6 +126,9 @@ class ServiceWorkerController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('service.worker.edit')){
+            return $res;
+        }
         $ids = [];
         // 读取该维修工信息
         $data = ServiceWorker::find($id);
@@ -145,6 +158,9 @@ class ServiceWorkerController extends Controller
      */
     public function update(ServiceWorkerRequest $request, $id)
     {
+        if ($res = is_permission('service.worker.edit')){
+            return $res;
+        }
         $serviceWorker = ServiceWorker::find($id);
         $serviceWorker->username = $request->username;
         if ($request->password != null) $serviceWorker->password = bcrypt($request->password);
@@ -175,7 +191,9 @@ class ServiceWorkerController extends Controller
      */
     public function destroy($id)
     {
-
+        if ($res = is_permission('service.worker.del')){
+            return $res;
+        }
         if (DB::table('classify_service_worker')->where('service_worker_id', $id)->delete()) {
             if (ServiceWorker::where('id', $id)->delete()) {
                 return response()->json([

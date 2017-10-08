@@ -18,6 +18,9 @@ class RepairListController extends Controller
      */
     public function index()
     {
+        if ($res = is_permission('repair.list.index')){
+            return $res;
+        }
         //新工单
         $list1 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id", Auth::user()->id)
@@ -48,7 +51,9 @@ class RepairListController extends Controller
      */
     public function create()
     {
-        //
+        if ($res = is_permission('repair.list.add')){
+            return $res;
+        }
     }
 
     /**
@@ -59,7 +64,9 @@ class RepairListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($res = is_permission('repair.list.add')){
+            return $res;
+        }
     }
 
     /**
@@ -70,6 +77,9 @@ class RepairListController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('repair.list.index')){
+            return $res;
+        }
         $info = Process::with('org', 'user', 'admin', 'area', 'otherAsset', 'asset', 'category', 'serviceWorker', 'serviceProvider')->find($id);
         $list = Process::where("id", $id)->with("img")->first()->img;
         $list1 = Process::where("id", $id)->with("worker_img")->first()->worker_img;
@@ -91,6 +101,9 @@ class RepairListController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('repair.list.edit')){
+            return $res;
+        }
         return view("repair.repair_list.add", compact("id"));
     }
 
@@ -103,6 +116,9 @@ class RepairListController extends Controller
      */
     public function update(RepairListRequest $request, $id)
     {
+        if ($res = is_permission('repair.list.edit')){
+            return $res;
+        }
         $arr = [
             'score' => $request->score,
             'appraisal' => $request->appraisal,
@@ -136,6 +152,8 @@ class RepairListController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if ($res = is_permission('repair.list.del')){
+            return $res;
+        }
     }
 }

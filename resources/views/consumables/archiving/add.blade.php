@@ -22,9 +22,7 @@
                 </div>
             </div>
             <input id="classify_id" type="hidden" name="classify_id" value="">
-            <script>
-                $('#classify_id').attr('value', id);
-            </script>
+
             <div class="form-group">
                 <label class="col-sm-2 control-label">商品条码</label>
                 <div class="col-sm-10">
@@ -75,10 +73,12 @@
             <div class="form-group">
                 <label for="Comment" class="col-sm-2 control-label">照片</label>
                 <div class="col-sm-8">
-                    <img id="thumb_img" src="{{url('img/nopicture.jpg')}}" alt="" class="img-lg">
+                    <img id="thumb_img" src="{{url('img/noavatar.png')}}" alt="" class="img-lg">
                     <input type="hidden" id="upload_id" name="upload_id" value="">
+                    <input type="hidden" name="upload_id" value="">
                     <div id="single-upload" class="btn-upload m-t-xs">
-                        <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片</div>
+                        <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择图片
+                        </div>
                         <div id="single-upload-file-list"></div>
                     </div>
                 </div>

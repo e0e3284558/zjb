@@ -492,3 +492,14 @@ if (!function_exists('supplier_select')) {
         return $str;
     }
 }
+
+if (!function_exists('is_permission')) {
+    function is_permission($permission)
+    {
+        $user = get_current_login_user_info(true);
+        if (!$user->hasAnyPermission($permission)) {
+            return redirect()->route('login');
+        }
+    }
+}
+

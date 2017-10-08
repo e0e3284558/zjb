@@ -37,6 +37,9 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('permission.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $user = Permission::paginate(request('limit'));
             $data = $user->toArray();
@@ -54,7 +57,9 @@ class PermissionController extends Controller
      */
     public function create()
     {
-
+        if ($res = is_permission('permission.add')){
+            return $res;
+        }
         $data = Permission::get();
         $data = $this->test($data);
         return view('user.permission.add', compact('data'));
@@ -68,6 +73,9 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('permission.add')){
+            return $res;
+        }
         $arr = [];
         //如果要添加的是顶级分类  pid 和 path 都是0
         if ($request->parent_id == 0) {
@@ -116,6 +124,9 @@ class PermissionController extends Controller
      */
     public function edit()
     {
+        if ($res = is_permission('permission.edit')){
+            return $res;
+        }
         $data['permission'] = Permission::find(request('id'));
         $data['all'] = Permission::get();
         $data['all'] = $this->test($data['all']);
@@ -132,6 +143,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('permission.edit')){
+            return $res;
+        }
         $arr = [];
         //如果要添加的是顶级分类  pid 和 path 都是0
         if ($request->parent_id == 0) {
@@ -169,6 +183,9 @@ class PermissionController extends Controller
      */
     public function destroy()
     {
+        if ($res = is_permission('permission.del')){
+            return $res;
+        }
         $id = request('id');
         $info = Permission::find($id);
         //删除子集分类
