@@ -1,39 +1,44 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">供应商信息</h4>
+</div>
 <form id="signupForm1" class="form-horizontal" method="post" enctype="multipart/form-data" >
-
-    <div class="alert alert-danger display-hide" id="error-block">
-        <button class="close" data-close="alert"></button>
-        请更正下列输入错误：
-    </div>
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-    <input type="hidden" name="_method" value="PUT">
-    <div class="form-group">
-        <label class="col-sm-3 control-label">供应商名称<span style="color:red;">*</span></label>
-        <div class="col-sm-8">
-            <input type="text" name="name" class="form-control" value="{{$info->name}}" data-error-container="#error-block">
+    <div class="modal-body">
+        <div class="alert alert-danger display-hide" id="error-block">
+            <button class="close" data-close="alert"></button>
+            请更正下列输入错误：
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
-        <div class="col-sm-8">
-            <select name="category_id" class="form-control select2" data-error-container="#error-block">
-                <option >请选择</option>
-                @foreach($list as $v)
-                    @if($v->id == $info->category_id)
-                        <option value="{{$v->id}}" selected >{{$v->name}}</option>
-                    @else
-                        <option value="{{$v->id}}">{{$v->name}}</option>
-                    @endif
-                @endforeach
-            </select>
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">供应商名称<span style="color:red;">*</span></label>
+            <div class="col-sm-8">
+                <input type="text" name="name" class="form-control" value="{{$info->name}}" data-error-container="#error-block">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
+            <div class="col-sm-8">
+                <select name="category_id" class="form-control select2" data-error-container="#error-block">
+                    <option >请选择</option>
+                    @foreach($list as $v)
+                        @if($v->id == $info->category_id)
+                            <option value="{{$v->id}}" selected >{{$v->name}}</option>
+                        @else
+                            <option value="{{$v->id}}">{{$v->name}}</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
         <label class="col-sm-3 control-label">备注</label>
         <div class="col-sm-8">
             <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ...">{{$info->remarks}}</textarea>
         </div>
     </div>
-    <div class="col-md-offset-8">
+    </div>
+    <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="submit" class="btn btn-success">保存</button>
     </div>

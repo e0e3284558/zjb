@@ -17,6 +17,9 @@ class ClassifyController extends Controller
      */
     public function index()
     {
+        if ($res = is_permission('classify.index')){
+            return $res;
+        }
         $data = Classify::where('org_id', Auth::user()->org_id)
             ->OrderBy('sorting', 'desc')
             ->OrderBy('created_at', 'desc')
@@ -31,7 +34,9 @@ class ClassifyController extends Controller
      */
     public function create()
     {
-        //
+        if ($res = is_permission('classify.add')){
+            return $res;
+        }
         return response()->view('repair.classify.add');
     }
 
@@ -43,6 +48,9 @@ class ClassifyController extends Controller
      */
     public function store(ClassifyRequest $request)
     {
+        if ($res = is_permission('classify.add')){
+            return $res;
+        }
         //批量保存用户提交的数据
         if ($classify = Classify::create($request->except('_token'))) {
             return response()->json([
@@ -65,6 +73,9 @@ class ClassifyController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('classify.edit')){
+            return $res;
+        }
         $data = Classify::where('id', $id)->first();
         return response()->view('repair.classify.edit', compact('data'));
     }
@@ -78,6 +89,9 @@ class ClassifyController extends Controller
      */
     public function update(ClassifyRequest $request, $id)
     {
+        if ($res = is_permission('classify.edit')){
+            return $res;
+        }
         //修改分类信息
         if ($classify = Classify::where('id', $id)->update($request->except('_token', '_method'))) {
             return response()->json([
@@ -100,6 +114,9 @@ class ClassifyController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('classify.del')){
+            return $res;
+        }
         //获取id删除该条数据
         $info = Classify::where('id', $id)->delete();
         if ($info) {

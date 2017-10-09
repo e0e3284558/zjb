@@ -20,6 +20,9 @@ class ServiceProviderController extends Controller
      */
     public function index()
     {
+        if ($res = is_permission('service.provider.index')){
+            return $res;
+        }
         $data = [];
         $serviceProvider = ServiceProvider::with('org', 'service_worker')
             ->orderBy('created_at', 'desc')
@@ -35,6 +38,9 @@ class ServiceProviderController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('service.provider.add')){
+            return $res;
+        }
         return view('repair.service_provider.add');
     }
 
@@ -46,6 +52,9 @@ class ServiceProviderController extends Controller
      */
     public function store(ServiceProviderRequest $request)
     {
+        if ($res = is_permission('service.provider.add')){
+            return $res;
+        }
         $serviceProvider = new ServiceProvider;
         $serviceProvider->name = $request->name;
         $serviceProvider->comment = $request->comment;
@@ -78,6 +87,9 @@ class ServiceProviderController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('service.provider.index')){
+            return $res;
+        }
         $data = ServiceProvider::find($id);
         $serviceWorker = $data->service_worker()->get();
         $processProvider1 = Process::where('service_provider_id', $data->id)->latest()->paginate(10);
@@ -95,6 +107,9 @@ class ServiceProviderController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('service.provider.edit')){
+            return $res;
+        }
         $data = ServiceProvider::find($id);
         return response()->view('repair.service_provider.edit', compact('data'));
     }
@@ -108,6 +123,9 @@ class ServiceProviderController extends Controller
      */
     public function update(ServiceProviderRequest $request, $id)
     {
+        if ($res = is_permission('service.provider.edit')){
+            return $res;
+        }
         $res = ServiceProvider::where('id', $id)->update($request->except('_token', '_method', 'id', ''));
         //修改服务商信息
         if ($res) {
@@ -130,6 +148,9 @@ class ServiceProviderController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('service.provider.del')){
+            return $res;
+        }
         if (DB::table('service_provider_service_worker')
             ->where('service_provider_id',$id)
             ->where('status',0)

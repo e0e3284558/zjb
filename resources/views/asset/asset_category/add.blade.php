@@ -8,6 +8,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="col-sm-3 control-label" for="name">类别编号<span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="category_code" name="category_code" placeholder="类别编号" />
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-3 control-label" ></label>
         <div class="col-sm-8">
             <button type="submit" class="btn btn-success pull-right">保存</button>
@@ -21,18 +27,16 @@
     $( document ).ready( function () {
         $( "#signupForm1" ).validate( {
             rules: {
-                address_code:{
+                category_code:{
                     required:true,
-                    number:true
                 } ,
                 name: "required",
             },
             messages: {
-                address_code:{
-                    required:"请输出区域编号",
-                    number:"请输出数字型区域编号"
+                category_code:{
+                    required:"请输出类别编号",
                 } ,
-                name: "请输出区域名称",
+                name: "请输出类别名称",
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class

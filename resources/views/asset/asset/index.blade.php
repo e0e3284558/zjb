@@ -19,124 +19,192 @@
     </div>
 @endsection
 @section("content")
-    {{--资产入库--}}
-<div class="wrapper wrapper-content ">
-    <div class="row" >
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>资产列表</h5>
+    <div class="fh-breadcrumb full-height-layout-on white-bg layui-table-no-border">
+        <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
+            <div class="row">
+                <div class="col-sm-7">
+                    <a href="{{ url('asset/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
+                    <a href="{{url('asset/contract_create')}}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue-dark"><i class="fa fa-edit"></i> 合同资产录入</a>
+                    <button href="" class="btn red btn-delete">
+                        <i class="fa fa-trash"></i> 删除
+                    </button>
                 </div>
-                <div class="ibox-content">
-                    <div class="table-tools">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <a href="{{url('asset/create')}}" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa  fa-plus"></i> 增加</a>
-                                <button type="button" onclick="edit()" href="javascript:;" class="btn btn-default" data-toggle="modal" data-target=".bs-example-modal-lg">
-                                    <i class="fa fa-pencil"></i> 修改
-                                </button>
-                                <button type="button" onclick="dlt()" href="javascript:;" class="btn btn-danger">
-                                    <i class="fa  fa-trash-o"></i> 删除
-                                </button>
-                                <div class="dropdown inline">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-print"></i>更多操作
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <li><a class="btn btn-default" id="printBarcode download" href="{{url('asset/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
-                                        <li><a class="btn btn-default" id="print download" href="{{url('asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 资产导入</a></li>
-                                        <li><a class="btn btn-default" id="print download" href="{{url('asset/export')}}"><i class="fa fa-sign-out"></i> 导出资产数据</a></li>
-                                    </ul>
-                                </div>
-                                {{--<a class="btn btn-default" onclick="copy()" data-toggle="modal" data-target=".bs-example-modal-lg">--}}
-                                    {{--<i class="fa fa-copy"></i> 复制--}}
-                                {{--</a>--}}
-                            </div>
-                            <div class="col-md-6">
-                                <!-- 搜索 -->
-                                <form action="{{url('asset')}}" method="get" id="forms" >
-                                    <input type="hidden" name="app_groups" value="asset">
-                                    <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                    <div class="row m-b-xs m-t-xs">
-                                        <div class="col-md-6" >
-                                            <div class="form-group" >
-                                                <select name="category_id" class="form-control select2">
-                                                    <option value="">请选择资产类别查询</option>
-                                                    @foreach($category_list as $k=>$v)
-                                                        <option value="{{$v->id}}">{{$v->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <input type="text" name="name" placeholder="按照资产名称查找" class="input-md form-control">
-                                                <span class="input-group-btn">
-                                                    <button  type="submit" class="btn btn-md btn-success"> 查找</button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                <div class="col-sm-5">
+                    <div class="input-group">
+                        <input type="text" id="search-text" placeholder="资产名称" class="form-control">
+                        <span class="input-group-btn">
+                          <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>
+                          <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
+                          <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
+                        </span>
                     </div>
-                    <div class="table-responsive">
-                        <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
-                            <thead>
-                                <tr role="row">
-                                    <th><input type="checkbox" class="i-checks" name="checkAll" id="all" ></th>
-                                    <th>资产编号</th>
-                                    <th>图片</th>
-                                    <th>资产名称</th>
-                                    <th>资产类别</th>
-                                    <th>规格型号</th>
-                                    <th>计量单位</th>
-                                    <th>金额(元)</th>
-                                    <th>所在场地</th>
-                                    <th>购入时间</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if(count($list)>0)
-                                    @foreach($list as $value)
-                                        <tr role="row">
-                                            <td role="gridcell">
-                                                <input type="checkbox" class="i-checks" name="id" value="{{$value->id}}">
-                                            </td>
-                                            <td>{{$value->code}}</td>
-                                            <td>
-                                                @if($value->img_path)
-                                                    <img class="cursor_pointer img-md" onclick="show_img(this,'{{url('asset/show_img/'.$value->file_id)}}')" src="{{asset($value->img_path)}}"data-toggle="modal" data-target=".bs-example-modal-md">
-                                                @endif
-                                            </td>
-                                            <td><span class="cursor_pointer" onclick="shows('{{$value->name}}','{{url('asset')}}/{{$value->id}}')" data-toggle="modal" data-target=".bs-example-modal-lg" >{{$value->name}}</span></td>
-                                            <td>{{$value->category_id?$value->category->name:""}}</td>
-                                            <td>{{$value->spec}}</td>
-                                            <td>{{$value->calculate}}</td>
-                                            <td>{{$value->money}}</td>
-                                            <td>{{$value->area_id?get_area($value->area_id):""}}</td>
-                                            <td>{{$value->buy_time}}</td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="10" style="text-align: center" >暂无数据</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    {{ $list->links() }}
-
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("asset") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">
+            <thead>
+            <tr>
+                <th lay-data="{fixed:'left',checkbox:true}"></th>
+                <th lay-data="{field:'id', width:80, sort: true}">ID</th>
+                <th lay-data="{field:'status', width:80, sort: true}">状态</th>
+                <th lay-data="{field:'code', width:80, sort: true}">资产编号</th>
+                <th lay-data="{field:'name', width:180, sort: true}">资产名称</th>
+                <th lay-data="{field:'category',templet: '#categoryTpl', width:180, sort: true}">资产类别</th>
+                <th lay-data="{field:'spec', width:180, sort: true}">规格型号</th>
+                <th lay-data="{field:'calculate', width:180, sort: true}">计量单位</th>
+                <th lay-data="{field:'money', width:180, sort: true}">金额(元)</th>
+                <th lay-data="{field:'area',templet: '#areaTpl', width:180, sort: true}">所在场地</th>
+                <th lay-data="{field:'buy_time', width:180, sort: true}">购入时间</th>
+                <th lay-data="{field:'created_at', width:170, sort: true}">创建时间</th>
+                <th lay-data="{field:'updated_at', width:170, sort: true}">更新时间</th>
+                <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
+            </tr>
+            </thead>
+        </table>
+        <script type="text/html" id="categoryTpl">
+            @{{# if(d.category){  }}
+                @{{d.category.name}}
+            @{{# } }}
+        </script>
+        <script type="text/html" id="areaTpl">
+            @{{# if(d.area){  }}
+            @{{d.area.name}}
+            @{{# } }}
+        </script>
+        <script type="text/html" id="barDemo">
+            <a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>
+            <a class="btn blue-madison btn-xs" lay-event="edit" data-toggle="modal" data-target=".bs-example-modal-lg">编辑</a>
+            <a class="btn red btn-xs" lay-event="del">删除</a>
+        </script>
+        <script type="text/javascript">
+            var table;
+            var curObj;
+            var curTrObj;
+            var curData;
+            $(document).ready(function(){
+                var deleteUser = function(id,obj){
+                    swal({
+                            title: "确定要删除吗?",
+                            text: "",
+                            type: "warning",
+                            showCancelButton: true,
+                            cancelButtonText:'取消',
+                            confirmButtonText: "确定",
+                            showLoaderOnConfirm:true,
+                            closeOnConfirm: false
+                        },
+                        function(){
+                            // swal.close();
+                            zjb.ajaxPostData('', '{{url("asset")}}/'+id, {
+                                '_method':'DELETE',
+                                'id':id
+                            }, function(data, textStatus, xhr) {
+                                console.log(table);
+                                if(data.status){
+                                    // toastr.success(data.message);
+                                    if(obj){obj.del();}else{
+                                        //刷新当前页面
+                                        $(".layui-laypage-btn")[0].click();
+                                    }
+                                    swal({
+                                        title: data.message,
+                                        text: "",
+                                        type: 'success',
+                                        timer: 1000,
+                                        confirmButtonText: "确定"
+                                    });
+                                }else{
+                                    swal({
+                                        title: data.message,
+                                        text: "",
+                                        type: 'error',
+                                        timer: 2000,
+                                        confirmButtonText: "确定"
+                                    });
+                                    // toastr.error(data.message,'警告');
+                                }
+                            }, function(xhr, textStatus, errorThrown) {
+                                if(xhr.status == 422 && textStatus =='error'){
+                                    _$error = xhr.responseJSON.errors;
+                                    $.each(_$error,function(i,v){
+                                        toastr.error(v[0],'警告');
+                                    });
+                                }else{
+                                    toastr.error('请求出错，稍后重试','警告');
+                                }
+                            });
+                        });
+                };
+                // $('#operationModal').on('hidden.bs.modal', function () {
+                //     $(this).find(".modal-content").html('');
+                //     $(this).removeData();
+                // });
+                layui.use(['laytpl','table'], function(){
+                    table = layui.table;
+                    table.on('checkbox(data-user)', function(obj){
 
+                    });
+                    table.on('tool(data-user)', function(obj){
+                        curObj = obj;
+                        curData = obj.data; //获得当前行数据
+                        var event = obj.event; //获得 lay-event 对应的值
+                        curTrObj = obj.tr; //获得当前行 tr 的DOM对象
+                        if(event == 'edit'){
+//                            $("#operationModal").modal('show');
+                            zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("asset")}}/'+curData.id+"/edit",{'id':curData.id},true);
+                        }else if(event== 'detail'){
+                            zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("asset")}}/'+curData.id,{'id':curData.id},true);
+                        }else if(event == 'del'){
+                            deleteUser(curData.id,curObj);
+                        }
+                    });
+                    $(".btn-edit").click(function(){
+                        var checkStatus = table.checkStatus('dataUser');
+                        if(checkStatus.data.length != 1){
+                            toastr.error('请选择一条要操作的数据','警告');
+                        }else{
+                            var data = checkStatus.data[0];
+//                            $("#operationModal").modal('show');
+                            zjb.ajaxGetHtml($(".bs-example-modal-md .modal-content"),'{{url("asset")}}/'+data.id+"/edit",{'id':data.id},true);
+                        }
+                    });
+
+                    $(".btn-delete").click(function(){
+                        var checkStatus = table.checkStatus('dataUser');
+                        if(checkStatus.data.length <= 0){
+                            toastr.error('请选择要操作的数据','警告');
+                        }else{
+                            //获取所有选中的行的id
+                            var ids  = [];
+                            $.each(checkStatus.data,function(i,v){
+                                ids.push(v.id);
+                            });
+                            // console.log(ids);
+                            deleteUser(ids);
+                        }
+                    });
+                    var tableReload = function(query){
+                        table.reload('dataUser', {
+                            where: query
+                        });
+                    }
+                    $("#simple-search").click(function(){
+                        var searchText = $('#search-text').val();
+                        tableReload({
+                            search:searchText
+                        });
+                    })
+                    $("#submitSearch").click(function(){
+                        var query = $("#searchForm").serializeJSON();
+                        $("#advancedSearch").modal('hide');
+                        tableReload(query);
+                    })
+                    $('#refreshTable').click(function(){
+                        tableReload({});
+                    })
+                });
+            });
+        </script>
     <script type="text/javascript" >
 
         $("document").ready(function () {
@@ -285,5 +353,5 @@
         }
 
     </script>
-
+</div>
 @endsection

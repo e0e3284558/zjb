@@ -29,6 +29,9 @@ class DepartmentController extends Controller
      */
     public function unit(Request $request)
     {
+        if ($res = is_permission('departments.index')){
+            return $res;
+        }
         if ($request->method() == 'POST') {
             //表单验证
             $rules = [
@@ -89,6 +92,9 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('departments.index')){
+            return $res;
+        }
         //获取所有部门信息
         if (request('tree') == 1) {
             $select = $request->select;
@@ -151,6 +157,9 @@ class DepartmentController extends Controller
 
     public function create()
     {
+        if ($res = is_permission('departments.add')){
+            return $res;
+        }
         return view('user.department.add');
     }
 
@@ -162,6 +171,9 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentRequest $request)
     {
+        if ($res = is_permission('departments.add')){
+            return $res;
+        }
         $department = new Department;
         $department->name = $request->name;
         $department->status = $request->status;
@@ -189,6 +201,9 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department, $id)
     {
+        if ($res = is_permission('departments.edit')){
+            return $res;
+        }
         $dep = $department->findOrFail($id);
         return view('user.department.edit', ['department' => $dep]);
     }
@@ -202,6 +217,9 @@ class DepartmentController extends Controller
      */
     public function update(DepartmentRequest $request, Department $department, $id)
     {
+        if ($res = is_permission('departments.edit')){
+            return $res;
+        }
         $dep = $department->findOrFail($id);
         $dep->name = $request->name;
         $dep->parent_id = $request->parent_id;
@@ -228,6 +246,9 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department, $id)
     {
+        if ($res = is_permission('departments.del')){
+            return $res;
+        }
         $result = [
             'status' => 1,
             'message' => '操作成功',

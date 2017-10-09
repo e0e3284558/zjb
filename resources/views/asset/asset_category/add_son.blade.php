@@ -9,6 +9,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="col-sm-3 control-label" for="name">类别编号<span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="category_code" name="category_code" placeholder="类别编号" />
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-3 control-label" for="pid">父级</label>
         <div class="col-sm-8">
             <input type="text" class="form-control" disabled name="pid" value="{{$info->name}}" />

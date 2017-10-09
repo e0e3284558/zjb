@@ -63,6 +63,20 @@
             <td><label class="control-label">用户评价</label></td>
             <td>{{$info->appraisal}}</td>
         </tr>
+        @if($info->status>='5')
+            <tr>
+                <td><label class="control-label">维修图片</label></td>
+                <td colspan="3" >
+                    @if(!collect($info->img)->isEmpty())
+                        @foreach($list1 as $k=>$img)
+                            <a href="{{url("$img->path")}}" data-lightbox="roadtrip">
+                                <img src="{{url("$img->path")}}" style="max-width: 50px;max-height: 50px;margin: 5px;">
+                            </a>
+                        @endforeach
+                    @endif
+                </td>
+            </tr>
+        @endif
 
         </tbody>
     </table>

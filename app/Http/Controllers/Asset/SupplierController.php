@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 use Excel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class SupplierController extends Controller
 {
@@ -20,20 +22,28 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
-        $org_id = Auth::user()->org_id;
-        $map = [
-            ['org_id','=',$org_id]
-        ];
-//        if($request->category_id){
-//            $map[] = ['category_id','=',$request->category_id];
-//        }
-        if($request->name){
-            $map[] = ['name','like','%'.$request->name.'%'];
+        if ($res = is_permission('supplier.index')){
+            return $res;
         }
-        $list = Supplier::with('category','org')->where($map)->orderBy("id","desc")->paginate(5);
-        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-        $list = $list->appends(array('name'=>$request->name,'app_groups'=>'asset'));
-        return view("asset.supplier.index",compact("list","category_list"));
+        if ($request->ajax()) {
+            $org_id = Auth::user()->org_id;
+            $map = [
+                ['org_id', '=', $org_id]
+            ];
+            if ($request->search) {
+                $map[] = ['name', 'like', '%' . $request->search . '%'];
+            }
+
+            $data = Supplier::with('category', 'org')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = $data->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
+        }
+        return view("asset.supplier.index");
+//        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+//        $list = $list->appends(array('name'=>$request->name,'app_groups'=>'asset'));
+//        return view("asset.supplier.index",compact("list","category_list"));
     }
 
     /**
@@ -43,6 +53,9 @@ class SupplierController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('supplier.add')){
+            return $res;
+        }
         $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
         return response()->view("asset.supplier.add",compact("category_list"));
     }
@@ -55,6 +68,9 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('supplier.ad')){
+            return $res;
+        }
         $arr = [
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -79,6 +95,9 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('supplier.index')){
+            return $res;
+        }
         $info = Supplier::with("category","org")->find($id);
         return view("asset.supplier.show",compact("info"));
     }
@@ -91,6 +110,9 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('supplier.edit')){
+            return $res;
+        }
         if(Auth::user()->org_id == Supplier::where("id",$id)->value("org_id")) {
             $info = Supplier::find($id);
             $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
@@ -109,6 +131,9 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('supplier.edit')){
+            return $res;
+        }
         $arr = [
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -139,6 +164,9 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('supplier.del')){
+            return $res;
+        }
         $arr = explode(",",$id);
         $user_org_id = Auth::user()->org_id;
         if($user_org_id == Supplier::where("id",$arr[0])->value("org_id")) {
@@ -146,7 +174,7 @@ class SupplierController extends Controller
                 $info = Asset::where("org_id",$user_org_id)->where("supplier_id",$v)->first();
                 if($info){
                     $message = [
-                        'code' => 0,
+                        'status' => 0,
                         'message' => '删除失败'
                     ];
                     return response()->json($message);
@@ -157,7 +185,7 @@ class SupplierController extends Controller
                 $info = Supplier::where("id",$v)->where("org_id",Auth::user()->org_id)->delete();
             }
             $message = [
-                'code' => 1,
+                'status' => 1,
                 'message' => '删除成功'
             ];
             return response()->json($message);
@@ -203,7 +231,7 @@ class SupplierController extends Controller
      * 下载模板
      */
     public function downloadModel(){
-        $cellData = [['供应商名称(name)','供应商类别(category_id)','备注(remarks)']];
+        $cellData = [['供应商名称','供应商类别','备注']];
         $cellData2 = [['类别名称','类别编号']];
         //类别
         $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
@@ -254,11 +282,15 @@ class SupplierController extends Controller
     public function import(Request $request){
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
-            $data = $reader->all();
+            $data = $reader->getsheet(0)->toArray();
             $org_id = Auth::user()->org_id;
             foreach ($data as $k=>$v){
-                $arr = $v->toArray();
-                $arr['org_id'] = $org_id;
+                $arr = [
+                    'name' => $v[0],
+                    'category_id' => $v[1],
+                    'remarks' => $v[2],
+                    'org_id' => $org_id
+                ];
                 Supplier::insert($arr);
             }
         });

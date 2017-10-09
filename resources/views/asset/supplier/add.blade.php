@@ -1,4 +1,9 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">供应商新增</h4>
+</div>
 <form id="signupForm1" class="form-horizontal" method="post" enctype="multipart/form-data" >
+    <div class="modal-body">
     <div class="alert alert-danger display-hide" id="error-block">
         <button class="close" data-close="alert"></button>
         请更正下列输入错误：
@@ -29,8 +34,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-offset-10">
-        <button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-success" id="submitAssetsForm">保存</button>
+    {{--<div class="col-md-offset-10">--}}
+        {{--<button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>--}}
+    {{--</div>--}}
     </div>
 </form>
 

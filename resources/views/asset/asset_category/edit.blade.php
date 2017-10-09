@@ -11,6 +11,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="col-sm-3 control-label" for="name">类别编号<span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control" id="category_code" value="{{$info->category_code}}" name="category_code" placeholder="类别编号" />
+        </div>
+    </div>
+    <div class="form-group">
         <label class="col-sm-3 control-label" ></label>
         <div class="col-sm-8">
             <a style="margin: 0 5px;" class="btn btn-default pull-right" onclick="adds('{{$info->id}}')" >添加子类</a>
@@ -24,10 +30,16 @@
     $( document ).ready( function () {
         $( "#signupForm1" ).validate( {
             rules: {
-                name: "required"
+                category_code:{
+                    required:true,
+                } ,
+                name: "required",
             },
             messages: {
-                name: "请输出类别名称"
+                category_code:{
+                    required:"请输出类别编号",
+                } ,
+                name: "请输出类别名称",
             },
             errorElement: 'span',
             errorClass: 'help-block',

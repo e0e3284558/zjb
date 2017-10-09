@@ -230,7 +230,7 @@ if (!function_exists('randomClass')) {
 if (!function_exists('random_color')) {
     function random_color()
     {
-        $arr = ['default', 'blue', 'blue-madison', 'red', 'yellow','grey','green'];
+        $arr = ['default', 'blue', 'blue-madison', 'red', 'yellow', 'grey', 'green'];
         $a = array_random($arr);
         return $a;
     }
@@ -265,6 +265,16 @@ function img_circle($id, $name)
     }
 }
 
+
+function id_to_imgs($id)
+{
+    if ($id != null) {
+        return '<img class="img-md" src="' . get_img_path($id) . '">';
+    } else {
+        return '<img class="img-md" src="img/noavatar.png">';
+    }
+}
+
 /**
  * 头像返回缩略图或文字图标
  */
@@ -285,7 +295,7 @@ function id_to_img($id)
 {
     if ($id) {
         return \App\Models\File\File::find($id)->path;
-    }else{
+    } else {
         return url('img/noavatar.png');
     }
 
@@ -430,5 +440,69 @@ if (!function_exists('area_select')) {
 }
 
 
+/**
+ * 通过分类id 获取分类名称
+ * @param $id
+ * @return string
+ *
+ */
+if (!function_exists('getCateNameByCateId')) {
+    function getCateNameByCateId($id)
+    {
+        if ($id == 0) {
+            return '顶级分类';
+        }
+        $cate = \App\Models\Consumables\Sort::find($id);
+        if (empty($cate)) {
+            return '无分类';
+        } else {
+            return $cate->name;
+        }
+    }
+}
 
+if (!function_exists('category_select')) {
+    function category_select()
+    {
+        $list = \App\Models\Asset\AssetCategory::get();
+        $str = '<option value="">请选择类别</option>';
+
+        if ($list) {
+            foreach ($list as $key => $val) {
+                $str .= '<option value="' . $val['id'] . '" ' . '>'
+                     . $val['name'] . '</option>';
+            }
+        }
+        return $str;
+    }
+}
+
+if (!function_exists('supplier_select')) {
+    function supplier_select()
+    {
+        $list = \App\Models\Asset\Supplier::get();
+        $str = '<option value="">请选择供应商</option>';
+
+        if ($list) {
+            foreach ($list as $key => $val) {
+                $str .= '<option value="' . $val['id'] . '" ' . '>'
+                    . $val['name'] . '</option>';
+            }
+        }
+        return $str;
+    }
+}
+
+if (!function_exists('is_permission')) {
+    function is_permission($permission)
+    {
+        $user = get_current_login_user_info(true);
+        if($user->is_org_admin){
+            return false;
+        }
+        if (!$user->hasAnyPermission($permission)) {
+            return abort(403);
+        }
+    }
+}
 

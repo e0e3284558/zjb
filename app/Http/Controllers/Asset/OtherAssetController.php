@@ -25,6 +25,9 @@ class OtherAssetController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('other.asset.index')){
+            return $res;
+        }
         $org_id = Auth::user()->org_id;
         $map = [
             ['org_id','=',$org_id]
@@ -44,6 +47,9 @@ class OtherAssetController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('other.asset.add')){
+            return $res;
+        }
         return response()->view("asset.otherAsset.add");
     }
 
@@ -55,6 +61,9 @@ class OtherAssetController extends Controller
      */
     public function store(OtherAssetRequest $request)
     {
+        if ($res = is_permission('other.asset.add')){
+            return $res;
+        }
         $arr = [
             'code' => date("mdis").rand(1000,9999),
             'name' => $request->name,
@@ -79,6 +88,9 @@ class OtherAssetController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('other.asset.index')){
+            return $res;
+        }
         $info = OtherAsset::where("id",$id)->first();
         $info->org_id = Org::where("id",$info->org_id)->value("name");
 
@@ -93,6 +105,9 @@ class OtherAssetController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('other.asset.edit')){
+            return $res;
+        }
         if(Auth::user()->org_id == OtherAsset::where("id",$id)->value("org_id")) {
             $info = OtherAsset::where("id", $id)->first();
             return response()->view("asset.otherAsset.edit", compact("info"));
@@ -110,6 +125,9 @@ class OtherAssetController extends Controller
      */
     public function update(OtherAssetRequest $request, $id)
     {
+        if ($res = is_permission('other.asset.edit')){
+            return $res;
+        }
         $arr = [
             'name' => $request->name,
             'remarks' => $request->remarks,
@@ -138,6 +156,9 @@ class OtherAssetController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('other.asset.del')){
+            return $res;
+        }
         $arr = explode(",",$id);
         if(Auth::user()->org_id == OtherAsset::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){

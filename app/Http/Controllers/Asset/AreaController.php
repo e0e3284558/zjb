@@ -23,6 +23,9 @@ class AreaController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('area.index')){
+            return $res;
+        }
         //获取所有部门信息
         if (request('tree') == 1) {
             $select = $request->select;
@@ -62,6 +65,9 @@ class AreaController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('area.add')){
+            return $res;
+        }
         return response()->view("asset.area.add");
     }
 
@@ -73,6 +79,9 @@ class AreaController extends Controller
      */
     public function store(AreaRequest $request)
     {
+        if ($res = is_permission('area.add')){
+            return $res;
+        }
         $org_id = get_current_login_user_org_id();
         //但单位场地code进行唯一性验证
         Validator::make($request->all(), [
@@ -125,6 +134,9 @@ class AreaController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('area.edit')){
+            return $res;
+        }
         $dep = Area::orgs()->findOrFail($id);
         return view('asset.area.edit', ['area' => $dep]);
     }
@@ -138,6 +150,9 @@ class AreaController extends Controller
      */
     public function update(AreaRequest $request, $id)
     {
+        if ($res = is_permission('area.edit')){
+            return $res;
+        }
         $area = Area::orgs()->findOrFail($id);
         $area->name = $request->name;
         $area->pid = $request->pid;
@@ -167,6 +182,9 @@ class AreaController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('area.del')){
+            return $res;
+        }
         $result = [
             'status' => 1,
             'message' => '操作成功',
@@ -230,12 +248,14 @@ class AreaController extends Controller
         return;
     }
 
-
-    //下载模板
+    /**
+     * 下载模板
+     */
     /*public function downloadModel()
     {
-        $cellData = [['场地名称(name)', '父类(pid)', '场地备注(remarks)']];
-        $cellData2 = [['场地名称', '场地编号']];
+        $cellData = [['场地名称','父类','场地备注']];
+        $cellData2 = [['场地名称','场地编号']];
+
         //类别
         $list = Area::where("org_id", Auth::user()->org_id)->get();
         foreach ($list as $k => $v) {
@@ -356,23 +376,6 @@ class AreaController extends Controller
         }
         $message['data'] = ['success_data' => $success_data, 'error_data' => $error_data];
         return response()->json($message);
-
-//        Excel::selectSheets('sheet1')->load($filePath, function($reader) {
-//            $data = $reader->all();
-//            $org_id = Auth::user()->org_id;
-//            foreach ($data as $k=>$v){
-//                $arr = $v->toArray();
-//                $arr['uid'] = Uuid::generate()->string;
-//                if($arr['pid']=='0'){
-//                    $arr['path'] = '';
-//                }else{
-//                    $path = Area::where("id",$arr['pid'])->value("path");
-//                    $arr['path'] = $path.$arr['pid'].',';
-//                }
-//                $arr['org_id'] = $org_id;
-//                Area::insert($arr);
-//            }
-//        });
     }
 
 }

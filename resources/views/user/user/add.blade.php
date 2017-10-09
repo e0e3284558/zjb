@@ -4,17 +4,18 @@
     <h4 class="modal-title">创建用户</h4>
 </div>
 <div class="modal-body">
-    <form action="{{url('users/default/store')}}" id="AddUserForm" class="form-horizontal " method="post" enctype="multipart/form-data">
+    <form action="{{url('users/default/store')}}" id="AddUserForm" class="form-horizontal " method="post"
+          enctype="multipart/form-data">
         <div class="form-group">
             <label class="control-label col-md-3">用户名<span class="required">*</span></label>
             <div class="col-md-8">
-            <input type="text" value="" name="username" class="form-control">
+                <input type="text" value="" name="username" class="form-control">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-3">登录密码<span class="required">*</span></label>
             <div class="col-md-8">
-            <input type="password" value="" name="password" class="form-control">
+                <input type="password" value="" name="password" class="form-control">
             </div>
         </div>
         <div class="form-group">
@@ -26,14 +27,14 @@
         <div class="form-group">
             <label class="control-label col-md-3">邮箱<span class="required">*</span></label>
             <div class="col-md-8">
-            <input type="email" value="" name="email" class="form-control">
+                <input type="email" value="" name="email" class="form-control">
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-3">手机号<span class="required">*</span></label>
             <div class="col-md-8">
-            <input type="text" value="" name="tel" minlength="11" maxlength="11" class="form-control">
+                <input type="text" value="" name="tel" minlength="11" maxlength="11" class="form-control">
             </div>
         </div>
 
@@ -44,6 +45,19 @@
             <div class="col-md-8">
                 <select name="department_id" class="form-control select2">
                     {!! department_select('',1) !!}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">
+                所属角色
+            </label>
+            <div class="col-md-8">
+                <select name="role" class="form-control select2">
+                    @foreach($role as $v)
+                        <option value="{{$v->name}}">{{$v->display_name}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -81,7 +95,7 @@
                 },
                 email: {
                     required: true,
-                    email:true
+                    email: true
                 }
             },
             messages: {
@@ -143,14 +157,14 @@
                     beforeSend: function () {
                         zjb.blockUI('.modal-content');
                     },
-                    error: function(xhr, textStatus, errorThrown) {
-                        if(xhr.status == 422 && textStatus =='error'){
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.status == 422 && textStatus == 'error') {
                             _$error = xhr.responseJSON.errors;
-                            $.each(_$error,function(i,v){
-                                toastr.error(v[0],'警告');
+                            $.each(_$error, function (i, v) {
+                                toastr.error(v[0], '警告');
                             });
-                        }else{
-                            toastr.error('请求出错，稍后重试','警告');
+                        } else {
+                            toastr.error('请求出错，稍后重试', '警告');
                         }
                     },
                     complete: function () {
@@ -162,7 +176,7 @@
                             $("#operationModal").modal('hide');
                             //重载table
                             table.reload('dataUser');
-                            
+
                             // swal({
                             //     title: "",
                             //     text: data.message,
@@ -172,7 +186,7 @@
                             //     window.location.reload();
                             // });
                         } else {
-                            toastr.error(data.message,'警告'); 
+                            toastr.error(data.message, '警告');
                         }
                     }
                 });

@@ -39,6 +39,22 @@ Route::get('/worker','Portal\ServiceWorkerController@index')->name('worker');
 //--------------------------------------------------------------------------
 //门户模块路由结束
 
+//耗材模块路由开始
+//--------------------------------------------------------------------------
+Route::group(['prefix'=>'consumables','namespace'=>'Consumables','middleware'=>'auth'],function (){
+    Route::resource('depot','DepotController');
+    Route::get('sort/{id}/createSub','SortController@createSub');
+    Route::get('sort/{id}/editName','SortController@editName');
+    Route::resource('sort','SortController');
+    Route::resource('archiving','ArchivingController');
+    Route::get('goods/edit', 'GoodsController@edit')->name('consumables.goods.edit');
+    Route::delete('goods/delete', 'GoodsController@destroy')->name('consumables.goods.destroy');
+    Route::resource('goods','GoodsController');
+});
+//--------------------------------------------------------------------------
+//耗材模块路由结束
+
+
 
 //用户模块路由开始
 //-------------------------------------------------------------------------
@@ -65,6 +81,17 @@ Route::group(['prefix' => 'users', 'namespace' => 'User', 'middleware' => 'auth'
 
 
     Route::get('groups', 'GroupsController@index')->name('users.groups');
+    Route::get('groups/create', 'GroupsController@create')->name('users.groups.create');
+    Route::post('groups/store', 'GroupsController@store')->name('users.groups.store');
+    Route::get('groups/edit', 'GroupsController@edit')->name('users.groups.edit');
+    Route::put('groups/{id}', 'GroupsController@update')->name('users.groups.update');
+    Route::delete('groups/delete', 'GroupsController@destroy')->name('users.groups.destroy');
+
+
+
+    Route::get('permission/edit', 'PermissionController@edit')->name('users.permission.edit');
+    Route::delete('permission/delete', 'PermissionController@destroy')->name('users.permission.destroy');
+    Route::resource('permission', 'PermissionController');
 });
 //-------------------------------------------------------------------------
 //用户模块路由结束
@@ -148,7 +175,6 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::get('area/downloadModel', 'AreaController@downloadModel');
     Route::get('area/add_import', 'AreaController@add_import');
     Route::post('area/import', 'AreaController@import');
-
     Route::resource('area', 'AreaController');
 
     //其他报修项
@@ -158,6 +184,9 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
 //    Route::resource('other_asset', 'OtherAssetController');
 
     //资产管理
+    Route::get('asset/contract_create', 'AssetController@contract_create');
+    Route::post('asset/contract_store', 'AssetController@contract_store');
+
     Route::get('asset/show_img/{file_id}', 'AssetController@show_img');
 //    Route::get('asset/add_copy/{id}', 'AssetController@add_copy');
 //    Route::get('asset/copy', 'AssetController@copy');
@@ -167,12 +196,32 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post('asset/import', 'AssetController@import');
     Route::resource('asset', 'AssetController');
 
+    //领用
+    Route::resource('asset_use','AssetUseController');
+    //退库
+    Route::resource("asset_return",'AssetReturnController');
+    //借用&归还
+    Route::resource('borrow','BorrowController');
+
     //供应商管理
     Route::get('supplier/export', 'SupplierController@export');
     Route::get('supplier/downloadModel', 'SupplierController@downloadModel');
     Route::get('supplier/add_import', 'SupplierController@add_import');
     Route::post('supplier/import', 'SupplierController@import');
+    Route::post("supplier/page_pro",'SupplierController@page_pro');
     Route::resource("supplier",'SupplierController');
+
+    //合同管理
+    Route::post("contract/bill_store",'ContractController@bill_store');
+    Route::get("contract/add_bill/{id}",'ContractController@add_bill');
+    Route::resource("contract",'ContractController');
+
+    //清单管理
+
+//    Route::post("bill/asset_store",'BillController@asset_store');
+//    Route::get("bill/create/{id}",'BillController@create');
+//    Route::get("bill/create/{id}",'BillController@create');
+//    Route::resource("bill",'BillController');
 
     //附件信息
     Route::post("upload/uploadFile", "UploadController@uploadFile");
@@ -184,9 +233,11 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
 
 //文件管理模块路由开始
 //-------------------------------------------------------------------------
-
-Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'file', 'namespace' => 'File'],function () {
     Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
+});
+Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
+//    Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
     Route::post('file_upload', 'DefaultController@fileUpload')->name('file.upload');
     Route::post('video_upload', 'DefaultController@videoUpload')->name('video.upload');
     Route::post('asset_file_upload', 'DefaultController@assetFileUpload')->name('asset.file.upload');

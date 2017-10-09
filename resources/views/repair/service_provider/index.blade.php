@@ -124,7 +124,6 @@
 
         /*删除*/
         function del(id) {
-
             swal({
                     title: "确认要移除该服务商吗？",
                     text: "",

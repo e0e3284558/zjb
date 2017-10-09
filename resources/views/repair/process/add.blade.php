@@ -43,6 +43,35 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" >
+            <div class="col-md-12" >
+                <div class="form-group" >
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">图片上传</label>
+                        <div class="col-sm-10">
+                            <div id="image-upload-instance"
+                                 class="clearfix multi-image-upload multi-image-upload-lg">
+                                <div id="image-upload-instance-file-list"
+                                     class="pull-left"></div>
+                                <div id="image-upload-instance-picker"
+                                     class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker"
+                                     data-toggle="tooltip" data-placement="top"
+                                     data-original-title="文件大小10M以内">
+                                    <p><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i>
+                                    </p>
+                                    选择图片
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
     </form>
 </div>
 <div class="modal-footer">
@@ -52,6 +81,30 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
+        //通用报修图片上传
+        zjb.imageUpload({
+            uploader: 'imageUploadInstance',
+            picker: 'image-upload-instance',
+            swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
+            server: '{{ route("image.upload") }}',
+            isAutoInsertInput: true,//上传成功是否自动创建input存储区域
+            storageInputName: 'images',//上传成功后input存储区域的name
+            formData: {
+                '_token': '{{ csrf_token() }}'
+            },
+            fileNumLimit: 5,
+            uploadComplete: function (file, uploader) {
+            },
+            uploadError: function (file, uploader) {
+            },
+            uploadSuccess: function (file, response, uploader) {
+            },
+            fileCannel: function (fileId, uploader) {
+            },
+            fileDelete: function (fileId, uploader) {
+            }
+        });
+
 
         zjb.initAjax();
         var process_form = $( "#signupForm1" );

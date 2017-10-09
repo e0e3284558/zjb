@@ -39,6 +39,18 @@
             <td><label class="control-label">报修人</label></td>
             <td>{{$info->user_id?$info->user->name:""}}</td>
         </tr>
+        <tr>
+            <td><label class="control-label">维修图片</label></td>
+            <td>
+                {{--@if(!collect($info->img)->isEmpty())--}}
+                    @foreach($list1 as $k=>$img)
+                        <a href="{{url("$img->path")}}" data-lightbox="roadtrip">
+                            <img src="{{url("$img->path")}}" style="max-width: 50px;max-height: 50px;margin: 5px;">
+                        </a>
+                    @endforeach
+                {{--@endif--}}
+            </td>
+        </tr>
 
         </tbody>
     </table>

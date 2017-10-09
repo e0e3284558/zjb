@@ -65,6 +65,9 @@
     <!-- star-rating -->
     <link rel="stylesheet" href="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.css')}}">
 
+    <!-- jquery.pagination.css -->
+    <link rel="stylesheet" href="{{asset('assets/js/plugins/jqueryPagination/jquery.pagination.css')}}">
+
     <!-- lightbox2 -->
     <link rel="stylesheet" href="{{asset('assets/js/plugins/lightbox2/dist/css/lightbox.min.css')}}">
     <!-- Animate -->
@@ -716,6 +719,9 @@
 
     <!-- star-rating -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/bootstrap-star-rating/star-rating.min.js')}}" ></script>
+
+    <!-- jqueryPagination -->
+    <script type="text/javascript" src="{{asset('assets/js/plugins/jqueryPagination/jquery.pagination.min.js')}}" ></script>
 
     <!-- lightbox2 -->
     <script type="text/javascript" src="{{asset('assets/js/plugins/lightbox2/dist/js/lightbox.min.js')}}" ></script>
