@@ -76,38 +76,40 @@
             </div>
         </div>
 
-        <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
-            <table class="table table-striped table-bordered table-hove">
-                <thead>
-                <tr>
-                    <td class="dialogtableth"><input type="checkbox"></td>
-                    <td class="dialogtableth">照片</td>
-                    <td class="dialogtableth">资产条码</td>
-                    <td class="dialogtableth">资产名称</td>
-                    <td class="dialogtableth">资产类别</td>
-                    <td class="dialogtableth">规格型号</td>
-                </tr>
-                </thead>
-                <tbody data-bind="foreach: selectedAssetList">
-                @foreach($list as $value)
+        <div class="row" >
+            <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
+                <table class="table table-striped table-bordered table-hove">
+                    <thead>
                     <tr>
-                        <td><input type="checkbox" name="asset_ids[]" value="{{$value->id}}"></td>
-                        <td>
-                            @if($value->img_path)
-                                <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
-                                    <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
-                                </a>
-                            @endif
-                        </td>
-                        <td>{{$value->code}}</td>
-                        <td>{{$value->name}}</td>
-                        <td>{{$value->category->name}}</td>
-                        <td>{{$value->spec}}</td>
+                        <td class="dialogtableth"><input type="checkbox"></td>
+                        <td class="dialogtableth">照片</td>
+                        <td class="dialogtableth">资产条码</td>
+                        <td class="dialogtableth">资产名称</td>
+                        <td class="dialogtableth">资产类别</td>
+                        <td class="dialogtableth">规格型号</td>
                     </tr>
-                @endforeach
-                </tbody>
+                    </thead>
+                    <tbody data-bind="foreach: selectedAssetList">
+                    @foreach($list as $value)
+                        <tr>
+                            <td><input type="checkbox" name="asset_ids[]" value="{{$value->id}}"></td>
+                            <td>
+                                @if($value->img_path)
+                                    <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
+                                        <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
+                                    </a>
+                                @endif
+                            </td>
+                            <td>{{$value->code}}</td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->category->name}}</td>
+                            <td>{{$value->spec}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
 
-            </table>
+                </table>
+            </div>
         </div>
 
     </form>

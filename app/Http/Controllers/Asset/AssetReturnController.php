@@ -18,6 +18,9 @@ class AssetReturnController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('asset.return.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $org_id = Auth::user()->org_id;
             $map = [
@@ -40,6 +43,9 @@ class AssetReturnController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('asset.return.add')){
+            return $res;
+        }
         $map = [
             'status' => '3',
             'org_id' =>Auth::user()->org_id
@@ -77,6 +83,9 @@ class AssetReturnController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('asset.return.add')){
+            return $res;
+        }
         $arr = $request->except("_token","asset_ids");
         $arr['return_code'] = "TK".date("Ymd").rand("0001","9999");
         $arr['return_dispose_user_id'] = Auth::user()->id;
@@ -110,6 +119,12 @@ class AssetReturnController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('asset.return.index')){
+            return $res;
+        }
+        if ($res = is_permission('asset.category.index')){
+            return $res;
+        }
         $info = AssetReturn::with("return_dispose_user")->find($id);
         $arr = explode(",",$info->asset_ids);
         $list = [];

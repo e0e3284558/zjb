@@ -22,6 +22,9 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('supplier.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $org_id = Auth::user()->org_id;
             $map = [
@@ -50,6 +53,9 @@ class SupplierController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('supplier.add')){
+            return $res;
+        }
         $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
         return response()->view("asset.supplier.add",compact("category_list"));
     }
@@ -62,6 +68,9 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('supplier.ad')){
+            return $res;
+        }
         $arr = [
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -86,6 +95,9 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('supplier.index')){
+            return $res;
+        }
         $info = Supplier::with("category","org")->find($id);
         return view("asset.supplier.show",compact("info"));
     }
@@ -98,6 +110,9 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('supplier.edit')){
+            return $res;
+        }
         if(Auth::user()->org_id == Supplier::where("id",$id)->value("org_id")) {
             $info = Supplier::find($id);
             $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
@@ -116,6 +131,9 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('supplier.edit')){
+            return $res;
+        }
         $arr = [
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -146,6 +164,9 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('supplier.del')){
+            return $res;
+        }
         $arr = explode(",",$id);
         $user_org_id = Auth::user()->org_id;
         if($user_org_id == Supplier::where("id",$arr[0])->value("org_id")) {

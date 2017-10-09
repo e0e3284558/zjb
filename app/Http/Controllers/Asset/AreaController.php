@@ -27,6 +27,9 @@ class AreaController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('area.index')){
+            return $res;
+        }
         //获取所有部门信息
         if (request('tree') == 1) {
             $select = $request->select;
@@ -66,6 +69,9 @@ class AreaController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('area.add')){
+            return $res;
+        }
         return response()->view("asset.area.add");
     }
     /**
@@ -76,6 +82,9 @@ class AreaController extends Controller
      */
     public function store(AreaRequest $request)
     {
+        if ($res = is_permission('area.add')){
+            return $res;
+        }
         $area = new Area();
         $area->name = $request->name;
         $area->status = $request->status;
@@ -118,6 +127,9 @@ class AreaController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('area.edit')){
+            return $res;
+        }
         $dep = Area::orgs()->findOrFail($id);
         return view('asset.area.edit', ['area' => $dep]);
     }
@@ -131,6 +143,9 @@ class AreaController extends Controller
      */
     public function update(AreaRequest $request, $id)
     {
+        if ($res = is_permission('area.edit')){
+            return $res;
+        }
         $area = Area::orgs()->findOrFail($id);
         $area->name = $request->name;
         $area->pid = $request->pid;
@@ -160,6 +175,9 @@ class AreaController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('area.del')){
+            return $res;
+        }
         $result = [
             'status' => 1,
             'message' => '操作成功',
@@ -190,7 +208,8 @@ class AreaController extends Controller
     /**
      * 场地管理  数据导出
      */
-    public function export(){
+    public function export()
+    {
 
         $list = Area::where("org_id",Auth::user()->org_id)->get();
         $cellData = [
@@ -228,8 +247,11 @@ class AreaController extends Controller
     }
 
 
-    //下载模板
-    public function downloadModel(){
+    /**
+     * 下载模板
+     */
+    public function downloadModel()
+    {
         $cellData = [['场地名称','父类','场地备注']];
         $cellData2 = [['场地名称','场地编号']];
         //类别
@@ -274,11 +296,13 @@ class AreaController extends Controller
         })->export('xls');
     }
 
-    public function add_import(){
+    public function add_import()
+    {
         return response()->view('asset.area.add_import');
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();

@@ -17,6 +17,9 @@ class BorrowController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('borrow.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $org_id = Auth::user()->org_id;
             $map = [
@@ -53,6 +56,9 @@ class BorrowController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('borrow.add')){
+            return $res;
+        }
         $map = [
             'org_id' => Auth::user()->org_id,
             'status' => "1"
@@ -75,6 +81,9 @@ class BorrowController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('borrow.add')){
+            return $res;
+        }
 //        dd($request->all());
         $arr = $request->except("_token","borrow_asset_ids");
         $arr['borrow_asset_ids'] = implode(",",$request->borrow_asset_ids);
@@ -111,6 +120,9 @@ class BorrowController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('borrow.index')){
+            return $res;
+        }
         $info = Borrow::with("borrow_handle_user","return_handle_user")->find($id);
         $arr = explode(",",$info->borrow_asset_ids);
         $list = [];
@@ -136,6 +148,9 @@ class BorrowController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('borrow.edit')){
+            return $res;
+        }
         return view("asset.borrow.edit",compact('id'));
     }
 
@@ -148,6 +163,9 @@ class BorrowController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('borrow.edit')){
+            return $res;
+        }
         //归还
 //        dd($request->all());
         $arr = [

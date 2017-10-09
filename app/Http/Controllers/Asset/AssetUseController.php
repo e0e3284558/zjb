@@ -18,6 +18,9 @@ class AssetUseController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('asset.use.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $org_id = Auth::user()->org_id;
             $map = [
@@ -54,6 +57,9 @@ class AssetUseController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('asset.use.add')){
+            return $res;
+        }
         $map = [
             'org_id' => Auth::user()->org_id,
             'status' => "1"
@@ -77,6 +83,9 @@ class AssetUseController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('asset.use.add')){
+            return $res;
+        }
 //        dd($request->all());
         $arr = $request->except("_token","asset_ids");
         $arr['asset_ids'] = implode(",",$request->asset_ids);
@@ -112,6 +121,9 @@ class AssetUseController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('asset.use.index')){
+            return $res;
+        }
         $info = AssetUse::with("use_dispose_user","use_department","return_dispose_user")->find($id);
         $arr = explode(",",$info->asset_ids);
         $list = [];
@@ -136,6 +148,9 @@ class AssetUseController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('asset.use.edit')){
+            return $res;
+        }
         return view("asset.assetUse.edit",compact('id'));
     }
 
@@ -148,6 +163,9 @@ class AssetUseController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('asset.use.edit')){
+            return $res;
+        }
         //归还
 //        dd($request->all());
         $arr = [

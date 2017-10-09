@@ -19,6 +19,9 @@ class ContractController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('contract.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $org_id = Auth::user()->org_id;
             $map = [
@@ -51,6 +54,9 @@ class ContractController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('contract.add')){
+            return $res;
+        }
         return response()->view("asset.contract.add");
     }
 
@@ -62,6 +68,9 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
+        if ($res = is_permission('contract.add')){
+            return $res;
+        }
         $arr = $request->except("_token","file");
         $arr['org_id'] = Auth::user()->org_id;
 
@@ -137,6 +146,9 @@ class ContractController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('contract.index')){
+            return $res;
+        }
 //        dd($id);
         $list = Bill::with("category","supplier")->where("contract_id",$id)->get();
 //        dd($list);
@@ -151,6 +163,9 @@ class ContractController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('contract.edit')){
+            return $res;
+        }
         $info = Contract::find($id);
         return view("asset.contract.edit",compact("info"));
     }
@@ -164,6 +179,9 @@ class ContractController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($res = is_permission('contract.edit')){
+            return $res;
+        }
         if($request->file_id){
             $arr = $request->except("_token","_method","file");
         }else{

@@ -22,6 +22,9 @@ class AssetCategoryController extends Controller
      */
     public function index()
     {
+        if ($res = is_permission('asset.category.index')){
+            return $res;
+        }
         $list = AssetCategory::where("org_id",Auth::user()->org_id)->get()->toArray();
         foreach ($list as $k=>$v){
             $list[$k]['text'] = $v['name'];
@@ -38,6 +41,9 @@ class AssetCategoryController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('asset.category.add')){
+            return $res;
+        }
         return response()->view("asset.asset_category.add");
     }
 
@@ -60,6 +66,9 @@ class AssetCategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+        if ($res = is_permission('asset.category.add')){
+            return $res;
+        }
         $arr = [
             'category_code' => $request->category_code,
             'name' => $request->name,
@@ -98,6 +107,9 @@ class AssetCategoryController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('asset.category.index')){
+            return $res;
+        }
         $info = AssetCategory::find($id);
         return response()->view("asset.asset_category.edit",compact('info'));
     }
@@ -110,6 +122,9 @@ class AssetCategoryController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('asset.category.edit')){
+            return $res;
+        }
         $info = AssetCategory::find($id);
         return response()->view("asset.asset_category.edit",compact('info'));
     }
@@ -123,6 +138,9 @@ class AssetCategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
+        if ($res = is_permission('asset.category.edit')){
+            return $res;
+        }
         if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
             $info = AssetCategory::where("id",$id)->update($request->except("_token","_method"));
             if($info){
@@ -148,6 +166,9 @@ class AssetCategoryController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('asset.category.del')){
+            return $res;
+        }
         if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
             $list = AssetCategory::where("pid",$id)->first();
             if($list!=null){
@@ -202,8 +223,8 @@ class AssetCategoryController extends Controller
     /**
      * 导出资产类别  数据
      */
-    public function export(){
-
+    public function export()
+    {
         $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
         $cellData = [
             ['资产类别名称','父类别'],
@@ -240,7 +261,8 @@ class AssetCategoryController extends Controller
 
 
     //下载模板
-    public function downloadModel(){
+    public function downloadModel()
+    {
         $cellData = [['资产类别名称','父类']];
         $cellData2 = [['资产类别名称','类别编号']];
         //类别
@@ -285,11 +307,13 @@ class AssetCategoryController extends Controller
         })->export('xls');
     }
 
-    public function add_import(){
+    public function add_import()
+    {
         return response()->view('asset.asset_category.add_import');
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();

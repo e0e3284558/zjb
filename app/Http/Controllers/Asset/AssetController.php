@@ -51,6 +51,9 @@ class AssetController extends Controller
      */
     public function index(Request $request)
     {
+        if ($res = is_permission('asset.index')){
+            return $res;
+        }
         if ($request->ajax()) {
             $org_id = Auth::user()->org_id;
             $map = [
@@ -105,6 +108,9 @@ class AssetController extends Controller
      */
     public function create()
     {
+        if ($res = is_permission('asset.add')){
+            return $res;
+        }
         $org_id = Auth::user()->org_id;
         //资产类别
         $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",Auth::user()->org_id)->orderBy("paths")->get();
@@ -131,6 +137,9 @@ class AssetController extends Controller
      */
     public function store(AssetRequest $request)
     {
+        if ($res = is_permission('asset.add')){
+            return $res;
+        }
         if(!$request->code){
             //公司code+资产类别code+日期随机值
             $org_code = Org::where("id",Auth::user()->org_id)->value("code");
@@ -182,6 +191,9 @@ class AssetController extends Controller
      */
     public function show($id)
     {
+        if ($res = is_permission('asset.index')){
+            return $res;
+        }
         $info = Asset::with('category','org','user','admin','department','useDepartment','area')->find($id);
         //图片
         $file = Asset::find($info->id)->file()->first();
@@ -197,6 +209,9 @@ class AssetController extends Controller
      */
     public function edit($id)
     {
+        if ($res = is_permission('asset.edit')){
+            return $res;
+        }
         if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
             $info = Asset::where("id", $id)->first();
             //公司
@@ -238,6 +253,9 @@ class AssetController extends Controller
      */
     public function update(AssetRequest $request, $id)
     {
+        if ($res = is_permission('asset.edit')){
+            return $res;
+        }
         if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
             $arr = $request->except("_token","_method",'file_id');
             $info = Asset::where("id",$id)->update($arr);
@@ -278,6 +296,9 @@ class AssetController extends Controller
      */
     public function destroy($id)
     {
+        if ($res = is_permission('asset.del')){
+            return $res;
+        }
         $arr = explode(",",$id);
         if(Auth::user()->org_id == Asset::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
