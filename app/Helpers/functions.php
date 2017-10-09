@@ -422,7 +422,7 @@ if (!function_exists('area_select')) {
             foreach ($list as $key => $val) {
                 $str .= '<option value="' . $val['id'] . '" '
                     . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
-                    . $val['space'] . $val['name'] . '</option>';
+                    . $val['space'] . $val['name'] .'('.$val['code'].')'. '</option>';
             }
         }
         return $str;
