@@ -432,7 +432,7 @@ if (!function_exists('area_select')) {
             foreach ($list as $key => $val) {
                 $str .= '<option value="' . $val['id'] . '" '
                     . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
-                    . $val['space'] . $val['name'] . '</option>';
+                    . $val['space'] . $val['name'] .'('.$val['code'].')'. '</option>';
             }
         }
         return $str;
@@ -497,8 +497,11 @@ if (!function_exists('is_permission')) {
     function is_permission($permission)
     {
         $user = get_current_login_user_info(true);
+        if($user->is_org_admin){
+            return false;
+        }
         if (!$user->hasAnyPermission($permission)) {
-            return redirect()->route('login');
+            return abort(403);
         }
     }
 }

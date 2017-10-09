@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4511df0ab83b10ae1f66bbc7e9258bfd",
+    "content-hash": "fcebc636311c2b32fdbace86e08811d3",
     "packages": [
         {
             "name": "anahkiasen/former",
@@ -394,16 +394,16 @@
         },
         {
             "name": "caouecs/laravel-lang",
-            "version": "3.0.36",
+            "version": "3.0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/caouecs/Laravel-lang.git",
-                "reference": "fce0289a05fe35a6ba2d0625654efce6dd4fa553"
+                "reference": "869a3c0d0a6791768ff320e9b9631b6afa5d033e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/caouecs/Laravel-lang/fce0289a05fe35a6ba2d0625654efce6dd4fa553.zip",
-                "reference": "fce0289a05fe35a6ba2d0625654efce6dd4fa553",
+                "url": "https://files.phpcomposer.com/files/caouecs/Laravel-lang/869a3c0d0a6791768ff320e9b9631b6afa5d033e.zip",
+                "reference": "869a3c0d0a6791768ff320e9b9631b6afa5d033e",
                 "shasum": ""
             },
             "require-dev": {
@@ -432,7 +432,7 @@
                 "laravel",
                 "lpm"
             ],
-            "time": "2017-09-05T11:25:47+00:00"
+            "time": "2017-09-25T07:19:55+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -2307,16 +2307,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.12",
+            "version": "v5.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "74f5831447817034838b3539c644303036df3d8e"
+                "reference": "bfbe20d32ee9f98c89df852847827407a5127be4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/laravel/framework/74f5831447817034838b3539c644303036df3d8e.zip",
-                "reference": "74f5831447817034838b3539c644303036df3d8e",
+                "url": "https://files.phpcomposer.com/files/laravel/framework/bfbe20d32ee9f98c89df852847827407a5127be4.zip",
+                "reference": "bfbe20d32ee9f98c89df852847827407a5127be4",
                 "shasum": ""
             },
             "require": {
@@ -2435,7 +2435,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-09-22T13:33:35+00:00"
+            "time": "2017-09-24T19:09:38+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -3921,16 +3921,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "8b1fdf898e8be7f5d3ba6738e5a60ad95c490f0c"
+                "reference": "9fb81ccaf62a10d06dc457a886d88111b12a6f3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/laravel-backup/8b1fdf898e8be7f5d3ba6738e5a60ad95c490f0c.zip",
-                "reference": "8b1fdf898e8be7f5d3ba6738e5a60ad95c490f0c",
+                "url": "https://files.phpcomposer.com/files/spatie/laravel-backup/9fb81ccaf62a10d06dc457a886d88111b12a6f3c.zip",
+                "reference": "9fb81ccaf62a10d06dc457a886d88111b12a6f3c",
                 "shasum": ""
             },
             "require": {
@@ -3990,7 +3990,7 @@
                 "laravel-backup",
                 "spatie"
             ],
-            "time": "2017-08-30T12:17:01+00:00"
+            "time": "2017-09-25T22:31:45+00:00"
         },
         {
             "name": "spatie/laravel-permission",

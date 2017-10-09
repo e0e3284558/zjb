@@ -3,66 +3,75 @@
     <h4 class="modal-title" id="myModalLabel">导入数据</h4>
 </div>
 <div class="modal-body">
+    <div class="alert alert-danger display-hide" id="error-block">
+        <button class="close" data-close="alert"></button>
+        请更正下列输入错误：
+    </div>
     <form id="signupForm" class="form-horizontal " method="post">
-        <div class="alert alert-danger display-hide" id="error-block">
-            <button class="close" data-close="alert"></button>
-            请更正下列输入错误：
-        </div>
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <div class="row" >
-            <div class="form-group">
-                <label for="money" class="col-md-3 control-label">上传文件</label>
-                <div class="col-md-8">
-                    <input type="hidden" id="upload_id" name="file_path" value="">
-                    <div id="single-upload" class="btn-upload m-t-xs">
-                        <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择附件</div>
-                        <div id="single-upload-file-list"></div>
-                    </div>
-                </div>
+        <input type="hidden" id="upload_id" data-error-container="#error-block" name="file_path" value="">
+        <div id="single-file-upload-instance" class="clearfix multi-file-upload">
+            <div id="single-file-upload-instance-file-list" class="pull-left">
+            </div>
+            <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                上传导入文件
             </div>
         </div>
+        <div class="clearfix"></div>
     </form>
+    <div class="hide" id="result_log">
+        导入错误日志
+        <table id="import_result">
+            
+        </table>
+    </div>
 </div>
 <div class="modal-footer">
+    <a href="{{asset('uploads/temp/area_import.xlsx')}}" class="btn btn-default">下载模板</a>
     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-    <button type="button" class="btn btn-success" id="sub">保存</button>
+    <button type="button" class="btn btn-success" id="sub">导入</button>
 </div>
 
 <script type="text/javascript">
 
     $( document ).ready( function () {
         zjb.fileUpload({
-            uploader:'singleUpload',
-            picker:'single-upload',
+            uploader:'singleFileUploadInstance',
+            picker:'single-file-upload-instance',
             swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
             server: '{{ route("file.upload") }}',
             formData: {
                 '_token':'{{ csrf_token() }}'
             },
-            errorMsgHiddenTime:2000,
-
-            uploadSuccess:function(file,response){
+            fileNumLimit:1,
+            isAutoInsertInput:false,//上传成功是否自动创建input存储区域
+            uploadComplete:function(file,uploader){},
+            uploadError:function(file,uploader){},
+            uploadSuccess:function(file,response,uploader){
                 //上传完成触发时间
                 $('#upload_id').val(response.data.path);
-            }
+            },
+            fileCannel:function(fileId,uploader){},
+            fileDelete:function(fileId,uploader){}
         });
 
         var import_form = $( "#signupForm" );
-        var errorInfo = $('.alert-danger', import_form);
+        var errorInfo = $('.alert-danger');
         $('#sub').click(function () {
             import_form.submit();
         });
         import_form.validate( {
-//            rules: {
-//                num: {
-//                    required:true,
-//                }
-//            },
-//            messages: {
-//                num: {
-//                    required:'不能为空',
-//                }
-//            },
+           rules: {
+               file_path: {
+                   required:true
+               }
+           },
+           messages:{
+            file_path:{
+               required:'请上传导入文件' 
+            }
+           },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -108,18 +117,45 @@
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {
-                        zjb.blockUI();
+                        zjb.blockUI('.modal-body');
                     },
                     success:function (data) {
                         if(data.code){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                window.location.reload();
-                            });
+                            $("#result_log").removeClass('hide');
+                            var error_data = data.data.error_data;
+                            if (error_data.length>1) {
+                                //展示错误数据记录
+                                layui.use('table', function(){
+                                  var table = layui.table;
+                                  //展示已知数据
+                                  table.render({
+                                    elem: '#import_result'
+                                    ,data: error_data
+                                    ,height: 272
+                                    ,cols: [[ //标题栏
+                                      {field: '编码', title: '编码', width: 80,sort: true}
+                                      ,{field: '名称', title: '名称', width: 150,sort: true}
+                                      ,{field: '上级场地', title: '上级场地', width: 150,sort: true}
+                                      ,{field: '状态', title: '状态', width: 80,sort: true}
+                                      ,{field: 'message', title: '原因', width: 150}
+                                    ]] 
+                                    ,skin: 'row' //表格风格
+                                    ,even: true
+                                    ,page: true //是否显示分页
+                                    ,limits: [10, 50, 100]
+                                    ,limit: 10 //每页默认显示的数量
+                                  });
+                                });
+                            }else{
+                                swal({
+                                    title: "",
+                                    text: data.message,
+                                    type: "success",
+                                    timer: 1000,
+                                },function () {
+                                    window.location.reload();
+                                });
+                            }
                         }else{
                             swal("", data.message, "error");
                         }
@@ -135,10 +171,12 @@
                                 }
                             }
                             swal("",arr.substring(0,arr.length-1), "error");
+                        }else{
+                            swal("",'导入失败，系统出错', "error");
                         }
                     },
                     complete:function () {
-                        zjb.unblockUI();
+                        zjb.unblockUI('.modal-body');
                     }
 
                 })

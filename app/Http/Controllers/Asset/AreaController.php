@@ -4,19 +4,15 @@ namespace App\Http\Controllers\Asset;
 
 use App\Http\Requests\AreaRequest;
 use App\Models\Asset\Area;
-use App\Models\Asset\Asset;
-use App\Models\User\Org;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
-use Intervention\Image\ImageManager;
-use PDF;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 use Webpatser\Uuid\Uuid;
-use QrCode;
-use Excel;
 
 class AreaController extends Controller
 {
@@ -35,8 +31,8 @@ class AreaController extends Controller
             $select = $request->select;
             $name = $request->name;
             $where = [];
-            if($name){
-                $where[] = ['name','like',"%{$name}%"];
+            if ($name) {
+                $where[] = ['name', 'like', "%{$name}%"];
             }
             $list = Area::orgs()->where($where)->get()->toArray();
             $org = get_current_login_user_org_info('name')->name;
@@ -74,10 +70,11 @@ class AreaController extends Controller
         }
         return response()->view("asset.area.add");
     }
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(AreaRequest $request)
@@ -85,6 +82,16 @@ class AreaController extends Controller
         if ($res = is_permission('area.add')){
             return $res;
         }
+        $org_id = get_current_login_user_org_id();
+        //但单位场地code进行唯一性验证
+        Validator::make($request->all(), [
+            'code' => [
+                'required',
+                Rule::unique('areas')->where(function ($query) use ($org_id) {
+                    $query->where('org_id', $org_id);
+                })
+            ]
+        ], ['code.unique' => '场地编码已存在'])->validate();
         $area = new Area();
         $area->name = $request->name;
         $area->status = $request->status;
@@ -92,7 +99,7 @@ class AreaController extends Controller
         $area->pid = $request->pid;
         $area->remarks = $request->remarks;
         $area->code = $request->code;
-        $area->org_id = get_current_login_user_org_id();
+        $area->org_id = $org_id;
         $area->uuid = Uuid::generate()->string;
         $area->path = '';
         if ($area->save()) {
@@ -111,7 +118,7 @@ class AreaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -122,7 +129,7 @@ class AreaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -137,8 +144,8 @@ class AreaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(AreaRequest $request, $id)
@@ -152,7 +159,7 @@ class AreaController extends Controller
 //        $area->sort = $request->sort;
         $area->status = $request->status;
         $area->remarks = $request->remarks;
-        $area->code = $request->code;
+//        $area->code = $request->code;
         $area->path = '';
         if ($area->save()) {
             return response()->json([
@@ -170,7 +177,7 @@ class AreaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -211,82 +218,77 @@ class AreaController extends Controller
     public function export()
     {
 
-        $list = Area::where("org_id",Auth::user()->org_id)->get();
+        $list = Area::orgs()->get();
         $cellData = [
-            ['场地名称','父级场地名称类别','备注'],
+            ['编码', '名称', '上级场地', '备注', '状态']
         ];
         $arr = [];
-        foreach ($list as $key=>$value){
+        foreach ($list as $key => $value) {
+            $arr['code'] = $value->code;
             $arr['name'] = $value->name;
-            //所在位置
-            $arr['path'] = "";
-            $str = $value->path.$value->area_id;
-            $str = explode(",",$str);
-            foreach ($str as $k=>$v){
-                $arr['path'] .= Area::where("id",$v)->value("name")." / ";
-            }
-            $arr['path'] = rtrim($arr['path']," /");
+
             $arr['remarks'] = $value->remarks;
-            array_push($cellData,$arr);
+            $arr['status'] = $value->status ? '可用':'不可用';
+            array_push($cellData, $arr);
         }
-        Excel::create('场地列表_'.date("YmdHis"),function($excel) use ($cellData){
-            $excel->sheet('场地管理', function($sheet) use ($cellData){
+        Excel::create('场地列表_' . date("YmdHis"), function ($excel) use ($cellData) {
+            $excel->sheet('场地数据', function ($sheet) use ($cellData) {
                 $sheet->setPageMargin(array(
                     0.25, 0.30, 0.25, 0.30
                 ));
                 $sheet->setWidth(array(
                     'A' => 40, 'B' => 40, 'C' => 40
                 ));
-                $sheet->cells('A1:C1', function($row) {
+                $sheet->cells('A1:C1', function ($row) {
                     $row->setBackground('#cfcfcf');
                 });
                 $sheet->rows($cellData);
             });
         })->export('xlsx');
-        return ;
+        return;
     }
-
 
     /**
      * 下载模板
      */
-    public function downloadModel()
+    /*public function downloadModel()
     {
         $cellData = [['场地名称','父类','场地备注']];
         $cellData2 = [['场地名称','场地编号']];
+
         //类别
-        $list = Area::where("org_id",Auth::user()->org_id)->get();
-        foreach ($list as $k=>$v){
+        $list = Area::where("org_id", Auth::user()->org_id)->get();
+        foreach ($list as $k => $v) {
             $arr = [
-                $list[$k]->name,$list[$k]->id
+                $list[$k]->name, $list[$k]->id
             ];
-            array_push($cellData2,$arr);
+            array_push($cellData2, $arr);
         }
-        Excel::create('场地模板', function($excel) use ($cellData,$cellData2){
+        Excel::create('场地模板', function ($excel) use ($cellData, $cellData2) {
 
             // Our first sheet
-            $excel->sheet('sheet1', function($sheet1) use ($cellData){
+            $excel->sheet('sheet1', function ($sheet1) use ($cellData) {
                 $sheet1->setPageMargin(array(
-                    0.30,0.30,0.30
+                    0.30, 0.30, 0.30
                 ));
                 $sheet1->setWidth(array(
                     'A' => 40, 'B' => 40, 'C' => 40
                 ));
-                $sheet1->cells('A1:C1', function($row) {
+                $sheet1->cells('A1:C1', function ($row) {
                     $row->setBackground('#dfdfdf');
                 });
                 $sheet1->rows($cellData);
             });
 
             // Our second sheet
-            $excel->sheet('场地类别', function($sheet2) use ($cellData2){
+            $excel->sheet('场地类别', function ($sheet2) use ($cellData2) {
                 $sheet2->setPageMargin(array(
-                    0.30,0.30
+                    0.30, 0.30
                 ));
                 $sheet2->setWidth(array(
                     'A' => 40, 'B' => 40
                 ));
-                $sheet2->cells('A1:B1', function($row) {
+                $sheet2->cells('A1:B1', function ($row) {
                     $row->setBackground('#dfdfdf');
                 });
                 $sheet2->rows($cellData2);
@@ -294,7 +296,7 @@ class AreaController extends Controller
 
 
         })->export('xls');
-    }
+    }*/
 
     public function add_import()
     {
@@ -303,34 +305,76 @@ class AreaController extends Controller
 
     public function import(Request $request)
     {
-        $filePath =  $request->file_path;
-        Excel::selectSheets('sheet1')->load($filePath, function($reader) {
-            $data = $reader->getsheet(0)->toArray();
-            $org_id = Auth::user()->org_id;
-            foreach ($data as $k=>$v){
-                if($k==0){
-                    continue;
-                }
-                $arr = [
-                    'name' => $v[0],
-                    'pid' => $v[1],
-                    'uid' => Uuid::generate()->string,
-                    'remarks' => $v[2],
-                    'org_id' => $org_id
-                ];
-                if($arr['pid']=='0'){
-                    $arr['path'] = '';
-                }else{
-                    $path = Area::where("id",$arr['pid'])->value("path");
-                    $arr['path'] = $path.$arr['pid'].',';
-                }
-                Area::insert($arr);
-            }
-        });
         $message = [
-            'code'=>'1',
-            'message'=> '数据导入成功'
+            'code' => '1',
+            'message' => '数据导入成功'
         ];
+
+        $filePath = $request->file_path;
+        $error_data = [];
+        $success_data = [];
+        //判断文件是否是excel文件
+        if (stripos($filePath, '.xls') === false && stripos($filePath, '.xlsx') === false) {
+            $message['code'] = 0;
+            $message['message'] = '请上传xls或xlsx后缀的文件';
+        } else {
+            Excel::selectSheetsByIndex(0)->load($filePath, function ($reader) use (&$error_data, &$success_data) {
+                $data = $reader->limitRows(1000, 0); //一次导入1000行
+                $arr = $data->toArray();
+                $org_id = get_current_login_user_org_id();
+                if ($arr) {
+                    foreach ($arr as $k => $v) {
+                        $area = new Area();
+                        $area->code = $v['编码'];
+                        //检测编码是否已存在
+                        if ($area->where('code', $v['编码'])->where('org_id', $org_id)->first()) {
+                            $v['message'] = '编码已存在';
+                            $error_data[] = $v;
+                            continue;
+                        }
+
+                        $area->name = $v['名称'];
+                        //获取父级场地信息，获取父级场地id
+                        $p_area = explode('/', $v['上级场地']);
+                        if ($p_area) {
+                            $pid = 0;
+                            $is_have_pid = 0;
+                            foreach ($p_area as $ks => $vs) {
+                                $p_area_info = $area->where('pid', $pid)->where('name', $vs)->where('org_id', $org_id)->first();
+                                if ($p_area_info) {
+                                    $is_have_pid = 1;
+                                    $pid = $p_area_info->id; //子级的pid
+                                } else {
+                                    $is_have_pid = 0;
+                                    break;
+                                }
+                            }
+                            if (!$is_have_pid) {
+                                $v['message'] = '上级场地不存在';
+                                $error_data[] = $v;
+                                continue;
+                            }
+                        } else {
+                            $pid = 0;
+                        }
+                        $area->pid = $pid;
+                        $area->org_id = $org_id;
+                        $area->remarks = $v['备注'];
+                        $area->status = $v['状态'] == '不可用' ? 0 : 1;
+                        $area->uuid = Uuid::generate()->string;
+                        $area->path = '';
+                        if ($area->save()) {
+                            $success_data[] = $area->toArray();
+                        } else {
+                            $v['message'] = '数据库写入失败';
+                            $error_data[] = $v;
+                        }
+                    }
+                }
+            });
+
+        }
+        $message['data'] = ['success_data' => $success_data, 'error_data' => $error_data];
         return response()->json($message);
     }
 

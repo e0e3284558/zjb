@@ -3,7 +3,6 @@
         <a href="{{ url('home') }}"><i class="fa fa-th-large"></i> <span class="nav-label">控制面板</span></a>
     </li>
 @endif
-@if(Auth::user()->is_org_admin)
     <li class="{{ active_class(if_uri_pattern('repair/*')) }}">
         <a href="javascript:;"><i class="fa fa-wrench"></i> <span class="nav-label">报修管理</span> <span
                     class="fa arrow"></span></a>
@@ -37,7 +36,6 @@
             </li>
         </ul>
     </li>
-@endif
 @if(Auth::user()->is_org_admin=="0")
     <li class="{{ active_class(if_route('repair_list.index'))}}"><a
                 href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i>

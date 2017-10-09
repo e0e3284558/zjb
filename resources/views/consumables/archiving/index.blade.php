@@ -68,11 +68,11 @@
                                         <li><a>导出分类</a></li>
                                     </ul>
                                 </div>
-                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                <a type="button" class="btn btn-success" data-toggle="modal"
                                         data-target=".bs-example-modal-lg"
-                                        onclick="add('新增物品','{{url('consumables/archiving/create')}}')">+
+                                        href="{{url('consumables/archiving/create')}}">+
                                     新增物品
-                                </button>
+                                </a>
 
                                 <button type="button" class="btn btn-default">导出Excel</button>
                             </h3>
@@ -90,6 +90,7 @@
 
                                         function zTreeOnClick(event, treeId, treeNode) {
                                             id = treeNode.id;
+                                            alert(id);
                                             tableReload({});
                                         }
 
@@ -300,11 +301,7 @@
                     deleteUser(ids);
                 }
             });
-            var tableReload = function (query) {
-                table.reload('dataUser', {
-                    where: query
-                });
-            }
+            
             $("#simple-search").click(function () {
                 var searchText = $('#search-text').val();
                 tableReload({
@@ -320,7 +317,13 @@
                 tableReload({});
             })
         });
-    </script>
 
+       function tableReload(query) {
+            table.reload('dataUser', {
+                where: query
+            });
+        }
+    </script>
+    
 
 @endsection
