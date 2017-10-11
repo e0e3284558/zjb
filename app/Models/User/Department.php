@@ -15,4 +15,14 @@ class Department extends Model
         $data = self::org()->where('status',1)->get()->toArray();
         return formatTreeData($data);
     }
+
+    public function classify()
+    {
+        return $this->belongsToMany('App\Models\Repair\Classify');
+    }
+
+    public function assetCategory()
+    {
+        return $this->belongsToMany('App\Models\Asset\AssetCategory');
+    }
 }

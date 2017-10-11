@@ -18,6 +18,7 @@ class RepairListController extends Controller
      */
     public function index()
     {
+
         if ($res = is_permission('repair.list.index')){
             return $res;
         }
