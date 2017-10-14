@@ -12,7 +12,7 @@
                     <li class="dd-item">
                         <div class="dd-handle ">
                             <label>选择服务商</label>
-                            <select name="service_provider_id" id="provider" class="form-control">
+                            <select name="service_provider_id" id="provider" class="form-control"  onchange="change_classify()">
                                 <option value="">-----请选择服务商-----</option>
                                 @foreach($serviceProvider as $v)
                                     <option value="{{$v['id']}}">{{$v['name']}}</option>
@@ -25,9 +25,9 @@
                     <li class="dd-item">
                         <div class="dd-handle ">
                             <label>选择维修人员类型</label>
-                            <select name="classify_id" id="" class="form-control"
+                            <select name="" id="" class="form-control"
                                     onchange="change_classify(this.value)">
-                                <option value="">-----请选择类型-----</option>
+                                <option value="0">-----全部维修工-----</option>
                                 @foreach($classify as $v)
                                     <option value="{{$v->id}}">{{$v->name}}</option>
                                 @endforeach

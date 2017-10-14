@@ -36,7 +36,37 @@ class SortController extends Controller
      */
     public function index()
     {
-        //
+        //获取所有部门信息
+        if (request('tree') == 1) {
+            $select = $request->select;
+            $name = $request->name;
+            $where = [];
+            if ($name) {
+                $where[] = ['name', 'like', "%{$name}%"];
+            }
+            $list = Department::org()->where($where)->get()->toArray();
+            $org = get_current_login_user_org_info('name')->name;
+            $tempData = [
+                [
+                    'id' => 0,
+                    'parent_id' => -1,
+                    'text' => $org,
+                    'name' => $org,
+                    'href' => '',//编辑地址
+                    'icon' => asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/global.gif')
+                ]
+            ];
+            if ($list) {
+                foreach ($list as $key => $val) {
+                    $val['href'] = url('users/departments/' . $val['id'] . '/edit');
+                    $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
+                    $tempData[] = $val;
+                }
+            }
+            return response()->json($tempData);
+        }
+//        $list = Department::getSpaceTreeData();
+        return view('consumables.sort.index');
         $data = self::getSort();
         return view('consumables.sort.index', compact('data'));
     }

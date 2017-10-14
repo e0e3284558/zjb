@@ -68,7 +68,7 @@
                                         <li><a>导出分类</a></li>
                                     </ul>
                                 </div>
-                                <a type="button" class="btn btn-success" data-toggle="modal"
+                                <a type="button" id="ajax_add" class="btn btn-success" data-toggle="modal"
                                         data-target=".bs-example-modal-lg"
                                         href="{{url('consumables/archiving/create')}}">+
                                     新增物品
@@ -90,8 +90,8 @@
 
                                         function zTreeOnClick(event, treeId, treeNode) {
                                             id = treeNode.id;
-                                            alert(id);
-                                            tableReload({});
+                                            $("#ajax_add").attr("href","{{url('consumables/archiving')}}/"+id);
+                                            searchTable('{{ url("consumables/goods?id=")}}'+id);
                                         }
 
                                         var zTreeObj;
@@ -321,6 +321,12 @@
        function tableReload(query) {
             table.reload('dataUser', {
                 where: query
+            });
+        }
+        function searchTable(url) {
+           console.log(url);
+            table.reload('dataUser', {
+                url:url
             });
         }
     </script>

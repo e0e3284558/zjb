@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Asset\AssetCategory;
+use App\Models\Repair\Classify;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -30,7 +32,7 @@ class DefaultController extends Controller
      */
     public function index(Request $request)
     {
-        if ($res = is_permission('user.index')){
+        if ($res = is_permission('user.index')) {
             return $res;
         }
         if ($request->ajax()) {
@@ -75,16 +77,18 @@ class DefaultController extends Controller
      */
     public function create()
     {
-        if ($res = is_permission('user.add')){
+        if ($res = is_permission('user.add')) {
             return $res;
         }
+        $classify = Classify::where('org_id', get_current_login_user_org_id())->orderBy('id', 'desc')->get();
+        $asset_category = AssetCategory::where('org_id', get_current_login_user_org_id())->orderBy('id', 'desc')->get();
         $role = Role::where('org_id', Auth::user()->org_id)->get();
-        return view('user.user.add', compact('role'));
+        return view('user.user.add', compact('role', 'classify', 'asset_category'));
     }
 
     public function store(UserRequest $request)
     {
-        if ($res = is_permission('user.add')){
+        if ($res = is_permission('user.add')) {
             return $res;
         }
         $user = new User;
@@ -97,12 +101,19 @@ class DefaultController extends Controller
 //        $user->avatar = $request->avatar;
         $user->org_id = get_current_login_user_org_id();
         if ($user->save()) {
-            $user = User::where('username', $request->username)->first();
-            $user->assignRole($request->role);
-            return response()->json([
-                'status' => 1, 'message' => '添加成功',
-                'data' => $user->toArray(), 'url' => ''
-            ]);
+            if ($user->classify()->sync($request->classify_id) && $user->assetCategory()->sync($request->asset_category_id)) {
+                $user = User::where('username', $request->username)->first();
+                $user->assignRole($request->role);
+                return response()->json([
+                    'status' => 1, 'message' => '添加成功',
+                    'data' => $user->toArray(), 'url' => ''
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 0, 'message' => '关联维护失败',
+                    'data' => null, 'url' => ''
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 0, 'message' => '添加失败',
@@ -113,7 +124,7 @@ class DefaultController extends Controller
 
     public function show($id)
     {
-        if ($res = is_permission('user.index')){
+        if ($res = is_permission('user.index')) {
             return $res;
         }
         if ($id == '*') {
@@ -127,7 +138,7 @@ class DefaultController extends Controller
 
     public function search($value)
     {
-        if ($res = is_permission('user.index')){
+        if ($res = is_permission('user.index')) {
             return $res;
         }
         if ($value) {
@@ -139,7 +150,7 @@ class DefaultController extends Controller
 
     public function edit()
     {
-        if ($res = is_permission('user.edit')){
+        if ($res = is_permission('user.edit')) {
             return $res;
         }
         $data = User::find(request('id'));
@@ -148,10 +159,21 @@ class DefaultController extends Controller
             ->where('model_type', 'App\Models\User\User')
             ->where('model_id', $data->id)
             ->first();
-        if ($select_role){
-            $select_role=$select_role->role_id;
+        if ($select_role) {
+            $select_role = $select_role->role_id;
         }
-        return response()->view('user.user.edit', compact('data', 'role', 'select_role'));
+
+        $classify = Classify::where('org_id', $data->org_id)->orderBy('id', 'desc')->get();
+        $select_classify = DB::table('classify_user')
+            ->where('user_id', $data->id)
+            ->pluck('classify_id')->toArray();
+        $asset_category = AssetCategory::where('org_id', $data->org_id)->orderBy('id', 'desc')->get();
+        $select_category = DB::table('asset_category_user')
+            ->where('user_id', $data->id)
+            ->pluck('asset_category_id')->toArray();
+
+        return response()->view('user.user.edit',
+            compact('data', 'role', 'select_role', 'classify', 'select_classify', 'asset_category', 'select_category'));
     }
 
     /**
@@ -162,7 +184,7 @@ class DefaultController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        if ($res = is_permission('user.edit')){
+        if ($res = is_permission('user.edit')) {
             return $res;
         }
         $user = User::find($id);
@@ -174,11 +196,19 @@ class DefaultController extends Controller
         $user->email = $request->email;
 //        $user->avatar = $request->avatar;
         if ($user->save()) {
-            $user->syncRoles($request->role);
-            return response()->json([
-                'status' => 1, 'message' => '编辑成功',
-                'data' => User::with('department')->find($user->id)->toArray()
-            ]);
+            if ($user->classify()->sync($request->classify_id) &&
+                $user->assetCategory()->sync($request->asset_category_id)) {
+                $user->syncRoles($request->role);
+                return response()->json([
+                    'status' => 1, 'message' => '编辑成功',
+                    'data' => User::with('department')->find($user->id)->toArray()
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 0, 'message' => '关联维护失败',
+                    'data' => null, 'url' => ''
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 0, 'message' => '编辑失败',
@@ -189,7 +219,7 @@ class DefaultController extends Controller
 
     public function destroy()
     {
-        if ($res = is_permission('user.del')){
+        if ($res = is_permission('user.del')) {
             return $res;
         }
         $id = request('id');

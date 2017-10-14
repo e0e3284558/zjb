@@ -552,6 +552,35 @@ if (!function_exists('get_department_asset_category')) {
 }
 
 
+/**
+ * 获取当前登录用户组织部门的负责维修的场地id
+ */
+if (!function_exists('get_user_classify')) {
+    function get_user_classify()
+    {
+        $user_id=get_current_login_user_info();
+        $classify=\Illuminate\Support\Facades\DB::table('classify_user')
+                                        ->where('user_id', $user_id)
+                                        ->pluck('classify_id')->toArray();
+        return $classify;
+    }
+}
+
+/**
+ * 获取当前登录用户组织部门的负责维修的资产分类id
+ */
+if (!function_exists('get_user_asset_category')) {
+    function get_user_asset_category()
+    {
+        $user_id=get_current_login_user_info();
+        $asset_category=\Illuminate\Support\Facades\DB::table('asset_category_user')
+            ->where('user_id', $user_id)
+            ->pluck('asset_category_id')->toArray();
+        return $asset_category;
+    }
+}
+
+
 
 
 

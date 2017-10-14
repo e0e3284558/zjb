@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Consumables;
 
 use App\Models\Consumables\Goods;
+use App\Models\Consumables\Sort;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,6 +16,14 @@ class GoodsController extends Controller
      */
     public function index(Request $request)
     {
+
+        if ($request->get('id')) {
+            $user = Goods::where('classify_id',$request->get('id'))->paginate(request('limit'));
+            $data = $user->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
+        }
         if ($request->ajax()) {
             $user = Goods::paginate(request('limit'));
             $data = $user->toArray();
@@ -22,6 +31,8 @@ class GoodsController extends Controller
             $data['code'] = 0;
             return response()->json($data);
         }
+
+
         return view('consumables.archiving.index');
 
     }
@@ -92,7 +103,8 @@ class GoodsController extends Controller
     public function edit()
     {
         $goods = Goods::find(request('id'));
-        return response()->view('consumables.archiving.edit',compact('goods'));
+        $sort=Sort::get();
+        return response()->view('consumables.archiving.edit',compact('goods','sort'));
 
     }
 

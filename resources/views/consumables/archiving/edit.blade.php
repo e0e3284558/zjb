@@ -29,7 +29,8 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">商品条码</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" value="{{$goods->barcode}}" name="barcode" placeholder="商品条码">
+                    <input type="text" class="form-control" value="{{$goods->barcode}}" name="barcode"
+                           placeholder="商品条码">
                 </div>
             </div>
             <div class="form-group">
@@ -47,23 +48,38 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">品牌商标</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" value="{{$goods->trademark}}" name="trademark" placeholder="品牌商标">
+                    <input type="text" class="form-control" value="{{$goods->trademark}}" name="trademark"
+                           placeholder="品牌商标">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">安全库存</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" value="{{$goods->inventory_cap}}" name="inventory_cap" placeholder="上限">
+                    <input type="text" class="form-control" value="{{$goods->inventory_cap}}" name="inventory_cap"
+                           placeholder="上限">
                 </div>
                 <div class="col-sm-1">-</div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" value="{{$goods->inventory_lower}}" name="inventory_lower" placeholder="下限">
+                    <input type="text" class="form-control" value="{{$goods->inventory_lower}}" name="inventory_lower"
+                           placeholder="下限">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">禁用</label>
                 <div class="col-sm-4">
                     <input type="checkbox" class="form-control  icheck" name="disable">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属分类</label>
+                <div class="col-sm-10">
+                    <select name="classify_id" id="" class="form-control">
+                        @foreach($sort as $v)
+                            <option value="{{$v->id}}"
+                                    @if($goods->classify_id==$v->id) selected @endif>{{$v->name}}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
             <div class="form-group">
@@ -119,26 +135,22 @@
 
 
         var l = $("button[type='submit']").ladda();
-        var process_form = $( "#signupForm1" );
+        var process_form = $("#signupForm1");
         var errorInfo = $('.alert-danger', process_form);
         $('#submitAssetsForm').click(function () {
             process_form.submit();
         });
-        process_form.validate( {
-            rules: {
-
-            },
-            messages: {
-
-            },
+        process_form.validate({
+            rules: {},
+            messages: {},
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             ignore: "",
-            invalidHandler: function(error,validator){
+            invalidHandler: function (error, validator) {
                 errorInfo.show();
             },
-            errorPlacement: function ( error, element ) {
+            errorPlacement: function (error, element) {
                 if (element.parent(".input-group").length > 0) {
                     error.insertAfter(element.parent(".input-group"));
                 } else if (element.attr("data-error-container")) {
@@ -171,10 +183,10 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:process_form.attr('action'),
-                    data:process_form.serialize(),
-                    type:"post",
-                    dataType:"json",
+                    url: process_form.attr('action'),
+                    data: process_form.serialize(),
+                    type: "post",
+                    dataType: "json",
                     beforeSend: function () {
                         l.ladda('start');
                     },
@@ -201,6 +213,6 @@
                 });
                 return false;
             }
-        } );
+        });
     });
 </script>

@@ -119,36 +119,9 @@ class DepartmentController extends Controller
                 ]
             ];
             if ($list) {
-                /*//获取树形菜单(jsTree使用)
-                foreach ($list as $key => $v) {
-                    $temp = array(
-                        'id' => $v['id'],
-                        'parent_id' => $v['parent_id'],
-                        'text' => $v['name']
-                    );
-                    $temp['li_attr'] = array(
-                        'data-datas' => json_encode($v)
-                    );
-                    $temp['a_attr'] = array(
-                        'href' => url('users/departments/' . $v['id'] . '/edit')
-                    );
-                    if ($select == $v['id']) {
-                        $temp["state"] = array(
-                            "open" => true,
-                            "selected" => true
-                        );
-                    }
-                    $tempData[] = $temp;
-                }
-                $tempData = list_to_tree($tempData, 'id', 'parent_id', 'children');
-                */
                 foreach ($list as $key => $val) {
                     $val['href'] = url('users/departments/' . $val['id'] . '/edit');
-//                    if($val['is_company']){
-//                        $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/home.gif');
-//                    }else{
                     $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
-//                    }
                     $tempData[] = $val;
                 }
             }

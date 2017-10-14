@@ -29,7 +29,8 @@ class ArchivingController extends Controller
      */
     public function create()
     {
-        return response()->view('consumables.archiving.add');
+        $sort=Sort::get();
+        return response()->view('consumables.archiving.add',compact('sort'));
     }
 
     /**
@@ -51,7 +52,8 @@ class ArchivingController extends Controller
      */
     public function show($id)
     {
-        //
+        $sort=Sort::get();
+        return response()->view('consumables.archiving.add',compact('id','sort'));
     }
 
     /**
