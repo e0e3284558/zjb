@@ -1,63 +1,59 @@
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="modal-title">创建用户</h4>
+<div class="ibox">
+    <div class="ibox-title">
+        <h5>创建分类</h5>
+    </div>
+    <div class="ibox-content margin-padding-0 relative-ibox-content">
+        <form id="signupForm1" class="form-horizontal  padding-20 " method="post" id="dep-form">
+            <div class="form-group">
+                <i class="i-red">*</i>
+                <label class="control-label">选择父类</label>
+                <select name="parent_id" id="" class="form-control">
+                    @if(isset($id))
+                        <option value="{{$id}}">{{$sort->name}}</option>
+                    @else
+                        <option value="0">新建根分类</option>
+                        @foreach($sort as $k=>$v)
+                            <option value="{{$v->id}}">{{$v->name}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="form-group">
+                <i class="i-red">*</i>
+                <label class="control-label">分类名称</label>
+                <input type="text" name="name" value="" class="form-control" placeholder="请输入分类名称">
+            </div>
+
+            <div class="form-actions border-top ">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-success blue ladda-button" data-style="expand-left"><span
+                            class="ladda-label">保存</span></button>
+                <button type="reset" class="btn btn-default" id="cannel">取消</button>
+            </div>
+        </form>
+    </div>
 </div>
-
-
-
-<form id="signupForm1" class="form-horizontal  " method="post" >
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-    <div class="modal-body">
-        <div class="form-group">
-            <i class="i-red">*</i>
-            <label for="exampleInputEmail1">分类名称</label>
-            <input type="text" name="name" value="" class="form-control" placeholder="请输入分类名称">
-        </div>
-        <div class="form-group">
-            <i class="i-red">*</i>
-            <label for="exampleInputPassword1">选择父类</label>
-            <select name="parent_id" id="" class="form-control">
-                @if(isset($id))
-                    <option value="{{$id}}">{{$sort->name}}</option>
-                @else
-                    <option value="0">新建根分类</option>
-                    @foreach($sort as $k=>$v)
-                        <option value="{{$v->id}}">{{$v->name}}</option>
-                    @endforeach
-                @endif
-            </select>
-        </div>
-
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-success blue" id="submitUserForm">保存</button>
-    </div>
-</form>
 <script type="text/javascript">
-    $.validator.setDefaults( {
-
-    } );
-    $( document ).ready( function () {
-        $( "#signupForm1" ).validate( {
+    $.validator.setDefaults({});
+    $(document).ready(function () {
+        $("#signupForm1").validate({
             rules: {
-                name:{
-                    required:true,
-                } ,
+                name: {
+                    required: true,
+                },
                 name: "required",
             },
             messages: {
-                category_code:{
-                    required:"请输出类别编号",
-                } ,
+                category_code: {
+                    required: "请输出类别编号",
+                },
                 name: "请输出类别名称",
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             ignore: "",
-            errorPlacement: function ( error, element ) {
+            errorPlacement: function (error, element) {
                 if (element.parent(".input-group").length > 0) {
                     error.insertAfter(element.parent(".input-group"));
                 } else if (element.attr("data-error-container")) {
@@ -90,27 +86,27 @@
             submitHandler: function () {
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('consumables/sort')}}",
-                    data:$('#signupForm1').serialize(),
-                    type:"post",
-                    dataType:"json",
-                    beforeSend:function () {
+                    url: "{{url('consumables/sort')}}",
+                    data: $('#signupForm1').serialize(),
+                    type: "post",
+                    dataType: "json",
+                    beforeSend: function () {
                         $('#signupForm1').toggleClass('sk-loading');
                     },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        if(jqXHR.status == 422){
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status == 422) {
                             var arr = "";
-                            for (var i in jqXHR.responseJSON){
+                            for (var i in jqXHR.responseJSON) {
                                 var xarr = jqXHR.responseJSON[i];
-                                for (var j=0;j<xarr.length;j++){
+                                for (var j = 0; j < xarr.length; j++) {
                                     var str = xarr[j];
-                                    arr += str+",";
+                                    arr += str + ",";
                                 }
                             }
-                            swal("",arr.substring(0,arr.length-1), "error");
+                            swal("", arr.substring(0, arr.length - 1), "error");
                         }
                     },
-                    complete:function () {
+                    complete: function () {
                         $('#signupForm1').toggleClass('sk-loading');
                     },
                     success: function (data, textStatus, xhr) {

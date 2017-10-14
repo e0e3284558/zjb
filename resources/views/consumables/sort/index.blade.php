@@ -35,14 +35,14 @@
                         <span class="input-group-btn">
                         <button type="button" id="search-dep" class="btn btn-primary blue border-radius-none"><i
                                     class="fa fa-search"></i> 查询</button>
-                        <a class="btn default border-radius-none" href="{{ url("users/departments/create") }}"
+                        <a class="btn default border-radius-none" href="{{ url("consumables/sort/create") }}"
                            data-target="#dep-form-wrapper" data-toggle="relaodHtml" data-loading="true"><i
                                     class="fa fa-plus"></i> 新增</a>
                     </span>
                     </div>
                 </div>
                 <div class="full-height-wrapper">
-                    <ul id="departments-tree" class="ztree">
+                    <ul id="sort-tree" class="ztree">
 
                     </ul>
                 </div>
@@ -73,7 +73,6 @@
                 zjb.unblockUI("#ztree-warpper");
             };
             var depTreeOnClick = function (event, treeId, treeNode, clickFlag) {
-                // console.log(treeNode);
                 if (treeNode.href != undefined && treeNode.href != '') {
                     zjb.ajaxGetHtml('#dep-form-wrapper', treeNode.href, {}, true);
                 }
@@ -81,7 +80,7 @@
             var setting = {
                 async: {
                     enable: true,
-                    url: "{!! url('users/departments?tree=1') !!}",
+                    url: "{!! url('consumables/sort?tree=1') !!}",
                     autoParam: ["id", "level=lv"],
                     otherParam: {
                         'name': function () {
@@ -112,12 +111,12 @@
                     onClick: depTreeOnClick
                 }
             };
-            $.fn.zTree.init($("#departments-tree"), setting);
+            $.fn.zTree.init($("#sort-tree"), setting);
 
-            zjb.ajaxGetHtml('#dep-form-wrapper', '{{ url("users/departments/create") }}');
+            zjb.ajaxGetHtml('#dep-form-wrapper', '{{ url("consumables/sort/create") }}');
 
             $("#search-dep").click(function () {
-                var treeObj = $.fn.zTree.getZTreeObj("departments-tree");
+                var treeObj = $.fn.zTree.getZTreeObj("sort-tree");
                 treeObj.reAsyncChildNodes(null, "refresh");
             });
         });

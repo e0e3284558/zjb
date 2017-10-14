@@ -34,7 +34,7 @@ class SortController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //获取所有部门信息
         if (request('tree') == 1) {
@@ -44,7 +44,7 @@ class SortController extends Controller
             if ($name) {
                 $where[] = ['name', 'like', "%{$name}%"];
             }
-            $list = Department::org()->where($where)->get()->toArray();
+            $list = Sort::where('org_id',get_current_login_user_org_id())->where($where)->get()->toArray();
             $org = get_current_login_user_org_info('name')->name;
             $tempData = [
                 [
@@ -67,8 +67,6 @@ class SortController extends Controller
         }
 //        $list = Department::getSpaceTreeData();
         return view('consumables.sort.index');
-        $data = self::getSort();
-        return view('consumables.sort.index', compact('data'));
     }
 
     /**
@@ -79,7 +77,7 @@ class SortController extends Controller
     public function create()
     {
         //
-        $sort = Sort::get();
+        $sort = self::getSort();
         return response()->view('consumables.sort.add', compact('sort'));
     }
 
