@@ -37,8 +37,8 @@
                         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle border-radius-none" type="button" aria-expanded="false">操作 <span class="caret"></span></button>
                         <ul class="dropdown-menu pull-right">
                             <li><a class="btn btn-default" href="{{ url("area/create") }}" data-target="#dep-form-wrapper" data-toggle="relaodHtml" data-loading="true"><i class="fa fa-plus"></i> 新增</a></li>
-                            <li><a class="btn btn-default" id="printBarcode download" href="{{url('area/downloadModel')}}"><i class="fa fa-download"></i> 下载模板</a></li>
-                            <li><a class="btn btn-default" id="print download" href="{{url('area/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入</a></li>
+                            <!-- <li><a class="btn btn-default" id="printBarcode download" href="{{url('area/downloadModel')}}"><i class="fa fa-download"></i> 下载模板</a></li> -->
+                            <li><a class="btn btn-default" id="print download" href="{{url('area/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-md"><i class="fa fa-sign-in"></i> 导入</a></li>
                             <li><a class="btn btn-default" id="print download" href="{{url('area/export')}}"><i class="fa fa-sign-out"></i> 导出</a></li>
                         </ul>
                     </span>

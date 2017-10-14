@@ -119,7 +119,7 @@
                                             批量分派
                                         </button>
                                     </div>
-                                    <div class="page-header">{{ $data1->appends(['active' => 'wait'])->links() }}</div>
+                                    {{--<div class="page-header">{{ $data1->appends(['active' => 'wait'])->links() }}</div>--}}
                                 </div>
                                 <div class="tab-pane @if (request()->active=='doing') active  @endif" id="tab-2">
                                     <div class="tab-pane">
@@ -191,7 +191,7 @@
                                                 批量完成
                                             </button>
                                         </div>
-                                        <div class="page-header">{{ $data2->appends(['active' => 'doing'])->links() }}</div>
+                                        {{--<div class="page-header">{{ $data2->appends(['active' => 'doing'])->links() }}</div>--}}
                                     </div>
                                 </div>
 
@@ -248,7 +248,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="page-header">{{ $data4->appends(['active' => 'assess'])->links() }}</div>
+                                        {{--<div class="page-header">{{ $data4->appends(['active' => 'assess'])->links() }}</div>--}}
                                     </div>
                                 </div>
                                 <div class="tab-pane @if (request()->active=='success') active  @endif" id="tab-4">
@@ -319,7 +319,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="page-header">{{ $data3->appends(['active' => 'success'])->links() }}</div>
+                                    {{--<div class="page-header">{{ $data3->appends(['active' => 'success'])->links() }}</div>--}}
                                 </div>
                                 <div class="tab-pane @if (request()->active=='all') active  @endif " id="tab-5">
                                     <div class="tab-pane">
@@ -439,7 +439,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="page-header">{{ $data5->appends(['active' => 'all'])->links() }}</div>
+                                    {{--<div class="page-header">{{ $data5->appends(['active' => 'all'])->links() }}</div>--}}
                                 </div>
                             </div>
                         </div>

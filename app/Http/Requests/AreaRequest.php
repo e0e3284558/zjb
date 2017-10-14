@@ -33,7 +33,7 @@ class AreaRequest extends FormRequest
             {
                 return [
                     'name'=>'bail|required',
-                    'code'=>'bail|required|unique:areas,code',
+                    'code'=>'bail|required',
                     'pid'=>'bail|required',
                     'status'=>'bail|required',
                 ];
@@ -43,7 +43,7 @@ class AreaRequest extends FormRequest
             {
                 return [
                     'name'=>'bail|required',
-                    'code'=>'bail|required|unique:areas,code,'.request('id'),
+                    'code'=>'bail|nullable|unique:areas,code,'.request('id'),
                     'pid'=>'bail|required|different:id',
                     'status'=>'bail|required',
                 ];

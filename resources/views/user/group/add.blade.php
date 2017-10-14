@@ -1,7 +1,7 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title">创建用户</h4>
+    <h4 class="modal-title">创建角色</h4>
 </div>
 <div class="modal-body">
     <form action="{{url('users/groups/store')}}" id="AddUserForm" class="form-horizontal " method="post"

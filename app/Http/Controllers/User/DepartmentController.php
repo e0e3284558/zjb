@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Requests\DepartmentRequest;
+use App\Models\Asset\AssetCategory;
+use App\Models\Repair\Classify;
 use App\Models\User\Department;
 use App\Models\User\Org;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Validator;
 
@@ -29,7 +32,7 @@ class DepartmentController extends Controller
      */
     public function unit(Request $request)
     {
-        if ($res = is_permission('departments.index')){
+        if ($res = is_permission('departments.index')) {
             return $res;
         }
         if ($request->method() == 'POST') {
@@ -92,7 +95,7 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-        if ($res = is_permission('departments.index')){
+        if ($res = is_permission('departments.index')) {
             return $res;
         }
         //获取所有部门信息
@@ -100,8 +103,8 @@ class DepartmentController extends Controller
             $select = $request->select;
             $name = $request->name;
             $where = [];
-            if($name){
-                $where[] = ['name','like',"%{$name}%"];
+            if ($name) {
+                $where[] = ['name', 'like', "%{$name}%"];
             }
             $list = Department::org()->where($where)->get()->toArray();
             $org = get_current_login_user_org_info('name')->name;
@@ -144,7 +147,7 @@ class DepartmentController extends Controller
 //                    if($val['is_company']){
 //                        $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/home.gif');
 //                    }else{
-                        $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
+                    $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
 //                    }
                     $tempData[] = $val;
                 }
@@ -157,10 +160,12 @@ class DepartmentController extends Controller
 
     public function create()
     {
-        if ($res = is_permission('departments.add')){
+        if ($res = is_permission('departments.add')) {
             return $res;
         }
-        return view('user.department.add');
+        $classify = Classify::where('org_id', get_current_login_user_org_id())->orderBy('id', 'desc')->get();
+        $asset_category = AssetCategory::where('org_id', get_current_login_user_org_id())->orderBy('id', 'desc')->get();
+        return view('user.department.add', compact('classify', 'asset_category'));
     }
 
     /**
@@ -171,7 +176,7 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentRequest $request)
     {
-        if ($res = is_permission('departments.add')){
+        if ($res = is_permission('departments.add')) {
             return $res;
         }
         $department = new Department;
@@ -181,10 +186,17 @@ class DepartmentController extends Controller
         $department->parent_id = $request->parent_id;
         $department->org_id = auth()->user()->org_id;
         if ($department->save()) {
-            return response()->json([
-                'status' => 1, 'message' => '添加成功',
-                'data' => $department->toArray(), 'url' => url('users/departments?tree=1&select=' . $department->id)
-            ]);
+            if ($department->classify()->sync($request->classify_id) && $department->assetCategory()->sync($request->asset_category_id)) {
+                return response()->json([
+                    'status' => 1, 'message' => '添加成功',
+                    'data' => $department->toArray(), 'url' => url('users/departments?tree=1&select=' . $department->id)
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 0, 'message' => '关联维护失败',
+                    'data' => null, 'url' => ''
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 0, 'message' => '保存失败',
@@ -201,11 +213,20 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department, $id)
     {
-        if ($res = is_permission('departments.edit')){
+        if ($res = is_permission('departments.edit')) {
             return $res;
         }
-        $dep = $department->findOrFail($id);
-        return view('user.department.edit', ['department' => $dep]);
+        $department = $department->findOrFail($id);
+        $classify = Classify::where('org_id', get_current_login_user_org_id())->orderBy('id', 'desc')->get();
+        $select_classify = DB::table('classify_department')
+            ->where('department_id', $id)
+            ->pluck('classify_id')->toArray();
+        $asset_category = AssetCategory::where('org_id', get_current_login_user_org_id())->orderBy('id', 'desc')->get();
+        $select_category = DB::table('asset_category_department')
+            ->where('department_id', $id)
+            ->pluck('asset_category_id')->toArray();
+        return view('user.department.edit',
+            compact('department', 'classify', 'asset_category', 'select_category', 'select_classify'));
     }
 
     /**
@@ -217,7 +238,7 @@ class DepartmentController extends Controller
      */
     public function update(DepartmentRequest $request, Department $department, $id)
     {
-        if ($res = is_permission('departments.edit')){
+        if ($res = is_permission('departments.edit')) {
             return $res;
         }
         $dep = $department->findOrFail($id);
@@ -226,10 +247,18 @@ class DepartmentController extends Controller
         $dep->sort = $request->sort;
         $dep->status = $request->status;
         if ($dep->save()) {
-            return response()->json([
-                'status' => 1, 'message' => '编辑成功',
-                'data' => $dep->toArray(), 'url' => url('users/departments?tree=1&select=' . $id)
-            ]);
+            if ($dep->classify()->sync($request->classify_id) &&
+                $dep->assetCategory()->sync($request->asset_category_id)) {
+                return response()->json([
+                    'status' => 1, 'message' => '编辑成功',
+                    'data' => $dep->toArray(), 'url' => url('users/departments?tree=1&select=' . $id)
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 0, 'message' => '关联维护失败',
+                    'data' => null, 'url' => ''
+                ]);
+            }
         } else {
             return response()->json([
                 'status' => 0, 'message' => '编辑失败',
@@ -246,7 +275,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department, $id)
     {
-        if ($res = is_permission('departments.del')){
+        if ($res = is_permission('departments.del')) {
             return $res;
         }
         $result = [

@@ -22,7 +22,7 @@
                 </label>
                 <div>
                     <input type="text" placeholder="场地编码" name="code" value="" class="form-control">
-                    <span class="help-block">请输入场地编码</span>
+                    <span class="help-block">请输入场地编码，<span class="bg-warning">提交之后不可修改</span></span>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>

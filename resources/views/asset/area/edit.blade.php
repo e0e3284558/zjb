@@ -21,7 +21,7 @@
                     场地编码<span class="required">*</span>
                 </label>
                 <div>
-                    <input type="text" placeholder="场地编码" name="code" value="{{$area->code}}" class="form-control">
+                    <input type="text" placeholder="场地编码" disabled="" name="code" value="{{$area->code}}" class="form-control">
                     <span class="help-block">请输入场地编码</span>
                 </div>
             </div>
