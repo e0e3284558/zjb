@@ -28,6 +28,17 @@
                     <button href="" class="btn red btn-delete">
                         <i class="fa fa-trash"></i> 删除
                     </button>
+                    <div class="dropdown inline">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-print"></i>更多操作
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <li><a class="btn btn-default" id="printBarcode download" href="{{url('asset/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
+                            <li><a class="btn btn-default" id="print download" href="{{url('asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 资产导入</a></li>
+                            <li><a class="btn btn-default" id="print download" href="{{url('asset/export')}}"><i class="fa fa-sign-out"></i> 导出资产数据</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">

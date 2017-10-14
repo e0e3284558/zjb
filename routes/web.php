@@ -46,6 +46,11 @@ Route::group(['prefix'=>'consumables','namespace'=>'Consumables','middleware'=>'
     Route::get('sort/{id}/createSub','SortController@createSub');
     Route::get('sort/{id}/editName','SortController@editName');
     Route::resource('sort','SortController');
+
+    Route::get('archiving/downloadModel', 'ArchivingController@downloadModel');
+    Route::get('archiving/add_import', 'ArchivingController@add_import');
+    Route::post('archiving/import', 'ArchivingController@import');
+    Route::get('archiving/export', 'ArchivingController@export');
     Route::resource('archiving','ArchivingController');
     Route::get('goods/edit', 'GoodsController@edit')->name('consumables.goods.edit');
     Route::delete('goods/delete', 'GoodsController@destroy')->name('consumables.goods.destroy');

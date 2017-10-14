@@ -598,7 +598,6 @@ class AssetController extends Controller
         $filePath =  $request->file_path;
         Excel::selectSheets('资产录入')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();
-            dd($data);
             $org_id = get_current_login_user_org_id();
             foreach ($data as $k=>$v){
                 if($k==0){
