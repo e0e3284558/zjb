@@ -19,7 +19,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
             <div class="col-sm-8">
-                <select name="category_id" class="form-control select2" data-error-container="#error-block">
+                <select name="category_id[]" multiple class="form-control select2" data-error-container="#error-block">
                     <option value="">请选择</option>
                     @foreach($category_list as $v)
                         <option value="{{$v->id}}">{{$v->name}}</option>
@@ -37,10 +37,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-success" id="submitAssetsForm">保存</button>
-    {{--<div class="col-md-offset-10">--}}
-        {{--<button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>--}}
-    {{--</div>--}}
+        <button type="submit" class="btn btn-success" id="submitAssetsForm">保存</button>
     </div>
 </form>
 
@@ -55,9 +52,6 @@
         zjb.initAjax();
         var otherAssets_form = $( "#signupForm1" );
         var errorInfo = $('.alert-danger', otherAssets_form);
-//        $('#submitAssetsForm').click(function () {
-//            otherAssets_form.submit();
-//        });
         otherAssets_form.validate( {
             rules: {
                 name:"required"
@@ -128,7 +122,7 @@
                         zjb.unblockUI();
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,

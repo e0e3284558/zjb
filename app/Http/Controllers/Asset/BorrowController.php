@@ -21,7 +21,7 @@ class BorrowController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $map = [
                 ['org_id', '=', $org_id]
             ];
@@ -59,18 +59,7 @@ class BorrowController extends Controller
         if ($res = is_permission('borrow.add')){
             return $res;
         }
-        $map = [
-            'org_id' => Auth::user()->org_id,
-            'status' => "1"
-        ];
-        $list = Asset::with("category","file")->where($map)->get();
-        foreach ($list as $key => $value) {
-            //图片
-            $list[$key]['file'] = Asset::find($value->id)->file()->first();
-            $list[$key]['img_path'] = $list[$key]['file']["path"];
-            $list[$key]['file_id'] = $list[$key]['file']['id'];
-        }
-        return view("asset.borrow.add",compact("list"));
+        return view("asset.borrow.add");
     }
 
     /**
@@ -81,15 +70,25 @@ class BorrowController extends Controller
      */
     public function store(Request $request)
     {
+
         if ($res = is_permission('borrow.add')){
             return $res;
         }
-//        dd($request->all());
         $arr = $request->except("_token","borrow_asset_ids");
         $arr['borrow_asset_ids'] = implode(",",$request->borrow_asset_ids);
         $arr['borrow_status'] = "1";
-        $arr['borrow_code'] = "JY".date("Ymd").rand("0001",'9999');
-        $arr['org_id'] = Auth::user()->org_id;
+
+        //查找当前org_id下的最大serial_number值
+        $max_serial = Borrow::where(['org_id'=>get_current_login_user_org_id()])->orderBy("serial_number","desc")->first();
+        if($max_serial){
+            $code = str_pad($max_serial->serial_number+1,5,"0",STR_PAD_LEFT);
+        }else{
+            $code = '00001';
+        }
+        $arr['borrow_code'] = "JY".date("Ymd").$code;
+        $arr['serial_number'] = $max_serial->serial_number+1;
+
+        $arr['org_id'] = get_current_login_user_org_id();
         $arr['borrow_handle_user_id'] = Auth::user()->id;       //借用处理人
         $arr['created_at'] = date("Y-m-d H:i:s");
 
@@ -167,7 +166,6 @@ class BorrowController extends Controller
             return $res;
         }
         //归还
-//        dd($request->all());
         $arr = [
             'return_time' => $request->return_time,
             'return_handle_user_id' => Auth::user()->id,
@@ -203,4 +201,26 @@ class BorrowController extends Controller
     {
         //
     }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function slt_asset(Request $request){
+        if ($request->get("type")==2) {
+            $org_id = get_current_login_user_org_id();
+            $map = [
+                ['org_id', '=', $org_id],
+                ['status','=','1']
+            ];
+            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = $data->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
+        }
+        return view("asset.borrow.slt_asset");
+    }
+
 }

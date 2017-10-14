@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\Bill;
 use App\Models\Asset\Contract;
+use App\Models\Asset\Supplier;
+use App\Models\User\Org;
 use QrCode;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,7 +25,7 @@ class ContractController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $map = [
                 ['org_id', '=', $org_id]
             ];
@@ -38,10 +40,6 @@ class ContractController extends Controller
             $data = $data->toArray();
             $data['msg'] = '';
             $data['code'] = 0;
-//            foreach ($data as $k=>$v){
-//                $data[$k]['download'] = '<a href="{{url($data[$k]["file"][])}}" >'.$data[$k]['file']['old_name'].'</a>';
-//            }
-//            dd($data);
             return response()->json($data);
         }
         return view("asset.contract.index");
@@ -57,7 +55,9 @@ class ContractController extends Controller
         if ($res = is_permission('contract.add')){
             return $res;
         }
-        return response()->view("asset.contract.add");
+        $org_name = Org::where("id",get_current_login_user_org_id())->value("name");
+        $supplier_list = Supplier::where("org_id",get_current_login_user_org_id())->get();
+        return response()->view("asset.contract.add",compact('org_name',"supplier_list"));
     }
 
     /**
@@ -71,15 +71,42 @@ class ContractController extends Controller
         if ($res = is_permission('contract.add')){
             return $res;
         }
-        $arr = $request->except("_token","file");
-        $arr['org_id'] = Auth::user()->org_id;
+        $arrs = [
+            'name' => $request->name,
+            'first_party' => Org::where("id",get_current_login_user_org_id())->value("name"),
+            'second_party' => $request->second_party,
+            'third_party' => $request->third_party,
+            'remarks' => $request->remarks,
+            'file_id' => $request->file_id,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'org_id' => get_current_login_user_org_id()
+        ];
+        $contract_id = Contract::insertGetId($arrs);
 
-        $info = Contract::insert($arr);
-        $message = [];
+        $info=null;
+        foreach ($request->names as $k=>$v){
+            if($request->names[$k]==null){
+                continue;
+            }
+            $arr['contract_id'] = $contract_id;
+            $arr['asset_name'] = $request->names[$k];
+            $arr['category_id'] = $request->category_id[$k];
+            $arr['spec'] = $request->spec[$k];
+            $arr['num'] = $request->num[$k];
+            $arr['calculate'] = $request->calculate[$k];
+            $arr['money'] = $request->money[$k];
+            $arr['supplier_id'] = $request->supplier_id[$k];
+            $arr['org_id'] = get_current_login_user_org_id();
+            $arr['status'] = "1";
+            $arr['created_at'] = date("Y-m-d H:i:s");
+            $info = Bill::insert($arr);
+        }
+
         if($info){
             $message = [
-                'status' => '1',
-                'message' => '添加成功'
+                'status'=>1,
+                'message'=>"添加成功"
             ];
         }else{
             $message = [
@@ -91,8 +118,12 @@ class ContractController extends Controller
     }
 
 
+    /**
+     * @param $contract_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function add_bill($contract_id){
-        $list1 = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list1 = AssetCategory::where("org_id",get_current_login_user_org_id())->get();
         return view("asset.contract.add_bill",compact("contract_id","list1"));
     }
 
@@ -118,7 +149,8 @@ class ContractController extends Controller
             $arr['calculate'] = $request->calculate[$k];
             $arr['money'] = $request->money[$k];
             $arr['supplier_id'] = $request->supplier_id[$k];
-            $arr['org_id'] = Auth::user()->org_id;
+            $arr['status'] = "1";
+            $arr['org_id'] = get_current_login_user_org_id();
             $arr['created_at'] = date("Y-m-d H:i:s");
             $info = Bill::insert($arr);
         }
@@ -130,11 +162,35 @@ class ContractController extends Controller
             ];
         }else{
             $message = [
-                'code' => 0,
+                'status' => 0,
                 'message' => '添加失败'
             ];
         }
         return response()->json($message);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function bill_del(Request $request){
+        foreach ($request->ids as $k=>$v){
+            $info = Bill::where("id",$v)->first();
+            if($info->status=="2"){
+                return response()->json([
+                    'status' => 0,
+                    'message' => '不能删除'
+                ]);
+            }
+        }
+
+        foreach ($request->ids as $k=>$v){
+            Bill::where("id",$v)->delete();
+        }
+        return response()->json([
+            'status' => '1',
+            'message' => '清单删除成功'
+        ]);
     }
 
 
@@ -149,9 +205,7 @@ class ContractController extends Controller
         if ($res = is_permission('contract.index')){
             return $res;
         }
-//        dd($id);
         $list = Bill::with("category","supplier")->where("contract_id",$id)->get();
-//        dd($list);
         return view("asset.contract.show",compact("list"));
     }
 
@@ -167,7 +221,8 @@ class ContractController extends Controller
             return $res;
         }
         $info = Contract::find($id);
-        return view("asset.contract.edit",compact("info"));
+        $supplier_list = Supplier::where("org_id",get_current_login_user_org_id())->get();
+        return view("asset.contract.edit",compact("info","supplier_list"));
     }
 
     /**
@@ -188,7 +243,6 @@ class ContractController extends Controller
             $arr = $request->except("_token","_method","file","file_id");
         }
         $info = Contract::where("id",$id)->update($arr);
-        $message = [];
         if($info){
             $message = [
                 'status' => '1',
@@ -211,6 +265,21 @@ class ContractController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $list = Bill::where("contract_id",$id)->get();
+        foreach ($list as $k=>$v){
+            if($v->status=="2"){
+                return response()->json([
+                    'status' => 0,
+                    'message' => '此合同不能删除'
+                ]);
+            }
+        }
+        foreach ($list as $k=>$v){
+            Bill::where("id",$v->id)->delete();
+        }
+        return response()->json([
+            'status' => "1",
+            'message' => '合同删除成功'
+        ]);
     }
 }

@@ -56,19 +56,6 @@
             </tr>
             </thead>
         </table>
-        {{--<script type="text/html" id="statusTpl">--}}
-            {{--@{{# if(d.borrow_status=="1"){  }}--}}
-                {{--@{{d.borrow_status=="借用"}}--}}
-            {{--@{{# } }}--}}
-            {{--@{{# elseif(d.borrow_status=="2"){  }}--}}
-                {{--@{{d.borrow_status=="已归还"}}--}}
-            {{--@{{# } }}--}}
-        {{--</script>--}}
-        {{--<script type="text/html" id="areaTpl">--}}
-            {{--@{{# if(d.area){  }}--}}
-            {{--@{{d.area.name}}--}}
-            {{--@{{# } }}--}}
-        {{--</script>--}}
         <script type="text/html" id="barDemo">
             <a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>
             <a class="btn blue-madison btn-xs" lay-event="edit" data-toggle="modal" data-target=".bs-example-modal-md">归还</a>
@@ -133,10 +120,6 @@
                             });
                         });
                 };
-                // $('#operationModal').on('hidden.bs.modal', function () {
-                //     $(this).find(".modal-content").html('');
-                //     $(this).removeData();
-                // });
                 layui.use(['laytpl','table'], function(){
                     table = layui.table;
                     table.on('checkbox(data-user)', function(obj){
@@ -216,11 +199,6 @@
                     $('.i-checks').iCheck('uncheck');
                 }
             });
-            // layui.use('table', function(){
-            //   var table = layui.table;
-            //   table.init('asset-table', { //转化静态表格
-            //   }); 
-            // });
         });
         function str(message) {
             var messages = "<div class='modal-header'>" +
@@ -250,77 +228,6 @@
                 $(".modal-content").html(str("每次只能修改一条资产"));
             }
         }
-
-        function dlt() {
-            if($("tbody input[type='checkbox']:checked").length >= 1){
-
-                var arr = [];
-                $("tbody input[type='checkbox']:checked").each(function() {
-                    //判断
-                    var id = $(this).val();
-                    arr.push(id);
-                });
-
-                swal({
-                        title: "确认要删除该资产吗？",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        cancelButtonText: "取消",
-                        confirmButtonText: "确认",
-                        closeOnConfirm: false
-                    },
-                    function(){
-                        //发异步删除数据
-                        $.ajax({
-                            type: "post",
-                            url: '{{url('asset')}}'+'/'+arr,
-                            data: {
-                                "_token": '{{csrf_token()}}',
-                                '_method': 'delete'
-                            },
-                            dataType:"json",
-                            success: function (data) {
-                                if(data.code==1){
-                                    swal({
-                                        title: "",
-                                        text: data.message,
-                                        type: "success",
-                                        timer: 1000,
-                                    },function () {
-                                        window.location.reload();
-                                    });
-                                }else{
-                                    swal("", data.message, "error");
-                                }
-                            }
-                        });
-                    });
-            }else if($("tbody input[type='checkbox']:checked").length == 0){
-                $(".modal-content").html(str("请选择资产"));
-            }
-        }
-
-
-        function show_img(object,url) {
-            $.ajax({
-                url:url,
-                success:function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
-        }
-
-        function shows(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
-                }
-            })
-        }
-
     </script>
 </div>
 @endsection

@@ -73,36 +73,27 @@
                 </div>
             </div>
         </div>
+        <div class="row" >
+            <a class="btn btn-info" href="{{url('borrow/slt_asset')}}"  data-toggle="modal" data-target=".bs-example-modal-md" >选择资产</a>
+            <a href="javascript:;" class="btn btn-info" id="dlt-asset" >删除</a>
+        </div>
 
-        <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
-            <table class="table table-striped table-bordered table-hove">
+        <div class="row" style="overflow:auto;height:195px;margin-top:10px;">
+            <table id="borrow_asset" class="table table-striped table-bordered table-hove">
                 <thead>
                 <tr>
-                    <td class="dialogtableth"><input type="checkbox"></td>
-                    <td class="dialogtableth">照片</td>
-                    <td class="dialogtableth">资产条码</td>
-                    <td class="dialogtableth">资产名称</td>
-                    <td class="dialogtableth">资产类别</td>
-                    <td class="dialogtableth">规格型号</td>
+                    <th class="dialogtableth"><input type="checkbox" id="all" ></th>
+                    {{--<td class="dialogtableth">照片</td>--}}
+                    <th class="dialogtableth">资产条码</th>
+                    <th class="dialogtableth">资产名称</th>
+                    <th class="dialogtableth">资产类别</th>
+                    <th class="dialogtableth">规格型号</th>
+                    <th class="dialogtableth">金额(元)</th>
+                    <th class="dialogtableth">所在场地</th>
                 </tr>
                 </thead>
-                <tbody data-bind="foreach: selectedAssetList">
-                @foreach($list as $value)
-                    <tr>
-                        <td><input type="checkbox" name="borrow_asset_ids[]" value="{{$value->id}}"></td>
-                        <td>
-                            @if($value->img_path)
-                                <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
-                                    <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
-                                </a>
-                            @endif
-                        </td>
-                        <td>{{$value->code}}</td>
-                        <td>{{$value->name}}</td>
-                        <td>{{$value->category->name}}</td>
-                        <td>{{$value->spec}}</td>
-                    </tr>
-                @endforeach
+                <tbody>
+
                 </tbody>
 
             </table>
@@ -114,6 +105,8 @@
     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
     <button type="button" class="btn btn-success" id="submitAssetsForm">保存</button>
 </div>
+
+
 <script type="text/javascript">
 
     $( document ).ready( function () {
@@ -238,49 +231,30 @@
                 })
             }
         } );
+
     } );
 </script>
 
-<script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
-</script>
 
 <script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
+
+    $(document).ready(function () {
+        $("#all").click(function(){
+            if(this.checked){
+                $("#borrow_asset :checkbox").prop("checked", true);
+            }else{
+                $("#borrow_asset :checkbox").prop("checked", false);
+            }
+        });
+
+        $("#dlt-asset").click(function () {
+            $("#borrow_asset input[type='checkbox']:checked").each(function() {
+                //判断
+                if($(this).val()!="on"){
+                    $(this).parents('tr').remove();
+                }
+            });
+
+        });
+    })
 </script>

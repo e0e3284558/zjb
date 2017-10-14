@@ -52,14 +52,6 @@
                     <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0" {{ $area->status ? '' : 'checked' }}> 不可用 </label>
                 </div>
             </div>
-            {{-- <div class="form-group">
-                <label class="control-label">
-                    排序
-                </label>
-                <div class="">
-                    <input type="number" placeholder="排序" name="sort" value="{{ $area->sort }}" class="form-control">
-                </div>
-            </div>--}}
             <div class="form-actions border-top ">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}

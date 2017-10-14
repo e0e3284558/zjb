@@ -194,14 +194,28 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::get('asset/downloadModel', 'AssetController@downloadModel');
     Route::get('asset/add_import', 'AssetController@add_import');
     Route::post('asset/import', 'AssetController@import');
+    Route::get('asset/slt_supplier/{id}', 'AssetController@slt_supplier');
     Route::resource('asset', 'AssetController');
 
+    //资产调拨
+    Route::get('asset_transfer/slt_asset',"AssetTransferController@slt_asset");
+//    Route::get('asset_transfer/put_slt_asset',"AssetTransferController@put_slt_asset");
+    Route::resource('asset_transfer','AssetTransferController');
+
     //领用
+    Route::get('asset_use/slt_asset',"AssetUseController@slt_asset");
+    Route::post('asset_use/lists','AssetUseController@lists');
     Route::resource('asset_use','AssetUseController');
     //退库
+    Route::get('asset_return/slt_asset',"AssetReturnController@slt_asset");
     Route::resource("asset_return",'AssetReturnController');
     //借用&归还
+    Route::get('borrow/slt_asset',"BorrowController@slt_asset");
     Route::resource('borrow','BorrowController');
+
+    //清理报废
+    Route::get('asset_clear/slt_asset',"AssetClearController@slt_asset");
+    Route::resource("asset_clear","AssetClearController");
 
     //供应商管理
     Route::get('supplier/export', 'SupplierController@export');
@@ -214,6 +228,7 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     //合同管理
     Route::post("contract/bill_store",'ContractController@bill_store');
     Route::get("contract/add_bill/{id}",'ContractController@add_bill');
+    Route::post("contract/bill_del",'ContractController@bill_del');
     Route::resource("contract",'ContractController');
 
     //清单管理

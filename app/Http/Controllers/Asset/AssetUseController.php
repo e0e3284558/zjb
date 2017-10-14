@@ -22,7 +22,7 @@ class AssetUseController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $map = [
                 ['org_id', '=', $org_id]
             ];
@@ -55,25 +55,23 @@ class AssetUseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        if ($res = is_permission('asset.use.add')){
-            return $res;
+        if ($request->get("type")==2) {
+            $org_id = get_current_login_user_org_id();
+            $map = [
+                ['org_id', '=', $org_id],
+                ['status','=','1']
+            ];
+            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = $data->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
         }
-        $map = [
-            'org_id' => Auth::user()->org_id,
-            'status' => "1"
-        ];
-//        $department_list = Department::where()->get();
-        $list = Asset::with("category","file")->where($map)->get();
-        foreach ($list as $key => $value) {
-            //图片
-            $list[$key]['file'] = Asset::find($value->id)->file()->first();
-            $list[$key]['img_path'] = $list[$key]['file']["path"];
-            $list[$key]['file_id'] = $list[$key]['file']['id'];
-        }
-        return view("asset.assetUse.add",compact("list"));
+        return view("asset.assetUse.add");
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -86,12 +84,21 @@ class AssetUseController extends Controller
         if ($res = is_permission('asset.use.add')){
             return $res;
         }
-//        dd($request->all());
         $arr = $request->except("_token","asset_ids");
         $arr['asset_ids'] = implode(",",$request->asset_ids);
         $arr['status'] = "1";
-        $arr['code'] = "LY".date("Ymd").rand("0001",'9999');
-        $arr['org_id'] = Auth::user()->org_id;
+
+        //查找当前org_id下的最大serial_number值
+        $max_serial = AssetUse::where(['org_id'=>get_current_login_user_org_id()])->orderBy("serial_number","desc")->first();
+        if($max_serial){
+            $code = str_pad($max_serial->serial_number+1,5,"0",STR_PAD_LEFT);
+        }else{
+            $code = '00001';
+        }
+        $arr['code'] = "LY".date("Ymd").$code;
+        $arr['serial_number'] = $max_serial->serial_number+1;
+
+        $arr['org_id'] = get_current_login_user_org_id();
         $arr['use_dispose_user_id'] = Auth::user()->id;       //领用处理人
         $arr['created_at'] = date("Y-m-d H:i:s");
         $info = AssetUse::insert($arr);
@@ -167,7 +174,6 @@ class AssetUseController extends Controller
             return $res;
         }
         //归还
-//        dd($request->all());
         $arr = [
             'return_time' => $request->return_time,
             'return_dispose_user_id' => Auth::user()->id,
@@ -204,4 +210,26 @@ class AssetUseController extends Controller
     {
         //
     }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function slt_asset(Request $request){
+        if ($request->get("type")==2) {
+            $org_id = get_current_login_user_org_id();
+            $map = [
+                ['org_id', '=', $org_id],
+                ['status','=','1']
+            ];
+            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = $data->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
+        }
+        return view("asset.assetUse.slt_asset");
+    }
+
 }

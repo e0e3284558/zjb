@@ -48,4 +48,8 @@ class Asset extends Model
     public function supplier(){
         return $this->belongsTo('App\Models\Asset\Supplier');
     }
+    //合同
+    public function contract(){
+        return $this->belongsTo('App\Models\Asset\Contract');
+    }
 }

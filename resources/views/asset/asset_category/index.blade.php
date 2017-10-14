@@ -85,12 +85,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
     <script type="text/javascript">
         $(function () {
             function getTree() {
@@ -135,16 +129,6 @@
 
 
     <script type="text/javascript" >
-
-        function show(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".modal-content").html(data);
-
-                }
-            })
-        }
         /*加载添加视图*/
         function add(title,url) {
             $.ajax({
@@ -154,51 +138,6 @@
                 }
             })
         }
-
-        function edit(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".modal-content").html(data);
-                }
-            })
-        }
-
-
-        /*删除*/
-        function del(obj,id){
-            var s = confirm('确认要删除吗？')
-            if(s){
-                //发异步删除数据
-                $.ajax({
-                    type:"post",
-                    url:'{{url('Address')}}'+'/'+id,
-                    data:{
-                        "_token":'{{csrf_token()}}',
-                        '_method':'delete'
-                    },
-                    success:
-                        function (data) {
-                            if(data!=null){
-                                alert(data);
-                                $(obj).parents("tr").remove();
-                            }
-                        }
-                });
-            }
-        }
-
-
-        function lead() {
-            $.ajax({
-                url:'{{url('Address/import')}}',
-                type:"get",
-                success:function (data) {
-                    $(".modal-content").html(data);
-                }
-            })
-        }
-
     </script>
 
 @endsection

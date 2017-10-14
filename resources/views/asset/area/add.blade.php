@@ -36,15 +36,6 @@
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
-            
-            <!-- <div class="form-group">
-                <label class="control-label">
-                    排序
-                </label>
-                <div class="">
-                    <input type="number" placeholder="排序" name="sort" value="0" class="form-control">
-                </div>
-            </div> -->
             <div class="form-group">
                 <label class="control-label" for="remarks">备注</label>
                 <div>

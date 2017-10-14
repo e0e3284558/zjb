@@ -50,7 +50,7 @@ class BillController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $map = [
                 ['org_id', '=', $org_id]
             ];
@@ -78,10 +78,9 @@ class BillController extends Controller
      */
     public function create($bill_id)
     {
-//        dd($bill_id);
-        $org_id = Auth::user()->org_id;
+        $org_id = get_current_login_user_org_id();
         //资产类别
-        $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",Auth::user()->org_id)->orderBy("paths")->get();
+        $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",get_current_login_user_org_id())->orderBy("paths")->get();
         $list1 = $this->test($list1);
         //所属公司
         $list2 = Org::where("id",$org_id)->get();
@@ -110,7 +109,7 @@ class BillController extends Controller
         }
         for ($i=0;$i<$request->sum;$i++){
             //公司code+资产类别code+日期随机值
-            $org_code = Org::where("id",Auth::user()->org_id)->value("code");
+            $org_code = Org::where("id",get_current_login_user_org_id())->value("code");
             $category_code = AssetCategory::where("id",$request->category_id)->value("category_code");
             $code = $org_code.$category_code.rand('00001','99999');
             $request->offsetSet("code",$code);
@@ -122,7 +121,7 @@ class BillController extends Controller
             QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
             $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
             $arr['created_at'] = date("Y-m-d H:i:s");
-            $arr['org_id'] = Auth::user()->org_id;
+            $arr['org_id'] = get_current_login_user_org_id();
 
             $info = Asset::insertGetId($arr);
 
@@ -130,7 +129,7 @@ class BillController extends Controller
                 $file_arr = [
                     'asset_id' => $info,
                     'file_id' => $request->file_id,
-                    'org_id' => Auth::user()->org_id
+                    'org_id' => get_current_login_user_org_id()
                 ];
                 AssetFile::insert($file_arr);
             }

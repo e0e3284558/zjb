@@ -98,7 +98,7 @@
                         $('#signupForm1').toggleClass('sk-loading');
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,

@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="category_id" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select class="form-control select2" name="category_id" data-error-container="#error-block" onchange="find(this.value)" id="category_id">
+                        <select class="form-control select2" name="category_id" data-error-container="#error-block" onchange="slt_supplier(this.value)" id="category_id">
                             <option value="">请选择</option>
                             @foreach($list1 as $value)
                                 <option value="{{$value->id}}">{{$value->name}}</option>
@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label for="buy_time" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-date = "0d">
                     </div>
                 </div>
             </div>
@@ -109,10 +109,16 @@
                     <label for="supplier_id" class="col-sm-4 control-label">供应商</label>
                     <div class="col-sm-8">
                         <select id="supplier_id" data-error-container="#error-block" name="supplier_id" class="form-control select2">
-                            <option value="" >请选择</option>
-                            @foreach($list7 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" >
+                <div class="form-group" style="position: relative;" >
+                    <label for="department_id" class="col-sm-4 control-label">使用部门</label>
+                    <div class="col-sm-8">
+                        <select id="use_department_id" data-error-container="#error-block" name="use_department_id" class="form-control select2">
+                            {!! department_select('',1) !!}
                         </select>
                     </div>
                 </div>
@@ -276,7 +282,7 @@
                         zjb.unblockUI('#signupForm1');
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,
@@ -295,46 +301,44 @@
     } );
 </script>
 
+
 <script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
+
+
+
+    function slt_supplier(id) {
         $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
+            url:'{{url('asset/slt_supplier')}}'+"/"+id,
             type:"get",
-            data:{id:id},
             dataType:"json",
             success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
+                len = data.length;
+                console.log(len);
+                $supplier_id = $("#supplier_id");
+                $supplier_id.find("option").remove();
+                $supplier_id.append("<option value='' >请选择</option>");
+                for (i=0;i<len;i++){
+                    var htmls = "<option value='"+data[i].id+"' >"+data[i].name+"</option>";
+                    $supplier_id.append(htmls);
                 }
             }
         })
     }
-</script>
 
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
+
+    //查找是否还有子类别
+    {{--function find(id) {--}}
+        {{--$.ajax({--}}
+            {{--url:'{{url('asset_category/find')}}'+"/"+id,--}}
+            {{--type:"get",--}}
+            {{--data:{id:id},--}}
+            {{--dataType:"json",--}}
+            {{--success:function (data) {--}}
+                {{--if(data.code){--}}
+                    {{--$("#type_id option:first").prop("selected","selected");--}}
+                    {{--alert("只能选择子分类....");--}}
+                {{--}--}}
+            {{--}--}}
+        {{--})--}}
+    {{--}--}}
 </script>
