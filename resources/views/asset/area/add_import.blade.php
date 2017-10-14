@@ -62,16 +62,6 @@
             import_form.submit();
         });
         import_form.validate( {
-           rules: {
-               file_path: {
-                   required:true
-               }
-           },
-           messages:{
-            file_path:{
-               required:'请上传导入文件' 
-            }
-           },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -120,42 +110,15 @@
                         zjb.blockUI('.modal-body');
                     },
                     success:function (data) {
-                        if(data.code){
-                            $("#result_log").removeClass('hide');
-                            var error_data = data.data.error_data;
-                            if (error_data.length>1) {
-                                //展示错误数据记录
-                                layui.use('table', function(){
-                                  var table = layui.table;
-                                  //展示已知数据
-                                  table.render({
-                                    elem: '#import_result'
-                                    ,data: error_data
-                                    ,height: 272
-                                    ,cols: [[ //标题栏
-                                      {field: '编码', title: '编码', width: 80,sort: true}
-                                      ,{field: '名称', title: '名称', width: 150,sort: true}
-                                      ,{field: '上级场地', title: '上级场地', width: 150,sort: true}
-                                      ,{field: '状态', title: '状态', width: 80,sort: true}
-                                      ,{field: 'message', title: '原因', width: 150}
-                                    ]] 
-                                    ,skin: 'row' //表格风格
-                                    ,even: true
-                                    ,page: true //是否显示分页
-                                    ,limits: [10, 50, 100]
-                                    ,limit: 10 //每页默认显示的数量
-                                  });
-                                });
-                            }else{
-                                swal({
-                                    title: "",
-                                    text: data.message,
-                                    type: "success",
-                                    timer: 1000,
-                                },function () {
-                                    window.location.reload();
-                                });
-                            }
+                        if(data.status){
+                            swal({
+                                title: "",
+                                text: data.message,
+                                type: "success",
+                                timer: 1000,
+                            },function () {
+                                window.location.reload();
+                            });
                         }else{
                             swal("", data.message, "error");
                         }

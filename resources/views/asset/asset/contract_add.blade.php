@@ -16,8 +16,9 @@
                 <thead>
                 <tr role="row">
                     <th>
-                        {{--<input type="radio" class="i-checks" name="checkAll" id="all" >--}}
+                        <input type="checkbox" class="i-checks" name="checkAll" id="all" >
                     </th>
+                    <th>所属合同</th>
                     <th>资产名称</th>
                     <th>数量</th>
                     <th style="width: 200px;" >资产类别</th>
@@ -31,14 +32,10 @@
                 @if(count($list)>0)
                     @foreach($list as $value)
                         <tr role="row">
-
-                            <td role="gridcell" class=" icheck">
-                                <input type="radio" value="{{$value->id}}" name="id" >
+                            <td role="gridcell">
+                                <input type="checkbox" class="i-checks" name="id[]" value="{{$value->id}}">
                             </td>
-
-                            {{--<td role="gridcell">--}}
-                                {{--<input type="radio" class="i-checks" name="id" value="{{$value->id}}">--}}
-                            {{--</td>--}}
+                            <td>{{$value->contract}}</td>
                             <td>{{$value->asset_name}}</td>
                             <td>{{$value->num}}</td>
                             <td>{{$value->category->name}}</td>
@@ -62,7 +59,7 @@
                 <div class="form-group">
                     <label for="buy_time" class="col-sm-4 control-label">购入时间<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-end-date = "0d">
+                        <input type="text" name="buy_time" value="{{date("Y-m-d")}}" data-error-container="#error-block" class="form-control datepicker" data-date-date = "0d">
                     </div>
                 </div>
             </div>
@@ -121,16 +118,16 @@
 
     $( document ).ready( function () {
 
-//        $('.i-checks,#all').iCheck({
-//            checkboxClass: 'icheckbox_minimal-blue'
-//        });
-//        $('#all').on('ifChecked ifUnchecked', function(event){
-//            if(event.type == 'ifChecked'){
-//                $('.i-checks').iCheck('check');
-//            }else{
-//                $('.i-checks').iCheck('uncheck');
-//            }
-//        });
+        $('.i-checks,#all').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue'
+        });
+        $('#all').on('ifChecked ifUnchecked', function(event){
+            if(event.type == 'ifChecked'){
+                $('.i-checks').iCheck('check');
+            }else{
+                $('.i-checks').iCheck('uncheck');
+            }
+        });
         zjb.singleImageUpload({
             uploader:'singleUpload',
             picker:'single-upload',
@@ -272,48 +269,4 @@
             }
         } );
     } );
-</script>
-
-<script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
-</script>
-
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
 </script>

@@ -47,17 +47,17 @@
                 <th lay-data="{fixed:'left',checkbox:true}"></th>
                 <th lay-data="{field:'id', width:80, sort: true}">ID</th>
                 <th lay-data="{field:'status', width:80, sort: true}">状态</th>
-                <th lay-data="{field:'code', width:80, sort: true}">资产编号</th>
-                <th lay-data="{field:'name', width:180, sort: true}">资产名称</th>
+                <th lay-data="{field:'code', width:150, sort: true}">资产编号</th>
+                <th lay-data="{field:'name', width:150, sort: true}">资产名称</th>
                 <th lay-data="{field:'category',templet: '#categoryTpl', width:180, sort: true}">资产类别</th>
-                <th lay-data="{field:'spec', width:180, sort: true}">规格型号</th>
-                <th lay-data="{field:'calculate', width:180, sort: true}">计量单位</th>
-                <th lay-data="{field:'money', width:180, sort: true}">金额(元)</th>
+                <th lay-data="{field:'spec', width:140, sort: true}">规格型号</th>
+                <th lay-data="{field:'calculate', width:80, sort: true}">计量单位</th>
+                <th lay-data="{field:'money', width:80, sort: true}">金额(元)</th>
                 <th lay-data="{field:'area',templet: '#areaTpl', width:180, sort: true}">所在场地</th>
-                <th lay-data="{field:'buy_time', width:180, sort: true}">购入时间</th>
-                <th lay-data="{field:'created_at', width:170, sort: true}">创建时间</th>
-                <th lay-data="{field:'updated_at', width:170, sort: true}">更新时间</th>
-                <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">操作</th>
+                <th lay-data="{field:'buy_time', width:120, sort: true}">购入时间</th>
+                <th lay-data="{field:'created_at', width:120, sort: true}">创建时间</th>
+                <th lay-data="{field:'updated_at', width:120, sort: true}">更新时间</th>
+                <th lay-data="{fixed:'right',width:190, align:'center', toolbar: '#barDemo'}">操作</th>
             </tr>
             </thead>
         </table>
@@ -135,10 +135,6 @@
                             });
                         });
                 };
-                // $('#operationModal').on('hidden.bs.modal', function () {
-                //     $(this).find(".modal-content").html('');
-                //     $(this).removeData();
-                // });
                 layui.use(['laytpl','table'], function(){
                     table = layui.table;
                     table.on('checkbox(data-user)', function(obj){
@@ -218,11 +214,6 @@
                     $('.i-checks').iCheck('uncheck');
                 }
             });
-            // layui.use('table', function(){
-            //   var table = layui.table;
-            //   table.init('asset-table', { //转化静态表格
-            //   }); 
-            // });
         });
         function str(message) {
             var messages = "<div class='modal-header'>" +
@@ -233,36 +224,6 @@
                 "</div><div class='modal-footer'> <button type='button' class='btn btn-primary' data-dismiss='modal'>确定</button> </div>"
             return messages;
         }
-
-        function confirms(message) {
-            var messages = "<div class='modal-header'>" +
-                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
-                "<span aria-hidden='true'>&times;</span></button> </div> " +
-                "<div class='modal-body'>" + message + "</div><div class='modal-footer'> " +
-                "<button type='button' class='btn btn-primary' data-dismiss='modal'>确定</button> " +
-                "<button type='submit' class='btn btn-primary'>保存</button></div>"
-            return messages;
-        }
-
-        function copy() {
-            if($("tbody input[type='checkbox']:checked").length == 1){
-
-                var id = $("tbody input[type='checkbox']:checked").val();
-                $.ajax({
-                    url:'{{url('asset/add_copy')}}'+"/"+id,
-                    type:"get",
-                    success:function (data) {
-                        $(".modal-content").html(data);
-                    }
-                })
-
-            }else if($("tbody input[type='checkbox']:checked").length == 0){
-                $(".modal-content").html(str("请选择要复制的资产"));
-            }else{
-                $(".modal-content").html(str("每次只能复制一条资产"));
-            }
-        }
-
         function edit() {
             if($("tbody input[type='checkbox']:checked").length == 1){
 
@@ -281,77 +242,6 @@
                 $(".modal-content").html(str("每次只能修改一条资产"));
             }
         }
-
-        function dlt() {
-            if($("tbody input[type='checkbox']:checked").length >= 1){
-
-                var arr = [];
-                $("tbody input[type='checkbox']:checked").each(function() {
-                    //判断
-                    var id = $(this).val();
-                    arr.push(id);
-                });
-
-                swal({
-                        title: "确认要删除该资产吗？",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        cancelButtonText: "取消",
-                        confirmButtonText: "确认",
-                        closeOnConfirm: false
-                    },
-                    function(){
-                        //发异步删除数据
-                        $.ajax({
-                            type: "post",
-                            url: '{{url('asset')}}'+'/'+arr,
-                            data: {
-                                "_token": '{{csrf_token()}}',
-                                '_method': 'delete'
-                            },
-                            dataType:"json",
-                            success: function (data) {
-                                if(data.code==1){
-                                    swal({
-                                        title: "",
-                                        text: data.message,
-                                        type: "success",
-                                        timer: 1000,
-                                    },function () {
-                                        window.location.reload();
-                                    });
-                                }else{
-                                    swal("", data.message, "error");
-                                }
-                            }
-                        });
-                    });
-            }else if($("tbody input[type='checkbox']:checked").length == 0){
-                $(".modal-content").html(str("请选择资产"));
-            }
-        }
-
-
-        function show_img(object,url) {
-            $.ajax({
-                url:url,
-                success:function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
-        }
-
-        function shows(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
-                }
-            })
-        }
-
     </script>
 </div>
 @endsection

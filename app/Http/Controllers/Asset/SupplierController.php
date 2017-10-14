@@ -41,9 +41,6 @@ class SupplierController extends Controller
             return response()->json($data);
         }
         return view("asset.supplier.index");
-//        $category_list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-//        $list = $list->appends(array('name'=>$request->name,'app_groups'=>'asset'));
-//        return view("asset.supplier.index",compact("list","category_list"));
     }
 
     /**
@@ -68,23 +65,23 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        if ($res = is_permission('supplier.ad')){
+        if ($res = is_permission('supplier.add')){
             return $res;
         }
-        $arr = [
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'remarks' => $request->remarks,
-            'org_id' => Auth::user()->org_id,
-            'created_at' => date("Y-m-d H:i:s")
-        ];
-        $supplier_id = Supplier::insertGetId($arr);
+        $supplier = new Supplier;
+        $supplier->name=$request->name;
+        $supplier->remarks = $request->remarks;
+        $supplier->org_id = get_current_login_user_org_info()->id;
+        $supplier->created_at = date("Y-m-d H:i:s");
 
-        $message = [
-            'code' => 1,
-            'message' => '添加成功'
-        ];
-        return response()->json($message);
+        if($supplier->save()){
+            if($supplier->category()->sync($request->category_id)){
+                return response()->json([
+                    'status' => '1',
+                    'message' => '添加成功'
+                ]);
+            }
+        }
     }
 
     /**
@@ -113,10 +110,15 @@ class SupplierController extends Controller
         if ($res = is_permission('supplier.edit')){
             return $res;
         }
-        if(Auth::user()->org_id == Supplier::where("id",$id)->value("org_id")) {
+        if(get_current_login_user_org_id() == Supplier::where("id",$id)->value("org_id")) {
             $info = Supplier::find($id);
-            $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
-            return response()->view("asset.supplier.edit", compact("info","list"));
+            $categorys = DB::table('asset_category_supplier')->where("supplier_id",$id)->get();
+            $category_arr = [];
+            foreach ($categorys as $k=>$v){
+                $category_arr[] = $v->asset_category_id;
+            }
+            $list = AssetCategory::where("org_id",get_current_login_user_org_id())->get();
+            return response()->view("asset.supplier.edit", compact("info","list","category_arr"));
         }else{
             return redirect("home");
         }
@@ -134,26 +136,22 @@ class SupplierController extends Controller
         if ($res = is_permission('supplier.edit')){
             return $res;
         }
-        $arr = [
-            'name' => $request->name,
-            'category_id' => $request->category_id,
-            'remarks' => $request->remarks,
-            'updated_at' => date("Y-m-d H:i:s")
-        ];
-        $info = Supplier::where("id",$id)->update($arr);
 
-        if($info){
-            $message = [
-                'code' => 1,
-                'message' =>'信息修改成功'
-            ];
-        }else{
-            $message = [
-                'code' => 0,
-                'message' =>'信息修改失败'
-            ];
+
+        $supplier = Supplier::find($id);
+        $supplier->name=$request->name;
+        $supplier->remarks = $request->remarks;
+        $supplier->org_id = get_current_login_user_org_id();
+        $supplier->created_at = date("Y-m-d H:i:s");
+
+        if($supplier->save()){
+            if($supplier->category()->sync($request->category_id)){
+                return response()->json([
+                    'status' => '1',
+                    'message' => '添加成功'
+                ]);
+            }
         }
-        return response()->json($message);
     }
 
     /**
@@ -168,7 +166,7 @@ class SupplierController extends Controller
             return $res;
         }
         $arr = explode(",",$id);
-        $user_org_id = Auth::user()->org_id;
+        $user_org_id = get_current_login_user_org_id();
         if($user_org_id == Supplier::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
                 $info = Asset::where("org_id",$user_org_id)->where("supplier_id",$v)->first();
@@ -182,7 +180,7 @@ class SupplierController extends Controller
             }
 
             foreach ($arr as $k=>$v){
-                $info = Supplier::where("id",$v)->where("org_id",Auth::user()->org_id)->delete();
+                $info = Supplier::where("id",$v)->where("org_id",get_current_login_user_org_id())->delete();
             }
             $message = [
                 'status' => 1,
@@ -199,7 +197,7 @@ class SupplierController extends Controller
      */
     public function export(){
 
-        $list = Supplier::where("org_id",Auth::user()->org_id)->get();
+        $list = Supplier::where("org_id",get_current_login_user_org_id())->get();
         $cellData = [
             ['供应商名称','供应商类别','备注'],
         ];
@@ -234,7 +232,7 @@ class SupplierController extends Controller
         $cellData = [['供应商名称','供应商类别','备注']];
         $cellData2 = [['类别名称','类别编号']];
         //类别
-        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list = AssetCategory::where("org_id",get_current_login_user_org_id())->get();
         foreach ($list as $k=>$v){
             $arr = [
                 $list[$k]->name,$list[$k]->id
@@ -275,15 +273,22 @@ class SupplierController extends Controller
         })->export('xls');
     }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function add_import(){
         return response()->view('asset.supplier.add_import');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function import(Request $request){
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             foreach ($data as $k=>$v){
                 $arr = [
                     'name' => $v[0],
@@ -295,7 +300,7 @@ class SupplierController extends Controller
             }
         });
         $message = [
-            'code'=>'1',
+            'status'=>'1',
             'message'=> '数据导入成功'
         ];
         return response()->json($message);

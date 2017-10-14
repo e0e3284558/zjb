@@ -100,7 +100,7 @@
                         zjb.unblockUI();
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,

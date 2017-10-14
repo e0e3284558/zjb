@@ -58,9 +58,8 @@
         </thead>
     </table>
     <script type="text/html" id="categoryTpl">
-        @{{# if(d.category){  }}
-        @{{d.category.name}}
-        @{{# } }}
+        @{{ d.category }}
+
     </script>
     <script type="text/html" id="barDemo">
         {{--<a class="btn blue btn-xs" lay-event="detail">查看</a>--}}
@@ -126,10 +125,6 @@
                             });
                         });
                 };
-                // $('#operationModal').on('hidden.bs.modal', function () {
-                //     $(this).find(".modal-content").html('');
-                //     $(this).removeData();
-                // });
                 layui.use(['laytpl','table'], function(){
                     table = layui.table;
                     table.on('checkbox(data-user)', function(obj){
@@ -321,26 +316,6 @@
             return messages;
         }
 
-        function confirms(message) {
-            var messages = "<div class='modal-header'>" +
-                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" +
-                "<span aria-hidden='true'>&times;</span></button> </div> " +
-                "<div class='modal-body'>" +
-                message +
-                "</div><div class='modal-footer'> <button type='button' class='btn btn-success' data-dismiss='modal'>确定</button> <button type='submit' class='btn btn-primary'>保存</button></div>"
-            return messages;
-        }
-
-
-        function add(url) {
-            $.ajax({
-                url:url,
-                success:function (data) {
-                    $("#right_content").html(data);
-                }
-            })
-        }
-
         function edit() {
             if($("tbody input[type='checkbox']:checked").length == 1){
                 var id = $("tbody input[type='checkbox']:checked").val();
@@ -355,57 +330,6 @@
                 $(".modal-content").html(str("请选择资产"));
             }else{
                 $(".modal-content").html(str("每次只能修改一条资产"));
-            }
-        }
-
-        function dlt() {
-            if($("tbody input[type='checkbox']:checked").length >= 1){
-
-                var arr = [];
-                $("tbody input[type='checkbox']:checked").each(function() {
-                    //判断
-                    var id = $(this).val();
-                    arr.push(id);
-                });
-
-                swal({
-                        title: "确认要删除此报修项资产？",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        cancelButtonText: "取消",
-                        confirmButtonText: "确认",
-                        closeOnConfirm: false
-                    },
-                    function(){
-                        //发异步删除数据
-                        $.ajax({
-                            type: "post",
-                            url: '{{url('supplier')}}'+'/'+arr,
-                            data: {
-                                "_token": '{{csrf_token()}}',
-                                '_method': 'delete'
-                            },
-                            dataType:"json",
-                            success: function (data) {
-                                if(data.code==1){
-                                    swal({
-                                        title: "",
-                                        text: data.message,
-                                        type: "success",
-                                        timer: 1000,
-                                    },function () {
-                                        window.location.reload();
-                                    });
-                                }else{
-                                    swal("", data.message, "error");
-                                }
-                            }
-                        });
-                    });
-            }else if($("tbody input[type='checkbox']:checked").length == 0){
-                $(".modal-content").html(str("请选择资产"));
             }
         }
     </script>

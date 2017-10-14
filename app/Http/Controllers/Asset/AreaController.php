@@ -95,7 +95,6 @@ class AreaController extends Controller
         $area = new Area();
         $area->name = $request->name;
         $area->status = $request->status;
-//        $area->sort = $request->sort;
         $area->pid = $request->pid;
         $area->remarks = $request->remarks;
         $area->code = $request->code;
@@ -298,16 +297,23 @@ class AreaController extends Controller
         })->export('xls');
     }*/
 
+    /**
+     * @return Response
+     */
     public function add_import()
     {
         return response()->view('asset.area.add_import');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function import(Request $request)
     {
         $message = [
-            'code' => '1',
-            'message' => '数据导入成功'
+            'status'=>'1',
+            'message'=> '数据导入成功'
         ];
 
         $filePath = $request->file_path;
