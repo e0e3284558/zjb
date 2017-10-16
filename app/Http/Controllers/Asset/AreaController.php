@@ -83,7 +83,7 @@ class AreaController extends Controller
             return $res;
         }
         $org_id = get_current_login_user_org_id();
-        //但单位场地code进行唯一性验证
+        //单位场地code进行唯一性验证
         Validator::make($request->all(), [
             'code' => [
                 'required',
@@ -101,6 +101,7 @@ class AreaController extends Controller
         $area->code = $request->code;
         $area->org_id = $org_id;
         $area->uuid = Uuid::generate()->string;
+        //场地父级path设置
         $area->path = '';
         if ($area->save()) {
             return response()->json([
@@ -362,6 +363,8 @@ class AreaController extends Controller
                         $area->remarks = $v['备注'];
                         $area->status = $v['状态'] == '不可用' ? 0 : 1;
                         $area->uuid = Uuid::generate()->string;
+                        //获取所有父级id路径
+                        
                         $area->path = '';
                         if ($area->save()) {
                             $success_data[] = $area->toArray();
