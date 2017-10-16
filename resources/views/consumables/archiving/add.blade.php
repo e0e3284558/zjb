@@ -21,7 +21,6 @@
                     <input type="text" class="form-control" name="name" placeholder="物品名称">
                 </div>
             </div>
-            <input id="classify_id" type="hidden" name="classify_id" value="">
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">商品条码</label>
@@ -67,6 +66,25 @@
                 <label class="col-sm-2 control-label">备注</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" name="comment" placeholder="备注">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属分类</label>
+                <div class="col-sm-10">
+                    @if(isset($id))
+                        <select name="classify_id" id="" class="form-control" disabled>
+                            @foreach($sort as $v)
+                                <option value="{{$v->id}}" @if($v->id==$id) selected @endif>{{$v->name}}</option>
+                            @endforeach
+                        </select>
+                    @else
+                        <select name="classify_id" id="" class="form-control">
+                            <option value="">请选择分类</option>
+                            @foreach($sort as $v)
+                                <option value="{{$v->id}}">{{$v->name}}</option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
             </div>
             <!--dom结构部分-->
@@ -118,26 +136,22 @@
 
 
         var l = $("button[type='submit']").ladda();
-        var process_form = $( "#signupForm1" );
+        var process_form = $("#signupForm1");
         var errorInfo = $('.alert-danger', process_form);
         $('#submitAssetsForm').click(function () {
             process_form.submit();
         });
-        process_form.validate( {
-            rules: {
-
-            },
-            messages: {
-
-            },
+        process_form.validate({
+            rules: {},
+            messages: {},
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             ignore: "",
-            invalidHandler: function(error,validator){
+            invalidHandler: function (error, validator) {
                 errorInfo.show();
             },
-            errorPlacement: function ( error, element ) {
+            errorPlacement: function (error, element) {
                 if (element.parent(".input-group").length > 0) {
                     error.insertAfter(element.parent(".input-group"));
                 } else if (element.attr("data-error-container")) {
@@ -170,10 +184,10 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('consumables/goods')}}",
-                    data:process_form.serialize(),
-                    type:"post",
-                    dataType:"json",
+                    url: "{{url('consumables/goods')}}",
+                    data: process_form.serialize(),
+                    type: "post",
+                    dataType: "json",
                     beforeSend: function () {
                         l.ladda('start');
                     },
@@ -200,6 +214,6 @@
                 });
                 return false;
             }
-        } );
+        });
     });
 </script>

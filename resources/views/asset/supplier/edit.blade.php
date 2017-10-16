@@ -19,10 +19,10 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
             <div class="col-sm-8">
-                <select name="category_id" class="form-control select2" data-error-container="#error-block">
+                <select name="category_id[]" multiple class="form-control select2" data-error-container="#error-block">
                     <option >请选择</option>
                     @foreach($list as $v)
-                        @if($v->id == $info->category_id)
+                        @if(in_array($v->id,$category_arr))
                             <option value="{{$v->id}}" selected >{{$v->name}}</option>
                         @else
                             <option value="{{$v->id}}">{{$v->name}}</option>
@@ -130,7 +130,7 @@
                         $('#signupForm1').toggleClass('sk-loading');
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,

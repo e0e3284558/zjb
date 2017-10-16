@@ -18,12 +18,13 @@ class RepairListController extends Controller
      */
     public function index()
     {
+
         if ($res = is_permission('repair.list.index')){
             return $res;
         }
         //新工单
         $list1 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
-            ->where("user_id", Auth::user()->id)
+            ->where("user_id",get_current_login_user_info())
             ->orderBy('id', 'desc')
             ->where("status", "2")
             ->orWhere('status', '1')
@@ -32,13 +33,13 @@ class RepairListController extends Controller
             ->paginate(10, ['*'],'page');
         //待评价
         $list2 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
-            ->where("user_id", Auth::user()->id)
+            ->where("user_id",get_current_login_user_info())
             ->orderBy('id', 'desc')
             ->where("status", "5")
             ->paginate(10, ['*'],'page');
         //全部工单
         $list3 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
-            ->where("user_id", Auth::user()->id)
+            ->where("user_id",get_current_login_user_info())
             ->orderBy('id', 'desc')
             ->paginate(10, ['*'],'page');
         return view("repair.repair_list.index", compact("list1", "list2", "list3"));

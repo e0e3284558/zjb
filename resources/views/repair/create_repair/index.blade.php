@@ -51,173 +51,33 @@
                             <div class="tab-content">
                                 <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif"
                                      id="tab-1">
-                                    <div class="panel-body">
-                                        <table class="table">
-                                            <thead>
-                                            <tr>
-                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1">
-                                                </th>
-                                                <th>状态</th>
-                                                <th>报修人</th>
-                                                <th>报修场地</th>
-                                                <th>报修项目</th>
-                                                <th>维修单详情</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($data1 as $v)
-                                                <tr>
-                                                    <td role="gridcell">
-                                                        <input type="checkbox" class="i-checks" name="id"
-                                                               value="{{$v->id}}">
-                                                    </td>
-                                                    <td>
-                                                        @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                            <span class="label label-info">待分派</span>
-                                                        @endif
-                                                    </td>
-                                                    @if($v->user)
-                                                        <td>{{$v->user_id?$v->user->name:""}}</td>
-                                                    @else
-                                                        <td></td>
-                                                    @endif
-                                                    <td>{{@get_area($v->area_id)}}</td>
-                                                    @if($v->classify && (!$v->asset_id))
-                                                        <td>{{$v->classify->name}}</td>
-                                                    @else
-                                                        <td>{{$v->asset->name}}</td>
-                                                    @endif
-
-                                                    <td>
-                                                        <span class="cursor_pointer"
-                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
-                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
-                                                              title="详情">点击查看详情</span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-info btn-sm left"
-                                                                onclick="assign('{{$v->id}}')"
-                                                                data-toggle="modal"
-                                                                data-target=".bs-example-modal-lg">
-                                                            分派维修
-                                                        </button>
-                                                        @if($v->status=='4' || $v->status=='7')
-                                                            <button class="btn btn-warning btn-sm left"
-                                                                    data-toggle="modal"
-                                                                    data-target=".bs-example-modal-lg"
-                                                                    onclick="reason('{{$v->id}}')">查看原因
-                                                            </button>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
-                                        <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary"
-                                                data-toggle="modal" data-target=".bs-example-modal-lg">
-                                            批量分派
-                                        </button>
-                                    </div>
-                                    <div class="page-header">{{ $data1->appends(['active' => 'wait'])->links() }}</div>
-                                </div>
-                                <div class="tab-pane @if (request()->active=='doing') active  @endif" id="tab-2">
-                                    <div class="tab-pane">
+                                    @if(isset($data1))
                                         <div class="panel-body">
                                             <table class="table">
                                                 <thead>
                                                 <tr>
                                                     <th><input type="checkbox" class="i-checks" name="checkAll"
-                                                               id="all2"></th>
-                                                    <th>报修人</th>
-                                                    <th>报修场地</th>
-                                                    <th>报修项目</th>
-                                                    <th>维修单详情</th>
-                                                    <th>维修人员</th>
-                                                    <th width="18%">操作</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($data2 as $v)
-                                                    <tr>
-                                                        <td role="gridcell">
-                                                            <input type="checkbox" class="i-checks" name="id"
-                                                                   value="{{$v->id}}">
-                                                        </td>
-                                                        @if($v->user)
-                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-                                                        <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->classify && (!$v->asset_id))
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td>{{$v->asset->name}}</td>
-                                                        @endif
-                                                        <td>
-                                                        <span class="cursor_pointer"
-                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
-                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
-                                                              title="详情">点击查看详情</span>
-                                                        </td>
-                                                        <td>{{$v->serviceWorker->name}}</td>
-                                                        <td>
-                                                            <button class="btn btn-warning btn-sm left"
-                                                                    data-toggle="modal"
-                                                                    data-target=".bs-example-modal-lg"
-                                                                    onclick="change_status({{$v->id}})">重新分派
-                                                            </button>
-
-                                                            <button class="btn btn-info btn-sm left"
-                                                                    data-toggle="modal"
-                                                                    data-target=".bs-example-modal-lg"
-                                                                    onclick="success({{$v->id}})">
-                                                                完成维修
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                            <button class="btn btn-warning btn-sm left"
-                                                    data-toggle="modal"
-                                                    data-target=".bs-example-modal-lg"
-                                                    onclick="edit(this)">重新分派
-                                            </button>
-                                            <button type="button" onclick="batchSuccess(this)"
-                                                    class="btn btn-sm btn-primary" data-toggle="modal"
-                                                    data-target=".bs-example-modal-lg">
-                                                批量完成
-                                            </button>
-                                        </div>
-                                        <div class="page-header">{{ $data2->appends(['active' => 'doing'])->links() }}</div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane @if (request()->active=='assess') active  @endif" id="tab-3">
-                                    <div class="tab-pane">
-                                        <div class="panel-body">
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th><input type="checkbox" class="i-checks" name="checkAll"
-                                                               id="all4"></th>
-                                                    <th>报修人</th>
-                                                    <th>报修场地</th>
-                                                    <th>报修项目</th>
-                                                    <th>维修单详情</th>
-                                                    <th>维修人员</th>
-                                                    <th>服务商</th>
+                                                               id="all1">
+                                                    </th>
                                                     <th>状态</th>
+                                                    <th>报修人</th>
+                                                    <th>报修场地</th>
+                                                    <th>报修项目</th>
+                                                    <th>维修单详情</th>
+                                                    <th>操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($data4 as $v)
+                                                @foreach($data1 as $v)
                                                     <tr>
                                                         <td role="gridcell">
                                                             <input type="checkbox" class="i-checks" name="id"
                                                                    value="{{$v->id}}">
+                                                        </td>
+                                                        <td>
+                                                            @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                <span class="label label-info">待分派</span>
+                                                            @endif
                                                         </td>
                                                         @if($v->user)
                                                             <td>{{$v->user_id?$v->user->name:""}}</td>
@@ -230,28 +90,176 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
+
                                                         <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
                                                         </td>
-                                                        <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
-                                                        <td>{{$v->serviceProvider?$v->serviceProvider->name:""}}</td>
                                                         <td>
-                                                            @if($v->status=='5')
-                                                                <span class="label label-primary">待评价</span>
+                                                            <button class="btn btn-info btn-sm left"
+                                                                    onclick="assign('{{$v->id}}')"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-lg">
+                                                                分派维修
+                                                            </button>
+                                                            @if($v->status=='4' || $v->status=='7')
+                                                                <button class="btn btn-warning btn-sm left"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg"
+                                                                        onclick="reason('{{$v->id}}')">查看原因
+                                                                </button>
                                                             @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                            <button type="button" onclick="edit(this)" class="btn btn-sm btn-primary"
+                                                    data-toggle="modal" data-target=".bs-example-modal-lg">
+                                                批量分派
+                                            </button>
                                         </div>
-                                        <div class="page-header">{{ $data4->appends(['active' => 'assess'])->links() }}</div>
-                                    </div>
+                                        <div class="page-header">{{ $data1->appends(['active'=>'wait'])->links() }}</div>
+                                    @endif
+                                </div>
+                                <div class="tab-pane @if (request()->active=='doing') active  @endif" id="tab-2">
+                                    @if(isset($data2))
+                                        <div class="tab-pane">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" class="i-checks" name="checkAll"
+                                                                   id="all2"></th>
+                                                        <th>报修人</th>
+                                                        <th>报修场地</th>
+                                                        <th>报修项目</th>
+                                                        <th>维修单详情</th>
+                                                        <th>维修人员</th>
+                                                        <th width="18%">操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data2 as $v)
+                                                        <tr>
+                                                            <td role="gridcell">
+                                                                <input type="checkbox" class="i-checks" name="id"
+                                                                       value="{{$v->id}}">
+                                                            </td>
+                                                            @if($v->user)
+                                                                <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                            @else
+                                                                <td></td>
+                                                            @endif
+                                                            <td>{{@get_area($v->area_id)}}</td>
+                                                            @if($v->classify && (!$v->asset_id))
+                                                                <td>{{$v->classify->name}}</td>
+                                                            @else
+                                                                <td>{{$v->asset->name}}</td>
+                                                            @endif
+                                                            <td>
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
+                                                            </td>
+                                                            <td>{{$v->serviceWorker->name}}</td>
+                                                            <td>
+                                                                <button class="btn btn-warning btn-sm left"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg"
+                                                                        onclick="change_status({{$v->id}})">重新分派
+                                                                </button>
+
+                                                                <button class="btn btn-info btn-sm left"
+                                                                        data-toggle="modal"
+                                                                        data-target=".bs-example-modal-lg"
+                                                                        onclick="success({{$v->id}})">
+                                                                    完成维修
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <button class="btn btn-warning btn-sm left"
+                                                        data-toggle="modal"
+                                                        data-target=".bs-example-modal-lg"
+                                                        onclick="edit(this)">重新分派
+                                                </button>
+                                                <button type="button" onclick="batchSuccess(this)"
+                                                        class="btn btn-sm btn-primary" data-toggle="modal"
+                                                        data-target=".bs-example-modal-lg">
+                                                    批量完成
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="page-header">{{ $data2->appends(['active'=>'doing'])->links() }}</div>
+                                    @endif
+
+                                </div>
+                                <div class="tab-pane @if (request()->active=='assess') active  @endif" id="tab-3">
+                                    @if(isset($data4))
+                                        <div class="tab-pane">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th><input type="checkbox" class="i-checks" name="checkAll"
+                                                                   id="all4"></th>
+                                                        <th>报修人</th>
+                                                        <th>报修场地</th>
+                                                        <th>报修项目</th>
+                                                        <th>维修单详情</th>
+                                                        <th>维修人员</th>
+                                                        <th>服务商</th>
+                                                        <th>状态</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data4 as $v)
+                                                        <tr>
+                                                            <td role="gridcell">
+                                                                <input type="checkbox" class="i-checks" name="id"
+                                                                       value="{{$v->id}}">
+                                                            </td>
+                                                            @if($v->user)
+                                                                <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                            @else
+                                                                <td></td>
+                                                            @endif
+                                                            <td>{{@get_area($v->area_id)}}</td>
+                                                            @if($v->classify && (!$v->asset_id))
+                                                                <td>{{$v->classify->name}}</td>
+                                                            @else
+                                                                <td>{{$v->asset->name}}</td>
+                                                            @endif
+                                                            <td>
+                                                        <span class="cursor_pointer"
+                                                              onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
+                                                              data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                              title="详情">点击查看详情</span>
+                                                            </td>
+                                                            <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
+                                                            <td>{{$v->serviceProvider?$v->serviceProvider->name:""}}</td>
+                                                            <td>
+                                                                @if($v->status=='5')
+                                                                    <span class="label label-primary">待评价</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="page-header">{{ $data4->appends(['active'=>'assess'])->links() }}</div>
+                                    @endif
                                 </div>
                                 <div class="tab-pane @if (request()->active=='success') active  @endif" id="tab-4">
+                                    @if(isset($data3))
                                     <div class="tab-pane">
                                         <div class="panel-body">
                                             <table class="table">
@@ -319,9 +327,11 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="page-header">{{ $data3->appends(['active' => 'success'])->links() }}</div>
+                                    <div class="page-header">{{ $data3->appends(['active'=>'success'])->links() }}</div>
+                                    @endif
                                 </div>
                                 <div class="tab-pane @if (request()->active=='all') active  @endif " id="tab-5">
+                                    @if(isset($data5))
                                     <div class="tab-pane">
                                         <div class="panel-body">
                                             <table class="table">
@@ -439,7 +449,8 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="page-header">{{ $data5->appends(['active' => 'all'])->links() }}</div>
+                                    <div class="page-header">{{ $data5->appends(['active'=>'success'])->links() }}</div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

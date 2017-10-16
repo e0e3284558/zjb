@@ -218,11 +218,7 @@
             },
             errorElement: "em",
             errorPlacement: function ( error, element ) {
-                // Add the `help-block` class to the error element
                 error.addClass( "help-block" );
-
-                // Add `has-feedback` class to the parent div.form-group
-                // in order to add icons to inputs
                 element.parents( ".col-sm-8" ).addClass( "has-feedback" );
 
                 if ( element.prop( "type" ) === "checkbox" ) {
@@ -277,7 +273,7 @@
                         $('#signupForm1').toggleClass('sk-loading');
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,
@@ -294,20 +290,4 @@
             }
         } );
     } );
-</script>
-<script type="text/javascript">
-    //查看是否还有子公司
-    function finds(id) {
-        $.ajax({
-            "url":'{{url('asset/finds')}}'+"/"+id,
-            "type":"get",
-            'data':{id:id},
-            success:function (data) {
-                if(data=="还有子类"){
-                    $("#type_sel option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
 </script>

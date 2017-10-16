@@ -169,7 +169,8 @@ class ServiceWorkerController extends Controller
         $serviceWorker->upload_id = $request->upload_id;
         if ($serviceWorker->save()) {
             //将tag数据存入到中间表post_tag中
-            if ($serviceWorker->classify()->sync($request->classify) && $serviceWorker->service_provider()->sync($request->serviceProvider)) {
+            if ($serviceWorker->classify()->sync($request->classify) &&
+                $serviceWorker->service_provider()->sync($request->serviceProvider)) {
                 return response()->json([
                     'status' => 1, 'message' => '更新成功',
                     'data' => $serviceWorker->toArray()

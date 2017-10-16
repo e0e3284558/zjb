@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">导入数据1</h4>
+    <h4 class="modal-title" id="myModalLabel">导入数据</h4>
 </div>
 <div class="modal-body">
     <form id="signupForm" class="form-horizontal " method="post">
@@ -53,16 +53,6 @@
             import_form.submit();
         });
         import_form.validate( {
-//            rules: {
-//                num: {
-//                    required:true,
-//                }
-//            },
-//            messages: {
-//                num: {
-//                    required:'不能为空',
-//                }
-//            },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -111,7 +101,7 @@
                         zjb.blockUI();
                     },
                     success:function (data) {
-                        if(data.code){
+                        if(data.status){
                             swal({
                                 title: "",
                                 text: data.message,

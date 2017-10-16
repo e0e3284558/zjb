@@ -68,13 +68,25 @@
                                         <li><a>导出分类</a></li>
                                     </ul>
                                 </div>
-                                <a type="button" class="btn btn-success" data-toggle="modal"
+                                <a type="button" id="ajax_add" class="btn btn-success" data-toggle="modal"
                                         data-target=".bs-example-modal-lg"
                                         href="{{url('consumables/archiving/create')}}">+
                                     新增物品
                                 </a>
 
-                                <button type="button" class="btn btn-default">导出Excel</button>
+                                <div class="dropdown inline">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-print"></i>更多操作
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li><a class="btn btn-default" id="printBarcode download" href="{{url('consumables/archiving/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('consumables/archiving/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 耗材导入</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('consumables/archiving/export')}}"><i class="fa fa-sign-out"></i> 导出耗材数据</a></li>
+                                    </ul>
+                                </div>
+
+                                {{--<a href="{{url('consumables/archiving/export')}}" type="button" class="btn btn-default">导出Excel</a>--}}
                             </h3>
                         </h5>
                     </div>
@@ -90,8 +102,8 @@
 
                                         function zTreeOnClick(event, treeId, treeNode) {
                                             id = treeNode.id;
-                                            alert(id);
-                                            tableReload({});
+                                            $("#ajax_add").attr("href","{{url('consumables/archiving')}}/"+id);
+                                            searchTable('{{ url("consumables/goods?id=")}}'+id);
                                         }
 
                                         var zTreeObj;
@@ -321,6 +333,12 @@
        function tableReload(query) {
             table.reload('dataUser', {
                 where: query
+            });
+        }
+        function searchTable(url) {
+           console.log(url);
+            table.reload('dataUser', {
+                url:url
             });
         }
     </script>

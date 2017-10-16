@@ -125,10 +125,6 @@
                         });
                     });
             };
-            // $('#operationModal').on('hidden.bs.modal', function () {
-            //     $(this).find(".modal-content").html('');
-            //     $(this).removeData();
-            // });
             layui.use(['laytpl','table'], function(){
                 table = layui.table;
                 table.on('checkbox(data-user)', function(obj){
@@ -212,11 +208,6 @@
                     $('.i-checks').iCheck('uncheck');
                 }
             });
-            // layui.use('table', function(){
-            //   var table = layui.table;
-            //   table.init('asset-table', { //转化静态表格
-            //   }); 
-            // });
         });
         function str(message) {
             var messages = "<div class='modal-header'>" +

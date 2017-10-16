@@ -22,7 +22,7 @@ class AssetReturnController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $map = [
                 ['org_id', '=', $org_id]
             ];
@@ -46,33 +46,7 @@ class AssetReturnController extends Controller
         if ($res = is_permission('asset.return.add')){
             return $res;
         }
-        $map = [
-            'status' => '3',
-            'org_id' =>Auth::user()->org_id
-        ];
-        $list = Asset::where($map)->get();
-//        dd($list);
-//        $list[] = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier')->where("id",$v)->first();
-//        $asset_ids = "";
-//        foreach ($list as $k=>$v){
-//            $asset_ids .= $v['asset_ids'].",";
-//        }
-
-//        $arr = explode(",",trim($asset_ids,","));
-
-//        $list = [];
-//        foreach ($arr as $v){
-//            $list[] = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier')->where("id",$v)->first();
-//        }
-
-
-        foreach ($list as $key => $value) {
-            //图片
-            $list[$key]['file'] = Asset::find($value->id)->file()->first();
-            $list[$key]['img_path'] = $list[$key]['file']["path"];
-            $list[$key]['file_id'] = $list[$key]['file']['id'];
-        }
-        return view("asset.assetReturn.add",compact("list"));
+        return view("asset.assetReturn.add");
     }
 
     /**
@@ -87,9 +61,18 @@ class AssetReturnController extends Controller
             return $res;
         }
         $arr = $request->except("_token","asset_ids");
-        $arr['return_code'] = "TK".date("Ymd").rand("0001","9999");
+
+        //查找当前org_id下的最大serial_number值
+        $max_serial = AssetReturn::where(['org_id'=>get_current_login_user_org_id()])->orderBy("serial_number","desc")->first();
+        if($max_serial){
+            $code = str_pad($max_serial->serial_number+1,5,"0",STR_PAD_LEFT);
+        }else{
+            $code = '00001';
+        }
+        $arr['return_code'] = "TK".date("Ymd").$code;
+        $arr['serial_number'] = $max_serial->serial_number+1;
         $arr['return_dispose_user_id'] = Auth::user()->id;
-        $arr['org_id'] = Auth::user()->org_id;
+        $arr['org_id'] = get_current_login_user_org_id();
         $arr['asset_ids'] = implode(",",$request->asset_ids);
         $arr['created_at'] = date("Y-m-d H:i:s");
         $info = AssetReturn::insert($arr);
@@ -173,5 +156,25 @@ class AssetReturnController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
+     */
+    public function slt_asset(Request $request){
+        if ($request->get("type")==2) {
+            $org_id = get_current_login_user_org_id();
+            $map = [
+                ['org_id', '=', $org_id],
+                ['status','=','3']
+            ];
+            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = $data->toArray();
+            $data['msg'] = '';
+            $data['code'] = 0;
+            return response()->json($data);
+        }
+        return view("asset.assetReturn.slt_asset");
     }
 }

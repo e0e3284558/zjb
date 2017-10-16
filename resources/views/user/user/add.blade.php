@@ -51,6 +51,31 @@
 
         <div class="form-group">
             <label class="control-label col-md-3">
+                负责维护资产类别
+            </label>
+            <div class="col-md-8">
+                <select name="asset_category_id[]" id="" multiple class="form-control select2">
+                    @foreach($asset_category as $v)
+                        <option value="{{$v->id}}">{{$v->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">
+                负责维护场地类别
+            </label>
+            <div class="col-md-8">
+                <select name="classify_id[]" id="" multiple class="form-control select2">
+                    @foreach($classify as $v)
+                        <option value="{{$v->id}}">{{$v->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">
                 所属角色
             </label>
             <div class="col-md-8">

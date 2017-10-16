@@ -432,7 +432,7 @@ if (!function_exists('area_select')) {
             foreach ($list as $key => $val) {
                 $str .= '<option value="' . $val['id'] . '" '
                     . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
-                    . $val['space'] . $val['name'] .'('.$val['code'].')'. '</option>';
+                    . $val['space'] . $val['name'] . '(' . $val['code'] . ')' . '</option>';
             }
         }
         return $str;
@@ -470,7 +470,7 @@ if (!function_exists('category_select')) {
         if ($list) {
             foreach ($list as $key => $val) {
                 $str .= '<option value="' . $val['id'] . '" ' . '>'
-                     . $val['name'] . '</option>';
+                    . $val['name'] . '</option>';
             }
         }
         return $str;
@@ -497,12 +497,90 @@ if (!function_exists('is_permission')) {
     function is_permission($permission)
     {
         $user = get_current_login_user_info(true);
-        if($user->is_org_admin){
+        if ($user->is_org_admin) {
             return false;
         }
         if (!$user->hasAnyPermission($permission)) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'status' => 0, 'message' => '权限不足',
+                    'data' => null, 'url' => ''
+                ]);
+            }
             return abort(403);
         }
     }
 }
+
+/**
+ * 获取当前登录用户的组织部门
+ */
+if (!function_exists('get_user_department')) {
+    function get_user_department()
+    {
+        $user_department_id=get_current_login_user_info(true)->department_id;
+        return App\Models\User\Department::find($user_department_id);
+    }
+}
+
+/**
+ * 获取当前登录用户组织部门的负责维修的场地id
+ */
+if (!function_exists('get_department_classify')) {
+    function get_department_classify()
+    {
+        $department_id=get_user_department()->id;
+        $classify=\Illuminate\Support\Facades\DB::table('classify_department')
+                                        ->where('department_id', $department_id)
+                                        ->pluck('classify_id')->toArray();
+        return $classify;
+    }
+}
+
+/**
+ * 获取当前登录用户组织部门的负责维修的资产分类id
+ */
+if (!function_exists('get_department_asset_category')) {
+    function get_department_asset_category()
+    {
+        $department_id=get_user_department()->id;
+        $asset_category=\Illuminate\Support\Facades\DB::table('asset_category_department')
+            ->where('department_id', $department_id)
+            ->pluck('asset_category_id')->toArray();
+        return $asset_category;
+    }
+}
+
+
+/**
+ * 获取当前登录用户组织部门的负责维修的场地id
+ */
+if (!function_exists('get_user_classify')) {
+    function get_user_classify()
+    {
+        $user_id=get_current_login_user_info();
+        $classify=\Illuminate\Support\Facades\DB::table('classify_user')
+                                        ->where('user_id', $user_id)
+                                        ->pluck('classify_id')->toArray();
+        return $classify;
+    }
+}
+
+/**
+ * 获取当前登录用户组织部门的负责维修的资产分类id
+ */
+if (!function_exists('get_user_asset_category')) {
+    function get_user_asset_category()
+    {
+        $user_id=get_current_login_user_info();
+        $asset_category=\Illuminate\Support\Facades\DB::table('asset_category_user')
+            ->where('user_id', $user_id)
+            ->pluck('asset_category_id')->toArray();
+        return $asset_category;
+    }
+}
+
+
+
+
 

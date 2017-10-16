@@ -77,39 +77,27 @@
         </div>
 
         <div class="row" >
-            <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
-                <table class="table table-striped table-bordered table-hove">
-                    <thead>
-                    <tr>
-                        <td class="dialogtableth"><input type="checkbox"></td>
-                        <td class="dialogtableth">照片</td>
-                        <td class="dialogtableth">资产条码</td>
-                        <td class="dialogtableth">资产名称</td>
-                        <td class="dialogtableth">资产类别</td>
-                        <td class="dialogtableth">规格型号</td>
-                    </tr>
-                    </thead>
-                    <tbody data-bind="foreach: selectedAssetList">
-                    @foreach($list as $value)
-                        <tr>
-                            <td><input type="checkbox" name="asset_ids[]" value="{{$value->id}}"></td>
-                            <td>
-                                @if($value->img_path)
-                                    <a href="{{url("$value->img_path")}}" data-lightbox="roadtrip">
-                                        <img id="image" class="cursor_pointer img-md" src="{{$value->img_path}}">
-                                    </a>
-                                @endif
-                            </td>
-                            <td>{{$value->code}}</td>
-                            <td>{{$value->name}}</td>
-                            <td>{{$value->category->name}}</td>
-                            <td>{{$value->spec}}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
+            <a class="btn btn-info" href="{{url('asset_use/slt_asset')}}"  data-toggle="modal" data-target=".bs-example-modal-md" >选择资产</a>
+            <a href="javascript:;" class="btn btn-info" id="dlt-asset">删除</a>
+        </div>
+        <div class="row" style="overflow:auto;height:195px;margin-top:10px;">
+            <table id="asset-use-asset" class="table table-striped table-bordered table-hove">
+                <thead>
+                <tr>
+                    <td class="dialogtableth"><input type="checkbox" id="all" ></td>
+                    <td class="dialogtableth">资产条码</td>
+                    <td class="dialogtableth">资产名称</td>
+                    <td class="dialogtableth">资产类别</td>
+                    <td class="dialogtableth">规格型号</td>
+                    <td class="dialogtableth">金额(元)</td>
+                    <td class="dialogtableth">所在场地</td>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: selectedAssetList">
 
-                </table>
-            </div>
+                </tbody>
+
+            </table>
         </div>
 
     </form>
@@ -121,6 +109,27 @@
 <script type="text/javascript">
 
     $( document ).ready( function () {
+
+        layui.use('table', function(){
+            var table = layui.table;
+
+            //执行渲染
+            table.render({
+                elem: '#useAdd' //指定原始表格元素选择器（推荐id选择器）
+                ,height: 315 //容器高度
+                ,url:'{{ url("asset_use/create?type=2") }}'
+                ,cols: [[
+                    {fixed:'left',checkbox:true},
+                    {title:'ID',field:'id', width:80, sort: true}
+                ]] //设置表头
+                ,id:'dataAssetUse'
+                , page:true
+                ,limit:20
+                ,even:true
+                ,response:{countName: 'total'}
+                //,…… //更多参数参考右侧目录：基本参数选项
+            });
+        });
 
         $('.datepicker').datepicker({
             language: "zh-CN",
@@ -238,45 +247,23 @@
 </script>
 
 <script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
-        })
-    }
-</script>
 
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
+    $(document).ready(function () {
+        $("#all").click(function(){
+            if(this.checked){
+                $("#asset-use-asset :checkbox").prop("checked", true);
+            }else{
+                $("#asset-use-asset :checkbox").prop("checked", false);
+            }
+        });
+
+        $("#dlt-asset").click(function () {
+            $("#asset-use-asset input[type='checkbox']:checked").each(function() {
+                //判断
+                if($(this).val()!="on"){
+                    $(this).parents('tr').remove();
+                }
+            });
+        });
+    })
 </script>

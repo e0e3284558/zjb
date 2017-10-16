@@ -10,4 +10,8 @@ class AssetCategory extends Model
     {
         return $this->belongsTo('App\Models\User\Org');
     }
+    public function supplier()
+    {
+        return $this->belongsToMany('App\Models\Asset\Supplier');
+    }
 }

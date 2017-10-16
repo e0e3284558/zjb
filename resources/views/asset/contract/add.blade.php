@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label for="name" class="col-sm-4 control-label">合同名称<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" name="name" class="form-control" data-error-container="#error-block" placeholder="资产名称">
+                        <input type="text" name="name" class="form-control" data-error-container="#error-block" placeholder="合同名称">
                     </div>
                 </div>
             </div>
@@ -22,38 +22,54 @@
                 <div class="form-group">
                     <label for="money" class="col-sm-4 control-label">甲方</label>
                     <div class="col-sm-8">
-                        <input type="text" name="first_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" name="first_party" value="{{$org_name}}" disabled class="form-control" data-error-container="#error-block" >
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="row" >
             <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="money" class="col-sm-4 control-label">乙方</label>
+                    <label class="col-sm-4 control-label">乙方(供应商)</label>
                     <div class="col-sm-8">
-                        <input type="text" name="second_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <select id="second_party" data-error-container="#error-block" name="second_party" class="form-control select2">
+                            <option value="" >请选择</option>
+                            @foreach($supplier_list as $v)
+                                <option value="{{$v->name}}">{{$v->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
+
                 </div>
             </div>
             <div class="col-md-6" >
                 <div class="form-group">
                     <label for="money" class="col-sm-4 control-label">丙方</label>
                     <div class="col-sm-8">
-                        <input type="text" name="third_party" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" name="third_party" class="form-control" data-error-container="#error-block" placeholder="丙方">
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="remarks" class="col-sm-2 control-label">备注</label>
+                    <label for="remarks" class="col-sm-4 control-label">备注</label>
                     <div class="col-sm-8">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 120px;resize: none;" placeholder="备注说明 ..."></textarea>
+                        <textarea class="form-control" name="remarks" rows="3" style="height: 80px;resize: none;" placeholder="备注说明 ..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" >
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">维保起止时间</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="start_date" class="form-control datepicker" data-date-date = "0d" data-error-container="#error-block" placeholder="开始日期">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" name="end_date" class="form-control datepicker" data-date-date = "0d" data-error-container="#error-block" placeholder="终止日期">
                     </div>
                 </div>
             </div>
@@ -76,6 +92,49 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="row" >
+            <div class="col-md-12" >
+                <a href="javascript:;" class="add btn btn-md btn-success" >增加一栏</a>
+                <a href="javascript:;" class="reduce btn btn-md btn-danger" >减去最后一栏</a>
+                <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
+                    <thead>
+                    <tr role="row">
+                        <th>资产名称<span style="color: red;" >*</span></th>
+                        <th>数量<span style="color: red;" >*</span></th>
+                        <th style="width: 200px;" >资产类别<span style="color: red;" >*</span></th>
+                        <th>规格型号<span style="color: red;" >*</span></th>
+                        <th>计量单位<span style="color: red;" >*</span></th>
+                        <th>单价(元)<span style="color: red;" >*</span></th>
+                        <th style="width: 150px;">供应商<span style="color: red;" >*</span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr >
+                        <td><input class="form-control" type="text" name="names[]" data-error-container="#error-block" ></td>
+                        <td><input class="form-control" type="text" name="num[]" data-error-container="#error-block" ></td>
+                        <td>
+                            <select class="form-control select2" name="category_id[]" data-error-container="#error-block" id="category_id">
+                                {!! category_select() !!}
+                            </select>
+                        </td>
+                        <td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block" ></td>
+                        <td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>
+                        <td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>
+                        <td>
+                            <select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">
+                                {!! supplier_select() !!}
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
     </form>
 </div>
 <div class="modal-footer">
@@ -103,8 +162,6 @@
             uploadSuccess:function(file,response,uploader){
 //                console.log(response.data.id);
                 $('#upload_id').val(response.data.id);
-//                console.log(uploader);
-//                $('#upload_id').val(response.data.id);
             },
             fileCannel:function(fileId,uploader){},
             fileDelete:function(fileId,uploader){}
@@ -122,34 +179,37 @@
             assets_form.submit();
         });
         assets_form.validate( {
-//            rules: {
-//                category_id:"required",
-//                name:"required",
-//                area_id:"required",
-//                money:{
-//                    number:true,
-//                    min:0
-//                },
-//                buy_time:"required",
-//                use_time: {
-//                    min: 1,
-//                    digits:true
-//                }
-//            },
-//            messages: {
-//                category_id:"资产类别不能为空",
-//                name:"资产名称不能为空",
-//                area_id:'所在场地不能为空',
-//                money:{
-//                    number:"必须为数值类型",
-//                    min:"金额必须为大于零的有效数字"
-//                },
-//                buy_time:"购入时间不能为空",
-//                use_time: {
-//                    min: "请输入一个有效整数",
-//                    digits:"请输入一个正整数"
-//                }
-//            },
+
+            rules: {
+                'name[]':"required",
+                'num[]':{
+                    min:1,
+                    digits:true
+                },
+                'category_id[]':"required",
+                'spec[]':'required',
+                'calculate[]':'required',
+                'money[]':{
+                    min:0,
+                    number:true
+                },
+                'supplier_id[]':'required'
+            },
+            messages: {
+                'names[]':"清单名称不能为空",
+                'num[]':{
+                    min:'必须为正整数',
+                    digits:"必须为正整数",
+                    'category_id[]':'请选择资产类别'
+                },
+                'spec[]':'规格型号不能为空',
+                'calculate[]':'计量单位不能为空',
+                'money[]':{
+                    min:'请输入正确单价',
+                    number:'请输入正确单价'
+                },
+                'supplier_id[]':"请选择供应商"
+            },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
@@ -234,45 +294,26 @@
 </script>
 
 <script type="text/javascript" >
-    //查找是否还有子类别
-    function find(id) {
-        $.ajax({
-            url:'{{url('asset_category/find')}}'+"/"+id,
-            type:"get",
-            data:{id:id},
-            dataType:"json",
-            success:function (data) {
-                if(data.code){
-                    $("#type_id option:first").prop("selected","selected");
-                    alert("只能选择子分类....");
-                }
-            }
+    $("document").ready(function () {
+        $(".add").click(function () {
+            $(".table-bordered tbody").append(
+                '<tr>' +
+                '<td><input class="form-control" type="text" name="names[]" data-error-container="#error-block"></td>' +
+                '<td><input class="form-control" type="text" name="num[]" data-error-container="#error-block"></td>' +
+                '<td><select class="form-control select2" name="category_id[]" data-error-container="#error-block" id="category_id">' +
+                '{!! category_select() !!}'+
+                '</select></td>' +
+                '<td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block"></td>'+
+                '<td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>'+
+                '<td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>' +
+                '<td><select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">' +
+                '{!! supplier_select() !!}' +
+                '</select></td>' +
+                '</tr>'
+            )
+        });
+        $(".reduce").click(function () {
+            $(".table-bordered tbody tr:last").remove();
         })
-    }
-</script>
-
-<script type="text/javascript" >
-    // 初始化Web Uploader
-    {{--var uploader = WebUploader.create({--}}
-        {{--// 选完文件后，是否自动上传。--}}
-        {{--auto: true,--}}
-        {{--// swf文件路径--}}
-        {{--swf: '{{url("admin/plugins/webuploader/Uploader.swf")}}',--}}
-        {{--// 文件接收服务端。--}}
-        {{--server: '{{url('upload/uploadFile')}}',--}}
-        {{--formData: {"_token": "{{ csrf_token() }}"},--}}
-        {{--// 选择文件的按钮。可选。--}}
-        {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
-        {{--pick: '#filePicker',--}}
-        {{--// 只允许选择图片文件。--}}
-        {{--accept: {--}}
-            {{--title: 'Images',--}}
-            {{--extensions: 'gif,jpg,jpeg,bmp,png',--}}
-            {{--mimeTypes: 'image/jpg,image/jpeg,image/png'   //修改这行--}}
-        {{--}--}}
-    {{--});--}}
-    {{--uploader.on('uploadSuccess', function (file, response) {--}}
-        {{--$('#thumb_img').attr('src', '/' + response.path);--}}
-        {{--$('#upload_id').attr('value', response.id);--}}
-    {{--});--}}
+    });
 </script>

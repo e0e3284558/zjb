@@ -28,7 +28,7 @@ class OtherAssetController extends Controller
         if ($res = is_permission('other.asset.index')){
             return $res;
         }
-        $org_id = Auth::user()->org_id;
+        $org_id = get_current_login_user_org_id();
         $map = [
             ['org_id','=',$org_id]
         ];
@@ -69,12 +69,12 @@ class OtherAssetController extends Controller
             'name' => $request->name,
             'uid' => Uuid::generate()->string,
             'remarks' => $request->remarks,
-            'org_id' => Auth::user()->org_id
+            'org_id' => get_current_login_user_org_id()
         ];
         $asset_id = OtherAsset::insertGetId($arr);
 
         $message = [
-            'code' => 1,
+            'status' => 1,
             'message' => '添加成功'
         ];
         return response()->json($message);
@@ -108,7 +108,7 @@ class OtherAssetController extends Controller
         if ($res = is_permission('other.asset.edit')){
             return $res;
         }
-        if(Auth::user()->org_id == OtherAsset::where("id",$id)->value("org_id")) {
+        if(get_current_login_user_org_id() == OtherAsset::where("id",$id)->value("org_id")) {
             $info = OtherAsset::where("id", $id)->first();
             return response()->view("asset.otherAsset.edit", compact("info"));
         }else{
@@ -136,12 +136,12 @@ class OtherAssetController extends Controller
 
         if($info){
             $message = [
-                'code' => 1,
+                'status' => 1,
                 'message' =>'信息修改成功'
             ];
         }else{
             $message = [
-                'code' => 0,
+                'status' => 0,
                 'message' =>'信息修改失败'
             ];
         }
@@ -160,12 +160,12 @@ class OtherAssetController extends Controller
             return $res;
         }
         $arr = explode(",",$id);
-        if(Auth::user()->org_id == OtherAsset::where("id",$arr[0])->value("org_id")) {
+        if(get_current_login_user_org_id() == OtherAsset::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
-                $info = OtherAsset::where("id",$v)->where("org_id",Auth::user()->org_id)->delete();
+                $info = OtherAsset::where("id",$v)->where("org_id",get_current_login_user_org_id())->delete();
             }
             $message = [
-                'code' => 1,
+                'status' => 1,
                 'message' => '删除成功'
             ];
             return response()->json($message);
@@ -175,7 +175,9 @@ class OtherAssetController extends Controller
     }
 
 
-    //下载模板
+    /**
+     * 下载模板
+     */
     function downloadModel(){
         $cellData = [['报修项名称','备注']];
         Excel::create('其他报修项模板', function($excel) use ($cellData){
@@ -195,15 +197,22 @@ class OtherAssetController extends Controller
         })->export('xls');
     }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
     function add_import(){
         return response()->view('asset.otherAsset.add_import');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     function import(Request $request){
         $filePath =  $request->file_path;
         Excel::load($filePath, function($reader) {
             $data = $reader->all();
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             foreach ($data as $k=>$v){
                 $arr = $v->toArray();
                 $arr['uid'] = Uuid::generate()->string;
@@ -213,7 +222,7 @@ class OtherAssetController extends Controller
             }
         });
         $message = [
-            'code'=>'1',
+            'status'=>'1',
             'message'=> '数据导入成功'
         ];
         return response()->json($message);

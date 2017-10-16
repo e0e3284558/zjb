@@ -23,11 +23,7 @@
         <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
             <div class="row">
                 <div class="col-sm-7">
-                    <a href="{{ url('asset_use/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 新增领用</a>
-                    <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
-                    {{--<button href="" class="btn red btn-delete">--}}
-                        {{--<i class="fa fa-trash"></i> 删除--}}
-                    {{--</button>--}}
+                    <a href="{{ url('asset_use/create?type=1') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 新增领用</a>
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
@@ -201,11 +197,6 @@
                     $('.i-checks').iCheck('uncheck');
                 }
             });
-            // layui.use('table', function(){
-            //   var table = layui.table;
-            //   table.init('asset-table', { //转化静态表格
-            //   }); 
-            // });
         });
         function str(message) {
             var messages = "<div class='modal-header'>" +
@@ -235,77 +226,6 @@
                 $(".modal-content").html(str("每次只能修改一条资产"));
             }
         }
-
-        function dlt() {
-            if($("tbody input[type='checkbox']:checked").length >= 1){
-
-                var arr = [];
-                $("tbody input[type='checkbox']:checked").each(function() {
-                    //判断
-                    var id = $(this).val();
-                    arr.push(id);
-                });
-
-                swal({
-                        title: "确认要删除该资产吗？",
-                        text: "",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        cancelButtonText: "取消",
-                        confirmButtonText: "确认",
-                        closeOnConfirm: false
-                    },
-                    function(){
-                        //发异步删除数据
-                        $.ajax({
-                            type: "post",
-                            url: '{{url('asset')}}'+'/'+arr,
-                            data: {
-                                "_token": '{{csrf_token()}}',
-                                '_method': 'delete'
-                            },
-                            dataType:"json",
-                            success: function (data) {
-                                if(data.code==1){
-                                    swal({
-                                        title: "",
-                                        text: data.message,
-                                        type: "success",
-                                        timer: 1000,
-                                    },function () {
-                                        window.location.reload();
-                                    });
-                                }else{
-                                    swal("", data.message, "error");
-                                }
-                            }
-                        });
-                    });
-            }else if($("tbody input[type='checkbox']:checked").length == 0){
-                $(".modal-content").html(str("请选择资产"));
-            }
-        }
-
-
-        function show_img(object,url) {
-            $.ajax({
-                url:url,
-                success:function (data) {
-                    $(".bs-example-modal-md .modal-content").html(data);
-                }
-            })
-        }
-
-        function shows(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $(".bs-example-modal-lg .modal-content").html(data);
-                }
-            })
-        }
-
     </script>
 </div>
 @endsection

@@ -25,7 +25,7 @@ class AssetCategoryController extends Controller
         if ($res = is_permission('asset.category.index')){
             return $res;
         }
-        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get()->toArray();
+        $list = AssetCategory::where("org_id",get_current_login_user_org_id())->get()->toArray();
         foreach ($list as $k=>$v){
             $list[$k]['text'] = $v['name'];
             $list[$k]['nodeId'] = $v['id'];
@@ -72,12 +72,12 @@ class AssetCategoryController extends Controller
         $arr = [
             'category_code' => $request->category_code,
             'name' => $request->name,
-            'org_id' => Auth::user()->org_id,
+            'org_id' => get_current_login_user_org_id(),
             'created_at' => date("Y-m-d H:i:s")
         ];
         if($request->pid){
             $arr['pid'] = $request->pid;
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $arr['path'] = AssetCategory::where('org_id',$org_id)->where("id",$request->pid)->value("path");
             $arr['path'] .= $request->pid.",";
         }else{
@@ -87,12 +87,12 @@ class AssetCategoryController extends Controller
         $info = AssetCategory::insertGetId($arr);
         if($info){
             $arr = [
-                'code'=>1,
+                'status'=>1,
                 'message'=>'添加成功'
             ];
         }else{
             $arr = [
-                'code'=>0,
+                'status'=>0,
                 'message'=>'添加失败'
             ];
         }
@@ -141,16 +141,16 @@ class AssetCategoryController extends Controller
         if ($res = is_permission('asset.category.edit')){
             return $res;
         }
-        if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
+        if(get_current_login_user_org_id() == AssetCategory::where("id",$id)->value("org_id")){
             $info = AssetCategory::where("id",$id)->update($request->except("_token","_method"));
             if($info){
                 $arr = [
-                    'code'=>1,
+                    'status'=>1,
                     'message'=>'修改成功'
                 ];
             }else{
                 $arr = [
-                    'code'=>0,
+                    'status'=>0,
                     'message'=>'修改失败'
                 ];
             }
@@ -169,25 +169,25 @@ class AssetCategoryController extends Controller
         if ($res = is_permission('asset.category.del')){
             return $res;
         }
-        if(Auth::user()->org_id == AssetCategory::where("id",$id)->value("org_id")){
+        if(get_current_login_user_org_id() == AssetCategory::where("id",$id)->value("org_id")){
             $list = AssetCategory::where("pid",$id)->first();
             if($list!=null){
                 $message = [
-                    'code'=>0,
+                    'status'=>0,
                     'message'=>'此类别下还有子类别'
                 ];
             }else{
                 //判断此类别下还有资产
                 if($info = Asset::where("category_id",$id)->first()){
                     $message = [
-                        'code'=>0,
+                        'status'=>0,
                         'message'=>'此类别下还有资产，不能删除'
                     ];
                 }else{
                     $info = AssetCategory::where("id",$id)->delete();
                     if($info){
                         $message = [
-                            'code'=>1,
+                            'status'=>1,
                             'message'=>'删除成功'
                         ];
                     }
@@ -208,12 +208,12 @@ class AssetCategoryController extends Controller
         $list = AssetCategory::where("pid",$id)->first();
         if($list){
             $message = [
-                'code'=>1,
+                'status'=>1,
                 'message' => '还有子类'
             ];
         }else{
             $message = [
-                'code'=>0,
+                'status'=>0,
                 'message' => '没有子类'
             ];
         }
@@ -266,7 +266,7 @@ class AssetCategoryController extends Controller
         $cellData = [['资产类别名称','父类']];
         $cellData2 = [['资产类别名称','类别编号']];
         //类别
-        $list = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list = AssetCategory::where("org_id",get_current_login_user_org_id())->get();
         foreach ($list as $k=>$v){
             $arr = [
                 $list[$k]->name,$list[$k]->id
@@ -317,7 +317,7 @@ class AssetCategoryController extends Controller
         $filePath =  $request->file_path;
         Excel::selectSheets('sheet1')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             foreach ($data as $k=>$v){
                 if($k==0){
                     continue;
@@ -339,7 +339,7 @@ class AssetCategoryController extends Controller
             }
         });
         $message = [
-            'code'=>'1',
+            'status'=>'1',
             'message'=> '数据导入成功'
         ];
         return response()->json($message);

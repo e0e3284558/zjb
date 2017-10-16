@@ -43,6 +43,10 @@
                     @endif
                 </td>
             </tr>
+            <tr>
+                <td class="td-bg" ><label class="control-label">所属合同</label></td>
+                <td colspan="5" >{{$info->contract->name}}</td>
+            </tr>
         </tbody>
     </table>
 </div>

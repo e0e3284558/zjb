@@ -8,6 +8,7 @@ use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\AssetFile;
 use App\Models\Asset\Bill;
+use App\Models\Asset\Contract;
 use App\Models\Asset\Supplier;
 use App\Models\File\File;
 use App\Models\Asset\Source;
@@ -55,20 +56,21 @@ class AssetController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             $map = [
-                ['org_id', '=', $org_id]
+                ['org_id', '=', $org_id],
+                ['status', '!=', '0']
             ];
-//            if ($request->category_id) {
-//                $map[] = ['category_id', '=', $request->category_id];
-//            }
             if ($request->search) {
                 $map[] = ['name', 'like', '%' . $request->search . '%'];
             }
-            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
 
             foreach ($data as $k=>$v){
                 switch ($v->status){
+                    case "0":
+                        $data[$k]['status'] = '<span class="btn-sm label-warning" >已报废</span>';
+                        break;
                     case "1":
                         $data[$k]['status'] = '<span class="btn-sm label-info" >闲置</span>';
                         break;
@@ -78,27 +80,20 @@ class AssetController extends Controller
                     case "3":
                         $data[$k]['status'] = '<span class="btn-sm label-primary" >领用</span>';
                         break;
+                    case "4":
+                        $data[$k]['status'] = '<span class="btn-sm label-success" >在用</span>';
+                        break;
+                    case "5":
+                        $data[$k]['status'] = '<span class="btn-sm label-success" >调拨中</span>';
+                        break;
                 }
             }
-//            foreach ($data as $key => $value) {
-//                //图片
-//                $data[$key]['file'] = Asset::find($value->id)->file()->first();
-//                $data[$key]['img_path'] = '<img class="cursor_pointer img-md"  src="'.$data[$key]['file']["path"].'" data-toggle="modal" data-target=".bs-example-modal-md" />';
-//                $data[$key]['file_id'] = $data[$key]['file']['id'];
-//            }
-
             $data = $data->toArray();
             $data['msg'] = '';
             $data['code'] = 0;
             return response()->json($data);
         }
         return view("asset.asset.index");
-        //资产类别
-//        $category_list = AssetCategory::where("org_id",$org_id)->get();
-//        $category_list = $this->test($category_list);
-//        $list = $list->appends(array('category_id'=>$request->category_id,'name'=>$request->name,'app_groups'=>'asset'));
-
-//        return view("asset.asset.index",compact("list","category_list"));
     }
 
     /**
@@ -111,7 +106,7 @@ class AssetController extends Controller
         if ($res = is_permission('asset.add')){
             return $res;
         }
-        $org_id = Auth::user()->org_id;
+        $org_id = get_current_login_user_org_id();
         //资产类别
         $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",Auth::user()->org_id)->orderBy("paths")->get();
         $list1 = $this->test($list1);
@@ -141,14 +136,22 @@ class AssetController extends Controller
             return $res;
         }
         if(!$request->code){
-            //公司code+资产类别code+日期随机值
-            $org_code = Org::where("id",Auth::user()->org_id)->value("code");
+            //公司code+资产类别code+序列号值
+            $org_code = Org::where("id",get_current_login_user_org_id())->value("code");
             $category_code = AssetCategory::where("id",$request->category_id)->value("category_code");
-            $code = $org_code.$category_code.rand('00001','99999');
+
+            //查找当前org_id、当前资产类别下的最大serial_number值
+            $max_serial = Asset::where(['org_id'=>get_current_login_user_org_id(),'category_id'=>$request->category_id])->orderBy("serial_number","desc")->first();
+            if($max_serial){
+                $code = $org_code.$category_code.str_pad($max_serial->serial_number+1,5,"0",STR_PAD_LEFT);
+            }else{
+                $code = $org_code.$category_code.'00001';
+            }
             $request->offsetSet("code",$code);
         }
         $arr = $request->except("_token","img","file_id");
 
+        $arr['serial_number'] = $max_serial->serial_number+1;
         $arr['asset_uid'] = Uuid::generate()->string;
         QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
 
@@ -156,27 +159,32 @@ class AssetController extends Controller
 
 
         $arr['created_at'] = date("Y-m-d H:i:s");
-        $arr['status'] = "1";
-        $arr['org_id'] = Auth::user()->org_id;
+        if($request->use_department_id){
+            $arr['status'] = '4';
+        }else{
+            $arr['status'] = "1";
+        }
+        $arr['org_id'] = get_current_login_user_org_id();
+
         $info = Asset::insertGetId($arr);
 
         if($request->file_id){
             $file_arr = [
                 'asset_id' => $info,
                 'file_id' => $request->file_id,
-                'org_id' => Auth::user()->org_id
+                'org_id' => get_current_login_user_org_id()
             ];
             AssetFile::insert($file_arr);
         }
 
         if($info){
             $message = [
-                'code'=>1,
+                'status'=>1,
                 'message'=>"添加成功"
             ];
         }else{
             $message = [
-                'code' => 0,
+                'status' => 0,
                 'message' => '添加失败'
             ];
         }
@@ -194,7 +202,7 @@ class AssetController extends Controller
         if ($res = is_permission('asset.index')){
             return $res;
         }
-        $info = Asset::with('category','org','user','admin','department','useDepartment','area')->find($id);
+        $info = Asset::with('category','org','user','admin','department','useDepartment','area','contract')->find($id);
         //图片
         $file = Asset::find($info->id)->file()->first();
         $info->img_path = $file["path"];
@@ -212,10 +220,10 @@ class AssetController extends Controller
         if ($res = is_permission('asset.edit')){
             return $res;
         }
-        if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
+        if(get_current_login_user_org_id() == Asset::where("id",$id)->value("org_id")) {
             $info = Asset::where("id", $id)->first();
             //公司
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             //资产类别
             $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",$org_id)->orderBy("paths")->get();
             $list1 = $this->test($list1);
@@ -256,7 +264,7 @@ class AssetController extends Controller
         if ($res = is_permission('asset.edit')){
             return $res;
         }
-        if(Auth::user()->org_id == Asset::where("id",$id)->value("org_id")) {
+        if(get_current_login_user_org_id() == Asset::where("id",$id)->value("org_id")) {
             $arr = $request->except("_token","_method",'file_id');
             $info = Asset::where("id",$id)->update($arr);
 
@@ -268,7 +276,7 @@ class AssetController extends Controller
                 $file_arr = [
                     'asset_id' => $id,
                     'file_id' => $request->file_id,
-                    'org_id' => Auth::user()->org_id
+                    'org_id' => get_current_login_user_org_id()
                 ];
                 AssetFile::insert($file_arr);
             }
@@ -300,7 +308,7 @@ class AssetController extends Controller
             return $res;
         }
         $arr = explode(",",$id);
-        if(Auth::user()->org_id == Asset::where("id",$arr[0])->value("org_id")) {
+        if(get_current_login_user_org_id() == Asset::where("id",$arr[0])->value("org_id")) {
             foreach ($arr as $k=>$v){
                 $info = Asset::where("id", $v)->delete();
                 if($infos = AssetFile::where("id",$v)->first()){
@@ -330,106 +338,85 @@ class AssetController extends Controller
         return response()->view("asset.asset.showImg",compact('info'));
     }
 
-    public function contract_create(){
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function contract_create()
+    {
         $map = [
-            'org_id' => Auth::user()->org_id,
+            'org_id' => get_current_login_user_org_id(),
             'status' => "1"
         ];
         $list = Bill::with("category","supplier")->where($map)->get();
+        foreach ($list as $k=>$v){
+            $list[$k]['contract'] = Contract::where("id",$v->contract_id)->value("name");
+        }
         return view("asset.asset.contract_add",compact("list"));
     }
 
-    public function contract_store(Request $request){
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * 合同资产录入
+     */
+    public function contract_store(Request $request)
+    {
+        foreach ($request->id as $k=>$v){
+            $info = Bill::where("id",$v)->first();
 
-        $info = Bill::where("id",$request->id)->first();
+            $org_code = Org::where("id",get_current_login_user_org_id())->value("code");
+            $category_code = AssetCategory::where("id",$info->category_id)->value("category_code");
 
-//        dd($info);
-        $org_code = Org::where("id",Auth::user()->org_id)->value("code");
-        $category_code = AssetCategory::where("id",$info->category_id)->value("category_code");
-        $code = $org_code.$category_code.rand('00001','99999');
-
-//        dd($info->num);
-        for ($i=0;$i<$info->num;$i++){
-            $arr = [
-                'code' => $org_code.$category_code.rand('00001','99999'),
-                'name' => $info->asset_name,
-                'asset_uid' => Uuid::generate()->string,
-                'category_id' => $info->category_id,
-                'spec' => $info->spec,
-                'calculate' => $info->calculate,
-                'money' => $info->money,
-                'buy_time' => date("Y-m-d H:i:s"),
-                'area_id' => $request->area_id,
-                'remarks' => $request->remarks,
-                'org_id' => $info->org_id,
-                'department_id' => $request->department_id,
-                'created_at' => date("Y-m-d H:i:s"),
-                'supplier_id' => $info->supplier_id,
-                'status' => "1",
-                'contract_id' => $request->id
-            ];
-            QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
-            $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
-
-//            dump($arr);
-            $infos = Asset::insertGetId($arr);
-            if($infos){
-                Bill::where("id",$request->id)->update(['status' => '2']);
-            }
-            if($request->file_id){
-                $file_arr = [
-                    'asset_id' => $infos,
-                    'file_id' => $request->file_id,
-                    'org_id' => Auth::user()->org_id
+            for ($i=0;$i<$info->num;$i++){
+                $arr = [
+                    'name' => $info->asset_name,
+                    'asset_uid' => Uuid::generate()->string,
+                    'category_id' => $info->category_id,
+                    'spec' => $info->spec,
+                    'calculate' => $info->calculate,
+                    'money' => $info->money,
+                    'buy_time' => date("Y-m-d H:i:s"),
+                    'area_id' => $request->area_id,
+                    'remarks' => $request->remarks,
+                    'org_id' => $info->org_id,
+                    'department_id' => $request->department_id,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'supplier_id' => $info->supplier_id,
+                    'status' => "1",
+                    'contract_id' => $info->contract_id
                 ];
-                AssetFile::insert($file_arr);
+                //查找当前org_id、当前资产类别下的最大serial_number值
+                $max_serial = Asset::where(['org_id'=>get_current_login_user_org_id(),'category_id'=>$info->category_id])->orderBy("serial_number","desc")->first();
+                if($max_serial){
+                    $arr['code'] = $org_code.$category_code.str_pad($max_serial->serial_number+1,5,"0",STR_PAD_LEFT);
+                }else{
+                    $arr['code'] = $org_code.$category_code.'00001';
+                }
+                $arr['serial_number'] = $max_serial->serial_number+1;
+                QrCode::format('png')->size("100")->margin(0)->generate($arr['asset_uid'],public_path('uploads/asset/'.$arr['asset_uid'].'.png'));
+                $arr['qrcode_path'] = 'uploads/asset/'.$arr['asset_uid'].'.png';
+                $infos = Asset::insertGetId($arr);
+                if($infos){
+                    Bill::where("id",$v)->update(['status' => '2']);
+                }
+                if($request->file_id){
+                    $file_arr = [
+                        'asset_id' => $infos,
+                        'file_id' => $request->file_id,
+                        'org_id' => get_current_login_user_org_id()
+                    ];
+                    AssetFile::insert($file_arr);
+                }
             }
-
         }
-//        dd();
-
         return response()->json(['status' => '1','message' => '合同资产录入成功']);
     }
 
-//    public function add_copy($id){
-//        return response()->view("asset.asset.copy",compact('id'));
-//    }
-//
-//    public function copy(Request $request){
-//        $info = Asset::find($request->id)->toArray();
-//        array_shift($info);
-//        //图片
-//        $file = Asset::find($request->id)->file()->first();
-//
-//        if($request->num>99){
-//            $message = [
-//                'code' => 0,
-//                'message' => '最多复制99个'
-//            ];
-//        }else{
-//            for ($i=0;$i<$request->num;$i++){
-//                $info['code'] = date("dHis").rand("10000","99999");
-//                $info['asset_uid'] = Uuid::generate()->string;
-//                $info['created_at'] = date("Y-m-d H:i:s");
-//                $asset_id = Asset::insertGetId($info);
-//                QrCode::format('png')->size("100")->margin(0)->generate($info['asset_uid'],public_path('uploads/asset/'.$info['asset_uid'].'.png'));
-//                if($file){
-//                    $file_arr = [
-//                        'asset_id' => $asset_id,
-//                        'file_id' => $file->id,
-//                        'org_id' => Auth::user()->org_id
-//                    ];
-//                    AssetFile::insert($file_arr);
-//                }
-//            }
-//            $message = [
-//                'code' => 1,
-//                'message' => '复制成功'
-//            ];
-//        }
-//
-//        return response()->json($message);
-//    }
+    public function slt_supplier($id){
+
+        $list = AssetCategory::find($id)->supplier()->get();
+        return response()->json($list);
+    }
 
 
     /**
@@ -437,7 +424,7 @@ class AssetController extends Controller
      */
     public function export(){
 
-        $list = Asset::where("org_id",Auth::user()->org_id)->get();
+        $list = Asset::where("org_id",get_current_login_user_org_id())->get();
         $cellData = [['资产编号','资产名称','资产类别','规格型号', '计量单位','金额(元)',
             '购入时间','所在场地(area_id)', '所属部门','供应商','资产备注']];
         $arr = [];
@@ -489,7 +476,7 @@ class AssetController extends Controller
             '所属部门(department_id)','供应商(supplier_id)','资产备注(remarks)']];
         //资产类别
         $cellData2 = [['资产类别名称','类别编号']];
-        $list2 = AssetCategory::where("org_id",Auth::user()->org_id)->get();
+        $list2 = AssetCategory::where("org_id",get_current_login_user_org_id())->get();
         foreach ($list2 as $k=>$v){
             $arr = [
                 $list2[$k]->name,$list2[$k]->id
@@ -498,7 +485,7 @@ class AssetController extends Controller
         }
         //所在场地
         $cellData3 = [['场地名称','场地编号']];
-        $list3 = Area::where("org_id",Auth::user()->org_id)->get();
+        $list3 = Area::where("org_id",get_current_login_user_org_id())->get();
         foreach ($list3 as $k=>$v){
             $arr = [
                 $list3[$k]->name,$list3[$k]->id
@@ -507,7 +494,7 @@ class AssetController extends Controller
         }
         //所属部门
         $cellData4 = [['部门名称','部门编号']];
-        $list4 = Department::where("org_id",Auth::user()->org_id)->get();
+        $list4 = Department::where("org_id",get_current_login_user_org_id())->get();
         foreach ($list4 as $k=>$v){
             $arr = [
                 $list4[$k]->name,$list4[$k]->id
@@ -516,7 +503,7 @@ class AssetController extends Controller
         }
         //供应商
         $cellData5 = [['供应商名称','供应商编号']];
-        $list5 = Supplier::where("org_id",Auth::user()->org_id)->get();
+        $list5 = Supplier::where("org_id",get_current_login_user_org_id())->get();
         foreach ($list5 as $k=>$v){
             $arr = [
                 $list5[$k]->name,$list5[$k]->id
@@ -596,16 +583,22 @@ class AssetController extends Controller
         })->export('xls');
     }
 
+    /**
+     * @return \Illuminate\Http\Response
+     */
     public function add_import(){
         return response()->view('asset.asset.add_import');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function import(Request $request){
         $filePath =  $request->file_path;
         Excel::selectSheets('资产录入')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();
-            dd($data);
-            $org_id = Auth::user()->org_id;
+            $org_id = get_current_login_user_org_id();
             foreach ($data as $k=>$v){
                 if($k==0){
                     continue;
@@ -632,7 +625,7 @@ class AssetController extends Controller
             }
         });
         $message = [
-            'code'=>'1',
+            'status'=>'1',
             'message'=> '资产数据导入成功'
         ];
         return response()->json($message);

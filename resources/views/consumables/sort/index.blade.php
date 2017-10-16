@@ -25,151 +25,100 @@
 @endsection
 
 @section('content')
-    <div class="wrapper wrapper-content wrapper-content2 animated fadeInRight">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="box-header">
-                    <h3 class="box-title">
-                        <button type="button" class="btn btn-success"
-                                onclick="add('新增一个分类','{{url('consumables/sort/create')}}')"
-                                data-toggle="modal" data-target=".bs-example-modal-lg">+ 新增顶级分类
-                        </button>
-
-                        <button type="button" class="btn btn-default">导出Excel</button>
-                    </h3>
+    <div class="fh-breadcrumb full-height-layout-on">
+        <div class="fh-column fh-column-w">
+            <div class="full-height-scroll" id="ztree-warpper">
+                <div class="search-tools-top padding-20 border-bottom">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入关键字" name="name" id="search-name"
+                               class="form-control border-radius-none">
+                        <span class="input-group-btn">
+                        <button type="button" id="search-dep" class="btn btn-primary blue border-radius-none"><i
+                                    class="fa fa-search"></i> 查询</button>
+                        <a class="btn default border-radius-none" href="{{ url("consumables/sort/create") }}"
+                           data-target="#dep-form-wrapper" data-toggle="relaodHtml" data-loading="true"><i
+                                    class="fa fa-plus"></i> 新增</a>
+                    </span>
+                    </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <div class="row">
-                            <div class="col-sm-6"></div>
-                            <div class="col-sm-6"></div>
-                        </div>
-                        <div class="row">
+                <div class="full-height-wrapper">
+                    <ul id="sort-tree" class="ztree">
 
-                            <div class="col-sm-12">
-                                <table id="example1" class="table table-bordered table-striped dataTable" role="grid"
-                                       aria-describedby="example1_info">
-                                    <thead>
-                                    <tr role="row">
-                                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1"
-                                            aria-sort="ascending"
-                                            aria-label="Rendering engine: activate to sort column descending"
-                                            style="width: 181px;">分类名称
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1"
-                                            aria-label="Browser: activate to sort column ascending"
-                                            style="width: 223px;">
-                                            上级分类
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1"
-                                            aria-label="Platform(s): activate to sort column ascending"
-                                            style="width: 197px;">
-                                            操作
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($data as $v)
-                                        <tr role="row" class="odd">
-                                            <td class="">{{$v->name}}</td>
-                                            <td>{{getCateNameByCateId($v->parent_id)}}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-info" data-toggle="modal"
-                                                        data-target=".bs-example-modal-lg"
-                                                        onclick="add('新增一个子类','{{url('consumables/sort/'.$v->id.'/createSub')}}')">
-                                                    添加下级分类
-                                                </button>
-                                                <button type="button" class="btn btn-info" data-toggle="modal"
-                                                        data-target=".bs-example-modal-lg"
-                                                        onclick="add('修改分类信息','{{url('consumables/sort/'.$v->id.'/edit')}}')">
-                                                    编辑
-                                                </button>
-                                                <button type="button" class="btn btn-warning"
-                                                        onclick="del(this,'{{$v->id}}')">
-                                                    删除
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </table>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">显示 1 到
-                                    10
-                                    共 57 总条数
-                                </div>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                                    {{--{{ $data->links() }}--}}
-                                </div>
-                            </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="full-height">
+            <div class="full-height-scroll  border-left ">
+                <div class="full-height-wrapper">
+                    <div class="row">
+                        <div class="col-lg-12" id="dep-form-wrapper">
+
                         </div>
                     </div>
                 </div>
-                <!-- /.box-body -->
             </div>
         </div>
+
     </div>
 
     <script type="text/javascript">
-        /*加载添加视图*/
-        function add(title, url) {
-            $.ajax({
-                "url": url,
-                "type": 'get',
-                success: function (data) {
-                    $("#myModal").css("display", "block");
-                    $(".modal-content").html(data);
+        $(document).ready(function () {
+            var depTreeBeforeAsync = function (treeId, treeNode) {
+                zjb.blockUI("#ztree-warpper");
+                return true;
+            };
+            var depTreeOnAsyncSuccess = function (event, treeId, treeNode, msg) {
+                $.fn.zTree.getZTreeObj(treeId).expandAll(true);
+                zjb.unblockUI("#ztree-warpper");
+            };
+            var depTreeOnClick = function (event, treeId, treeNode, clickFlag) {
+                if (treeNode.href != undefined && treeNode.href != '') {
+                    zjb.ajaxGetHtml('#dep-form-wrapper', treeNode.href, {}, true);
                 }
-            })
-        }
-
-        /*删除*/
-        function del(obj, id) {
-            swal({
-                    title: "确认要删除吗？",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    cancelButtonText: "取消",
-                    confirmButtonText: "确认",
-                    closeOnConfirm: false
-                },
-                function () {
-                    //发异步删除数据
-                    $.ajax({
-                        type: "post",
-                        url: "{{url('consumables/sort/')}}/" + id,
-                        data: {
-                            "_token": '{{csrf_token()}}',
-                            '_method': 'delete'
-                        },
-                        dataType: "json",
-                        success: function (data) {
-                            if (data.code == 1) {
-                                swal({
-                                    title: "",
-                                    text: data.message,
-                                    type: "success",
-                                    timer: 1000,
-                                }, function () {
-                                    window.location.reload();
-                                });
-                            } else {
-                                swal("", data.message, "error");
-                            }
+            };
+            var setting = {
+                async: {
+                    enable: true,
+                    url: "{!! url('consumables/sort?tree=1') !!}",
+                    autoParam: ["id", "level=lv"],
+                    otherParam: {
+                        'name': function () {
+                            return $('#search-name').val()
                         }
-                    });
+                    },
+                    dataFilter: null,
+                    type: 'get'
+                },
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "id",
+                        pIdKey: "parent_id"
+                    }
+                },
+                check: {
+                    enable: false
+                },
+                view: {
+                    showIcon: true,
+                    dblClickExpand: false,
+                    showLine: false
+                },
+                callback: {
+                    beforeAsync: depTreeBeforeAsync,
+                    onAsyncSuccess: depTreeOnAsyncSuccess,
+                    onClick: depTreeOnClick
                 }
-            );
-        }
+            };
+            $.fn.zTree.init($("#sort-tree"), setting);
+
+            zjb.ajaxGetHtml('#dep-form-wrapper', '{{ url("consumables/sort/create") }}');
+
+            $("#search-dep").click(function () {
+                var treeObj = $.fn.zTree.getZTreeObj("sort-tree");
+                treeObj.reAsyncChildNodes(null, "refresh");
+            });
+        });
     </script>
 @endsection
