@@ -29,16 +29,16 @@
                         <i class="fa fa-trash"></i> 删除
                     </button>
                 </div>
-                <div class="col-sm-5">
-                    <div class="input-group">
-                        <input type="text" id="search-text" placeholder="资产名称" class="form-control">
-                        <span class="input-group-btn">
-                          <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>
-                          <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
-                          <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
-                        </span>
-                    </div>
-                </div>
+                {{--<div class="col-sm-5">--}}
+                    {{--<div class="input-group">--}}
+                        {{--<input type="text" id="search-text" placeholder="资产名称" class="form-control">--}}
+                        {{--<span class="input-group-btn">--}}
+                          {{--<button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>--}}
+                          {{--<a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>--}}
+                          {{--<a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>--}}
+                        {{--</span>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
         </div>
         <table class="layui-table" lay-filter="data-user" lay-data="{id:'dataUser',height: 'full-194', url:'{{ url("borrow") }}',page:true,limit:20,even:true,response:{countName: 'total'}}">

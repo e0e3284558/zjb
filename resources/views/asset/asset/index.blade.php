@@ -19,6 +19,83 @@
     </div>
 @endsection
 @section("content")
+
+    <div class="modal" id="advancedSearch" role="dialog" aria-labelledby="advancedSearchModalLabel">
+        <div class="modal-dialog modal-md  animated bounceInDown" aria-hidden="true" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">高级查询</h4>
+                </div>
+                <div class="modal-body p-b-xs">
+                    <form action="#" id="searchForm" class="form-horizontal " method="post" >
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">资产名称</label>
+                                    <div class="col-md-8">
+                                        <input type="text" value="" name="name" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">资产编号</label>
+                                    <div class="col-md-8">
+                                        <input type="text" value="" name="code" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">资产类别</label>
+                                    <div class="col-md-8">
+                                        <select name="category_id" class="form-control select2">
+                                            {!! category_select('',1) !!}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">使用部门</label>
+                                    <div class="col-md-8">
+                                        <select name="use_department_id" class="form-control select2">
+                                            {!! department_select('',1) !!}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">
+                                        所属部门
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select name="department_id" class="form-control select2">
+                                            {!! department_select('',1) !!}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success blue" id="submitSearch">查询</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="fh-breadcrumb full-height-layout-on white-bg layui-table-no-border">
         <div class="table-tools p-sm p-tb-xs border-bottom bg-f2">
             <div class="row">

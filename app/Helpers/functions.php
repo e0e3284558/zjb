@@ -481,6 +481,22 @@ if (!function_exists('supplier_select')) {
     function supplier_select()
     {
         $list = \App\Models\Asset\Supplier::get();
+        $str = '<option value="">请选择</option>';
+
+        if ($list) {
+            foreach ($list as $key => $val) {
+                $str .= '<option value="' . $val['id'] . '" ' . '>'
+                    . $val['name'] . '</option>';
+            }
+        }
+        return $str;
+    }
+}
+
+if (!function_exists('supplier_select')) {
+    function supplier_select()
+    {
+        $list = \App\Models\Asset\Supplier::get();
         $str = '<option value="">请选择供应商</option>';
 
         if ($list) {

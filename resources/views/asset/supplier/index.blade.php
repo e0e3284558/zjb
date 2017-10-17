@@ -26,20 +26,9 @@
         <div class="row">
             <div class="col-sm-7">
                 <a href="{{ url('supplier/create') }}" data-toggle="modal" data-target=".bs-example-modal-md" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
-                <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
                 <button href="" class="btn red btn-delete">
                     <i class="fa fa-trash"></i> 删除
                 </button>
-            </div>
-            <div class="col-sm-5">
-                <div class="input-group">
-                    <input type="text" id="search-text" placeholder="供应商名称" class="form-control">
-                    <span class="input-group-btn">
-                      <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>
-                      <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
-                      <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
-                    </span>
-                </div>
             </div>
         </div>
     </div>
@@ -49,7 +38,7 @@
             <th lay-data="{fixed:'left',checkbox:true}"></th>
             <th lay-data="{field:'id', width:80, sort: true}">ID</th>
             <th lay-data="{field:'name', width:80, sort: true}">名称</th>
-            <th lay-data="{field:'category',templet: '#categoryTpl', width:180, sort: true}">类别</th>
+            {{--<th lay-data="{field:'category',templet: '#categoryTpl', width:180, sort: true}">类别</th>--}}
             <th lay-data="{field:'remarks', width:180, sort: true}">备注</th>
             <th lay-data="{field:'created_at', width:170, sort: true}">创建时间</th>
             <th lay-data="{field:'updated_at', width:170, sort: true}">更新时间</th>
@@ -57,10 +46,6 @@
         </tr>
         </thead>
     </table>
-    <script type="text/html" id="categoryTpl">
-        @{{ d.category }}
-
-    </script>
     <script type="text/html" id="barDemo">
         {{--<a class="btn blue btn-xs" lay-event="detail">查看</a>--}}
         <a class="btn blue-madison btn-xs" lay-event="edit" data-toggle="modal" data-target=".bs-example-modal-md">编辑</a>
