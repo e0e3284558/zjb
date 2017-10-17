@@ -56,15 +56,30 @@ class AssetController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = get_current_login_user_org_id();
+            $search = $request->get('search');
+            $department = $request->get('department_id');
+            $use_department = $request->get('use_department_id');
+            $category_id = $request->get('category_id');
+            $name = $request->get('name');
             $map = [
-                ['org_id', '=', $org_id],
+                ['org_id', '=', get_current_login_user_org_id()],
                 ['status', '!=', '0']
             ];
-            if ($request->search) {
-                $map[] = ['name', 'like', '%' . $request->search . '%'];
-            }
-            $data = Asset::with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+
+            $data = Asset::where($map)
+                ->where(function ($query) use ($search) {
+                    $query->when($search, function ($querys) use ($search) {
+                        $querys->where('name', 'like', "%{$search}%");
+                    });
+                })->when($department, function ($query) use ($department) {
+                    $query->where('department_id', $department);
+                })->when($name, function ($query) use ($name) {
+                    $query->where('name', 'like', "%{$name}%");
+                })->when($use_department, function ($query) use ($use_department) {
+                    $query->where('use_department_id', $use_department);
+                })->when($category_id, function ($query) use ($category_id) {
+                    $query->where('category_id', $category_id);
+                })->orderBy('id', 'desc')->with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->paginate(request('limit'));
 
             foreach ($data as $k=>$v){
                 switch ($v->status){
@@ -598,7 +613,6 @@ class AssetController extends Controller
         $filePath =  $request->file_path;
         Excel::selectSheets('资产录入')->load($filePath, function($reader) {
             $data = $reader->getsheet(0)->toArray();
-            dd($data);
             $org_id = get_current_login_user_org_id();
             foreach ($data as $k=>$v){
                 if($k==0){

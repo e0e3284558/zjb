@@ -27,10 +27,12 @@
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
-                        <input type="text" id="search-text" placeholder="资产名称" class="form-control">
+                        <select name="use_department_id" class="form-control select2">
+                            {!! department_select('',1) !!}
+                        </select>
                         <span class="input-group-btn">
                           <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>
-                          <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
+                          {{--<a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>--}}
                           <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
                         </span>
                     </div>

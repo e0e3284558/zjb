@@ -26,13 +26,11 @@ class AssetUseController extends Controller
             $map = [
                 ['org_id', '=', $org_id]
             ];
-//            if ($request->category_id) {
-//                $map[] = ['category_id', '=', $request->category_id];
-//            }
-//            if ($request->search) {
-//                $map[] = ['name', 'like', '%' . $request->search . '%'];
-//            }
-            $data = AssetUse::where($map)->orderBy("id", "desc")->paginate(request('limit'));
+            $department = $request->get('use_department_id');
+            $data = AssetUse::with('use_department')->where($map)
+                ->when($department, function ($query) use ($department) {
+                    $query->where('use_department_id', $department);
+                })->orderBy("id", "desc")->paginate(request('limit'));
 
             foreach ($data as $key => $value) {
                 if($value->status=="1"){

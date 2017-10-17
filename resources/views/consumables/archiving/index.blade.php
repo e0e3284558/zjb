@@ -74,7 +74,19 @@
                                     新增物品
                                 </a>
 
-                                <button type="button" class="btn btn-default">导出Excel</button>
+                                <div class="dropdown inline">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-print"></i>更多操作
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <li><a class="btn btn-default" id="printBarcode download" href="{{url('consumables/archiving/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('consumables/archiving/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 耗材导入</a></li>
+                                        <li><a class="btn btn-default" id="print download" href="{{url('consumables/archiving/export')}}"><i class="fa fa-sign-out"></i> 导出耗材数据</a></li>
+                                    </ul>
+                                </div>
+
+                                {{--<a href="{{url('consumables/archiving/export')}}" type="button" class="btn btn-default">导出Excel</a>--}}
                             </h3>
                         </h5>
                     </div>

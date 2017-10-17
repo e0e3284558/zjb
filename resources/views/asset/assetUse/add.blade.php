@@ -77,8 +77,8 @@
         </div>
 
         <div class="row" >
-            <a class="btn btn-info" href="{{url('asset_use/slt_asset')}}"  data-toggle="modal" data-target=".bs-example-modal-md" >选择资产</a>
-            <a href="javascript:;" class="btn btn-info" id="dlt-asset">删除</a>
+            <a class="btn btn-default" href="{{url('asset_use/slt_asset')}}"  data-toggle="modal" data-target=".bs-example-modal-md" >选择资产</a>
+            <a href="javascript:;" class="btn btn-default" id="dlt-asset">删除</a>
         </div>
         <div class="row" style="overflow:auto;height:195px;margin-top:10px;">
             <table id="asset-use-asset" class="table table-striped table-bordered table-hove">

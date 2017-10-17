@@ -93,7 +93,7 @@
                 errorInfo.hide();
                 //表单验证之后ajax上传数据
                 $.ajax({
-                    url:"{{url('asset/import')}}",
+                    url:"{{url('consumables/archiving/import')}}",
                     data:import_form.serialize(),
                     type:"post",
                     dataType:"json",

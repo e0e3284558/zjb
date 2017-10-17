@@ -25,17 +25,17 @@ class ContractController extends Controller
             return $res;
         }
         if ($request->ajax()) {
-            $org_id = get_current_login_user_org_id();
+            $search = $request->get('search');
             $map = [
-                ['org_id', '=', $org_id]
+                ['org_id', '=', get_current_login_user_org_id()]
             ];
-//            if ($request->category_id) {
-//                $map[] = ['category_id', '=', $request->category_id];
-//            }
-//            if ($request->search) {
-//                $map[] = ['name', 'like', '%' . $request->search . '%'];
-//            }
-            $data = Contract::with("org","file")->where($map)->orderBy("id", "desc")->paginate(request('limit'));
+
+            $data = Contract::where($map)
+                ->where(function ($query) use ($search) {
+                    $query->when($search, function ($querys) use ($search) {
+                        $querys->where('name', 'like', "%{$search}%");
+                    });
+                })->with("org","file")->where($map)->orderBy('id', 'desc')->paginate(request('limit'));
 
             $data = $data->toArray();
             $data['msg'] = '';

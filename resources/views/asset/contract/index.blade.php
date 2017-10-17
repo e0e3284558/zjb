@@ -24,19 +24,17 @@
         <div class="row">
             <div class="col-sm-7">
                 <a href="{{ url('contract/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 添加</a>
-                <!-- <button class="btn blue-dark btn-edit"><i class="fa fa-edit"></i> 修改</button>  -->
                 <button href="" class="btn red btn-delete">
                     <i class="fa fa-trash"></i> 删除
                 </button>
             </div>
             <div class="col-sm-5">
                 <div class="input-group">
-                    <input type="text" id="search-text" placeholder="资产名称" class="form-control">
+                    <input type="text" id="search-text" placeholder="合同名称" class="form-control">
                     <span class="input-group-btn">
                           <button type="button" class="btn blue" id="simple-search"><i class="fa fa-search"></i> 查询</button>
-                          <a href="#advancedSearch" class="btn blue-sharp default" data-toggle="modal" data-target="#advancedSearch"><i class="fa fa-search-plus"></i> 高级查询</a>
                           <a href="javascript:;" class="btn blue-madison" id="refreshTable"><i class="fa fa-refresh"></i> 刷新</a>
-                        </span>
+                    </span>
                 </div>
             </div>
         </div>
