@@ -47,6 +47,8 @@ Route::group(['prefix'=>'consumables','namespace'=>'Consumables','middleware'=>'
     Route::get('sort/{id}/editName','SortController@editName');
     Route::resource('sort','SortController');
     Route::resource('archiving','ArchivingController');
+    Route::get('warehousing/add_foods','WarehousingController@addFoods');
+    Route::resource('warehousing','WarehousingController');
     Route::get('goods/edit', 'GoodsController@edit')->name('consumables.goods.edit');
     Route::delete('goods/delete', 'GoodsController@destroy')->name('consumables.goods.destroy');
     Route::resource('goods','GoodsController');

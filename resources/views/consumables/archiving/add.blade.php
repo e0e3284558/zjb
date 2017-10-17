@@ -72,7 +72,10 @@
                 <label class="col-sm-2 control-label">所属分类</label>
                 <div class="col-sm-10">
                     @if(isset($id))
-                        <select name="classify_id" id="" class="form-control" disabled>
+                        <input type="hidden" name="classify_id" value="{{$id}}">
+                        <input type="hidden" name="org_id" value="{{get_current_login_user_org_id()}}">
+                        <input type="hidden" name="user_id" value="{{get_current_login_user_info()}}">
+                        <select  class="form-control" disabled>
                             @foreach($sort as $v)
                                 <option value="{{$v->id}}" @if($v->id==$id) selected @endif>{{$v->name}}</option>
                             @endforeach

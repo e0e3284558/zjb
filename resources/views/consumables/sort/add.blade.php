@@ -4,32 +4,34 @@
     </div>
     <div class="ibox-content margin-padding-0 relative-ibox-content">
         <form id="signupForm1" class="form-horizontal  padding-20 " method="post" id="dep-form">
-            <div class="form-group">
-                <i class="i-red">*</i>
-                <label class="control-label">选择父类</label>
-                <select name="parent_id" id="" class="form-control">
-                    @if(isset($id))
-                        <option value="{{$id}}">{{$sort->name}}</option>
-                    @else
-                        <option value="0">新建根分类</option>
-                        @foreach($sort as $k=>$v)
-                            <option value="{{$v->id}}">{{$v->name}}</option>
-                        @endforeach
-                    @endif
-                </select>
+            <div class="modal-body">
+                <div class="form-group">
+                    <i class="i-red">*</i>
+                    <label class="control-label">选择父类</label>
+                    <select name="parent_id" id="" class="form-control">
+                        @if(isset($id))
+                            <option value="{{$id}}">{{$sort->name}}</option>
+                        @else
+                            <option value="0">新建根分类</option>
+                            @foreach($sort as $k=>$v)
+                                <option value="{{$v->id}}">{{$v->name}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="form-group">
+                    <i class="i-red">*</i>
+                    <label class="control-label">分类名称</label>
+                    <input type="text" name="name" value="" class="form-control" placeholder="请输入分类名称">
+                </div>
             </div>
-            <div class="form-group">
-                <i class="i-red">*</i>
-                <label class="control-label">分类名称</label>
-                <input type="text" name="name" value="" class="form-control" placeholder="请输入分类名称">
-            </div>
+                <div class="form-actions border-top ">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-success blue ladda-button" data-style="expand-left"><span
+                                class="ladda-label">保存</span></button>
+                    <button type="reset" class="btn btn-default" id="cannel">取消</button>
+                </div>
 
-            <div class="form-actions border-top ">
-                {{ csrf_field() }}
-                <button type="submit" class="btn btn-success blue ladda-button" data-style="expand-left"><span
-                            class="ladda-label">保存</span></button>
-                <button type="reset" class="btn btn-default" id="cannel">取消</button>
-            </div>
         </form>
     </div>
 </div>

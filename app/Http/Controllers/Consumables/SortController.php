@@ -58,7 +58,7 @@ class SortController extends Controller
             ];
             if ($list) {
                 foreach ($list as $key => $val) {
-                    $val['href'] = url('users/departments/' . $val['id'] . '/edit');
+                    $val['href'] = url('consumables/sort/' . $val['id'] . '/edit');
                     $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
                     $tempData[] = $val;
                 }

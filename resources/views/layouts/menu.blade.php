@@ -156,6 +156,13 @@
                 </a>
             </li>
 
+            <li class="{{ active_class(if_route('warehousing.index')) }}">
+                <a href="{{ route('warehousing.index',['app_groups'=>'consumables']) }}">
+                    <i class="fa fa-angle-right"></i>
+                    入库管理
+                </a>
+            </li>
+
         </ul>
     </li>
 @endif

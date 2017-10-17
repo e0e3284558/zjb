@@ -148,9 +148,9 @@
                                     </script>
                                     <script type="text/html" id="disable">
                                         @{{#  if(d.disable == 1){ }}
-                                        <label class="btn btn-sm btn-danger">禁用</label>
-                                        @{{#  } else { }}
                                         <label class="btn btn-sm btn-primary">启用</label>
+                                        @{{#  } else { }}
+                                        <label class="btn btn-sm btn-danger">禁用</label>
                                         @{{#  } }}
                                     </script>
                                     <script type="text/html" id="img">
@@ -256,6 +256,8 @@
                 $(this).find(".modal-content").html('');
                 $(this).removeData();
             });
+
+
             layui.use(['laytpl', 'table'], function () {
                 table = layui.table;
                 table.on('checkbox(data-user)', function (obj) {
@@ -301,7 +303,7 @@
                     deleteUser(ids);
                 }
             });
-            
+
             $("#simple-search").click(function () {
                 var searchText = $('#search-text').val();
                 tableReload({
