@@ -362,10 +362,20 @@ class AssetController extends Controller
             'org_id' => get_current_login_user_org_id(),
             'status' => "1"
         ];
-        $list = Bill::with("category","supplier")->where($map)->get();
+        $list = Contract::with('org','file')->where('org_id',get_current_login_user_org_id())->get();
+
         foreach ($list as $k=>$v){
-            $list[$k]['contract'] = Contract::where("id",$v->contract_id)->value("name");
+            $ll = Bill::with("category","supplier")->where($map)->where('contract_id',$v->id)->get();
+            if(count($ll)){
+                $list[$k]['bill'] = $ll;
+            }else{
+                $list[$k]['bill'] = null;
+            }
         }
+//        $list = Bill::with("category","supplier")->where($map)->get();
+//        foreach ($list as $k=>$v){
+//            $list[$k]['contract'] = Contract::where("id",$v->contract_id)->value("name");
+//        }
         return view("asset.asset.contract_add",compact("list"));
     }
 

@@ -11,45 +11,64 @@
         <input type="hidden" name="_token" value="{{csrf_token()}}">
 
         <div class="table-responsive">
-            <span style="color: red;font-size: 12px;" >*每次只能选择一条</span>
             <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
-                <thead>
-                <tr role="row">
-                    <th>
-                        <input type="checkbox" class="i-checks" name="checkAll" id="all" >
-                    </th>
-                    <th>所属合同</th>
-                    <th>资产名称</th>
-                    <th>数量</th>
-                    <th style="width: 200px;" >资产类别</th>
-                    <th>规格型号</th>
-                    <th>计量单位</th>
-                    <th>单价(元)</th>
-                    <th style="width: 150px;">供应商</th>
-                </tr>
-                </thead>
                 <tbody>
-                @if(count($list)>0)
-                    @foreach($list as $value)
-                        <tr role="row">
-                            <td role="gridcell">
-                                <input type="checkbox" class="i-checks" name="id[]" value="{{$value->id}}">
-                            </td>
-                            <td>{{$value->contract}}</td>
-                            <td>{{$value->asset_name}}</td>
-                            <td>{{$value->num}}</td>
-                            <td>{{$value->category->name}}</td>
-                            <td>{{$value->spec}}</td>
-                            <td>{{$value->calculate}}</td>
-                            <td>{{$value->money}}</td>
-                            <td>{{$value->supplier->name}}</td>
+                    @if(count($list)>0)
+                        <tr role="row" >
+                            <th>合同名称</th>
+                            <th>甲方</th>
+                            <th>乙方</th>
+                            <th>丙方</th>
+                            <th>维保起始时间</th>
+                            <th>维保终止时间</th>
+                            <th>备注</th>
+                            <th>操作</th>
                         </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td colspan="10" style="text-align: center" >暂无数据</td>
-                    </tr>
-                @endif
+                        @foreach($list as $k=>$v)
+                            <tr role="row" >
+                                <td>{{$v->name}}</td>
+                                <td>{{$v->first_party}}</td>
+                                <td>{{$v->second_party}}</td>
+                                <td>{{$v->third_party}}</td>
+                                <td>{{$v->start_date}}</td>
+                                <td>{{$v->end_date}}</td>
+                                <td>{{$v->remarks}}</td>
+                                <td><a href="javascript:;" onclick="tgl(this,'{{$v->id}}')" class="toggle btn btn-sm btn-primary" >展开/关闭</a></td>
+                            </tr>
+                            @if($v->bill)
+                                <tr role="row" class="aaa{{$v->id}}" style="display: none;">
+                                    <th>
+                                        <input type="checkbox" class="i-checks" name="checkAll" id="all" >
+                                    </th>
+                                    <th>资产名称</th>
+                                    <th>数量</th>
+                                    <th style="width: 200px;" >资产类别</th>
+                                    <th>规格型号</th>
+                                    <th>计量单位</th>
+                                    <th>单价(元)</th>
+                                    <th style="width: 150px;">供应商</th>
+                                </tr>
+                                @foreach($v->bill as $key=>$value)
+                                    <tr role="row" class="aaa{{$v->id}}" style="display: none;">
+                                        <td role="gridcell">
+                                            <input type="checkbox" class="i-checks" name="id[]" value="{{$value->id}}">
+                                        </td>
+                                        <td>{{$value->asset_name}}</td>
+                                        <td>{{$value->num}}</td>
+                                        <td>{{$value->category->name}}</td>
+                                        <td>{{$value->spec}}</td>
+                                        <td>{{$value->calculate}}</td>
+                                        <td>{{$value->money}}</td>
+                                        <td>{{$value->supplier->name}}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="10" style="text-align: center">暂无数据</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -115,9 +134,10 @@
     <button type="button" class="btn btn-success" id="submitAssetsForm">保存</button>
 </div>
 <script type="text/javascript">
-
+    function tgl(obj,id) {
+        $(obj).parents('tr').nextAll(".aaa"+id).slideToggle();
+    }
     $( document ).ready( function () {
-
         $('.i-checks,#all').iCheck({
             checkboxClass: 'icheckbox_minimal-blue'
         });
@@ -269,4 +289,8 @@
             }
         } );
     } );
+</script>
+
+<script type="text/javascript" >
+
 </script>
