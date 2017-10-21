@@ -48,9 +48,9 @@
         <div class="row" >
             <div class="col-md-6" >
                 <div class="form-group">
-                    <label for="code" class="col-sm-4 control-label">领用部门<span style="color:red;">*</span></label>
+                    <label for="department_id" class="col-sm-4 control-label">领用部门<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
-                        <select id="department_id" data-error-container="#error-block" name="use_department_id" class="form-control select2">
+                        <select id="use_department_id" data-error-container="#error-block" name="use_department_id" class="form-control select2">
                             {!! department_select('',1) !!}
                         </select>
                     </div>
@@ -96,10 +96,8 @@
                 <tbody data-bind="foreach: selectedAssetList">
 
                 </tbody>
-
             </table>
         </div>
-
     </form>
 </div>
 <div class="modal-footer">

@@ -60,6 +60,7 @@ class AssetController extends Controller
             $department = $request->get('department_id');
             $use_department = $request->get('use_department_id');
             $category_id = $request->get('category_id');
+            $supplier_id = $request->get('supplier_id');
             $name = $request->get('name');
             $map = [
                 ['org_id', '=', get_current_login_user_org_id()],
@@ -79,6 +80,8 @@ class AssetController extends Controller
                     $query->where('use_department_id', $use_department);
                 })->when($category_id, function ($query) use ($category_id) {
                     $query->where('category_id', $category_id);
+                })->when($supplier_id, function ($query) use ($supplier_id) {
+                    $query->where('supplier_id', $supplier_id);
                 })->orderBy('id', 'desc')->with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->paginate(request('limit'));
 
             foreach ($data as $k=>$v){

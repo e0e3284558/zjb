@@ -139,15 +139,14 @@
     font-family: "Open Sans", sans-serif;
 }
 
-.modal-open .select2-dropdown {
+.select2-dropdown {
     z-index: 10060;
 }
 
-.modal-open .select2-close-mask {
+ .select2-close-mask {
     z-index: 10055;
 }
-
-.modal-open .select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {
+.select2-container--bootstrap .select2-selection--multiple .select2-search--inline .select2-search__field {
     width: auto !important;
 }
 
@@ -8244,4 +8243,8 @@ Custom color buttons
 }
 .h-x-50 {
     height: 50px;
+}
+
+.padding-top-7{
+    padding-top: 7px;
 }
