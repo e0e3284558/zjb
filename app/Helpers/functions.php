@@ -462,15 +462,21 @@ if (!function_exists('getCateNameByCateId')) {
 }
 
 if (!function_exists('category_select')) {
-    function category_select()
+    function category_select($selected = 0, $type = 0)
     {
         $list = \App\Models\Asset\AssetCategory::get();
-        $str = '<option value="">请选择类别</option>';
+
+        if($type==1){
+            $str = '<option value="0">顶级分类</option>';
+        }else{
+            $str = '<option value="">请选择类别</option>';
+        }
 
         if ($list) {
             foreach ($list as $key => $val) {
-                $str .= '<option value="' . $val['id'] . '" ' . '>'
-                    . $val['name'] . '</option>';
+                $str .= '<option value="' . $val['id'] . '" '
+                    . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
+                    . $val['name']. '(' . $val['category_code'] . ')' . '</option>';
             }
         }
         return $str;

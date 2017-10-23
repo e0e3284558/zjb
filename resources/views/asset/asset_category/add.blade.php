@@ -1,42 +1,79 @@
-<form id="signupForm1" class="form-horizontal  " method="post" >
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-    <div class="pt20"></div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="name">类别名称<span class="required">*</span></label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" id="name" name="name" placeholder="区域名称" />
-        </div>
+<div class="ibox m-b-none">
+    <div class="ibox-title">
+        <h5>资产类别添加</h5>
     </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label" for="name">类别编号<span class="required">*</span></label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" id="category_code" name="category_code" placeholder="类别编号" />
-        </div>
+    <div class="ibox-content margin-padding-0 relative-ibox-content">
+        <form action="{{ url('asset_category') }}" class="padding-20" method="post" id="dep-form">
+            <div class="form-group">
+                <label class="control-label">
+                    上级分类<span class="required">*</span>
+                </label>
+                <div>
+                    <select name="pid" class="form-control select2" data-error-container="#pid-error">
+                        {!! category_select('',1) !!}
+                    </select>
+                    <span class="help-block" id="pid-error">请选择上级分类</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    资产类别编码<span class="required">*</span>
+                </label>
+                <div>
+                    <input type="text" placeholder="资产类别编码" name="category_code" value="" class="form-control">
+                    <span class="help-block">请输入资产类别编码，<span class="bg-warning">提交之后不可修改</span></span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    类别名称<span class="required">*</span>
+                </label>
+                <div>
+                    <input type="text" placeholder="类别名称" name="name" value="" class="form-control">
+                    <span class="help-block">请输入场地类别名称</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label" for="remarks">备注</label>
+                <div>
+                    <textarea class="form-control" name="remarks" cols="5"  placeholder="场地备注"></textarea>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="control-label">
+                    状态
+                </label>
+                <div>
+                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="icheck" value="1" checked> 可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0"> 不可用 </label>
+                </div>
+            </div>
+            <div class="form-actions border-top ">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-success blue ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
+                <button type="reset" class="btn btn-default" id="cannel">取消</button>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label" ></label>
-        <div class="col-sm-8">
-            <button type="submit" class="btn btn-success pull-right">保存</button>
-        </div>
-    </div>
-</form>
-<script type="text/javascript">
-    $.validator.setDefaults( {
+</div>
 
-    } );
+
+<script type="text/javascript">
     $( document ).ready( function () {
-        $( "#signupForm1" ).validate( {
+        var l = $("button[type='submit']").ladda();
+        var forms = $( "#dep-form" );
+        forms.validate( {
             rules: {
-                category_code:{
-                    required:true,
-                } ,
+                pid: "required",
                 name: "required",
+                code: "required",
+                status: "required"
             },
             messages: {
-                category_code:{
-                    required:"请输出类别编号",
-                } ,
-                name: "请输出类别名称",
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -72,46 +109,40 @@
                     .closest('.form-group').removeClass('has-error'); // set success class to the control group
             },
             submitHandler: function () {
-                //表单验证之后ajax上传数据
-                $.ajax({
-                    url:"{{url('asset_category')}}",
-                    data:$('#signupForm1').serialize(),
-                    type:"post",
-                    dataType:"json",
-                    beforeSend:function () {
-                        $('#signupForm1').toggleClass('sk-loading');
+                jQuery.ajax({
+                    url: forms.attr('action'),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: forms.serialize(),
+                    beforeSend: function(){
+                        l.ladda('start');
                     },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        if(jqXHR.status == 422){
-                            var arr = "";
-                            for (var i in jqXHR.responseJSON){
-                                var xarr = jqXHR.responseJSON[i];
-                                for (var j=0;j<xarr.length;j++){
-                                    var str = xarr[j];
-                                    arr += str+",";
-                                }
-                            }
-                            swal("",arr.substring(0,arr.length-1), "error");
+                    complete: function(xhr, textStatus) {
+                        // zjb.unblockUI();
+                        l.ladda('stop');
+                    },
+                    success: function(data, textStatus, xhr) {
+                        if(data.status){
+                            toastr.success(data.message);
+                            //重新载入左侧树形菜单
+                            $.fn.zTree.getZTreeObj("departments-tree").reAsyncChildNodes(null, "refresh");
+                            zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("area/create") }}',{},false);
+                        }else{
+                            toastr.error(data.message,'警告');
                         }
                     },
-                    complete:function () {
-                        $('#signupForm1').toggleClass('sk-loading');
-                    },
-                    success:function (data) {
-                        if(data.status){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                window.location.reload();
+                    error: function(xhr, textStatus, errorThrown) {
+                        if(xhr.status == 422 && textStatus =='error'){
+                            _$error = xhr.responseJSON.errors;
+                            $.each(_$error,function(i,v){
+                                toastr.error(v[0],'警告');
                             });
                         }else{
-                            swal("", data.message, "error");
+                            toastr.error('请求出错，稍后重试','警告');
                         }
                     }
-                })
+                });
+                return false;
             }
         });
 

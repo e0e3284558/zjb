@@ -34,10 +34,7 @@
                     <label class="col-sm-4 control-label">乙方(供应商)</label>
                     <div class="col-sm-8">
                         <select id="second_party" data-error-container="#error-block" name="second_party" class="form-control select2">
-                            <option value="" >请选择</option>
-                            @foreach($supplier_list as $v)
-                                <option value="{{$v->name}}">{{$v->name}}</option>
-                            @endforeach
+                            {!! supplier_select() !!}
                         </select>
                     </div>
 
@@ -107,7 +104,7 @@
                         <th>规格型号<span style="color: red;" >*</span></th>
                         <th>计量单位<span style="color: red;" >*</span></th>
                         <th>单价(元)<span style="color: red;" >*</span></th>
-                        <th style="width: 150px;">供应商<span style="color: red;" >*</span></th>
+                        {{--<th style="width: 150px;">供应商<span style="color: red;" >*</span></th>--}}
                     </tr>
                     </thead>
                     <tbody>
@@ -122,11 +119,11 @@
                         <td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block" ></td>
                         <td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>
                         <td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>
-                        <td>
-                            <select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">
-                                {!! supplier_select() !!}
-                            </select>
-                        </td>
+                        {{--<td>--}}
+                            {{--<select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">--}}
+                                {{--{!! supplier_select() !!}--}}
+                            {{--</select>--}}
+                        {{--</td>--}}
                     </tr>
                     </tbody>
                 </table>

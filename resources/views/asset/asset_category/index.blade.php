@@ -21,123 +21,97 @@
         </div>
     </div>
 @endsection
-@section("content")
-    <div class="fh-breadcrumb fh-breadcrumb-m full-height-layout-on">
-        <div class="wrapper wrapper-content2 full-height">
-            <div class="row full-height">
-                <div class="col-md-6 full-height">
-                    <div class="ibox full-height-ibox">
-                        <div class="ibox-title">
-                            <h5>资产类别</h5>
-                        </div>
-                        <div class="ibox-content margin-padding-0">
-                            <div class="ibox-content-wrapper">
-                                <div class="scroller">
-                                    <div class="input-group" style="padding: 5px 0px;">
-                                        <span class="input-group-addon" >
-                                            类别搜索：
-                                        </span>
-                                        <input type="input" class="input-md form-control" id="input-search" placeholder="搜索">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-md btn-success" id="btn-search">查找</button>
-                                            <button type="button" class="btn btn-md btn-danger" id="btn-clear-search">清空</button>
-                                        </span>
-                                    </div>
-                                    <div id="tree" class="full-height-wrapper" ></div>
-                                </div>
-                            </div>
-                            <div class="form-actions border-top ">
-                                <a class="btn btn-success" onclick="add('添加','{{url('asset_category/create')}}')"  id="create" >
-                                    <i class="fa  fa-plus"></i> 新增
-                                </a>
-                                <div class="dropup inline">
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-print"></i>更多操作
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <li><a class="btn btn-default" id="printBarcode download" href="{{url('asset_category/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
-                                        <li><a class="btn btn-default" id="print download" href="{{url('asset_category/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 导入资产分类</a></li>
-                                        <li><a class="btn btn-default" id="print download" href="{{url('asset_category/export')}}"><i class="fa fa-sign-out"></i> 导出资产分类</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+@section('content')
+    <div class="fh-breadcrumb full-height-layout-on">
+        <div class="fh-column fh-column-w">
+            <div class="full-height-scroll"  id="ztree-warpper">
+                <div class="search-tools-top padding-20 border-bottom">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入关键字" name="name" id="search-name" class="form-control border-radius-none">
+                        <span class="input-group-btn">
+                        <button type="button" id="search-dep" class="btn btn-primary blue border-radius-none"><i class="fa fa-search"></i> 查询</button>
+
+                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle border-radius-none" type="button" aria-expanded="false">操作 <span class="caret"></span></button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a class="btn btn-default" href="{{ url("asset_category/create") }}" data-target="#dep-form-wrapper" data-toggle="relaodHtml" data-loading="true"><i class="fa fa-plus"></i> 新增</a></li>
+                            <li><a class="btn btn-default" id="print download" href="{{url('asset_category/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-md"><i class="fa fa-sign-in"></i> 导入</a></li>
+                            <li><a class="btn btn-default" id="print download" href="{{url('asset_category/export')}}"><i class="fa fa-sign-out"></i> 导出</a></li>
+                        </ul>
+                    </span>
                     </div>
                 </div>
-                <div class="col-md-6 full-height">
-                    <div class="ibox full-height-ibox">
-                        <div class="ibox-title">
-                            <h5>编辑</h5>
-                        </div>
-                        <div class="ibox-content margin-padding-0">
-                            <div class="scroller">
-                                <div id="right_content" class="full-height-wrapper" >
-                                    <div id="" style="color: #6a6c6f;font-size: 16px;text-align: center;">
-                                        点击左侧菜单进行相关操作
-                                    </div>
-                                </div>
-                            </div>
+                <div class="full-height-wrapper">
+                    <ul id="departments-tree" class="ztree">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="full-height">
+            <div class="full-height-scroll  border-left " >
+                <div class="full-height-wrapper">
+                    <div class="row">
+                        <div class="col-lg-12" id="dep-form-wrapper">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
-
     <script type="text/javascript">
-        $(function () {
-            function getTree() {
-                var data = {!! json_encode($tree) !!};
-                return data;
-            }
-            var $searchableTree = $('#tree').treeview({
-                data: getTree(),         // data is not optional
-                levels: 5,
-                multiSelect: false,
-            });
-
-            $('#tree').treeview('collapseAll', { silent: true });
-
-            $('#tree').on('nodeSelected', function(event,data) {
-                // 事件代码...
-                $.ajax({
-                    url:'{{url('asset_category')}}'+'/'+data.id+"/edit",
-                    type:"get",
-                    data:{},
-                    success:function (data) {
-                        $("#right_content").html(data);
-                    }
-                })
-            });
-
-            var search = function(e) {
-                var pattern = $('#input-search').val();
-                var results = $searchableTree.treeview('search', [ pattern ]);
+        $(document).ready(function() {
+            var depTreeBeforeAsync = function(treeId, treeNode) {
+                zjb.blockUI("#ztree-warpper");
+                return true;
             };
-
-            $('#btn-search').on('click', search);
-
-            $('#btn-clear-search').on('click', function (e) {
-                $searchableTree.treeview('clearSearch');
-                $('#input-search').val('');
-                $('#search-output').html('');
-            });
-        })
-
-    </script>
-
-
-    <script type="text/javascript" >
-        /*加载添加视图*/
-        function add(title,url) {
-            $.ajax({
-                "url":url,
-                success:function (data) {
-                    $("#right_content").html(data);
+            var depTreeOnAsyncSuccess = function(event, treeId, treeNode, msg) {
+                $.fn.zTree.getZTreeObj(treeId).expandAll(true);
+                zjb.unblockUI("#ztree-warpper");
+            };
+            var depTreeOnClick = function(event, treeId, treeNode, clickFlag){
+                // console.log(treeNode);
+                if(treeNode.href != undefined && treeNode.href != '' ){
+                    zjb.ajaxGetHtml('#dep-form-wrapper',treeNode.href,{},true);
                 }
-            })
-        }
-    </script>
+            };
+            var setting = {
+                async: {
+                    enable: true,
+                    url:"{!! url('asset_category?tree=1') !!}",
+                    autoParam:["id", "level=lv"],
+                    otherParam:{'name':function(){return $('#search-name').val()}},
+                    dataFilter: null,
+                    type:'get'
+                },
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "id",
+                        pIdKey: "pid"
+                    }
+                },
+                check:{
+                    enable: false
+                },
+                view: {
+                    showIcon:true,
+                    dblClickExpand:false,
+                    showLine: false
+                },
+                callback: {
+                    beforeAsync: depTreeBeforeAsync,
+                    onAsyncSuccess: depTreeOnAsyncSuccess,
+                    onClick: depTreeOnClick
+                }
+            };
+            $.fn.zTree.init($("#departments-tree"), setting);
 
+            zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("asset_category/create") }}');
+
+            $("#search-dep").click(function(){
+                var treeObj = $.fn.zTree.getZTreeObj("departments-tree");
+                treeObj.reAsyncChildNodes(null, "refresh");
+            });
+        } );
+    </script>
 @endsection

@@ -125,21 +125,11 @@ class AssetController extends Controller
             return $res;
         }
         $org_id = get_current_login_user_org_id();
-        //资产类别
-        $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",Auth::user()->org_id)->orderBy("paths")->get();
-        $list1 = $this->test($list1);
         //所属公司
         $list2 = Org::where("id",$org_id)->get();
         //管理员
         $list3 = User::where("org_id",$org_id)->get();
-        //场地
-        $list4 = Area::where("org_id",$org_id)->get();
-        $list4 = $this->test($list4);
-        //所属部门
-        $list6 = Department::where("org_id",$org_id)->get();
-        //供应商
-        $list7 = Supplier::where("org_id",$org_id)->get();
-        return response()->view("asset.asset.add",compact("list1","list2","list3","list4","list6","org_id","list7"));
+        return response()->view("asset.asset.add",compact("list2","list3","org_id"));
     }
 
     /**

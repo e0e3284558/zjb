@@ -56,8 +56,7 @@ class ContractController extends Controller
             return $res;
         }
         $org_name = Org::where("id",get_current_login_user_org_id())->value("name");
-        $supplier_list = Supplier::where("org_id",get_current_login_user_org_id())->get();
-        return response()->view("asset.contract.add",compact('org_name',"supplier_list"));
+        return response()->view("asset.contract.add",compact('org_name'));
     }
 
     /**
@@ -96,7 +95,7 @@ class ContractController extends Controller
             $arr['num'] = $request->num[$k];
             $arr['calculate'] = $request->calculate[$k];
             $arr['money'] = $request->money[$k];
-            $arr['supplier_id'] = $request->supplier_id[$k];
+            $arr['supplier_id'] = $request->second_party;
             $arr['org_id'] = get_current_login_user_org_id();
             $arr['status'] = "1";
             $arr['created_at'] = date("Y-m-d H:i:s");

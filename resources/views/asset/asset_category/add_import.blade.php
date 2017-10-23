@@ -8,22 +8,29 @@
             <button class="close" data-close="alert"></button>
             请更正下列输入错误：
         </div>
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <div class="row" >
-            <div class="form-group">
-                <label for="money" class="col-md-3 control-label">上传文件</label>
-                <div class="col-md-8">
-                    <input type="hidden" id="upload_id" name="file_path" value="">
-                    <div id="single-upload" class="btn-upload m-t-xs">
-                        <div id="single-upload-picker" class="pickers"><i class="fa fa-upload"></i> 选择附件</div>
-                        <div id="single-upload-file-list"></div>
-                    </div>
+        <form id="signupForm" class="form-horizontal " method="post">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" id="upload_id" data-error-container="#error-block" name="file_path" value="">
+            <div id="single-file-upload-instance" class="clearfix multi-file-upload">
+                <div id="single-file-upload-instance-file-list" class="pull-left">
+                </div>
+                <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                    <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                    上传导入文件
                 </div>
             </div>
+            <div class="clearfix"></div>
+        </form>
+        <div class="hide" id="result_log">
+            导入错误日志
+            <table id="import_result">
+
+            </table>
         </div>
     </form>
 </div>
 <div class="modal-footer">
+    <a href="{{url('asset_category/downloadModel')}}" class="btn btn-default">下载模板</a>
     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
     <button type="button" class="btn btn-success" id="sub">保存</button>
 </div>
@@ -32,23 +39,27 @@
 
     $( document ).ready( function () {
         zjb.fileUpload({
-            uploader:'singleUpload',
-            picker:'single-upload',
+            uploader:'singleFileUploadInstance',
+            picker:'single-file-upload-instance',
             swf: '{{ asset("assets/js/plugins/webuploader/Uploader.swf") }}',
             server: '{{ route("file.upload") }}',
             formData: {
                 '_token':'{{ csrf_token() }}'
             },
-            errorMsgHiddenTime:2000,
-
-            uploadSuccess:function(file,response){
+            fileNumLimit:1,
+            isAutoInsertInput:false,//上传成功是否自动创建input存储区域
+            uploadComplete:function(file,uploader){},
+            uploadError:function(file,uploader){},
+            uploadSuccess:function(file,response,uploader){
                 //上传完成触发时间
                 $('#upload_id').val(response.data.path);
-            }
+            },
+            fileCannel:function(fileId,uploader){},
+            fileDelete:function(fileId,uploader){}
         });
 
         var import_form = $( "#signupForm" );
-        var errorInfo = $('.alert-danger', import_form);
+        var errorInfo = $('.alert-danger');
         $('#sub').click(function () {
             import_form.submit();
         });
@@ -98,7 +109,7 @@
                     type:"post",
                     dataType:"json",
                     beforeSend:function () {
-                        zjb.blockUI();
+                        zjb.blockUI('.modal-body');
                     },
                     success:function (data) {
                         if(data.status){
@@ -125,11 +136,14 @@
                                 }
                             }
                             swal("",arr.substring(0,arr.length-1), "error");
+                        }else{
+                            swal("",'导入失败，系统出错', "error");
                         }
                     },
                     complete:function () {
-                        zjb.unblockUI();
+                        zjb.unblockUI('.modal-body');
                     }
+
                 })
             }
         } );
