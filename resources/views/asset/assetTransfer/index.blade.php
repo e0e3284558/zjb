@@ -24,7 +24,6 @@
             <div class="row">
                 <div class="col-sm-7">
                     <a href="{{ url('asset_transfer/create') }}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue " id="add-btn"><i class="fa fa-plus"></i> 新增</a>
-{{--                    <a href="{{url('asset/contract_create')}}" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn blue-dark"><i class="fa fa-edit"></i> 合同资产录入</a>--}}
                     <button onclick="edit()" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btn-primary">
                         <i class="fa fa-wrench"></i> 调入确认
                     </button>
@@ -55,7 +54,6 @@
                 <th lay-data="{field:'spec', width:140, sort: true}">规格型号</th>
                 <th lay-data="{field:'calculate', width:80, sort: true}">计量单位</th>
                 <th lay-data="{field:'money', width:80, sort: true}">金额(元)</th>
-                {{--<th lay-data="{field:'money', width:80, sort: true}">调出部门</th>--}}
                 <th lay-data="{field:'put_time', width:160, sort: true}">调入日期</th>
                 <th lay-data="{field:'put_admin_id',templet: '#putAdminTpl', width:160, sort: true}">调入管理员</th>
                 <th lay-data="{field:'put_department_id', width:160, sort: true}">调入部门</th>
@@ -63,7 +61,7 @@
                 <th lay-data="{field:'put_remarks', width:160, sort: true}">调拨说明</th>
                 <th lay-data="{field:'created_at', width:160, sort: true}">创建时间</th>
                 <th lay-data="{field:'updated_at', width:160, sort: true}">更新时间</th>
-                <th lay-data="{fixed:'right',width:120, align:'center', toolbar: '#barDemo'}">操作</th>
+                {{--<th lay-data="{fixed:'right',width:120, align:'center', toolbar: '#barDemo'}">操作</th>--}}
             </tr>
             </thead>
         </table>
@@ -87,11 +85,9 @@
             @{{d.put_area.name}}
             @{{# } }}
         </script>
-        <script type="text/html" id="barDemo">
-            <a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>
-            {{--<a class="btn blue-madison btn-xs" lay-event="edit" data-toggle="modal" data-target=".bs-example-modal-lg">编辑</a>--}}
-            {{--<a class="btn red btn-xs" lay-event="del">删除</a>--}}
-        </script>
+        {{--<script type="text/html" id="barDemo">--}}
+            {{--<a class="btn blue btn-xs" lay-event="detail" data-toggle="modal" data-target=".bs-example-modal-lg">查看</a>--}}
+        {{--</script>--}}
         <script type="text/javascript">
             var table;
             var curObj;
@@ -151,10 +147,6 @@
                             });
                         });
                 };
-                // $('#operationModal').on('hidden.bs.modal', function () {
-                //     $(this).find(".modal-content").html('');
-                //     $(this).removeData();
-                // });
                 layui.use(['laytpl','table'], function(){
                     table = layui.table;
                     table.on('checkbox(data-user)', function(obj){
@@ -169,7 +161,7 @@
 //                            $("#operationModal").modal('show');
                             zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("asset")}}/'+curData.id+"/edit",{'id':curData.id},true);
                         }else if(event== 'detail'){
-                            zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("asset")}}/'+curData.id,{'id':curData.id},true);
+                            zjb.ajaxGetHtml($(".bs-example-modal-lg .modal-content"),'{{url("asset_transfer")}}/'+curData.id,{'id':curData.id},true);
                         }else if(event == 'del'){
                             deleteUser(curData.id,curObj);
                         }

@@ -123,7 +123,7 @@ class AssetTransferController extends Controller
      */
     public function show($id)
     {
-        //
+//        dd($id);
     }
 
     /**

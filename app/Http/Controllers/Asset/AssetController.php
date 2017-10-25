@@ -60,6 +60,7 @@ class AssetController extends Controller
             $department = $request->get('department_id');
             $use_department = $request->get('use_department_id');
             $category_id = $request->get('category_id');
+            $supplier_id = $request->get('supplier_id');
             $name = $request->get('name');
             $map = [
                 ['org_id', '=', get_current_login_user_org_id()],
@@ -79,6 +80,8 @@ class AssetController extends Controller
                     $query->where('use_department_id', $use_department);
                 })->when($category_id, function ($query) use ($category_id) {
                     $query->where('category_id', $category_id);
+                })->when($supplier_id, function ($query) use ($supplier_id) {
+                    $query->where('supplier_id', $supplier_id);
                 })->orderBy('id', 'desc')->with('category', 'org', 'user', 'admin', 'source', 'department', 'useDepartment', 'area', 'supplier', 'contract')->paginate(request('limit'));
 
             foreach ($data as $k=>$v){
@@ -122,21 +125,11 @@ class AssetController extends Controller
             return $res;
         }
         $org_id = get_current_login_user_org_id();
-        //资产类别
-        $list1 = AssetCategory::select(DB::raw('*,concat(path,id) as paths'))->where("org_id",Auth::user()->org_id)->orderBy("paths")->get();
-        $list1 = $this->test($list1);
         //所属公司
         $list2 = Org::where("id",$org_id)->get();
         //管理员
         $list3 = User::where("org_id",$org_id)->get();
-        //场地
-        $list4 = Area::where("org_id",$org_id)->get();
-        $list4 = $this->test($list4);
-        //所属部门
-        $list6 = Department::where("org_id",$org_id)->get();
-        //供应商
-        $list7 = Supplier::where("org_id",$org_id)->get();
-        return response()->view("asset.asset.add",compact("list1","list2","list3","list4","list6","org_id","list7"));
+        return response()->view("asset.asset.add",compact("list2","list3","org_id"));
     }
 
     /**
@@ -362,10 +355,20 @@ class AssetController extends Controller
             'org_id' => get_current_login_user_org_id(),
             'status' => "1"
         ];
-        $list = Bill::with("category","supplier")->where($map)->get();
+        $list = Contract::with('org','file')->where('org_id',get_current_login_user_org_id())->get();
+
         foreach ($list as $k=>$v){
-            $list[$k]['contract'] = Contract::where("id",$v->contract_id)->value("name");
+            $ll = Bill::with("category","supplier")->where($map)->where('contract_id',$v->id)->get();
+            if(count($ll)){
+                $list[$k]['bill'] = $ll;
+            }else{
+                $list[$k]['bill'] = null;
+            }
         }
+//        $list = Bill::with("category","supplier")->where($map)->get();
+//        foreach ($list as $k=>$v){
+//            $list[$k]['contract'] = Contract::where("id",$v->contract_id)->value("name");
+//        }
         return view("asset.asset.contract_add",compact("list"));
     }
 

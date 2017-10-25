@@ -58,7 +58,6 @@
                 <thead>
                 <tr>
                     <td class="dialogtableth"><input type="checkbox" id="all"></td>
-                    <td class="dialogtableth">照片</td>
                     <td class="dialogtableth">资产条码</td>
                     <td class="dialogtableth">资产名称</td>
                     <td class="dialogtableth">资产类别</td>
@@ -84,6 +83,7 @@
 
     $( document ).ready( function () {
 
+        var l = $("#submitAssetsForm").ladda();
         $('.datepicker').datepicker({
             language: "zh-CN",
             format: 'yyyy-mm-dd',
@@ -97,10 +97,10 @@
         });
         assets_form.validate( {
             rules: {
-                clear_time:"required",
+                clear_time:"required"
             },
             messages: {
-                clear_time:"时间不能为空",
+                clear_time:"时间不能为空"
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -146,37 +146,28 @@
                     data:assets_form.serialize(),
                     type:"post",
                     dataType:"json",
-                    beforeSend:function () {
-                        zjb.blockUI('#signupForm1');
+                    beforeSend: function () {
+                        l.ladda('start');
                     },
-                    error:function (jqXHR, textStatus, errorThrown) {
-                        if(jqXHR.status == 422){
-                            var arr = "";
-                            for (var i in jqXHR.responseJSON){
-                                var xarr = jqXHR.responseJSON[i];
-                                for (var j=0;j<xarr.length;j++){
-                                    var str = xarr[j];
-                                    arr += str+",";
-                                }
-                            }
-                            swal("",arr.substring(0,arr.length-1), "error");
+                    complete: function (xhr, textStatus) {
+                        l.ladda('stop');
+                    },
+                    success: function (data, textStatus, xhr) {
+                        if (data.status) {
+                            toastr.success(data.message);
+                            zjb.backUrl('{{url('asset_clear')}}', 1000);
+                        } else {
+                            toastr.error(data.message, '警告');
                         }
                     },
-                    complete:function () {
-                        zjb.unblockUI('#signupForm1');
-                    },
-                    success:function (data) {
-                        if(data.status){
-                            swal({
-                                title: "",
-                                text: data.message,
-                                type: "success",
-                                timer: 1000,
-                            },function () {
-                                window.location.reload();
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.status == 422 && textStatus == 'error') {
+                            _$error = xhr.responseJSON.errors;
+                            $.each(_$error, function (i, v) {
+                                toastr.error(v[0], '警告');
                             });
-                        }else{
-                            swal("", data.message, "error");
+                        } else {
+                            toastr.error('请求出错，稍后重试', '警告');
                         }
                     }
                 })

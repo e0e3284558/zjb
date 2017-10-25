@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Http\Requests\AssetClearRequest;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetClear;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class AssetClearController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AssetClearRequest $request)
     {
         $arr = [
             'asset_ids' => implode(",",$request->asset_ids),

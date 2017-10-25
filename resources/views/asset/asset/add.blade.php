@@ -23,10 +23,7 @@
                     <label for="category_id" class="col-sm-4 control-label">资产类别<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
                         <select class="form-control select2" name="category_id" data-error-container="#error-block" onchange="slt_supplier(this.value)" id="category_id">
-                            <option value="">请选择</option>
-                            @foreach($list1 as $value)
-                                <option value="{{$value->id}}">{{$value->name}}</option>
-                            @endforeach
+                            {!! category_select() !!}
                         </select>
                     </div>
                 </div>
@@ -55,10 +52,7 @@
                     <label for="area_id" class="col-sm-4 control-label">所在场地<span style="color:red;">*</span></label>
                     <div class="col-sm-8">
                         <select name="area_id" class="form-control select2" data-error-container="#error-block">
-                            <option value="">请选择</option>
-                            @foreach($list4 as $v)
-                                <option value="{{$v->id}}">{{$v->name}}</option>
-                            @endforeach
+                            {!! area_select() !!}
                         </select>
                     </div>
                 </div>

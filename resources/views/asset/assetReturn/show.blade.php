@@ -3,22 +3,63 @@
     <h4 class="modal-title" id="myModalLabel">退库单详情</h4>
 </div>
 <div class="modal-body">
-    <table id="example1" class="table table-bordered" role="grid" aria-describedby="example1_info">
-        <tbody>
-            <tr role="row">
-                <td class="td-bg" ><label class="control-label">退库单号</label></td>
-                <td>{{$info->return_code}}</td>
-                <td class="td-bg" ><label class="control-label">退库时间</label></td>
-                <td>{{$info->return_time}}</td>
-                <td class="td-bg" ><label class="control-label">退库处理人</label></td>
-                <td>{{$info->return_dispose_user->name}}</td>
-            </tr>
-            <tr role="row">
-                <td class="td-bg" ><label class="control-label">说明</label></td>
-                <td colspan="5" >{{$info->remarks}}</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-md-5 control-label">退库单号</label>
+                    <div class="col-md-7">
+                        <p class="padding-top-7">{{$info->return_code}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-md-5 control-label">退库时间</label>
+                    <div class="col-md-7">
+                        <p class="padding-top-7">{{$info->return_time}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-md-5 control-label">退库处理人</label>
+                    <div class="col-md-7">
+                        <p class="padding-top-7">{{$info->return_dispose_user->name}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-md-5 control-label">说明</label>
+                    <div class="col-md-7">
+                        <p class="padding-top-7">{{$info->remarks}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{--<table id="example1" class="table table-bordered" role="grid" aria-describedby="example1_info">--}}
+        {{--<tbody>--}}
+            {{--<tr role="row">--}}
+                {{--<td class="td-bg" ><label class="control-label">退库单号</label></td>--}}
+                {{--<td>{{$info->return_code}}</td>--}}
+                {{--<td class="td-bg" ><label class="control-label">退库时间</label></td>--}}
+                {{--<td>{{$info->return_time}}</td>--}}
+                {{--<td class="td-bg" ><label class="control-label">退库处理人</label></td>--}}
+                {{--<td>{{$info->return_dispose_user->name}}</td>--}}
+            {{--</tr>--}}
+            {{--<tr role="row">--}}
+                {{--<td class="td-bg" ><label class="control-label">说明</label></td>--}}
+                {{--<td colspan="5" >{{$info->remarks}}</td>--}}
+            {{--</tr>--}}
+        {{--</tbody>--}}
+    {{--</table>--}}
 
     <div class="col-sm-12" style="overflow:auto;height:195px;margin-top:10px;">
         <table class="table table-striped table-bordered table-hove">

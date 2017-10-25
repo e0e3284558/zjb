@@ -20,19 +20,58 @@ class AssetCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+//    public function index()
+//    {
+//        if ($res = is_permission('asset.category.index')){
+//            return $res;
+//        }
+//        $list = AssetCategory::where("org_id",get_current_login_user_org_id())->get()->toArray();
+//        foreach ($list as $k=>$v){
+//            $list[$k]['text'] = $v['name'];
+//            $list[$k]['nodeId'] = $v['id'];
+//        }
+//        $tree = list_to_tree($list, 'id', 'pid', 'nodes', "0");
+//        return view("asset.asset_category.index",compact("tree"));
+//    }
+
+
+    public function index(Request $request)
     {
         if ($res = is_permission('asset.category.index')){
             return $res;
         }
-        $list = AssetCategory::where("org_id",get_current_login_user_org_id())->get()->toArray();
-        foreach ($list as $k=>$v){
-            $list[$k]['text'] = $v['name'];
-            $list[$k]['nodeId'] = $v['id'];
+        //获取所有资产分类信息
+        if (request('tree') == 1) {
+            $select = $request->select;
+            $name = $request->name;
+            $where = [];
+            if ($name) {
+                $where[] = ['name', 'like', "%{$name}%"];
+            }
+            $list = AssetCategory::where($where)->get()->toArray();
+            $org = get_current_login_user_org_info('name')->name;
+            $tempData = [
+                [
+                    'id' => 0,
+                    'pid' => -1,
+                    'text' => $org,
+                    'name' => $org,
+                    'href' => '',//编辑地址
+                    'icon' => asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/global.gif')
+                ]
+            ];
+            if ($list) {
+                foreach ($list as $key => $val) {
+                    $val['href'] = url('asset_category/' . $val['id'] . '/edit');
+                    $val['icon'] = asset('assets/js/plugins/zTree/css/zTreeStyle2/img/diy/sub.gif');
+                    $tempData[] = $val;
+                }
+            }
+            return response()->json($tempData);
         }
-        $tree = list_to_tree($list, 'id', 'pid', 'nodes', "0");
-        return view("asset.asset_category.index",compact("tree"));
+        return view('asset.asset_category.index');
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -66,6 +105,7 @@ class AssetCategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+
         if ($res = is_permission('asset.category.add')){
             return $res;
         }
@@ -73,9 +113,11 @@ class AssetCategoryController extends Controller
             'category_code' => $request->category_code,
             'name' => $request->name,
             'org_id' => get_current_login_user_org_id(),
-            'created_at' => date("Y-m-d H:i:s")
+            'created_at' => date("Y-m-d H:i:s"),
+            'status' => $request->status,
+            'remarks' => $request->remarks
         ];
-        if($request->pid){
+        if($request->pid!='0'){
             $arr['pid'] = $request->pid;
             $org_id = get_current_login_user_org_id();
             $arr['path'] = AssetCategory::where('org_id',$org_id)->where("id",$request->pid)->value("path");

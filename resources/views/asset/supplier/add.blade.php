@@ -20,10 +20,7 @@
             <label class="col-sm-3 control-label">类别<span class="required">*</span></label>
             <div class="col-sm-8">
                 <select name="category_id[]" multiple class="form-control select2" data-error-container="#error-block">
-                    <option value="">请选择</option>
-                    @foreach($category_list as $v)
-                        <option value="{{$v->id}}">{{$v->name}}</option>
-                    @endforeach
+                    {!! category_select() !!}
                 </select>
             </div>
         </div>

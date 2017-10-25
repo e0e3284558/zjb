@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body">
 <div class="table-responsive">
-    <button class="btn btn-danger btn-xs" onclick="bill_del()">删除</button>
+    <button class="btn btn-danger btn-md" onclick="bill_del()">删除</button>
     <table  class="table table-striped  table-bordered"  lay-filter="asset-table">
         <thead>
         <tr role="row">

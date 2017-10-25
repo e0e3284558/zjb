@@ -85,6 +85,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4">
+                                        供应商
+                                    </label>
+                                    <div class="col-md-8">
+                                        <select name="supplier_id" class="form-control select2">
+                                            {!! supplier_select('',1) !!}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
