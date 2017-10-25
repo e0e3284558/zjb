@@ -1,7 +1,7 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title" id="myModalLabel">物品归档</h4>
+    <h4 class="modal-title" id="myModalLabel">出库单</h4>
 </div>
 
 <div class="modal-body">
@@ -13,17 +13,17 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">入库单号</label>
+                        <label class="col-sm-4 control-label">出库单号</label>
                         <div class="col-sm-8">
-                            <input type="text" name="receipt_number" class="form-control" placeholder="入库单号" disabled>
+                            <input type="text" name="receipt_number" class="form-control" placeholder="出库单号" disabled>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">入库仓库</label>
+                        <label class="col-sm-4 control-label">出库仓库</label>
                         <div class="col-sm-8">
-                            <select class="form-control" name="depot_id">
+                            <select class="form-control" name="depot_id" id="depotId">
                                 @foreach($depot as $v)
                                     <option value="{{$v->id}}">{{$v->name}}</option>
                                 @endforeach
@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">业务时间<span class="font-red">*</span></label>
                         <div class="col-sm-8">
-                            <input type="text" name="buy_time" value="{{date("Y-m-d")}}"
+                            <input type="text" name="receipt_date" value="{{date("Y-m-d")}}"
                                    data-error-container="#error-block" class="form-control datepicker"
                                    data-date-date="0d">
                         </div>
@@ -47,20 +47,24 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">供应商</label>
+                        <label class="col-sm-4 control-label">领用部门</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="supplier" placeholder="供应商">
+                            <select class="form-control select2" name="" id="" onchange="get_user(this)">
+                                <option value="">请选择部门</option>
+                                @foreach($department as $v)
+                                    <option value="{{$v->id}}">{{$v->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">经办人</label>
+                        <label class="col-sm-4 control-label">领用人</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control"
-                                   value="{{get_current_login_user_info(true)->username}}" disabled>
-                            <input type="hidden" class="form-control" name="user_id"
-                                   value="{{get_current_login_user_info()}}" disabled>
+                            <select name="" id="abc" class="form-control select2">
+                                {{--<option value="">请选择领用部门</option>--}}
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -77,17 +81,27 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">入库备注</label>
+                        <label class="col-sm-4 control-label">经办人</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="enter_comment" placeholder="入库备注">
+                            <input type="text" class="form-control"
+                                   value="{{get_current_login_user_info(true)->username}}" disabled>
+                            <input type="hidden" class="form-control" name="user_id"
+                                   value="{{get_current_login_user_info()}}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">出库备注</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="enter_comment" placeholder="出库备注">
                         </div>
                     </div>
                 </div>
             </div>
 
-
             <div class="row">
-                <a class="btn btn-info" href="{{url('consumables/warehousing/add_foods')}}"
+                <a class="btn btn-info" href="{{url('consumables/shipments/shipments_goods')}}"
                    data-toggle="modal" data-target=".bs-example-modal-md">选择物品</a>
                 <a href="javascript:;" class="btn btn-info" id="delete-goods">删除</a>
             </div>
@@ -97,15 +111,17 @@
                     <thead>
                     <tr>
                         <td class="dialogtableth">
-                            <input type="checkbox" id="all" >
+                            <input type="checkbox" id="all">
                         </td>
                         <td class="dialogtableth" style="min-width: 70px">物品编码</td>
                         <td class="dialogtableth" style="min-width: 70px">物品名称</td>
                         <td class="dialogtableth" style="min-width: 70px">商品条码</td>
                         <td class="dialogtableth" style="min-width: 70px">规格型号</td>
                         <td class="dialogtableth" style="min-width: 70px">单位</td>
-                        <td class="dialogtableth" style="min-width: 120px">入库数量</td>
-                        <td class="dialogtableth" style="min-width: 120px">入库单价</td>
+                        <td class="dialogtableth" style="min-width: 120px">当前库存</td>
+                        <td class="dialogtableth" style="min-width: 120px">出库数量</td>
+                        <td class="dialogtableth" style="min-width: 120px">出库单价</td>
+                        <td class="dialogtableth" style="min-width: 120px">出库金额</td>
                         <td class="dialogtableth" style="min-width: 200px">备注</td>
                         <td class="dialogtableth" style="min-width: 100px">安全库存下限</td>
                         <td class="dialogtableth" style="min-width: 100px">安全库存上限</td>
@@ -151,13 +167,11 @@
                 }
             });
         });
-
-
     });
 
     function storeForm() {
         $.ajax({
-            url: "{{url('consumables/warehousing')}}",
+            url: "{{url('consumables/shipments')}}",
             data: $('#inboundForm').serialize(),
             type: "post",
             dataType: "json",
@@ -187,6 +201,47 @@
             }
         });
         return false;
+    }
+
+    function get_user(obj) {
+        o = $(obj);
+        //清除
+        var id = o.val();
+        var url = '{{url('consumables/shipments/select_user')}}/' + id;
+        var select1 = $("#abc");
+        jQuery("#abc").empty();
+        $.ajax({
+            "url": url,
+            "type": 'get',
+            'dataType': 'json',
+            success: function (data) {
+                if (id != "0") {
+                    //创建select
+                    if (data.user != '') {
+                        if (data.user.length > 0) {
+                            //遍历
+                            for (var i = 0; i < data.user.length; i++) {
+                                console.log(data.user[i]);
+                                select1.append(data.user[i]);
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    function count_price(obj) {
+        var p = parseInt($(obj).parent('td').prev().html());
+        var val = parseInt($(obj).val());
+        if (val < 0 || val > p) {
+            alert('请输入合法数值')
+        } else {
+            var s = val * $(obj).parent('td').next().html();
+            s = parseFloat(s.toFixed(2));
+            $(obj).parent('td').next().next().html(s);
+        }
+
     }
 
 

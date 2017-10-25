@@ -25,7 +25,7 @@ class GoodsController extends Controller
             return response()->json($data);
         }
         if ($request->ajax()) {
-            $user = Goods::paginate(request('limit'));
+            $user = Goods::with('depot')->paginate(request('limit'));
             $data = $user->toArray();
             $data['msg'] = '';
             $data['code'] = 0;
@@ -58,6 +58,7 @@ class GoodsController extends Controller
         //转换成数组
         $res = $request->all();
         $res['org_id'] = get_current_login_user_org_id();
+        $res['user_id'] = get_current_login_user_info();
         //如果勾选的禁用，则为0，否则启用
         isset($res['disable']) ? $res['disable'] = 0 : $res['disable'] = 1;
         //移除两个不要的属性

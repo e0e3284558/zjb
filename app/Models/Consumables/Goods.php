@@ -14,4 +14,9 @@ class Goods extends Model
     public function file() {
         return $this->belongsTo(\App\Models\File\File::class);
     }
+    public function depot()
+    {
+        return $this->belongsToMany('App\Models\Consumables\Depot')
+                    ->withPivot('goods_number', 'goods_price');
+    }
 }

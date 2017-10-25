@@ -52,11 +52,15 @@ Route::group(['prefix'=>'consumables','namespace'=>'Consumables','middleware'=>'
     Route::post('archiving/import', 'ArchivingController@import');
     Route::get('archiving/export', 'ArchivingController@export');
     Route::resource('archiving','ArchivingController');
-    Route::get('warehousing/add_foods','WarehousingController@addFoods');
+    Route::get('warehousing/add_foods','WarehousingController@addGoods');
+
     Route::resource('warehousing','WarehousingController');
     Route::get('goods/edit', 'GoodsController@edit')->name('consumables.goods.edit');
     Route::delete('goods/delete', 'GoodsController@destroy')->name('consumables.goods.destroy');
     Route::resource('goods','GoodsController');
+    Route::get('shipments/select_user/{id}','ShipmentsController@selectUser');
+    Route::get('shipments/shipments_goods','ShipmentsController@shipmentsGoods');
+    Route::resource('shipments','ShipmentsController');
 });
 //--------------------------------------------------------------------------
 //耗材模块路由结束

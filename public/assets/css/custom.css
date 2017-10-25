@@ -8245,3 +8245,6 @@ Custom color buttons
 .h-x-50 {
     height: 50px;
 }
+.td-min{
+    min-width: 100px;
+}

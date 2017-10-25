@@ -4,7 +4,7 @@ namespace App\Models\Consumables;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Warehousing extends Model
+class Shipments extends Model
 {
     //
     public function depot()
@@ -20,6 +20,6 @@ class Warehousing extends Model
 
     public function details()
     {
-        return $this->hasMany('App\Models\Consumables\WarehousingDetails');
+        return $this->hasMany('App\Models\Consumables\WarehousingInventory','warehousing_id');
     }
 }

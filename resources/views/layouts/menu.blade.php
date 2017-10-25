@@ -162,6 +162,12 @@
                     入库管理
                 </a>
             </li>
+            <li class="{{ active_class(if_route('shipments.index')) }}">
+                <a href="{{ route('shipments.index',['app_groups'=>'consumables']) }}">
+                    <i class="fa fa-angle-right"></i>
+                    出库管理
+                </a>
+            </li>
 
         </ul>
     </li>

@@ -52,13 +52,17 @@ class DepotController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * 根据仓库信息，返回当前仓库的耗材及库存
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $depot=Depot::find($id)->goods()->paginate(request('limit'));
+        $data = $depot->toArray();
+        $data['msg'] = '';
+        $data['code'] = 0;
+        return response()->json($data);
     }
 
     /**

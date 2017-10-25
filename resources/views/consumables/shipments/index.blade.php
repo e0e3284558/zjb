@@ -47,7 +47,7 @@
                             <h3 class="box-title">
                                 <!-- Single button -->
                                 <a type="button" class="btn btn-primary dropdown-toggle" data-toggle="modal"
-                                   href="{{url('consumables/warehousing/create')}}"
+                                   href="{{url('consumables/shipments/create')}}"
                                    data-target=".bs-example-modal-lg">
                                     新增
                                 </a>
@@ -73,7 +73,7 @@
                             <div class="col-sm-12">
                                 <table class="layui-table" lay-filter="data-user"
                                        lay-data="{id:'dataUser',height: 'full-194',
-                                           url:'{{ route("warehousing.index") }}',page:true,limit:20,
+                                           url:'{{ route("shipments.index") }}',page:true,limit:20,
                                            even:true,response:{countName: 'total'}}">
                                     <thead>
                                     <tr>
@@ -81,21 +81,20 @@
                                         <th lay-data="{field:'type', width:120, sort: true,templet: '#type'}">
                                             单据类型
                                         </th>
-                                        <th lay-data="{field:'receipt_number', width:120, sort: true}">入库单号</th>
-                                        <th lay-data="{field:'depot',templet: '#depot', width:120, sort: true}">入库仓库
+                                        <th lay-data="{field:'delivery_number', width:120, sort: true}">出库单号</th>
+                                        <th lay-data="{field:'depot',templet: '#depot', width:120, sort: true}">出库仓库
                                         </th>
-                                        <th lay-data="{field:'receipt_date', width:120, sort: true}">入库日期</th>
-                                        <th lay-data="{field:'supplier', width:120, sort: true}">供应商</th>
+                                        <th lay-data="{field:'receipt_date', width:120, sort: true}">出库日期</th>
                                         <th lay-data="{field:'user', templet: '#user', width:120, sort: true}">经办人</th>
                                         <th lay-data="{field:'handle_date', width:120, sort: true}">经办日期</th>
-                                        <th lay-data="{field:'comment', width:120, sort: true}">入库备注</th>
+                                        <th lay-data="{field:'comment', width:120, sort: true}">出库备注</th>
                                         <th lay-data="{fixed:'right',width:160, align:'center', toolbar: '#barDemo'}">
                                             操作
                                         </th>
                                     </tr>
                                     </thead>
                                     <script type="text/html" id="barDemo">
-                                        <a class="btn blue-madison btn-sm" lay-event="show">查看入库单详情</a>
+                                        <a class="btn blue-madison btn-sm" lay-event="show">查看出库单详情</a>
                                     </script>
 
                                     <script type="text/html" id="type">
@@ -141,7 +140,7 @@
                 if (event == 'show') {
                     $("#operationModal").modal('show');
                     zjb.ajaxGetHtml($('#operationModal .modal-content'),
-                        '{{url("consumables/warehousing/")}}/'+curData.id, {'id': curData.id}, true);
+                        '{{url("consumables/shipments/")}}/'+curData.id, {'id': curData.id}, true);
                 }
             });
 

@@ -6,50 +6,15 @@
 <div class="modal-body">
 
     <div class="row">
-
-        <div class="col-sm-3 shadow table-bordered min-height ">
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
-        <SCRIPT LANGUAGE="JavaScript">
-            var id = 0;
-
-            function zTreeOnClick(event, treeId, treeNode) {
-                id = treeNode.id;
-                sTable('{{ url("consumables/goods?id=")}}' + id);
-            }
-
-            var zTreeObj;
-            // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
-            var setting = {
-                callback: {
-                    onClick: zTreeOnClick
-                },
-                data: {
-                    simpleData: {
-                        enable: true,
-                        idKey: "id",
-                        pIdKey: "parent_id",
-                        rootPId: 0
-                    }
-                }
-            };
-            var treeNodes = {!! $data !!};
-            $(document).ready(function () {
-                $.fn.zTree.init($("#treeDemo"), setting, treeNodes);
-            });
-        </SCRIPT>
-        <div class="col-sm-9">
-            <table class="layui-table" id="addGoods" lay-filter="data-goods-add" lay-data="">
-                <thead>
-                <tr>
-                </tr>
-                </thead>
-            </table>
-        </div>
-
+        <table class="layui-table" id="addGoods" lay-filter="data-goods-add" lay-data="">
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+        </table>
     </div>
-
 </div>
+
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
     <button type="button" class="btn btn-success" data-dismiss="modal" id="submitGoodsForm">保存</button>
@@ -82,6 +47,8 @@
                 //,…… //更多参数参考右侧目录：基本参数选项
             });
         });
+        var depot_id =$("#depotId").val();
+        sTable('{{ url("consumables/depot")}}/' + depot_id);
     });
 
     function sTable(url) {
@@ -97,18 +64,20 @@
         var ids = [];
         var tbody = $("#add-goods tbody");
         $.each(checkStatus.data, function (i, v) {
-
             console.log(v);
-
+            var price_num=v.pivot.goods_price/ v.pivot.goods_number;
+            price_num=price_num.toFixed(2);
             var str = "<tr>" +
                 "<td><input type='checkbox' name='goods_ids[]' class='form-control icheck' value='" + v.id + "' ></td>" +
-                "<td>" + v.coding + "</td>" +
+                "<td><input type='hidden' name='goods_price[]' value='"+price_num+"' > " + v.coding + "</td>" +
                 "<td>" + v.name + "</td>" +
                 "<td>" + v.barcode + "</td>" +
                 "<td>" + v.norm + "</td>" +
                 "<td>" + v.unit + "</td>" +
-                "<td><input type='number' class='form-control' name='goods_num[]'></td>" +
-                "<td><input type='number' class='form-control' name='goods_unit_price[]'></td>" +
+                "<td>" + v.pivot.goods_number+ "</td>" +
+                "<td><input type='number' class='form-control' name='goods_num[]' onchange='count_price(this)'></td>" +
+                "<td>" + price_num+ "</td>" +
+                "<td>0</td>" +
                 "<td><input type='text' class='form-control' name='comment[]'></td>" +
                 "<td>" + v.inventory_cap + "</td>" +
                 "<td>" + v.inventory_lower + "</td>" +
