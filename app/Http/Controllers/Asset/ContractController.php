@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Asset;
 
+use App\Jobs\MyJob;
 use App\Models\Asset\AssetCategory;
 use App\Models\Asset\Bill;
 use App\Models\Asset\Contract;
@@ -280,5 +281,10 @@ class ContractController extends Controller
             'status' => "1",
             'message' => '合同删除成功'
         ]);
+    }
+
+    public function test(){
+        $queueId = $this->dispatch(new MyJob('key_'.str_random(4), str_random(10)));
+        dd($queueId);
     }
 }

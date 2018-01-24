@@ -240,6 +240,7 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post("contract/bill_store",'ContractController@bill_store');
     Route::get("contract/add_bill/{id}",'ContractController@add_bill');
     Route::post("contract/bill_del",'ContractController@bill_del');
+    Route::get("contract/test",'ContractController@test');
     Route::resource("contract",'ContractController');
 
     //清单管理
