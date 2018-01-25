@@ -21,7 +21,6 @@ class AddGoodsNormToWarehousingInventoriesTable extends Migration
             $table->double('goods_unit_price')->nullable()->comment('物品单价');
             $table->double('goods_total_price')->nullable()->comment('物品总价');
             $table->string('comment')->nullable()->comment('备注');
-            $table->dropIndex(['goods_id']);//删除索引
             $table->string('goods_name')->nullable()->comment('物品名称')->change();
             $table->string('goods_num')->nullable()->comment('物品数量')->change();
             $table->string('goods_code')->nullable()->comment('物品编码')->change();
