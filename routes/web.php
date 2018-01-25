@@ -282,3 +282,20 @@ Route::group(['prefix' => 'users', 'namespace' => 'User'], function () {
 
 //-------------------------------------------------------------------------
 //维修工登录
+
+
+
+//微信小程序API路由开始
+//-------------------------------------------------------------------------
+
+Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
+    Route::post('worker_login', 'WxLoginController@workerLogin');
+    Route::post("phone_authorize",'WxLoginController@phoneAuthorize');
+    Route::post("find_phone",'WxLoginController@findPhone');
+    Route::post("login",'WxLoginController@login');
+});
+
+//-------------------------------------------------------------------------
+//微信小程序API路由结束
+
+
