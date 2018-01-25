@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WX;
 
 use App\Models\Repair\ServiceWorker;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Iwanli\Wxxcx\WXBizDataCrypt;
