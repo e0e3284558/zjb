@@ -32,8 +32,9 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
+        dump($userInfo);
         $judge = User::where("openid",$userInfo['openid'])->first();
-
+        dump($judge);
         if(!$judge){
             $user = new User();
             $user->openid       = $userInfo['openid'];
@@ -64,7 +65,7 @@ class WxLoginController extends Controller
         }else{
             $info = ServiceWorker::where("openid",$request->openId)->first();
         }
-
+        dump($info);
         if($info->phone_authorize==0){
             return $message=[
                 'code' => 0,
