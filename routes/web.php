@@ -293,6 +293,8 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
     Route::post("phone_authorize",'WxLoginController@phoneAuthorize');
     Route::post("find_phone",'WxLoginController@findPhone');
     Route::post("login",'WxLoginController@login');
+
+    Route::post("asset_find",'WxAssetController@find');
 });
 
 //-------------------------------------------------------------------------
