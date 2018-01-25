@@ -25,7 +25,6 @@ class WxLoginController extends Controller
      */
     public function login(Request  $request)
     {
-        dd("1");
         //code 在小程序端使用 wx.login 获取
         $code = $request->input('code');
         //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
@@ -33,7 +32,7 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
-        dump($userInfo);
+        dd($userInfo);
         $judge = User::where("openid",$userInfo['openid'])->first();
         dump($judge);
         if(!$judge){
