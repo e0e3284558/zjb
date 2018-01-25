@@ -34,12 +34,16 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
         $judge = User::where("openid",$userInfo['openid'])->first();
         if(!$judge){
-            $user = new User();
-            $user->openid       = $userInfo['openid'];
-            $user->session_key  = $userInfo['session_key'];
-            $user->username     = '';
-            $info = $user->save();
-            $id = $info->id;
+		return $message = [
+			'code' => 0,
+			'message' => '请联系管理员'
+		];
+            //$user = new User();
+            //$user->openid       = $userInfo['openid'];
+            //$user->session_key  = $userInfo['session_key'];
+            //$user->username     = '';
+            //$info = $user->save();
+            //$id = $info->id;
         }else{
             $id = $judge->id;
         }
@@ -63,7 +67,6 @@ class WxLoginController extends Controller
         }else{
             $info = ServiceWorker::where("openid",$request->openId)->first();
         }
-        dump($info);
         if($info->phone_authorize==0){
             return $message=[
                 'code' => 0,
@@ -102,9 +105,9 @@ class WxLoginController extends Controller
         $phone_info = json_decode($data);
 
         if($request->role==1){
-            $info = User::where("phone",$phone_info->phoneNumber)->first();
+            $info = User::where("tel",$phone_info->phoneNumber)->first();
         }else{
-            $info = ServiceWorker::where("phone",$phone_info->phoneNumber)->first();
+            $info = ServiceWorker::where("tel",$phone_info->phoneNumber)->first();
         }
 
         if($info){
