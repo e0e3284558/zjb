@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\File;
 
 use App\Models\File\File as FileModel;
+use App\Models\File\File;
 use App\Services\ResponseJsonMessageService;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Storage;
 use Validator;
@@ -158,4 +160,69 @@ class DefaultController extends Controller
     {
 
     }
+
+    //  微信小程序上传图片   开始
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function imgFile(Request $request)
+    {
+        $image_upload_config = config('filesystems.disks.image');
+        //上传图片
+        $upload_file = $request->file('img');
+
+        //设置保存目录
+        $save_path = date("Ym", time())
+            . '/' . date("d", time());
+        //文件的扩展名
+        $ext = $upload_file->getClientOriginalExtension();
+        $uniqid = uniqid();
+
+        //设置保存文件名
+        $save_name = $uniqid . '.' . $ext;
+        //文件转存
+        $new_file = $upload_file->move($image_upload_config['root'] . '/'
+            . $save_path, $save_name);
+        $path = $image_upload_config['base_path'] . '/' . $save_path . '/' . $save_name;
+
+        //保存文件信息到数据库
+        $arr = [
+            'type'=> $upload_file->getClientMimeType(),
+            'name'=> $save_name,
+            'old_name'=> $upload_file->getClientOriginalName(),
+            'width'=> 0,
+            'height'=> 0,
+            'suffix'=> $ext,
+            'file_path'=> $new_file->getRealPath(),
+            'path'=> $path,
+            'url'=> 'https://wx.zhejiuban.com/'.$path,
+            'size'=> $upload_file->getClientSize(),
+        ];
+
+        $info = DB::table("files")->insertGetId($arr);
+        return $info;
+    }
+
+
+    public function deleteImgFile(Request $request){
+        //图片id
+        $file_id = $request->id;
+        $info = File::find($request->id);
+        $info = unlink(public_path($info->path));
+        if($info){
+            $info = File::where("id",$file_id)->delete();
+            if($info){
+                return $message = [
+                    'code' => 1,
+                    'message' => '图片信息删除成功'
+                ];
+            }
+        }
+    }
+
+    //  微信小程序上传图片   结束
+
 }

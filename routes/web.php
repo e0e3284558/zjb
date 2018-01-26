@@ -262,6 +262,8 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
 //-------------------------------------------------------------------------
 Route::group(['prefix' => 'file', 'namespace' => 'File'],function () {
     Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
+    Route::post('img_file', 'DefaultController@imgFile');
+    Route::post('delete_img_file', 'DefaultController@deleteImgFile');
 });
 Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
 //    Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
