@@ -4,8 +4,10 @@ namespace App\Http\Controllers\WX;
 
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
+use App\Models\Asset\AssetCategory;
 use App\Models\File\File;
 use App\Models\Repair\Process;
+use App\Models\Repair\ServiceWorker;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,7 +29,7 @@ class WxRepairController extends Controller
             'org_id' => $assetInfo->org_id,
             'user_id'=> $user_id,
             'asset_id' => $request->asset_id,
-            'asset_category_id' => $assetInfo->category_id,
+            'asset_classify_id' => $assetInfo->category_id,
             'remarks' => $request->remarks,
             'status' => 1,
             'created_at' => date("Y-m-d H:i:s")
@@ -99,11 +101,14 @@ class WxRepairController extends Controller
             $array['field'] = $asset->name;
             //$array['img_url'] = File::where("id",$v->img_id)->value("url");
 
-            $imgs_id = explode(",",trim($v->img_id,','));
-            foreach ($imgs_id as $va){
-                $array['img_url'][] = File::where("id",$va)->value("url");
-            }
+            //图片
+            $img_list = DB::table("file_process")->where("process_id",$v->id)->get();
 
+            if($img_list){
+                foreach ($img_list as $value){
+                    $array['img_url'][] = File::where("id",$value->file_id)->value("url");
+                }
+            }
             $array['complain'] = $v->complain;
             $arr[] = $array;
         }
@@ -367,15 +372,15 @@ class WxRepairController extends Controller
                 'message' => '请先授权该程序用户信息'
             ];
         }
-        $repair_info = Repair::where("id",$request->repair_id)->first();
+        $repair_info = Process::where("id",$request->repair_id)->first();
         //资产名称
         $asset_info = Asset::find($repair_info->asset_id);
         //所在场地
         $str = '';
-        $path = Field::where("id",$asset_info->area_id)->value("path").$asset_info->area_id;
+        $path = Area::where("id",$asset_info->area_id)->value("path").$asset_info->area_id;
         $path = explode(",",ltrim($path,"0,"));
         foreach ($path as $value){
-            $str .= Field::where("id",$value)->value("name")."/";
+            $str .= Area::where("id",$value)->value("name")."/";
         }
         $str = trim($str,"/");
         //用户拍摄图片
@@ -390,7 +395,7 @@ class WxRepairController extends Controller
         }
         $arr = [
             'asset_uuid' => $asset_info->asset_uuid,
-            'category' => Category::where("id",$asset_info->category_id)->value("name"),
+            'category' => AssetCategory::where("id",$asset_info->category_id)->value("name"),
             'asset_name' => $asset_info->name,
             'field_path' => $str,
             'remarks' => $repair_info->remarks,
@@ -439,9 +444,9 @@ class WxRepairController extends Controller
             ];
         }
         $user_id = User::where("openId",$request->openId)->value("id");
-        $repair_info = Repair::where("id",$request->repair_id)->first();
+        $repair_info = Process::where("id",$request->repair_id)->first();
         if($user_id == $repair_info->user_id){
-            $info = Repair::where("id",$request->repair_id)->update(['complain'=>$request->complain]);
+            $info = Process::where("id",$request->repair_id)->update(['complain'=>$request->complain]);
             if($info){
                 return $message = [
                     'code' => '1',
