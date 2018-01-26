@@ -7,7 +7,6 @@ use App\Models\File\File;
 use App\Services\ResponseJsonMessageService;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\DB;
 use Storage;
 use Validator;
 use Illuminate\Http\Request;
@@ -201,7 +200,7 @@ class DefaultController extends Controller
             'path'=> $path,
             'url'=> 'https://wx.zhejiuban.com/'.$path,
             'size'=> $upload_file->getClientSize(),
-	    'org_id' => $request->org_id
+	        'org_id' => $request->org_id
         ];
 
         $info = DB::table("files")->insertGetId($arr);
