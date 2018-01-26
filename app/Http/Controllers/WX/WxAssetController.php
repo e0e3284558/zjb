@@ -19,7 +19,7 @@ class WxAssetController extends Controller
                 'message' => '请先授权该程序用户信息'
             ];
         }
-        $info = Asset::where("asset_uuid",$request->asset_uuid)->first();
+        $info = Asset::where("asset_uid",$request->asset_uuid)->first();
         if(!$info){
             return $message = [
                 'code' => '1',

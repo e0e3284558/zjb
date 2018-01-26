@@ -266,7 +266,7 @@ Route::group(['prefix' => 'file', 'namespace' => 'File'],function () {
     Route::post('delete_img_file', 'DefaultController@deleteImgFile');
 });
 Route::group(['prefix' => 'file', 'namespace' => 'File', 'middleware' => 'auth'], function () {
-//    Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
+    Route::post('image_upload', 'DefaultController@imageUpload')->name('image.upload');
     Route::post('file_upload', 'DefaultController@fileUpload')->name('file.upload');
     Route::post('video_upload', 'DefaultController@videoUpload')->name('video.upload');
     Route::post('asset_file_upload', 'DefaultController@assetFileUpload')->name('asset.file.upload');
