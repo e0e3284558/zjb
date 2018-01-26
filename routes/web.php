@@ -302,22 +302,22 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
     Route::post("repair/add",'RepairController@add');
     Route::post("repair/repair_list",'RepairController@repairList');
     //工单详情
-    Route::post("repair/repair_info",'Repair\RepairController@repairInfo');
+    Route::post("repair/repair_info",'RepairController@repairInfo');
     //提交评价信息
-    Route::post("repair/evaluate",'Repair\RepairController@evaluate');
+    Route::post("repair/evaluate",'RepairController@evaluate');
     //维修人员的待服务列表(还未确认接的单)
-    Route::post("repair/wait_service",'Repair\RepairController@waitService');
+    Route::post("repair/wait_service",'RepairController@waitService');
     //维修人员点击确认接单
-    Route::post("repair/confirm_repair",'Repair\RepairController@confirmRepair');
+    Route::post("repair/confirm_repair",'RepairController@confirmRepair');
     //维修人员填写维修结果
-    Route::post("repair/write_result",'Repair\RepairController@writeResult');
+    Route::post("repair/write_result",'RepairController@writeResult');
     //维修人员拒绝接单
-    Route::post("repair/refuse_repair",'Repair\RepairController@refuseRepair');
+    Route::post("repair/refuse_repair",'RepairController@refuseRepair');
     //用户查看已完成工单全部详情
-    Route::post("repair/repair_all_info",'Repair\RepairController@repairAllInfo');
+    Route::post("repair/repair_all_info",'RepairController@repairAllInfo');
     //用户投诉表单提交
-    Route::post("repair/complain",'Repair\RepairController@complain');
-    Route::resource("repair",'Repair\RepairController');
+    Route::post("repair/complain",'RepairController@complain');
+    Route::resource("repair",'RepairController');
 
 });
 
