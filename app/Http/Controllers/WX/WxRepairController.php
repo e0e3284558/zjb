@@ -27,7 +27,7 @@ class WxRepairController extends Controller
             'org_id' => $assetInfo->org_id,
             'user_id'=> $user_id,
             'asset_id' => $request->asset_id,
-            'asset_category_id' => $assetInfo->category_id,
+            'asset_classify_id' => $assetInfo->category_id,
             'remarks' => $request->remarks,
             'status' => 1,
             'created_at' => date("Y-m-d H:i:s")
@@ -99,10 +99,17 @@ class WxRepairController extends Controller
             $array['field'] = $asset->name;
             //$array['img_url'] = File::where("id",$v->img_id)->value("url");
 
-            $imgs_id = explode(",",trim($v->img_id,','));
-            foreach ($imgs_id as $va){
-                $array['img_url'][] = File::where("id",$va)->value("url");
+            //图片
+            $img_list = DB::table("file_process")->where("process_id",$v->id)->get();
+            if($img_list){
+                foreach ($img_list as $value){
+                    $array['img_url'][] = File::where("id",$value->file_id)->value("url");
+                }
             }
+            //$imgs_id = explode(",",trim($v->img_id,','));
+            //foreach ($imgs_id as $va){
+                //$array['img_url'][] = File::where("id",$va)->value("url");
+           // }
 
             $array['complain'] = $v->complain;
             $arr[] = $array;
