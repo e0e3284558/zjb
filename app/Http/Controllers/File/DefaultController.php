@@ -201,10 +201,7 @@ class DefaultController extends Controller
             'path'=> $path,
             'url'=> 'https://wx.zhejiuban.com/'.$path,
             'size'=> $upload_file->getClientSize(),
-<<<<<<< HEAD
-=======
 	    'org_id' => $request->org_id
->>>>>>> dfc04e613b729db978fb73fce1782e5a4e60663a
         ];
 
         $info = DB::table("files")->insertGetId($arr);
@@ -229,9 +226,4 @@ class DefaultController extends Controller
     }
 
     //  微信小程序上传图片   结束
-
-<<<<<<< HEAD
-=======
-
->>>>>>> dfc04e613b729db978fb73fce1782e5a4e60663a
 }
