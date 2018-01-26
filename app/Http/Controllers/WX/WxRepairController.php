@@ -28,15 +28,32 @@ class WxRepairController extends Controller
             'user_id'=> $user_id,
             'asset_id' => $request->asset_id,
             'asset_category_id' => $assetInfo->category_id,
-            'img_id' => $request->img_id,
             'remarks' => $request->remarks,
             'status' => 1,
             'created_at' => date("Y-m-d H:i:s")
         ];
-        $info = Process::insertGetId($arr);
-
-        return $info;
-
+        $process_id = Process::insertGetId($arr);
+        if($process_id){
+            if($request->img_id){
+                foreach (explode(",",trim($request->img_id,",")) as $v){
+                    if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process_id])) {
+                        return response()->json([
+                            'status' => 0, 'message' => '图片上传失败',
+                            'data' => null, 'url' => ''
+                        ]);
+                    }
+                }
+            }
+            return $message = [
+                'code' => 1,
+                'message' => '报修成功'
+            ];
+        }else{
+            return $message = [
+                'code' => 0,
+                'message' => '报修失败'
+            ];
+        }
     }
 
     public function repairList(Request $request){
