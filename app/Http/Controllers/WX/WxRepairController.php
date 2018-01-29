@@ -99,8 +99,6 @@ class WxRepairController extends Controller
             $array['repair_id'] = $v->id;
             $array['path'] = $str;
             $array['field'] = $asset->name;
-            //$array['img_url'] = File::where("id",$v->img_id)->value("url");
-
             //图片
             $img_list = DB::table("file_process")->where("process_id",$v->id)->get();
 
@@ -177,12 +175,6 @@ class WxRepairController extends Controller
 
 //    待服务
     public function service(Request $request){
-        //if(!$request->openId){
-        //return $message = [
-        //'code' => 1,
-        //'message' => '请先授权该程序用户信息'
-        //];
-        //}
         $user_id = User::where("openId",$request->openId)->value("id");
         $arr = [
             'user_id' => $user_id,
