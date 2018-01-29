@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Iwanli\Wxxcx\WXBizDataCrypt;
 use Iwanli\Wxxcx\Wxxcx;
+use Illuminate\Support\Facades\Hash;
 
 class WxLoginController extends Controller
 {
@@ -51,35 +52,45 @@ class WxLoginController extends Controller
     }
 
     public function jobNumber(Request $request){
-        $arr = [
-            'job_number' => $request->job_number,
-            'password' => bcrypt($request->password)
-        ];
+
         if($request->role==1){
-            $info = User::where($arr)->first();
-            if($info){
-                $info1 = User::where($arr)->update(["openId"=>$request->openId]);
-                if($info1){
+            $info = User::where("job_number",$request->job_number)->first();
+            if(Hash::check($request->password,$info->password)){
+                if($info){
+                    $info1 = User::where("job_number",$request->job_number)->update(["openId"=>$request->openId]);
+                    if($info1){
+                        return $message = [
+                            'code' => 1,
+                            'message' => '用户信息绑定成功'
+                        ];
+                    }
+
+                }else{
                     return $message = [
-                        'code' => 1,
-                        'message' => '用户信息绑定成功'
+                        'code' => 0,
+                        'message' => '用户信息有误，稍后重试'
                     ];
                 }
-
             }else{
                 return $message = [
                     'code' => 0,
                     'message' => '用户信息有误，稍后重试'
                 ];
             }
+
         }else{
-            $info = ServiceWorker::where($arr)->first();
+            $info = ServiceWorker::where("job_number",$request->job_number)->first();
             if($info){
-                $info1 = ServiceWorker::where($arr)->update(["openId"=>$request->openId]);
+                $info1 = ServiceWorker::where("job_number",$request->job_number)->update(["openId"=>$request->openId]);
                 if($info1){
                     return $message = [
                         'code' => 1,
                         'message' => '用户信息绑定成功'
+                    ];
+                }else{
+                    return $message = [
+                        'code' => 0,
+                        'message' => '用户信息有误，稍后重试'
                     ];
                 }
             }else{
