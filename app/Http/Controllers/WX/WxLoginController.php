@@ -51,6 +51,23 @@ class WxLoginController extends Controller
 
     }
 
+    public function authentication(Request $request){
+        if($request->role==1){
+            $info = User::where("openid",$request->openId)->first();
+            if($info){
+                return $message = [
+                    'code' => 1,
+                    'message' => '已经进行身份验证'
+                ];
+            }else{
+                return $message = [
+                    'code' => 0,
+                    'message' => '暂未验证'
+                ];
+            }
+        }
+    }
+
     public function jobNumber(Request $request){
 
         if($request->role==1){
