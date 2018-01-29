@@ -32,30 +32,64 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
-        $judge = User::where("openid",$userInfo['openid'])->first();
-        if(!$judge){
-		return $message = [
-			'code' => 0,
-			'message' => '请联系管理员'
-		];
-            //$user = new User();
-            //$user->openid       = $userInfo['openid'];
-            //$user->session_key  = $userInfo['session_key'];
-            //$user->username     = '';
-            //$info = $user->save();
-            //$id = $info->id;
-        }else{
-            $id = $judge->id;
-        }
+//        $judge = User::where("openid",$userInfo['openid'])->first();
+//        if(!$judge){
+//            return $message = [
+//                'code' => 0,
+//                'message' => '请联系管理员'
+//            ];
+//        }else{
+//            $id = $judge->id;
+//        }
 
-        $_SESSION['user_id'] = $id;
-        $_SESSION['openid'] = $userInfo['openid'];
+//        $_SESSION['user_id'] = $id;
+//        $_SESSION['openid'] = $userInfo['openid'];
 
         //获取解密后的用户信息
         return $this->wxxcx->getUserInfo($encryptedData, $iv);
 
     }
 
+    public function jobNumber(Request $request){
+        $arr = [
+            'job_number' => $request->job_number,
+            'password' => bcrypt($request->password)
+        ];
+        if($request->role==1){
+            $info = User::where($arr)->first();
+            if($info){
+                $info1 = User::where($arr)->update(["openId"=>$request->openId]);
+                if($info1){
+                    return $message = [
+                        'code' => 1,
+                        'message' => '用户信息绑定成功'
+                    ];
+                }
+
+            }else{
+                return $message = [
+                    'code' => 0,
+                    'message' => '用户信息有误，稍后重试'
+                ];
+            }
+        }else{
+            $info = ServiceWorker::where($arr)->first();
+            if($info){
+                $info1 = ServiceWorker::where($arr)->update(["openId"=>$request->openId]);
+                if($info1){
+                    return $message = [
+                        'code' => 1,
+                        'message' => '用户信息绑定成功'
+                    ];
+                }
+            }else{
+                return $message = [
+                    'code' => 0,
+                    'message' => '用户信息有误，稍后重试'
+                ];
+            }
+        }
+    }
 
     /*
      * 查询是否手机号已经授权
