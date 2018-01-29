@@ -3058,16 +3058,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.3",
+            "version": "v3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "579f4ce846734a1cf55d6a531d00ca07a43e3cda"
+                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/nikic/PHP-Parser/579f4ce846734a1cf55d6a531d00ca07a43e3cda.zip",
-                "reference": "579f4ce846734a1cf55d6a531d00ca07a43e3cda",
+                "url": "https://files.phpcomposer.com/files/nikic/PHP-Parser/e57b3a09784f846411aa7ed664eedb73e3399078.zip",
+                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078",
                 "shasum": ""
             },
             "require": {
@@ -3105,7 +3105,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-12-26T14:43:21+00:00"
+            "time": "2018-01-25T21:31:33+00:00"
         },
         {
             "name": "orangehill/iseed",
@@ -4056,16 +4056,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "2.7.9",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "3fc27628f88a24937b0322d9e9a7c3d11ec42ec0"
+                "reference": "94940d81c2436b4f211990236c8f0ab1b7de9f37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/3fc27628f88a24937b0322d9e9a7c3d11ec42ec0.zip",
-                "reference": "3fc27628f88a24937b0322d9e9a7c3d11ec42ec0",
+                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/94940d81c2436b4f211990236c8f0ab1b7de9f37.zip",
+                "reference": "94940d81c2436b4f211990236c8f0ab1b7de9f37",
                 "shasum": ""
             },
             "require": {
@@ -4117,7 +4117,7 @@
                 "security",
                 "spatie"
             ],
-            "time": "2018-01-23T16:06:49+00:00"
+            "time": "2018-01-25T15:17:15+00:00"
         },
         {
             "name": "spatie/temporary-directory",

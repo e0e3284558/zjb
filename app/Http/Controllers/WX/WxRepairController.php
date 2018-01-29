@@ -385,13 +385,30 @@ class WxRepairController extends Controller
         $str = trim($str,"/");
         //用户拍摄图片
         $img_url = [];
-        foreach (explode(",",trim($repair_info->img_id,",")) as $v){
-            $img_url[] = File::where("id",$v)->value("url");
+//        foreach (explode(",",trim($repair_info->img_id,",")) as $v){
+//            $img_url[] = File::where("id",$v)->value("url");
+//        }
+        //用户拍摄图片
+        $list = Process::where("id", $repair_info->id)->with("img")->first()->img;
+        if($list){
+            foreach ($list as $v){
+                $img_url[] = File::where("id",$v)->value("url");
+            }
+        }else{
+            $img_url = null;
         }
         //维修人员上传的图片
         $service_img_url = [];
-        foreach (explode(",",trim($repair_info->service_img,",")) as $v){
-            $service_img_url[] = File::where("id",$v)->value("url");
+//        foreach (explode(",",trim($repair_info->service_img,",")) as $v){
+//            $service_img_url[] = File::where("id",$v)->value("url");
+//        }
+        $list1 = Process::where("id", $repair_info->id)->with("worker_img")->first()->worker_img;
+        if($list1){
+            foreach ($list1 as $v){
+                $service_img_url[] = File::where("id",$v)->value("url");
+            }
+        }else{
+            $service_img_url = null;
         }
         $arr = [
             'asset_uuid' => $asset_info->asset_uuid,
