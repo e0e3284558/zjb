@@ -195,13 +195,12 @@ class WxRepairController extends Controller
             ];
         }
         //维修人员用户信息
-        $service_worker_id = User::where("openId", $request->openId)->value("id");
+        $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         //获取订单状态值及维修工id
         $status = $request->status;
         switch ($status) {
             // 获取已被分配待服务的工单信息
             case 2:
-                dd($service_worker_id);
                 $repair_list = Process::where('service_worker_id', $service_worker_id)
                     ->where('status', 2)->orWhere('status', 3)
                     ->OrderBy('id', 'desc')->get();
