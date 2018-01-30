@@ -308,7 +308,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
     //提交评价信息
     Route::post("repair/evaluate",'WxRepairController@evaluate');
     //维修人员的待服务列表(还未确认接的单)
-    Route::post("repair/wait_service",'WxRepairController@waitService');
+    Route::post("repair/service_list",'WxRepairController@ServiceList');
     //维修人员点击确认接单
     Route::post("repair/confirm_repair",'WxRepairController@confirmRepair');
     //维修人员填写维修结果

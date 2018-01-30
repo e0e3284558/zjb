@@ -30,6 +30,7 @@ class CreateRepairController extends Controller
             return $res;
         }
         $active=request()->get('active')?request()->get('active'):'wait';
+
         switch ($active) {
             case 'wait':
                 //获取等待维修的报修
@@ -40,7 +41,7 @@ class CreateRepairController extends Controller
                         $join->on('users.id', '=', 'classify_user.user_id')->orOn('users.id', '=', 'asset_category_user.user_id');
                     })
                     ->distinct()
-                    ->whereIn('processes.status', [1, 4, 7])
+                    ->where('processes.status',1)
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
                     ->select('processes.*')->paginate(10);
@@ -82,7 +83,8 @@ class CreateRepairController extends Controller
                         $join->on('users.id', '=', 'classify_user.user_id')->orOn('users.id', '=', 'asset_category_user.user_id');
                     })
                     ->distinct()
-                    ->whereIn('processes.status', [5])
+                    ->where('processes.status', 10)
+                    ->whereNull('appraisal')
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
                     ->select('processes.*')->paginate(10);
