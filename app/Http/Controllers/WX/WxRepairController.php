@@ -346,19 +346,34 @@ class WxRepairController extends Controller
                 'message' => '请先授权该程序用户信息'
             ];
         }
+        $process=Process::find( $request->repair_id);
+        //获取上传图片id
+        if ($request->img_id) {
+            // 根据逗号拆分图片id
+            foreach (explode(",", trim($request->img_id, ",")) as $v) {
+                // 判断图片是否上传成功
+                if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process->id,'is_worker'=>1])) {
+                    return response()->json([
+                        'status' => 0, 'message' => '图片上传失败',
+                        'data' => null, 'url' => ''
+                    ]);
+                }
+            }
+        }
+        
         $arr = [
-            'repair_result' => $request->repair_result,
-            'suggest' => $request->suggest,
-            'status' => $request->status,
-            'service_img' => $request->imgId
+            'result' => $request->result,
+            'status' => $request->status
         ];
-
-        $info = Process::where("id", $request->repair_id)->update($arr);
-
-        if ($info) {
-            return $message = [
-                'status_code' => '1',
-                'message' => '维修结果录入成功'
+        if ( Process::where("id", $process->id)->update($arr)){
+            $data=[
+                'code'=>1,
+                'message'=>'维修结果已上报成功，感谢您的服务'
+            ];
+        }else{
+            $data=[
+                'code'=>0,
+                'message'=>'维修结果已上报失败，请稍后重试'
             ];
         }
     }
