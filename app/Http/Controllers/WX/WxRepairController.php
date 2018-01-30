@@ -122,9 +122,10 @@ class WxRepairController extends Controller
                 }
                 $array['complain'] = $v->complain;
                 $arr[] = $array;
+
             }
         }else{
-            $arr[]='未找到当前状态所对应的工单';
+            $arr['code']=0;
         }
         return response()->json($arr);
     }
