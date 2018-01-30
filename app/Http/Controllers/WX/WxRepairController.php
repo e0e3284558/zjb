@@ -273,17 +273,42 @@ class WxRepairController extends Controller
                 'message' => '请先授权该程序用户信息'
             ];
         }
-        //获取维修人员的id
-        $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
-        $order_reason=$request->order_reason;
 
-        
+        $arr1 = [
+            'repair_id' => $request->repair_id,
+            'service_worker_id' => $repair_info->service_worker_id,
+            'repair_status' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+            'org_id' => $repair_info->org_id
+        ];
+
+        $info = DB::table("repair_statistics")->insertGetId($arr1);
+
+        $arr = [
+            'status' => $request->status,
+            'order_status' => $request->order_status,
+            'order_reason' => null
+        ];
+        $info = Process::where("id", $request->repair_id)->update($arr);
+
+        if ($info) {
+            return $message = [
+                'code' => '1',
+                'message' => '接单成功'
+            ];
+        }
 
 
     }
 
-    //维修人员拒单
+
+
+    /**
+     * 维修人员拒单
+     * @param Request $request
+     * @return array|\Illuminate\Http\JsonResponse
+     */
     public function refuseRepair(Request $request)
     {
         if (!$request->openId) {
@@ -293,32 +318,28 @@ class WxRepairController extends Controller
             ];
         }
 
+        //获取维修人员的id
+        $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
-
-        $arr1 = [
-            'repair_id' => $request->repair_id,
-            'service_worker_id' => $repair_info->service_worker_id,
-            'repair_status' => 2,
-            'reason' => $request->order_reason,
-            'org_id' => $repair_info->org_id,
-            'created_at' => date("Y-m-d H:i:s")
-        ];
-
-        $info = DB::table("repair_statistics")->insertGetId($arr1);
+        $order_reason = $request->order_reason;
 
         $arr = [
-            'order_reason' => $request->order_reason,
-            'order_status' => $request->order_status,
-            'service_worker_id' => null
+            'status' => 1,
+            'refuse_repair' => $order_reason,
+            'service_worker_id'=>null
         ];
-        $info = Process::where("id", $request->repair_id)->update($arr);
-
-        if ($info) {
-            return $message = [
-                'code' => '1',
-                'message' => '拒单成功'
+        if (Process::where('id',$request->repair_id)->update($arr)){
+            $data=[
+                'code'=>1,
+                'message'=>'拒单成功，已通知管理员重新分配工单'
+            ];
+        }else{
+            $data=[
+                'code'=>0,
+                'message'=>'拒单失败，请稍后重试'
             ];
         }
+        return response()->json($data);
     }
 
     //维修人员填写维修结果
