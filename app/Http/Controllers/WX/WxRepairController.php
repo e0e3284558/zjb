@@ -201,10 +201,10 @@ class WxRepairController extends Controller
         switch ($status) {
             // 获取已被分配待服务的工单信息
             case 2:
+                dd($service_worker_id);
                 $repair_list = Process::where('service_worker_id', $service_worker_id)
                     ->where('status', 2)->orWhere('status', 3)
                     ->OrderBy('id', 'desc')->get();
-                dd($repair_list);
                 break;
             // 获取已接单的工单信息
             case 4:
