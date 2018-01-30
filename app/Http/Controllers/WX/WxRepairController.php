@@ -84,11 +84,11 @@ class WxRepairController extends Controller
                 break;
             //返回待评价的维修单
             case 10:
-                $list = Process::where('user_id', $user_id)->where('status', 10)->OrderBy('id', 'desc')->paginate(10);
+                $list = Process::where('user_id', $user_id)->where('status', 10)->whereNull ('score')->OrderBy('id', 'desc')->paginate(10);
                 break;
             //返回已完成的维修单
             case 20:
-                $list = Process::where('user_id', $user_id)->where('status', 10)->whereNull('appraisal')->OrderBy('id', 'desc')->paginate(10);
+                $list = Process::where('user_id', $user_id)->where('status', 10)->whereNotNull('score')->OrderBy('id', 'desc')->paginate(10);
                 break;
             //返回所有的维修单
             case 30:
