@@ -375,6 +375,7 @@ class WxRepairController extends Controller
                 'message'=>'维修结果已上报失败，请稍后重试'
             ];
         }
+        return $data;
     }
 
     //用户查看已完成工单全部详情
