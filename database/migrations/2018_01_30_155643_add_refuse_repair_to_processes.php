@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRefuseRepairsTable extends Migration
+class AddRefuseRepairToProcesses extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class CreateRefuseRepairsTable extends Migration
      */
     public function up()
     {
-        Schema::table('refuse_repairs', function (Blueprint $table) {
+        Schema::table('processes', function (Blueprint $table) {
+            //
+            $table->string('refuse_repair')->nullable()->comment('拒单理由');
         });
     }
 
@@ -24,7 +26,7 @@ class CreateRefuseRepairsTable extends Migration
      */
     public function down()
     {
-        Schema::table('refuse_repairs', function (Blueprint $table) {
+        Schema::table('processes', function (Blueprint $table) {
             //
         });
     }

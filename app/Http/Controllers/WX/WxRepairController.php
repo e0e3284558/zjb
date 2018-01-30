@@ -273,32 +273,13 @@ class WxRepairController extends Controller
                 'message' => '请先授权该程序用户信息'
             ];
         }
+        //获取维修人员的id
         $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
+        $order_reason=$request->order_reason;
 
-        $arr1 = [
-            'repair_id' => $request->repair_id,
-            'service_worker_id' => $repair_info->service_worker_id,
-            'repair_status' => 1,
-            'created_at' => date("Y-m-d H:i:s"),
-            'org_id' => $repair_info->org_id
-        ];
+        
 
-        $info = DB::table("repair_statistics")->insertGetId($arr1);
-
-        $arr = [
-            'status' => $request->status,
-            'order_status' => $request->order_status,
-            'order_reason' => null
-        ];
-        $info = Process::where("id", $request->repair_id)->update($arr);
-
-        if ($info) {
-            return $message = [
-                'code' => '1',
-                'message' => '接单成功'
-            ];
-        }
 
     }
 
