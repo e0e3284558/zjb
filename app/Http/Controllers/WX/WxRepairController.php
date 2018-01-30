@@ -83,7 +83,6 @@ class WxRepairController extends Controller
             //返回待评价的维修单
             case 10:
                 $list = Process::where('user_id',$user_id)->where('status',10)->OrderBy('id', 'desc')->paginate(10);
-                return $list;
                 break;
             //返回已完成的维修单
             case 20:
@@ -95,33 +94,37 @@ class WxRepairController extends Controller
                 break;
         }
         $arr = [];
-        foreach ($list as $v){
-            $array = [];
-            //资产名称
-            $asset =  Asset::find($v->asset_id);
-            //资产名称
-            $array['name'] = $asset->name;
-            //所在场地
-            $str = '';
-            $path = Area::where("id",$asset->area_id)->value("path").$asset->area_id;
-            $path = explode(",",ltrim($path,"0,"));
-            foreach ($path as $value){
-                $str .= Area::where("id",$value)->value("name")."/";
-            }
-            $str = trim($str,"/");
-
-            $array['repair_id'] = $v->id;
-            $array['path'] = $str;
-            $array['field'] = $asset->name;
-            //图片
-            $img_list = DB::table("file_process")->where("process_id",$v->id)->get();
-            if($img_list){
-                foreach ($img_list as $value){
-                    $array['img_url'][] = File::where("id",$value->file_id)->value("url");
+        if ($list!=''){
+            foreach ($list as $v){
+                $array = [];
+                //资产名称
+                $asset =  Asset::find($v->asset_id);
+                //资产名称
+                $array['name'] = $asset->name;
+                //所在场地
+                $str = '';
+                $path = Area::where("id",$asset->area_id)->value("path").$asset->area_id;
+                $path = explode(",",ltrim($path,"0,"));
+                foreach ($path as $value){
+                    $str .= Area::where("id",$value)->value("name")."/";
                 }
+                $str = trim($str,"/");
+                $array['repair_id'] = $v->id;
+                $array['path'] = $str;
+                $array['field'] = $asset->name;
+                //图片
+                $img_list = DB::table("file_process")->where("process_id",$v->id)->get();
+
+                if($img_list){
+                    foreach ($img_list as $value){
+                        $array['img_url'][] = File::where("id",$value->file_id)->value("url");
+                    }
+                }
+                $array['complain'] = $v->complain;
+                $arr[] = $array;
             }
-            $array['complain'] = $v->complain;
-            $arr[] = $array;
+        }else{
+            $arr[]='未找到当前状态所对应的工单';
         }
         return response()->json($arr);
     }
