@@ -17,13 +17,16 @@ class WxRepairController extends Controller
 {
     //添加一个维修单
     public function add(Request $request){
+        // 判断是openId是否获取到
         if(!$request->openId){
             return $message = [
                 'code' => 1,
                 'message' => '请先授权该程序用户信息'
             ];
         }
+        // 用户id赋值
         $user_id = User::where("openId",$request->openId)->value("id");
+        // 获取资产id
         $assetInfo = Asset::find($request->asset_id);
         $arr = [
             'org_id' => $assetInfo->org_id,
@@ -34,10 +37,15 @@ class WxRepairController extends Controller
             'status' => 1,
             'created_at' => date("Y-m-d H:i:s")
         ];
+        // 新增一条报修并且获取报修单id
         $process_id = Process::insertGetId($arr);
+        // 判断是否插入成功
         if($process_id){
+            //获取上传图片id
             if($request->img_id){
+                // 根据逗号拆分图片id
                 foreach (explode(",",trim($request->img_id,",")) as $v){
+                    // 判断图片是否上传成功
                     if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process_id])) {
                         return response()->json([
                             'status' => 0, 'message' => '图片上传失败',
@@ -66,19 +74,24 @@ class WxRepairController extends Controller
             ];
         }
         $user_id = User::where("openId",$request->openId)->value("id");
-        if($request->status == '1'){
-            $list = Process::where('user_id',$user_id)->whereIn('status',['1','2'])->OrderBy('id', 'desc')->paginate(10);
-        }elseif ($request->status==''){
-            $arrs = [
-                'user_id' => $user_id
-            ];
-            $list = Process::where($arrs)->OrderBy('id', 'desc')->paginate(10);
-        }else{
-            $arr = [
-                'user_id' => $user_id,
-                'status' => $request->status
-            ];
-            $list = Process::where($arr)->OrderBy('id', 'desc')->paginate(10);
+        $status=$request->status;
+        switch ($status){
+            //返回待服务的维修单
+            case 1:
+                $list = Process::where('user_id',$user_id)->whereIn('status',[1,2,3,4])->OrderBy('id', 'desc')->paginate(10);
+                break;
+            //返回待评价的维修单
+            case 10:
+                $list = Process::where('user_id',$user_id)->whereIn('status',10)->OrderBy('id', 'desc')->paginate(10);
+                break;
+            //返回已完成的维修单
+            case 20:
+                $list = Process::where('user_id',$user_id)->whereIn('status',20)->OrderBy('id', 'desc')->paginate(10);
+                break;
+            //返回所有的维修单
+            case 30:
+                $list = Process::where('user_id',$user_id)->OrderBy('id', 'desc')->paginate(10);
+                break;
         }
         $arr = [];
         foreach ($list as $v){
@@ -110,7 +123,7 @@ class WxRepairController extends Controller
             $array['complain'] = $v->complain;
             $arr[] = $array;
         }
-        return $arr;
+        return response()->json($arr);
     }
 
     //工单详情
