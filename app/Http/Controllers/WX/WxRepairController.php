@@ -132,13 +132,24 @@ class WxRepairController extends Controller
     //提交评价信息
     public function evaluate(Request $request)
     {
+
         $arr = [
             'score' => $request->score,
-            'appraisal' => $request->appraisal,
-            'status' => $request->status
+            'appraisal' => $request->appraisal
         ];
         $info = Process::where("id", $request->repair_id)->update($arr);
-        return $info;
+        if($info){
+            $message = [
+                'code' => 1,
+                'message' => '感谢您的评价'
+            ];
+        }else{
+            $message = [
+                'code' => 0,
+                'message' => '评价失败，请稍后重试'
+            ];
+        }
+        return $message;
     }
 
 
