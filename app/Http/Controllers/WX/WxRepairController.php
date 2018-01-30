@@ -94,7 +94,7 @@ class WxRepairController extends Controller
                 break;
         }
         $arr = [];
-        if ($list!=''){
+        if (!$list->isEmpty()){
             foreach ($list as $v){
                 $array = [];
                 //资产名称
