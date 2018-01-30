@@ -298,7 +298,6 @@ class WxRepairController extends Controller
     }
 
 
-
     /**
      * 维修人员拒单
      * @param Request $request
@@ -360,7 +359,7 @@ class WxRepairController extends Controller
                 }
             }
         }
-        
+
         $arr = [
             'result' => $request->result,
             'status' => $request->status
@@ -431,7 +430,8 @@ class WxRepairController extends Controller
             'service_status' => $repair_info->order_status,
             'service_worker' => ServiceWorker::where("id", $repair_info->service_worker_id)->value("name"),
             'suggest' => $repair_info->suggest,
-            'service_img_url' => $service_img_url
+            'service_img_url' => $service_img_url,
+            'org_id' => $asset_info->org_id
         ];
         //工单状态
         switch ($repair_info->status) {
