@@ -273,6 +273,7 @@ class WxRepairController extends Controller
                 'message' => '请先授权该程序用户信息'
             ];
         }
+        $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
 
         $arr1 = [
