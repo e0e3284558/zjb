@@ -221,7 +221,11 @@ class WxRepairController extends Controller
                     ->where('status', 10)->OrderBy('id', 'desc')->get();
                 break;
         }
+
         $arr = [];
+        if ($repair_list->isEmpty()){
+            return $arr['code']=0;
+        }
         foreach ($repair_list as $v) {
             $array = [];
             //资产名称
