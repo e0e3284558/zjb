@@ -130,48 +130,6 @@ class WxRepairController extends Controller
         return response()->json($arr);
     }
 
-    //工单详情
-    public function RepairInfo(Request $request){
-        if(!$request->openId){
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
-        $repair_info = Process::find($request->repair_id);
-        //资产信息
-        $asset_info = Asset::find($repair_info->asset_id);
-
-        //所在场地
-        $field_info = Area::find($asset_info->area_id);
-        $field_path = $field_info->path.$field_info->id;
-        $field_arr = explode(',',$field_path);
-        $field_str = "";
-        foreach ($field_arr as $v){
-            $field_str .= Area::where("id",$v)->value("name")."/";
-        }
-
-        //故障图片
-        $img_url = File::where("id",$repair_info->img_id)->value("url");
-
-        $arr = [
-            //资产id
-            'asset_id' => $repair_info->asset_id,
-            //资产名称
-            'asset_name' => $asset_info->name,
-            //工单id
-            'repair_id' => $request->repair_id,
-            //所在场地
-            'field_path' => trim($field_str,"/"),
-            //故障描述
-            'remarks' => $repair_info->remarks,
-            //故障图片
-            'img_url' => $img_url
-        ];
-
-        return $arr;
-    }
-
     //提交评价信息
     public function evaluate(Request $request){
         if(!$request->openId){
@@ -433,23 +391,24 @@ class WxRepairController extends Controller
                 $repair_status = '报废';
                 break;
             case 1:
-                $repair_status = '工单分派中';
+                $repair_status = '已报修工单';
                 break;
-            case 2:
-                $repair_status = '维修中';
-                break;
-            case 3:
-                $repair_status = '维修结束待评价';
+            case 2||3:
+                $repair_status = '已分派维修人员工单';
                 break;
             case 4:
-                $repair_status = '全部完成';
+                $repair_status = '维修人员已接单工单';
                 break;
-            case 5:
-                $repair_status = '工单关闭结束';
+            case 10:
+                if ($repair_info->appraisal->isEmpty()){
+                    $repair_status = '待评价工单';
+                }else{
+                    $repair_status = '已完成工单';
+                }
                 break;
         }
         $arr['repair_status'] = $repair_status;
-        return $arr;
+        return response()->json($arr);
 
     }
 

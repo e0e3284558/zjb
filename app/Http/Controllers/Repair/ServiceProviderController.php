@@ -63,7 +63,7 @@ class ServiceProviderController extends Controller
         $serviceProvider->logo_id = $request->logo_id;
         $serviceProvider->upload_id = $request->upload_id;
         $serviceProvider->created_at = date('Y-m-d H:i:s');
-
+        $serviceProvider->bout=0;
         if ($serviceProvider->save()) {
             if ($serviceProvider->org()->sync(Auth::user()->org_id)) {
                 return response()->json([
