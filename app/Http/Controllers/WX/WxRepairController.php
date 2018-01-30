@@ -224,7 +224,8 @@ class WxRepairController extends Controller
 
         $arr = [];
         if ($repair_list->isEmpty()){
-            return $arr['code']=0;
+            $arr['code']=0;
+            return response()->json($arr);
         }
         foreach ($repair_list as $v) {
             $array = [];
