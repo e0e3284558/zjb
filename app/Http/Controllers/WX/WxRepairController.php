@@ -109,7 +109,6 @@ class WxRepairController extends Controller
                     $str .= Area::where("id",$value)->value("name")."/";
                 }
                 $str = trim($str,"/");
-
                 $array['repair_id'] = $v->id;
                 $array['path'] = $str;
                 $array['field'] = $asset->name;
