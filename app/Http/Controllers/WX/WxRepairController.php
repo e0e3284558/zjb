@@ -15,16 +15,20 @@ use Illuminate\Support\Facades\DB;
 
 class WxRepairController extends Controller
 {
-    //添加一个维修单
-    public function add(Request $request)
+
+    public function __construct(Request $request)
     {
-        // 判断是openId是否获取到
         if (!$request->openId) {
             return $message = [
-                'code' => 1,
+                'code' => 403,
                 'message' => '请先授权该程序用户信息'
             ];
         }
+    }
+
+    //添加一个维修单
+    public function add(Request $request)
+    {
         // 用户id赋值
         $user_id = User::where("openId", $request->openId)->value("id");
         // 获取资产id
@@ -69,12 +73,6 @@ class WxRepairController extends Controller
 
     public function repairList(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         $user_id = User::where("openId", $request->openId)->value("id");
         $status = $request->status;
         switch ($status) {
@@ -134,12 +132,6 @@ class WxRepairController extends Controller
     //提交评价信息
     public function evaluate(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         $arr = [
             'score' => $request->score,
             'appraisal' => $request->appraisal,
@@ -188,12 +180,6 @@ class WxRepairController extends Controller
     //服务列表
     public function ServiceList(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         //维修人员用户信息
         $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         //获取订单状态值及维修工id
@@ -268,12 +254,6 @@ class WxRepairController extends Controller
     //维修人员确认接单
     public function confirmRepair(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 2,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         //获取维修人员的id
         $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
@@ -305,13 +285,6 @@ class WxRepairController extends Controller
      */
     public function refuseRepair(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
-
         //获取维修人员的id
         $service_worker_id = ServiceWorker::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
@@ -339,12 +312,6 @@ class WxRepairController extends Controller
     //维修人员填写维修结果
     public function writeResult(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         $process=Process::find( $request->repair_id);
         //获取上传图片id
         if ($request->img_id) {
@@ -381,12 +348,6 @@ class WxRepairController extends Controller
     //用户查看已完成工单全部详情
     public function repairAllInfo(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         $repair_info = Process::where("id", $request->repair_id)->first();
         //资产名称
         $asset_info = Asset::find($repair_info->asset_id);
@@ -465,12 +426,6 @@ class WxRepairController extends Controller
     //用户投诉
     public function complain(Request $request)
     {
-        if (!$request->openId) {
-            return $message = [
-                'code' => 1,
-                'message' => '请先授权该程序用户信息'
-            ];
-        }
         $user_id = User::where("openId", $request->openId)->value("id");
         $repair_info = Process::where("id", $request->repair_id)->first();
         if ($user_id == $repair_info->user_id) {
