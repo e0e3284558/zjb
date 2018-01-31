@@ -64,7 +64,7 @@ class WxAreaController extends Controller
             $arr[] = [
                 'asset_id' => $v->id,
                 'asset_name' => $v->name,
-                'asset_uuid' => $v->uid,
+                'asset_uuid' => $v->asset_uid,
                 'category' => $v->category->name
             ];
         }
