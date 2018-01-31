@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WX;
 
 use App\Models\Asset\Area;
+use App\Models\Asset\Asset;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -48,6 +49,25 @@ class WxAreaController extends Controller
             ];
         }
 
+    }
+
+    //查看此场地下所有资产
+    public function findAsset(Request $request){
+        $user_info = User::where("openid",$request->openId)->first();
+        $term = [
+            'area_id' => $request->area_Id,
+            'org_id' => $user_info->org_id
+        ];
+        $asset_list = Asset::where($term)->with("category")->get();
+        $arr = [];
+        foreach ($asset_list as $v){
+            $arr[] = [
+                'name' => $v->name,
+                'asset_uuid' => $v->uid,
+                'category' => $asset_list->category
+            ];
+        }
+        return response()->json($arr);
     }
 
 }
