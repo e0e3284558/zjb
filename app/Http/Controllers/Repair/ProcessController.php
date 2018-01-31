@@ -98,7 +98,7 @@ class ProcessController extends Controller
      */
     public function edit($id)
     {
-        $info = Process::where("id", $id)->update(['status' => '3']);
+        $info = Process::where("id", $id)->update(['status' => 4]);
         $message = [];
         if ($info) {
             $message = [
@@ -123,7 +123,7 @@ class ProcessController extends Controller
     {
         $arr = explode(',', $str);
         foreach ($arr as $v) {
-            $info = Process::where("id", $v)->update(['status' => '3']);
+            $info = Process::where("id", $v)->update(['status' => 4]);
         }
 //        $message = [];
 //        if($info){
@@ -174,7 +174,7 @@ class ProcessController extends Controller
     {
         $arr = explode(',', $str);
         foreach ($arr as $v) {
-            $info = Process::where('id', $v)->update(['status' => '4','suggest'=>$request->suggest]);
+            $info = Process::where('id', $v)->update(['status' => 2,'suggest'=>$request->suggest]);
         }
         $message = [];
         if ($info) {

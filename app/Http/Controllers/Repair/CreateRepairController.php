@@ -342,7 +342,7 @@ class CreateRepairController extends Controller
         $repair = Process::find($request->id);
         $repair->service_worker_id = $request->service_worker_id;
         $repair->service_provider_id = $request->service_provider_id;
-        $repair->status = 2;
+        $repair->status = 4;
         if ($repair->save()) {
             return response()->json([
                 'status' => 1, 'message' => '分派成功'
