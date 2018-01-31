@@ -402,7 +402,7 @@ class WxRepairController extends Controller
             'complain' => $repair_info->complain,
             'service_status' => $repair_info->status,
             'service_worker' => ServiceWorker::where("id", $repair_info->service_worker_id)->value("name"),
-            'suggest' => $repair_info->suggest,
+            'result' => $repair_info->result,
             'service_img_url' => $service_img_url,
             'org_id' => $asset_info->org_id
         ];
