@@ -28,18 +28,20 @@
                         <h5>维修列表</h5>
                     </div>
                     <div class="ibox-content">
-                        <a href="{{ url('repair/create_repair/create?app_groups=repair') }}" class="btn btn-primary btn-sm">我要报修</a>
+                        <a href="{{ url('repair/create_repair/create?app_groups=repair') }}"
+                           class="btn btn-primary btn-sm">我要报修</a>
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='new' || !request()->active) active  @endif">
                                     <a href="{{url('repair/repair_list?app_groups=repair&active=new')}}">待服务工单</a></li>
                                 <li class="@if (request()->active=='wait') active  @endif">
-                                    <a href="{{url('repair/repair_list?app_groups=repair&active=wait')}}" >待评价</a></li>
+                                    <a href="{{url('repair/repair_list?app_groups=repair&active=wait')}}">待评价</a></li>
                                 <li class="@if (request()->active=='all') active  @endif">
-                                    <a href="{{url('repair/repair_list?app_groups=repair&active=all')}}" >所有工单</a></li>
+                                    <a href="{{url('repair/repair_list?app_groups=repair&active=all')}}">所有工单</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane @if (request()->active=='new' || !request()->active) active  @endif" id="tab-1">
+                                <div class="tab-pane @if (request()->active=='new' || !request()->active) active  @endif"
+                                     id="tab-1">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
@@ -54,9 +56,9 @@
                                             @foreach($list1 as $v)
                                                 <tr>
                                                     <td>
-                                                        @if($v->status=='1' || $v->status=='7' || $v->status=='4')
+                                                        @if($v->status=='1')
                                                             <span class="label label-info">待分派</span>
-                                                        @elseif($v->status=='2')
+                                                        @elseif($v->status=='4')
                                                             <span class="label label-primary">待服务</span>
                                                         @endif
                                                     </td>
@@ -78,7 +80,7 @@
                                             @endforeach
                                             </tbody>
                                         </table>
-                                        
+
                                     </div>
                                     <div class="page-header">{{ $list1->appends(['active' => 'new'])->links() }}</div>
                                 </div>
@@ -143,17 +145,17 @@
                                                 @foreach($list3 as $v)
                                                     <tr>
                                                         <td>
-                                                            @if($v->status=='1' || $v->status=='7' || $v->status=='4')
+                                                            @if($v->status==1)
                                                                 <span class="label label-info">待分派</span>
-                                                            @elseif($v->status=='2')
+                                                            @elseif($v->status==2 || $v->status)
                                                                 <span class="label label-primary">待服务</span>
-                                                            @elseif($v->status=='3')
+                                                            @elseif($v->status==4)
                                                                 <span class="label label-primary">维修中</span>
-                                                            @elseif($v->status=='5')
+                                                            @elseif($v->status==10 && $app)
                                                                 <span class="label label-primary">待评价</span>
-                                                            @elseif($v->status=='6')
+                                                            @elseif($v->status==6)
                                                                 <span class="label label-primary">已完成</span>
-                                                            @elseif($v->status=='0')
+                                                            @elseif($v->status==0)
                                                                 <span class="label label-danger">工单关闭</span>
                                                             @endif
                                                         </td>
@@ -162,7 +164,7 @@
                                                         @else
                                                             <td>{{$v->asset->name}}</td>
                                                         @endif
-                                                        
+
                                                         <td>{{@get_area($v->area_id)}}</td>
                                                         <td>
                                                             <span class="cursor_pointer"

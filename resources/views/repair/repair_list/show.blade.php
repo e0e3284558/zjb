@@ -63,7 +63,7 @@
             <td><label class="control-label">用户评价</label></td>
             <td>{{$info->appraisal}}</td>
         </tr>
-        @if($info->status>='5')
+        @if($info->status='10')
             <tr>
                 <td><label class="control-label">维修图片</label></td>
                 <td colspan="3" >
