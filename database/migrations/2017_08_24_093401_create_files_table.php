@@ -27,7 +27,6 @@ class CreateFilesTable extends Migration
             $table->integer("org_id")->default(0)->comment("所属公司");      //所属公司
             $table->softDeletes();
             $table->timestamps();
-            $table->index(['name','old_name']);
         });
     }
 
