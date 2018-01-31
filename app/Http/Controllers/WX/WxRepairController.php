@@ -153,7 +153,7 @@ class WxRepairController extends Controller
     }
 
 
-//    待服务
+    //待服务
     public function service(Request $request)
     {
         $user_id = User::where("openId", $request->openId)->value("id");
@@ -329,7 +329,7 @@ class WxRepairController extends Controller
             // 根据逗号拆分图片id
             foreach (explode(",", trim($request->img_id, ",")) as $v) {
                 // 判断图片是否上传成功
-                if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process->id,'is_worker'=>1])) {
+                if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process->id,'is_worker'=>'1'])) {
                     return response()->json([
                         'status' => 0, 'message' => '图片上传失败',
                         'data' => null, 'url' => ''
@@ -400,9 +400,9 @@ class WxRepairController extends Controller
             'stars_key' => $repair_info->score,
             'appraisal' => $repair_info->appraisal,
             'complain' => $repair_info->complain,
-            'service_status' => $repair_info->order_status,
+            'service_status' => $repair_info->status,
             'service_worker' => ServiceWorker::where("id", $repair_info->service_worker_id)->value("name"),
-            'suggest' => $repair_info->suggest,
+            'result' => $repair_info->result,
             'service_img_url' => $service_img_url,
             'org_id' => $asset_info->org_id
         ];

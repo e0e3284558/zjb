@@ -321,6 +321,10 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
     Route::post("repair/complain",'WxRepairController@complain');
     Route::resource("repair",'WxRepairController');
 
+    //场地报修管理
+    Route::post("area/find_area",'WxAreaController@findArea');
+    Route::post("area/find_asset",'WxAreaController@findAsset');
+
 });
 
 //-------------------------------------------------------------------------
