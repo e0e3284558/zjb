@@ -55,7 +55,7 @@ class WxAreaController extends Controller
     public function findAsset(Request $request){
         $user_info = User::where("openid",$request->openId)->first();
         $term = [
-            'area_id' => $request->area_Id,
+            'area_id' => $request->area_id,
             'org_id' => $user_info->org_id
         ];
         $asset_list = Asset::where($term)->with("category")->get();
