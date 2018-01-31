@@ -18,14 +18,14 @@
                     <div class="col-sm-8">
                         <div class="icheck pull-left" style="margin-right: 10px">
                             <label>
-                                <input type="radio" value="5" name="status" checked>
+                                <input type="radio" value="10" name="status" checked>
                                 &nbsp;&nbsp;已修好
                             </label>
                         </div>
                         <div class=" icheck pull-left" style="margin-right: 10px">
                             <label>
-                                <input type="radio" value="7" name="status" >
-                                &nbsp;&nbsp;未修好
+                                <input type="radio" value="0" name="status" >
+                                &nbsp;&nbsp;未修好(不可再修)
                             </label>
                         </div>
                     </div>

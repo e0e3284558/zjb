@@ -55,7 +55,7 @@ class CreateRepairController extends Controller
                         $join->on('users.id', '=', 'classify_user.user_id')->orOn('users.id', '=', 'asset_category_user.user_id');
                     })
                     ->distinct()
-                    ->whereIn('processes.status', [3, 2])
+                    ->whereIn('processes.status', [2,3,4])
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
                     ->select('processes.*')->paginate(10);

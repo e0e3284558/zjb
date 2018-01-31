@@ -30,19 +30,21 @@
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
                                 <li class="@if (request()->active=='wait' || !request()->active) active  @endif">
-                                    <a href="{{url('repair/process?app_groups=repair&active=wait')}}" >待服务</a></li>
+                                    <a href="{{url('repair/process?app_groups=repair&active=wait')}}">待服务</a></li>
                                 <li class="@if (request()->active=='result') active  @endif">
                                     <a href="{{url('repair/process?app_groups=repair&active=result')}}">维修中</a></li>
                                 <li class="@if (request()->active=='end') active  @endif">
                                     <a href="{{url('repair/process?app_groups=repair&active=end')}}">已完成</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif" id="tab-1">
+                                <div class="tab-pane @if (request()->active=='wait' || !request()->active) active  @endif"
+                                     id="tab-1">
                                     <div class="panel-body">
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1">
+                                                </th>
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
@@ -54,7 +56,8 @@
                                             @foreach($list1 as $v)
                                                 <tr>
                                                     <td role="gridcell">
-                                                        <input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">
+                                                        <input type="checkbox" class="i-checks" name="id"
+                                                               value="{{$v->id}}">
                                                     </td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
@@ -72,18 +75,22 @@
 
                                                     <td>
                                                         @if($v->status=="2")
-                                                            <button class="btn btn-sm btn-primary" onclick="edit('{{$v->id}}')">
+                                                            <button class="btn btn-sm btn-primary"
+                                                                    onclick="edit('{{$v->id}}')">
                                                                 接单
-                                                            </button>&nbsp;<button class="btn btn-sm btn-danger"
-                                                                                   onclick="refuse('{{$v->id}}')"
-                                                                                   data-toggle="modal" data-target=".bs-example-modal-lg">拒绝
+                                                            </button>&nbsp;
+                                                            <button class="btn btn-sm btn-danger"
+                                                                    onclick="refuse('{{$v->id}}')"
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-lg">拒绝
                                                             </button>
                                                         @elseif($v->status=="3")
                                                             <button class="btn btn-primary" onclick="add('{{$v->id}}')"
-                                                                    data-toggle="modal" data-target=".bs-example-modal-lg">
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-lg">
                                                                 填写报修结果
                                                             </button>
-                                                        @elseif($v->status=='5')
+                                                        @elseif($v->status=='10' && $v->appraisal==null)
                                                             <span>待评价</span>
                                                         @elseif($v->status=='6')
                                                             <span>已完成</span>
@@ -99,7 +106,7 @@
                                             批量接单
                                         </button>
                                         <button type="button" onclick="batch_refuse(this)" class="btn btn-sm btn-danger"
-                                                data-toggle="modal" data-target=".bs-example-modal-lg" >
+                                                data-toggle="modal" data-target=".bs-example-modal-lg">
                                             批量拒单
                                         </button>
                                     </div>
@@ -110,7 +117,8 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1" ></th>
+                                                <th><input type="checkbox" class="i-checks" name="checkAll" id="all1">
+                                                </th>
                                                 <th>报修人</th>
                                                 <th>报修场地</th>
                                                 <th>报修项目</th>
@@ -121,7 +129,8 @@
                                             <tbody>
                                             @foreach($list2 as $v)
                                                 <tr>
-                                                    <td role="gridcell"><input type="checkbox" class="i-checks" name="id" value="{{$v->id}}"></td>
+                                                    <td role="gridcell"><input type="checkbox" class="i-checks"
+                                                                               name="id" value="{{$v->id}}"></td>
                                                     <td>{{$v->user_id?$v->user->name:""}}</td>
                                                     <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->classify && (!$v->asset_id))
@@ -138,22 +147,23 @@
                                                     </td>
 
                                                     <td>
-                                                        @if($v->status=="2")
-                                                            <button class="btn btn-primary" onclick="edit('{{$v->id}}')">
+                                                        @if($v->status==2||3)
+                                                            <button class="btn btn-primary"
+                                                                    onclick="edit('{{$v->id}}')">
                                                                 接单
-                                                            </button>&nbsp;<button class="btn btn-danger"
-                                                                                   onclick="refuse('{{$v->id}}')">拒绝
+                                                            </button>&nbsp;
+                                                            <button class="btn btn-danger"
+                                                                    onclick="refuse('{{$v->id}}')">拒绝
                                                             </button>
-                                                        @elseif($v->status=="3")
+                                                        @elseif($v->status==4)
                                                             <button class="btn btn-primary" onclick="add('{{$v->id}}')"
-                                                                    data-toggle="modal" data-target=".bs-example-modal-lg">
+                                                                    data-toggle="modal"
+                                                                    data-target=".bs-example-modal-lg">
                                                                 填写报修结果
                                                             </button>
-                                                        @elseif($v->status=='5')
+                                                        @elseif($v->status==10 && $v->appraisal==null)
                                                             <span>待评价</span>
-                                                        @elseif($v->status=='6')
-                                                            <span>已完成</span>
-                                                        @elseif($v->status=='7')
+                                                        @elseif($v->status==10 && $v->appraisal!=null)
                                                             <span>已完成</span>
                                                         @endif
                                                     </td>
@@ -218,14 +228,15 @@
             });
 
             function all(id) {
-                $(id).on('ifChecked ifUnchecked', function(event){
-                    if(event.type == 'ifChecked'){
+                $(id).on('ifChecked ifUnchecked', function (event) {
+                    if (event.type == 'ifChecked') {
                         $(this).parents('thead').next('tbody').find('.i-checks').iCheck('check');
-                    }else{
+                    } else {
                         $(this).parents('thead').next('tbody').find('.i-checks').iCheck('uncheck');
                     }
                 });
             }
+
             all("#all1");
             all("#all2");
             all("#all3");
@@ -287,7 +298,7 @@
         }
 
         function batch_edit(obj) {
-            if($(obj).prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
+            if ($(obj).prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
                 var arr = [];
                 $(obj).prev('table').find("tbody input[type='checkbox']:checked").each(function () {
 
@@ -329,7 +340,7 @@
                         });
                     }
                 );
-            }else{
+            } else {
                 alert("请选择数据");
             }
         }
@@ -346,7 +357,7 @@
         }
 
         function batch_refuse(obj) {
-            if($(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
+            if ($(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").length >= 1) {
                 var arr = [];
                 $(obj).prev('button').prev('table').find("tbody input[type='checkbox']:checked").each(function () {
 
@@ -363,7 +374,7 @@
                         $(".bs-example-modal-lg .modal-content").html(data);
                     }
                 });
-            }else{
+            } else {
                 alert("请选择数据");
             }
         }
