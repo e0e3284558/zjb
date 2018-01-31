@@ -62,9 +62,10 @@ class WxAreaController extends Controller
         $arr = [];
         foreach ($asset_list as $v){
             $arr[] = [
-                'name' => $v->name,
+                'asset_id' => $v->id,
+                'asset_name' => $v->name,
                 'asset_uuid' => $v->uid,
-                'category' => $asset_list->category
+                'category' => $v->category->name
             ];
         }
         return response()->json($arr);
