@@ -29,7 +29,7 @@ class CreateRepairController extends Controller
         if ($res = is_permission('create.repair.index')) {
             return $res;
         }
-        $active=request()->get('active')?request()->get('active'):'wait';
+        $active = request()->get('active') ? request()->get('active') : 'wait';
 
         switch ($active) {
             case 'wait':
@@ -41,7 +41,7 @@ class CreateRepairController extends Controller
                         $join->on('users.id', '=', 'classify_user.user_id')->orOn('users.id', '=', 'asset_category_user.user_id');
                     })
                     ->distinct()
-                    ->where('processes.status',1)
+                    ->where('processes.status', 1)
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
                     ->select('processes.*')->paginate(10);
@@ -55,7 +55,7 @@ class CreateRepairController extends Controller
                         $join->on('users.id', '=', 'classify_user.user_id')->orOn('users.id', '=', 'asset_category_user.user_id');
                     })
                     ->distinct()
-                    ->whereIn('processes.status', [2,3,4])
+                    ->whereIn('processes.status', [2, 3, 4])
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
                     ->select('processes.*')->paginate(10);
@@ -329,6 +329,32 @@ class CreateRepairController extends Controller
 
     }
 
+
+    /**
+     * 发送post请求
+     * @param string $url 请求地址
+     * @param array $post_data post键值对数据
+     * @return string
+     */
+    public function send_post($url, $post_data)
+    {
+
+        $postdata = http_build_query($post_data);
+        $options = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => 'Content-Type: application/x-www-form-urlencoded',
+                'content' => $postdata,
+                'timeout' => 5 // 超时时间（单位:s）
+            )
+        );
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        dd($result);
+        return $result;
+    }
+
+
     /**
      * 保存  选中维修工并更改维修状态
      * @param Request $request
@@ -341,9 +367,20 @@ class CreateRepairController extends Controller
         }
         $repair = Process::find($request->id);
         $repair->service_worker_id = $request->service_worker_id;
+        $worker_info=ServiceWorker::find($repair->service_worker_id);
+        $asset=Asset::find($repair->asset_id)->name;
+        $address=get_area($repair->area_id);
         $repair->service_provider_id = $request->service_provider_id;
         $repair->status = 4;
         if ($repair->save()) {
+            //使用方法
+            $post_data = array(
+                'username'=> $worker_info->name,
+                'tel' => $worker_info->tel,
+                'asset' => $asset,
+                'address' => $address
+            );
+            $this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
             return response()->json([
                 'status' => 1, 'message' => '分派成功'
             ]);
