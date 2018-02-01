@@ -380,7 +380,8 @@ class CreateRepairController extends Controller
                 'address' => $address
             );
             $res=$this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
-            if ($res['status']=='success'){
+            dd($res);
+            if ($res.status=='success'){
                 return response()->json([
                     'status' => 1, 'message' => '分派成功,已短信通知维修人员'
                 ]);
