@@ -350,6 +350,7 @@ class CreateRepairController extends Controller
         );
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
+        dd($result);
         return $result;
     }
 
@@ -379,18 +380,10 @@ class CreateRepairController extends Controller
                 'asset' => $asset,
                 'address' => $address
             );
-            $res=$this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
-            dd($res);
-            if ($res.status=='success'){
-                return response()->json([
-                    'status' => 1, 'message' => '分派成功,已短信通知维修人员'
-                ]);
-            }else{
-                return response()->json([
-                    'status' => 0, 'message' => '分派成功,短信通知失败，请联系系统管理员'
-                ]);
-            }
-
+            $this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
+            return response()->json([
+                'status' => 1, 'message' => '分派成功'
+            ]);
         } else {
             return response()->json([
                 'status' => 0, 'message' => '分派失败',
