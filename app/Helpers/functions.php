@@ -368,20 +368,24 @@ if (!function_exists('get_area')) {
     {
         $data = '';
         $res = \App\Models\Asset\Area::find($id);
-        $area = $res->path;
-        $area = substr($area, 0, strlen($area) - 1);
-        if ($area) {
-            $address = explode(",", $area);
-            foreach ($address as $v) {
-                if ($v != '') {
-                    $data .= \App\Models\Asset\Area::find($v)->name . '/';
+        if ($res){
+            $area = $res->path;
+            $area = substr($area, 0, strlen($area) - 1);
+            if ($area) {
+                $address = explode(",", $area);
+                foreach ($address as $v) {
+                    if ($v != '') {
+                        $data .= \App\Models\Asset\Area::find($v)->name . '/';
+                    }
                 }
+                $data .= $res->name;
+            } else {
+                $data = \App\Models\Asset\Area::find($id)->name;
             }
-            $data .= $res->name;
-        } else {
-            $data = \App\Models\Asset\Area::find($id)->name;
+            return $data;
         }
-        return $data;
+        return '场地信息暂时不存在';
+
     }
 }
 
