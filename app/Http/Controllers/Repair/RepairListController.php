@@ -26,16 +26,13 @@ class RepairListController extends Controller
         $list1 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id",get_current_login_user_info())
             ->orderBy('id', 'desc')
-            ->where("status", "2")
-            ->orWhere('status', '1')
-            ->orWhere('status', '7')
-            ->orWhere('status', '4')
+            ->Where('status', '1')
             ->paginate(10, ['*'],'page');
         //待评价
         $list2 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
             ->where("user_id",get_current_login_user_info())
-            ->orderBy('id', 'desc')
-            ->where("status", "5")
+            ->where("status", "10")
+            ->whereNull('appraisal')
             ->paginate(10, ['*'],'page');
         //全部工单
         $list3 = Process::with('org', 'user', 'admin', 'asset', 'category', 'serviceWorker', 'serviceProvider')
@@ -123,7 +120,7 @@ class RepairListController extends Controller
         $arr = [
             'score' => $request->score,
             'appraisal' => $request->appraisal,
-            'status' => '6'
+            'status' => '10'
         ];
         $info = Process::where("id", $id)->update($arr);
         $service_provider_id=Process::find($id)->service_provider_id;

@@ -174,7 +174,7 @@ class ProcessController extends Controller
     {
         $arr = explode(',', $str);
         foreach ($arr as $v) {
-            $info = Process::where('id', $v)->update(['status' => 2,'suggest'=>$request->suggest]);
+            $info = Process::where('id', $v)->update(['status' => 1,'suggest'=>$request->suggest]);
         }
         $message = [];
         if ($info) {
