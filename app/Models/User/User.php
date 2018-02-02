@@ -46,6 +46,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\User\Org');
     }
 
+    public function orgs()
+    {
+        return $this->belongsToMany('App\Models\User\Org');
+    }
+
     public function classify()
     {
         return $this->belongsToMany('App\Models\Repair\Classify');

@@ -35,25 +35,37 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
-//        $judge = User::where("openid",$userInfo['openid'])->first();
-//        if(!$judge){
-//            return $message = [
-//                'code' => 0,
-//                'message' => '请联系管理员'
-//            ];
-//        }else{
-//            $id = $judge->id;
-//        }
-
-//        $_SESSION['user_id'] = $id;
-//        $_SESSION['openid'] = $userInfo['openid'];
 
         //获取解密后的用户信息
         return $this->wxxcx->getUserInfo($encryptedData, $iv);
 
     }
 
-
+    public function addUser(Request $request){
+        //获取资产的org_id
+        $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
+        $user = new User;
+        $user->openid = $request->openId;
+        if($user->save()){
+            if($user->orgs()->sync($asset_info->org_id)){
+                $message = [
+                    'code' => 1,
+                    'message' => '用户添加成功'
+                ];
+            }else{
+                $message = [
+                    'code' => 0,
+                    'message' => '网络错误'
+                ];
+            }
+        }else{
+            $message = [
+                'code' => 0,
+                'message' => '用户添加失败'
+            ];
+        }
+        return $message;
+    }
 
     public function authentication(Request $request){
         if($request->role==1){
@@ -244,7 +256,7 @@ class WxLoginController extends Controller
     public function needValidation(Request $request){
         $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
         $org_info = Org::find($asset_info->org_id);
-        if($org_info->ldap){
+        if($org_info->is_ldap){
             //需要LDAP验证登录
             $message = [
                 'code' => 1,
