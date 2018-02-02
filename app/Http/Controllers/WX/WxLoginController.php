@@ -53,6 +53,8 @@ class WxLoginController extends Controller
 
     }
 
+
+
     public function authentication(Request $request){
         if($request->role==1){
             $info = User::where("openid",$request->openId)->first();

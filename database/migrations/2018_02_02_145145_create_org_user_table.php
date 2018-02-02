@@ -13,9 +13,9 @@ class CreateOrgUserTable extends Migration
      */
     public function up()
     {
-        Schema::table('org_user', function (Blueprint $table) {
-            $table->integer('org_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+        Schema::create('org_user', function (Blueprint $table) {
+            $table->integer('org_id');
+            $table->integer('user_id');
         });
     }
 
@@ -26,8 +26,6 @@ class CreateOrgUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('org_user', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('org_user');
     }
 }
