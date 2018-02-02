@@ -43,11 +43,11 @@ class WxLoginController extends Controller
 
     public function addUser(Request $request){
         //获取资产的org_id
-        $org_id = Asset::where("asset_uid",$request->asset_uuid)->org_id;
+        $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first;
         $user = new User;
         $user->openid = $request->openId;
         if($user->save()){
-            if($user->orgs()->sync($org_id)){
+            if($user->orgs()->sync($asset_info->org_id)){
                 $message = [
                     'code' => 1,
                     'message' => '用户添加成功'
