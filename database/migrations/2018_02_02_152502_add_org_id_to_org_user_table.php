@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrgUserTable extends Migration
+class AddOrgIdToOrgUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,7 @@ class CreateOrgUserTable extends Migration
      */
     public function up()
     {
-
-        Schema::create('org_user', function (Blueprint $table) {
-            $table->integer('org_id');
-            $table->integer('user_id');
+        Schema::table('org_user', function (Blueprint $table) {
         });
     }
 
@@ -27,6 +24,8 @@ class CreateOrgUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('org_user');
+        Schema::table('org_user', function (Blueprint $table) {
+            //
+        });
     }
 }
