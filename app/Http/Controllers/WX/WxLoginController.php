@@ -35,25 +35,37 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
-//        $judge = User::where("openid",$userInfo['openid'])->first();
-//        if(!$judge){
-//            return $message = [
-//                'code' => 0,
-//                'message' => '请联系管理员'
-//            ];
-//        }else{
-//            $id = $judge->id;
-//        }
-
-//        $_SESSION['user_id'] = $id;
-//        $_SESSION['openid'] = $userInfo['openid'];
 
         //获取解密后的用户信息
         return $this->wxxcx->getUserInfo($encryptedData, $iv);
 
     }
 
-
+    public function add_user(Request $request){
+        //获取资产的org_id
+        $org_id = Asset::where("asset_uid",$request->asset_uuid)->org_id;
+        $user = new User;
+        $user->openid = $request->openId;
+        if($user->save()){
+            if($user->orgs()->sync($org_id)){
+                $message = [
+                    'code' => 1,
+                    'message' => '用户添加成功'
+                ];
+            }else{
+                $message = [
+                    'code' => 0,
+                    'message' => '网络错误'
+                ];
+            }
+        }else{
+            $message = [
+                'code' => 0,
+                'message' => '用户添加失败'
+            ];
+        }
+        return $message;
+    }
 
     public function authentication(Request $request){
         if($request->role==1){
