@@ -370,7 +370,7 @@ class CreateRepairController extends Controller
         $asset=Asset::find($repair->asset_id);
         $address=get_area($asset->area_id);
         $repair->service_provider_id = $request->service_provider_id;
-        $repair->status = 4;
+        $repair->status = 2;
         if ($repair->save()) {
             //使用方法
             $post_data = array(

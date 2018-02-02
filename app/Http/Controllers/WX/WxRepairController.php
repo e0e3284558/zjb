@@ -199,7 +199,7 @@ class WxRepairController extends Controller
             // 获取已被分配待服务的工单信息
             case 2:
                 $repair_list = Process::where('service_worker_id', $service_worker_id)
-                    ->where('status', 2)->orWhere('status', 3)
+                    ->whereIn('status', [2,3])
                     ->OrderBy('id', 'desc')->paginate(10);
                 break;
             // 获取已接单的工单信息
