@@ -41,30 +41,19 @@ class WxLoginController extends Controller
 
     }
 
-    public function addUser(Request $request){
+    public function add_user(Request $request){
         //获取资产的org_id
-        $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
+        $org_id = Asset::where("asset_uid",$request->asset_uuid)->org_id;
+        
         $user = new User;
         $user->openid = $request->openId;
         if($user->save()){
-            if($user->orgs()->sync($asset_info->org_id)){
-                $message = [
-                    'code' => 1,
-                    'message' => '用户添加成功'
-                ];
-            }else{
-                $message = [
-                    'code' => 0,
-                    'message' => '网络错误'
-                ];
+            if($user->org){
+
             }
-        }else{
-            $message = [
-                'code' => 0,
-                'message' => '用户添加失败'
-            ];
         }
-        return $message;
+
+
     }
 
     public function authentication(Request $request){
@@ -256,7 +245,7 @@ class WxLoginController extends Controller
     public function needValidation(Request $request){
         $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
         $org_info = Org::find($asset_info->org_id);
-        if($org_info->is_ldap){
+        if($org_info->ldap){
             //需要LDAP验证登录
             $message = [
                 'code' => 1,
