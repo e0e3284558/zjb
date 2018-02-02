@@ -41,7 +41,7 @@ class WxLoginController extends Controller
 
     }
 
-    public function add_user(Request $request){
+    public function addUser(Request $request){
         //获取资产的org_id
         $org_id = Asset::where("asset_uid",$request->asset_uuid)->org_id;
         $user = new User;
