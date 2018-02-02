@@ -367,8 +367,8 @@ class CreateRepairController extends Controller
         $repair = Process::find($request->id);
         $repair->service_worker_id = $request->service_worker_id;
         $worker_info=ServiceWorker::find($repair->service_worker_id);
-        $asset=Asset::find($repair->asset_id)->name;
-        $address=get_area($repair->area_id);
+        $asset=Asset::find($repair->asset_id);
+        $address=get_area($asset->area_id);
         $repair->service_provider_id = $request->service_provider_id;
         $repair->status = 4;
         if ($repair->save()) {
@@ -376,7 +376,7 @@ class CreateRepairController extends Controller
             $post_data = array(
                 'username'=> $worker_info->name,
                 'tel' => $worker_info->tel,
-                'asset' => $asset,
+                'asset' => $asset->name,
                 'address' => $address
             );
             $result=$this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
