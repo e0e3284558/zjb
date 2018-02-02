@@ -295,6 +295,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
     Route::post("phone_authorize",'WxLoginController@phoneAuthorize');
     Route::post("find_phone",'WxLoginController@findPhone');
     Route::post("authentication",'WxLoginController@authentication');
+    Route::post("need_validation",'WxLoginController@needValidation');
     Route::post("job_number",'WxLoginController@jobNumber');
     Route::post("login",'WxLoginController@login');
 

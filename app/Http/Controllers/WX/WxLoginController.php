@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\WX;
 
+use App\Models\Asset\Asset;
 use App\Models\Repair\ServiceWorker;
+use App\Models\User\Org;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -119,8 +121,10 @@ class WxLoginController extends Controller
         }
     }
 
-    /*
+    /**
      * 查询是否手机号已经授权
+     * @param Request $request
+     * @return array
      */
     public function phoneAuthorize(Request $request){
         //$request->role   1 普通用户  2 维修人员
@@ -143,8 +147,10 @@ class WxLoginController extends Controller
     }
 
 
-    /*
+    /**
      * 获取微信用户绑定的手机号
+     * @param Request $request
+     * @return array
      */
     public function findPhone(Request $request){
         //$request->role   1 普通用户  2 维修人员
@@ -226,6 +232,30 @@ class WxLoginController extends Controller
             //获取解密后的用户信息
             return $this->wxxcx->getUserInfo($encryptedData, $iv);
         }
+    }
+
+    /**
+     * 利用资产的org_id查找公司是否需要LDAP验证登录
+     * @param Request $request
+     * @return array
+     */
+    public function needValidation(Request $request){
+        $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
+        $org_info = Org::find($asset_info->org_id);
+        if($org_info->ldap){
+            //需要LDAP验证登录
+            $message = [
+                'code' => 1,
+                'message' => '需要LDAP验证登录'
+            ];
+        }else{
+            //不需要LDAP验证登录
+            $message = [
+                'code' => 0,
+                'message' => '不需要LDAP验证登录'
+            ];
+        }
+        return $message;
     }
 
 }
