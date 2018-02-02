@@ -200,22 +200,22 @@ class WxRepairController extends Controller
             case 2:
                 $repair_list = Process::where('service_worker_id', $service_worker_id)
                     ->where('status', 2)->orWhere('status', 3)
-                    ->OrderBy('id', 'desc')->get();
+                    ->OrderBy('id', 'desc')->paginate(10);
                 break;
             // 获取已接单的工单信息
             case 4:
                 $repair_list = Process::where('service_worker_id', $service_worker_id)
                     ->where('status', 4)
-                    ->OrderBy('id', 'desc')->get();
+                    ->OrderBy('id', 'desc')->paginate(10);
                 break;
             // 获取
             case 10:
                 $repair_list=Process::where('service_worker_id', $service_worker_id)
-                    ->where('status', 10)->OrderBy('id', 'desc')->get();
+                    ->where('status', 10)->OrderBy('id', 'desc')->paginate(10);
                 break;
             case 100:
                 $repair_list = Process::where('service_worker_id', $service_worker_id)
-                    ->where('status', 10)->OrderBy('id', 'desc')->get();
+                    ->where('status', 10)->OrderBy('id', 'desc')->paginate(10);
                 break;
         }
 
