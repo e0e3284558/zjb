@@ -35,7 +35,7 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
-
+        dd($userInfo);
         //获取解密后的用户信息
         return $this->wxxcx->getUserInfo($encryptedData, $iv);
 
