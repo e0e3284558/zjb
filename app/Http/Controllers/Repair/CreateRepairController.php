@@ -353,6 +353,31 @@ class CreateRepairController extends Controller
         return $result;
     }
 
+    /**
+     * 发送json形式的post请求
+     * @param $url
+     * @param $jsonStr
+     * @return array
+     */
+    function http_post_json($url, $jsonStr)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json; charset=utf-8',
+                'Content-Length: ' . strlen($jsonStr)
+            )
+        );
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return array($httpCode, $response);
+    }
+
 
     /**
      * 保存  选中维修工并更改维修状态
@@ -366,25 +391,83 @@ class CreateRepairController extends Controller
         }
         $repair = Process::find($request->id);
         $repair->service_worker_id = $request->service_worker_id;
-        $worker_info=ServiceWorker::find($repair->service_worker_id);
-        $asset=Asset::find($repair->asset_id);
-        $address=get_area($asset->area_id);
+        $worker_info = ServiceWorker::find($repair->service_worker_id);
+        $asset = Asset::find($repair->asset_id);
+        $address = get_area($asset->area_id);
         $repair->service_provider_id = $request->service_provider_id;
         $repair->status = 2;
+        $wx_data = [
+            "touser" => "oNC7W0-NGxuYcXarmNM12JdFfCts",
+            "template_id" => "UaoimdRLOiz0bHgT7zpeMN_j2EpUJrs6mEgkOCsCplw",
+            "miniprogram" => [
+                "appid" => "wxfb71758f0f043c02",
+                "pagepath" => "/pages/index/service/service"
+            ],
+            "topcolor" => "#FF0000",
+            "data" => [
+                "first" => [
+                    "value" => "黄先生",
+                    "color" => "#173177"
+                ],
+                "keyword1" => [
+                    "value" => "123123123",
+                    "color" => "#173177"
+                ],
+                "keyword2" => [
+                    "value" => "程先生",
+                    "color" => "#173177"
+                ],
+                "keyword3" => [
+                    "value" => "18355330216",
+                    "color" => "#173177"
+                ],
+                "keyword4" => [
+                    "value" => "拉萨的解放立刻建立看见撒旦",
+                    "color" => "#173177"
+                ],
+                "keyword5" => [
+                    "value" => "2018-2-3 10：10",
+                    "color" => "#173177"
+                ],
+                "remark" => [
+                    "value" => "感谢您的使用",
+                    "color" => "#173177"
+                ],
+            ]
+        ];
+        //获取token
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx9105e296fd5119cf&secret=3e8211e98a09d18c9410823e9f2781cf';
+        $html = file_get_contents($url);
+        $token = (json_decode($html)->access_token);
+
+        //获取用户的UnionID
+        $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=oNC7W0-NGxuYcXarmNM12JdFfCts&lang=zh_CN ';
+        $UnionID_html = file_get_contents($get_UnionID_url);
+//        dd('unionID请求'.$UnionID_html);
+
+        //提交微信公众号推送通知
+        $wx_data = json_encode($wx_data);
+        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $token;
+        $jsonStr = $wx_data;
+        list($returnCode, $returnContent) = $this->http_post_json($url, $jsonStr);
+//        dd($returnContent);
+
         if ($repair->save()) {
             //使用方法
             $post_data = array(
-                'username'=> $worker_info->name,
+                'username' => $worker_info->name,
                 'tel' => $worker_info->tel,
                 'asset' => $asset->name,
                 'address' => $address
             );
-            $result=$this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
-            if ($result=='success'){
+            $result = $this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
+            $result = 'success';
+
+            if ($result == 'success') {
                 return response()->json([
                     'status' => 1, 'message' => '分派成功,且已经短信通知维修人员'
                 ]);
-            }else{
+            } else {
                 return response()->json([
                     'status' => 1, 'message' => '分派成功,短信未发送成功，请联系系统管理员'
                 ]);
@@ -398,11 +481,13 @@ class CreateRepairController extends Controller
         }
     }
 
+
     /**
      * 管理员更改状态
      * @param $id
      */
-    public function changeStatus($id)
+    public
+    function changeStatus($id)
     {
         if ($res = is_permission('create.repair.edit')) {
             return $res;
@@ -438,7 +523,8 @@ class CreateRepairController extends Controller
      * 更改维修完成的状态
      * @param $id
      */
-    public function success($id)
+    public
+    function success($id)
     {
         if ($res = is_permission('create.repair.edit')) {
             return $res;
@@ -451,7 +537,8 @@ class CreateRepairController extends Controller
      * 完成报修进行记录
      * @param $id
      */
-    public function successStore(Request $request)
+    public
+    function successStore(Request $request)
     {
         if ($res = is_permission('create.repair.edit')) {
             return $res;
@@ -477,7 +564,8 @@ class CreateRepairController extends Controller
      * @return \Illuminate\Http\Response
      * 批量完成维修
      */
-    public function batchSuccess($str)
+    public
+    function batchSuccess($str)
     {
         if ($res = is_permission('create.repair.edit')) {
             return $res;
