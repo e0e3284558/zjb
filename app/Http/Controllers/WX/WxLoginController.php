@@ -263,7 +263,7 @@ class WxLoginController extends Controller
     public function needValidation(Request $request){
         $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
         $org_info = Org::find($asset_info->org_id);
-        if($org_info->ldap){
+        if($org_info->is_ldap){
             //需要LDAP验证登录
             $message = [
                 'code' => 1,
