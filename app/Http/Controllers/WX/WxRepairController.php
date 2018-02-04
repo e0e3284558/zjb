@@ -35,6 +35,7 @@ class WxRepairController extends Controller
         $assetInfo = Asset::find($request->asset_id);
         $arr = [
             'org_id' => $assetInfo->org_id,
+            'area_id' => $request->area_id,
             'user_id' => $user_id,
             'asset_id' => $request->asset_id,
             'asset_classify_id' => $assetInfo->category_id,
