@@ -287,28 +287,17 @@ class WxRepairController extends Controller
         }
         foreach ($repair_list as $v) {
             $array = [];
-            //资产名称
-            $asset = Asset::find($v->asset_id);
-            //资产名称
-            $array['name'] = $asset->name;
-            //所在场地
-            $str = '';
-            $path = Area::where("id", $asset->area_id)->value("path") . $asset->area_id;
-            $path = explode(",", ltrim($path, "0,"));
-            foreach ($path as $value) {
-                $str .= Area::where("id", $value)->value("name") . "/";
+            if($v->other!=null){
+                //场地报修
+                $array['name'] = Classify::where("id",$v->classify_id)->value("name");
+                $array['repair_id'] = $v->id;
+                $array['complain'] = $v->complain;
+            }else {
+                //资产名称
+                $array['name'] = Asset::find($v->asset_id)->value("name");
+                $array['repair_id'] = $v->id;
             }
-
-            $img_url = [];
-            foreach (explode(",", trim($v->img_id, ",")) as $value) {
-                $img_url[] = File::where("id", $value)->value("url");
-            }
-
-            $str = trim($str, "/");
-
-            $array['repair_id'] = $v->id;
-            $array['path'] = $str;
-            $array['field'] = $asset->name;
+            $array['path'] = get_area($v->area_id);
             //图片
             $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
             if ($img_list) {
@@ -316,7 +305,6 @@ class WxRepairController extends Controller
                     $array['img_url'][] = File::where("id", $value->file_id)->value("url");
                 }
             }
-            $array['asset_id'] = $v->asset_id;
             $arr[] = $array;
         }
         return response()->json($arr);
