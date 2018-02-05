@@ -6,6 +6,7 @@ use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
 use App\Models\File\File;
+use App\Models\Repair\Classify;
 use App\Models\Repair\Process;
 use App\Models\Repair\ServiceWorker;
 use App\Models\User\User;
@@ -143,31 +144,45 @@ class WxRepairController extends Controller
         if (!$list->isEmpty()) {
             foreach ($list as $v) {
                 $array = [];
-                //资产名称
-                $asset = Asset::find($v->asset_id);
-                //资产名称
-                $array['name'] = $asset->name;
-                //所在场地
-                $str = '';
-                $path = Area::where("id", $asset->area_id)->value("path") . $asset->area_id;
-                $path = explode(",", ltrim($path, "0,"));
-                foreach ($path as $value) {
-                    $str .= Area::where("id", $value)->value("name") . "/";
-                }
-                $str = trim($str, "/");
-                $array['repair_id'] = $v->id;
-                $array['path'] = $str;
-                $array['field'] = $asset->name;
-                //图片
-                $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
-                if ($img_list) {
-                    foreach ($img_list as $value) {
-                        $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+                if($v->other!=null){
+                    //场地报修
+                    $array['name'] = Classify::where("id",$v->classify_id)->value("name");
+                    $array['path'] = get_area($v->area_id);
+                    $array['repair_id'] = $v->id;
+                    //图片
+                    $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
+                    if ($img_list) {
+                        foreach ($img_list as $value) {
+                            $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+                        }
                     }
+                    $array['complain'] = $v->complain;
+                }else{
+                    //资产名称
+                    $asset = Asset::find($v->asset_id);
+                    //资产名称
+                    $array['name'] = $asset->name;
+                    //所在场地
+                    $str = '';
+                    $path = Area::where("id", $asset->area_id)->value("path") . $asset->area_id;
+                    $path = explode(",", ltrim($path, "0,"));
+                    foreach ($path as $value) {
+                        $str .= Area::where("id", $value)->value("name") . "/";
+                    }
+                    $str = trim($str, "/");
+                    $array['repair_id'] = $v->id;
+                    $array['path'] = $str;
+                    $array['field'] = $asset->name;
+                    //图片
+                    $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
+                    if ($img_list) {
+                        foreach ($img_list as $value) {
+                            $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+                        }
+                    }
+                    $array['complain'] = $v->complain;
                 }
-                $array['complain'] = $v->complain;
                 $arr[] = $array;
-
             }
         } else {
             $arr['code'] = 0;
