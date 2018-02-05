@@ -422,16 +422,6 @@ class WxRepairController extends Controller
     {
         $repair_info = Process::where("id", $request->repair_id)->first();
 
-        if($repair_info->other!=null){
-            $arr['asset_name'] = Classify::where("id",$repair_info->classify_id)->value("name");
-        }else{
-            //资产名称
-            $asset_info = Asset::find($repair_info->asset_id);
-            $arr['category'] = AssetCategory::where("id", $asset_info->category_id)->value("name");
-            $arr['asset_name'] = $asset_info->name;
-        }
-
-
         //用户拍摄图片
         $img_url = [];
         $list = Process::where("id", $repair_info->id)->with("img")->first()->img;
@@ -465,6 +455,16 @@ class WxRepairController extends Controller
             'service_img_url' => $service_img_url,
             'org_id' => $repair_info->org_id
         ];
+
+        if($repair_info->other!=null){
+            $arr['asset_name'] = Classify::where("id",$repair_info->classify_id)->value("name");
+        }else{
+            //资产名称
+            $asset_info = Asset::find($repair_info->asset_id);
+            $arr['category'] = AssetCategory::where("id", $asset_info->category_id)->value("name");
+            $arr['asset_name'] = $asset_info->name;
+        }
+
         //工单状态
         switch ($repair_info->status) {
             case 0:
