@@ -334,7 +334,8 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
 
 
 Route::group(['prefix' => 'wechat', 'namespace' => 'Wechat'], function () {
-    Route:any('serve','ServeController@serve');
+
+    Route::any('serve','ServeController@serve');
 });
 
 //-------------------------------------------------------------------------
