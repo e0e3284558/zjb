@@ -331,6 +331,11 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
 
 });
 
+
+Route::group(['prefix' => 'wechat', 'namespace' => 'Wechat'], function () {
+    Route:any('serve','ServeController@serve');
+});
+
 //-------------------------------------------------------------------------
 //微信小程序API路由结束
 
