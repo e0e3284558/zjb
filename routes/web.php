@@ -306,6 +306,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
 
     //报修管理
     Route::post("repair/add",'WxRepairController@add');
+    Route::post("repair/area_repair",'WxRepairController@areaRepair');
     Route::post("repair/repair_list",'WxRepairController@repairList');
     //工单详情
     Route::post("repair/repair_info",'WxRepairController@repairInfo');
@@ -327,7 +328,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'WX'], function () {
 
     //场地报修管理
     Route::get("area/get_classify",'WxAreaController@getClassify');
-    Route::get("area/find_area",'WxAreaController@findArea');
+    Route::post("area/find_area",'WxAreaController@findArea');
     Route::post("area/find_asset",'WxAreaController@findAsset');
 
 });
