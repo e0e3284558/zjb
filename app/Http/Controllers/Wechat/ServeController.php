@@ -40,7 +40,7 @@ class ServeController extends Controller
                         $user_g->union_id=$this->get_unionID($message['FromUserName']);
                     }
                     $user_g->save();
-                    return '收到事件消息UnionID' .  $user_g->union_id;
+                    return '收到事件消息UnionID' .  $user_g->g_open_id;
                     break;
                 case 'text':
                     return '收到文字消息';
