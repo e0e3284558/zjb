@@ -106,7 +106,7 @@ class WxAreaController extends Controller
     public function findArea(Request $request){
         $area_info = Area::where("uuid",$request->uuid)->first();
         $area = [
-            'area_id' => $area_info->if,
+            'area_id' => $area_info->id,
             'area_info' => get_area($area_info->id)
         ];
 
