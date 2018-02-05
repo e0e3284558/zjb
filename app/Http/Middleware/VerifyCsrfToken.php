@@ -13,6 +13,6 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
-        'image.upload'
+        'image.upload','wechat'
     ];
 }
