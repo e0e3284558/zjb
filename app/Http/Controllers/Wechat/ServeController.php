@@ -33,11 +33,14 @@ class ServeController extends Controller
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    $union_id = $this->get_unionID($message['FromUserName']);
-                    $user_g = new User;
-                    $user_g->g_open_id = $message['FromUserName'];
-                    $user_g->union_id = $union_id;
-                    $user_g->save();
+                    $test11 = new Test;
+                    $test11->comment = '测试';
+                    $test11->save();
+//                    $union_id = $this->get_unionID($message['FromUserName']);
+//                    $user_g = new User;
+//                    $user_g->g_open_id = $message['FromUserName'];
+//                    $user_g->union_id = $union_id;
+//                    $user_g->save();
                     return '收到事件消息UnionID' . $user_g->g_open_id;
                     break;
                 case 'text':
