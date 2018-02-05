@@ -196,6 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Iwanli\Wxxcx\WxxcxServiceProvider::class,
+        Overtrue\LaravelWeChat\ServiceProvider::class,
 
     ],
 
@@ -257,6 +258,7 @@ return [
         'Former' => Former\Facades\Former::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'EasyWeChat' => Overtrue\LaravelWeChat\Facade::class,
 
     ],
 
