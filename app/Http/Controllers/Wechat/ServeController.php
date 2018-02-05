@@ -32,9 +32,7 @@ class ServeController extends Controller
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    return '收到事件消息UnionID';
-                    $user = User::where('g_open_id')->frist();
-
+                    $user = User::where('g_open_id',$message['FromUserName'])->frist();
                     $test=new Test;
                     $test->comment=$user->id?$user->id:'空';
                     $test->save();
