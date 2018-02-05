@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wechat;
 
 use App\Models\User\User;
 use App\Http\Controllers\Controller;
+use App\Models\WeChat\Test;
 use Illuminate\Support\Facades\Log;
 
 class ServeController extends Controller
@@ -19,6 +20,9 @@ class ServeController extends Controller
         //获取用户的UnionID
         $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid='.$open_id.'=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
+        $test=new Test;
+        $test->comment=$get_UnionID_url;
+        $test->save();
         return $UnionID_html;
     }
 
