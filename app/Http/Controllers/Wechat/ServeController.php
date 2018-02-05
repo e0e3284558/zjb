@@ -12,10 +12,10 @@ class ServeController extends Controller
     public function serve()
     {
         $app = app('wechat.official_account');
-        $test=new Test;
-        $test->comment=$app;
-        $test->save();
         $app->server->push(function($message){
+            $test=new Test;
+            $test->comment=$message;
+            $test->save();
             return "欢迎关注 overtrue！";
         });
 
