@@ -33,6 +33,9 @@ class ServeController extends Controller
             switch ($message['MsgType']) {
                 case 'event':
                     $user = User::where('g_open_id')->frist();
+                    $test=new Test;
+                    $test->comment=$user->id?$user->id:'空';
+                    $test->save();
                     if ($user->union_id){
                         if (! $user->g_open_id) {
                             $user_g = new User;
