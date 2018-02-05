@@ -18,36 +18,27 @@ class ServeController extends Controller
         $token = (json_decode($html)->access_token);
 
         //获取用户的UnionID
-        $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid='.$open_id.'=zh_CN ';
+        $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $open_id . '=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
-        $test=new Test;
-        $test->comment=$get_UnionID_url;
+        $test = new Test;
+        $test->comment = $get_UnionID_url;
         $test->save();
         return $UnionID_html;
     }
 
 
-    public function serve(){
+    public function serve()
+    {
         $app = app('wechat.official_account');
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    $user = User::where('g_open_id',$message['FromUserName'])->frist();
-                    $test=new Test;
-                    $test->comment=$user->id?$user->id:'空';
-                    $test->save();
-                    if ($user->union_id){
-                        if (! $user->g_open_id) {
-                            $user_g = new User;
-                            $user_g->g_open_id = $message['FromUserName'];
-                        }
-                    }else{
-                        $user_g = new User;
-                        $user_g->g_open_id = $message['FromUserName'];
-                        $user_g->union_id=$this->get_unionID($message['FromUserName']);
-                    }
+                    $union_id = $this->get_unionID($message['FromUserName']);
+                    $user_g = new User;
+                    $user_g->g_open_id = $message['FromUserName'];
+                    $user_g->union_id = $union_id;
                     $user_g->save();
-                    return '收到事件消息UnionID' .  $user_g->g_open_id;
+                    return '收到事件消息UnionID' . $user_g->g_open_id;
                     break;
                 case 'text':
                     return '收到文字消息';
