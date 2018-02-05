@@ -72,6 +72,51 @@ class WxRepairController extends Controller
         }
     }
 
+    //场地报修
+    public function areaRepair(Request $request){
+        $area_info = Area::find($request->area_id);
+        $arr = [
+            'org_id' => $area_info->org_id,
+            'user_id' => User::where("openid",$request->openId)->value("id"),
+            'area_id' => $request->area_id,
+            'classify_id' => $request->classify_id,
+            'status' => 1,
+            'other' => 1,
+            'remarks' => $request->remarks,
+            'created_at' => date("Y-m-d H:i:s")
+        ];
+
+        // 新增一条报修并且获取报修单id
+        $process_id = Process::insertGetId($arr);
+
+        // 判断是否插入成功
+        if ($process_id) {
+            //获取上传图片id
+            if ($request->img_id) {
+                // 根据逗号拆分图片id
+                foreach (explode(",", trim($request->img_id, ",")) as $v) {
+                    // 判断图片是否上传成功
+                    if (!DB::table('file_process')->insert(['file_id' => $v, 'process_id' => $process_id])) {
+                        return response()->json([
+                            'status' => 0, 'message' => '图片上传失败',
+                            'data' => null, 'url' => ''
+                        ]);
+                    }
+                }
+            }
+            $message = [
+                'code' => 1,
+                'message' => '报修成功'
+            ];
+        } else {
+            $message = [
+                'code' => 0,
+                'message' => '报修失败'
+            ];
+        }
+        return response()->json($message);
+    }
+
     public function repairList(Request $request)
     {
         $user_id = User::where("openId", $request->openId)->value("id");
