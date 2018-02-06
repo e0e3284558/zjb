@@ -124,12 +124,15 @@ class WxAreaController extends Controller
     }
 
     public function findArea(Request $request){
-        $area_info = Area::where("uuid",$request->uuid)->first();
-        $area = [
-            'area_id' => $area_info->id,
-            'area_name' => get_area($area_info->id),
-            'org_id' => $area_info->org_id
-        ];
+        $area_list = Area::where("pid",$request->pid)->get();
+        $area = [];
+        foreach ($area_list as $v){
+            $area[] = [
+                'area_id' => $v->id,
+                'area_name' => get_area($v->id),
+                'org_id' => $v->org_id
+            ];
+        }
 
         return response()->json($area);
     }
