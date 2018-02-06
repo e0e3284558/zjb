@@ -287,16 +287,15 @@ class WxRepairController extends Controller
         }
         foreach ($repair_list as $v) {
             $array = [];
-//            if($v->other!=null){
-//                //场地报修
-//                $array['name'] = Classify::where("id",$v->classify_id)->value("name");
-//                $array['repair_id'] = $v->id;
-//                $array['complain'] = $v->complain;
-//            }else {
+            if($v->other!=null){
+                //场地报修
+                $array['name'] = Classify::where("id",$v->classify_id)->value("name");
+                $array['complain'] = $v->complain;
+            }else {
                 //资产名称
-                $array['name'] = Asset::find($v->asset_id)->value("name");
-                $array['repair_id'] = $v->id;
-//            }
+                $array['name'] = Asset::where($v->asset_id)->value("name");
+            }
+            $array['repair_id'] = $v->id;
             $array['path'] = get_area($v->area_id);
             //图片
             $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
