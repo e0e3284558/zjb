@@ -25,6 +25,8 @@ class WxAreaController extends Controller
     public function getArea(Request $request){
         $user_info = User::where("openid",$request->openId)->with("orgs")->first();
 
+        return $user_info;
+
         if($user_info){
             $arr = [
                 'org_id' => $user_info->org_id,
