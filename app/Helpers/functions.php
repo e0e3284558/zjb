@@ -368,7 +368,7 @@ if (!function_exists('get_area')) {
     {
         $data = '';
         $res = \App\Models\Asset\Area::find($id);
-        if ($res){
+        if ($res) {
             $area = $res->path;
             $area = substr($area, 0, strlen($area) - 1);
             if ($area) {
@@ -470,9 +470,9 @@ if (!function_exists('category_select')) {
     {
         $list = \App\Models\Asset\AssetCategory::get();
 
-        if($type==1){
+        if ($type == 1) {
             $str = '<option value="0">顶级分类</option>';
-        }else{
+        } else {
             $str = '<option value="">请选择类别</option>';
         }
 
@@ -480,7 +480,7 @@ if (!function_exists('category_select')) {
             foreach ($list as $key => $val) {
                 $str .= '<option value="' . $val['id'] . '" '
                     . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
-                    . $val['name']. '(' . $val['category_code'] . ')' . '</option>';
+                    . $val['name'] . '(' . $val['category_code'] . ')' . '</option>';
             }
         }
         return $str;
@@ -544,7 +544,7 @@ if (!function_exists('is_permission')) {
 if (!function_exists('get_user_department')) {
     function get_user_department()
     {
-        $user_department_id=get_current_login_user_info(true)->department_id;
+        $user_department_id = get_current_login_user_info(true)->department_id;
         return App\Models\User\Department::find($user_department_id);
     }
 }
@@ -555,10 +555,10 @@ if (!function_exists('get_user_department')) {
 if (!function_exists('get_department_classify')) {
     function get_department_classify()
     {
-        $department_id=get_user_department()->id;
-        $classify=\Illuminate\Support\Facades\DB::table('classify_department')
-                                        ->where('department_id', $department_id)
-                                        ->pluck('classify_id')->toArray();
+        $department_id = get_user_department()->id;
+        $classify = \Illuminate\Support\Facades\DB::table('classify_department')
+            ->where('department_id', $department_id)
+            ->pluck('classify_id')->toArray();
         return $classify;
     }
 }
@@ -569,8 +569,8 @@ if (!function_exists('get_department_classify')) {
 if (!function_exists('get_department_asset_category')) {
     function get_department_asset_category()
     {
-        $department_id=get_user_department()->id;
-        $asset_category=\Illuminate\Support\Facades\DB::table('asset_category_department')
+        $department_id = get_user_department()->id;
+        $asset_category = \Illuminate\Support\Facades\DB::table('asset_category_department')
             ->where('department_id', $department_id)
             ->pluck('asset_category_id')->toArray();
         return $asset_category;
@@ -584,10 +584,10 @@ if (!function_exists('get_department_asset_category')) {
 if (!function_exists('get_user_classify')) {
     function get_user_classify()
     {
-        $user_id=get_current_login_user_info();
-        $classify=\Illuminate\Support\Facades\DB::table('classify_user')
-                                        ->where('user_id', $user_id)
-                                        ->pluck('classify_id')->toArray();
+        $user_id = get_current_login_user_info();
+        $classify = \Illuminate\Support\Facades\DB::table('classify_user')
+            ->where('user_id', $user_id)
+            ->pluck('classify_id')->toArray();
         return $classify;
     }
 }
@@ -598,11 +598,53 @@ if (!function_exists('get_user_classify')) {
 if (!function_exists('get_user_asset_category')) {
     function get_user_asset_category()
     {
-        $user_id=get_current_login_user_info();
-        $asset_category=\Illuminate\Support\Facades\DB::table('asset_category_user')
+        $user_id = get_current_login_user_info();
+        $asset_category = \Illuminate\Support\Facades\DB::table('asset_category_user')
             ->where('user_id', $user_id)
             ->pluck('asset_category_id')->toArray();
         return $asset_category;
+    }
+}
+
+if (!function_exists('send_message')) {
+    function send_message($data, $project_id = "pzi092")
+    {
+        /*
+         | SMS 应用ID
+         */
+        $message_configs['appid'] = '19846';
+
+        /*
+         | SMS 应用密匙
+         */
+        $message_configs['appkey'] = '2b372594aa77bc04188d00751830a009';
+
+        /*
+         | SMS  验证模式
+         | md5=md5 签名验证模式（推荐）
+         | sha1=sha1 签名验证模式（推荐）
+         | normal=密匙明文验证
+         */
+        $message_configs['sign_type'] = 'normal';
+
+        /*
+         |初始化 MESSAGEXsend 类
+         */
+        $submail = new \MESSAGEXsend($message_configs);
+        $submail->setTo($data['tel']);
+        $submail->SetProject($project_id);
+        $submail->AddVar('username',$data['username']);
+        $submail->AddVar('asset',$data['asset']);
+        $submail->AddVar('address',$data['address']);
+        /*
+         |调用 xsend 方法发送短信
+         */
+        $xsend = $submail->xsend();
+
+        /*
+         |打印服务器返回值
+         */
+        return current($xsend);
     }
 }
 

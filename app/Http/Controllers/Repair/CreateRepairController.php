@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use \subMail;
 
 class CreateRepairController extends Controller
 {
@@ -339,6 +340,7 @@ class CreateRepairController extends Controller
     public function send_post($url, $post_data)
     {
 
+
         $postdata = http_build_query($post_data);
         $options = array(
             'http' => array(
@@ -454,13 +456,13 @@ class CreateRepairController extends Controller
 
         if ($repair->save()) {
             //使用方法
-            $post_data = array(
+            $data = array(
                 'username' => $worker_info->name,
                 'tel' => $worker_info->tel,
                 'asset' => $asset->name,
                 'address' => $address
             );
-            $result = $this->send_post('https://wx.zhejiuban.com/mail/demo/message_send_demo.php', $post_data);
+            $result = send_message($data);
             if ($result == 'success') {
                 return response()->json([
                     'status' => 1, 'message' => '分派成功,且已经短信通知维修人员'
