@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Repair;
 
 use App\Http\Requests\CreateRepairRequest;
+use App\Jobs\SendShortMessage;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
@@ -461,17 +462,11 @@ class CreateRepairController extends Controller
                 'asset' => $asset->name,
                 'address' => $address
             );
-            $result = send_message($data);
-            if ($result == 'success') {
-                return response()->json([
-                    'status' => 1, 'message' => '分派成功,且已经短信通知维修人员'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 1, 'message' => '分派成功,短信未发送成功，请联系系统管理员'
-                ]);
-            }
+            SendShortMessage::dispatch($data);
 
+            return response()->json([
+                'status' => 1, 'message' => '分派成功,且已经短信通知维修人员'
+            ]);
         } else {
             return response()->json([
                 'status' => 0, 'message' => '分派失败',

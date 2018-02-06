@@ -4405,16 +4405,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "5.1.5",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "3d66bda66530d42eddfb3faa0f60f3e9ae8a7f08"
+                "reference": "0b656e9eb37dab39ac8a294193034b839fef1cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/laravel-backup/3d66bda66530d42eddfb3faa0f60f3e9ae8a7f08.zip",
-                "reference": "3d66bda66530d42eddfb3faa0f60f3e9ae8a7f08",
+                "url": "https://files.phpcomposer.com/files/spatie/laravel-backup/0b656e9eb37dab39ac8a294193034b839fef1cfc.zip",
+                "reference": "0b656e9eb37dab39ac8a294193034b839fef1cfc",
                 "shasum": ""
             },
             "require": {
@@ -4433,7 +4433,7 @@
             "require-dev": {
                 "mockery/mockery": "^1.0",
                 "orchestra/testbench": "~3.5.0",
-                "phpunit/phpunit": "^6.2"
+                "phpunit/phpunit": "^6.5 || ^7.0"
             },
             "suggest": {
                 "guzzlehttp/guzzle": "Allows notifications to be sent via Slack"
@@ -4474,7 +4474,7 @@
                 "laravel-backup",
                 "spatie"
             ],
-            "time": "2018-01-20T14:31:30+00:00"
+            "time": "2018-02-06T12:28:07+00:00"
         },
         {
             "name": "spatie/laravel-permission",
