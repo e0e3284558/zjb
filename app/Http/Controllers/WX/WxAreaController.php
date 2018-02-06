@@ -23,10 +23,7 @@ class WxAreaController extends Controller
     }
 
     public function getArea(Request $request){
-        $user_info = User::where("openid",$request->openId)->with("orgs")->get();
-
-        dump($user_info);
-        dd();
+        $user_info = User::where("openid",$request->openId)->with("orgs")->first();
 
         if($user_info){
             $arr = [
