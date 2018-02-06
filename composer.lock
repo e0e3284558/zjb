@@ -4478,16 +4478,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "2.8.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "94940d81c2436b4f211990236c8f0ab1b7de9f37"
+                "reference": "d9cb52305fc9ad6b4ef8590471fa524d4b845865"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/94940d81c2436b4f211990236c8f0ab1b7de9f37.zip",
-                "reference": "94940d81c2436b4f211990236c8f0ab1b7de9f37",
+                "url": "https://files.phpcomposer.com/files/spatie/laravel-permission/d9cb52305fc9ad6b4ef8590471fa524d4b845865.zip",
+                "reference": "d9cb52305fc9ad6b4ef8590471fa524d4b845865",
                 "shasum": ""
             },
             "require": {
@@ -4539,7 +4539,7 @@
                 "security",
                 "spatie"
             ],
-            "time": "2018-01-25T15:17:15+00:00"
+            "time": "2018-02-04T01:36:57+00:00"
         },
         {
             "name": "spatie/temporary-directory",
