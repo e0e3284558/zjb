@@ -100,10 +100,10 @@ class WxAreaController extends Controller
 
     //查看此场地下所有资产
     public function findAsset(Request $request){
-        $user_info = User::where("openid",$request->openId)->first();
+//        $user_info = User::where("openid",$request->openId)->first();
         $term = [
             'area_id' => $request->area_id,
-            'org_id' => $user_info->org_id
+            'org_id' => $request->org_id
         ];
         $asset_list = Asset::where($term)->with("category")->get();
         $arr = [];
@@ -123,18 +123,17 @@ class WxAreaController extends Controller
         return response()->json($classify_list);
     }
 
+    //场地扫码报修
     public function findArea(Request $request){
-        $area_list = Area::where("pid",$request->pid)->get();
-        $area = [];
-        foreach ($area_list as $v){
-            $area[] = [
-                'area_id' => $v->id,
-                'area_name' => get_area($v->id),
-                'org_id' => $v->org_id
-            ];
-        }
+        $area_info = Area::where("uuid",$request->uuid)->first();
+        $area = [
+            'area_id' => $area_info->id,
+            'area_name' => get_area($area_info->id),
+            'org_id' => $area_info->org_id
+        ];
 
         return response()->json($area);
     }
+
 
 }
