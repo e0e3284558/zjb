@@ -22,33 +22,53 @@ class WxAreaController extends Controller
         }
     }
 
-//    public function findArea(Request $request){
-//        $user_info = User::where("openid",$request->openId)->first();
-//
+    public  function getOrg(Request $request){
+        $user_info = User::where("openid",$request->openId)->with("orgs")->first();
+
+        $arr = [];
+        if ($user_info->orgs->isEmpty()){
+            $arr = [
+                'code' => 0,
+                'message' => '暂无数据'
+            ];
+        }else{
+            foreach ($user_info->orgs as $v){
+                $arr[] = [
+                    'id' => $v->id,
+                    'name' => $v->name
+                ];
+            }
+        }
+        return response()->json($arr);
+    }
+
+    public function getArea(Request $request){
+//        $user_info = User::where("openid",$request->openId)->with("orgs")->first();
+
 //        if($user_info){
-//            $arr = [
-//                'org_id' => $user_info->org_id,
-//                'pid' => $request->pid
-//            ];
-//            $area_list = Area::where($arr)->get();
-//            $area_arr = [];
-//            foreach ($area_list as $v){
-//                $area_arr[] = [
-//                    'area_id' => $v->id,
-//                    'name' => $v->name,
-//                    'org_id' => $v->org_id,
-//                    'pid' => $v->pid,
-//                    'area_uuid' => $v->uuid
-//                ];
-//            }
-//            return response()->json($area_arr);
+            $arr = [
+                'org_id' => $request->org_id,
+                'pid' => $request->pid
+            ];
+            $area_list = Area::where($arr)->get();
+            $area_arr = [];
+            foreach ($area_list as $v){
+                $area_arr[] = [
+                    'area_id' => $v->id,
+                    'name' => $v->name,
+                    'org_id' => $v->org_id,
+                    'pid' => $v->pid,
+                    'area_uuid' => $v->uuid
+                ];
+            }
+            return response()->json($area_arr);
 //        }else{
 //            return $message = [
 //                'code' => 0,
 //                'message' => '未授权用户，请联系管理员'
 //            ];
 //        }
-//    }
+    }
 
     public function findNextArea(Request $request){
         $user_info = User::where("openid",$request->openId)->first();
@@ -104,12 +124,15 @@ class WxAreaController extends Controller
     }
 
     public function findArea(Request $request){
-        $area_info = Area::where("uuid",$request->uuid)->first();
-        $area = [
-            'area_id' => $area_info->id,
-            'area_name' => get_area($area_info->id),
-            'org_id' => $area_info->org_id
-        ];
+        $area_list = Area::where("pid",$request->pid)->get();
+        $area = [];
+        foreach ($area_list as $v){
+            $area[] = [
+                'area_id' => $v->id,
+                'area_name' => get_area($v->id),
+                'org_id' => $v->org_id
+            ];
+        }
 
         return response()->json($area);
     }
