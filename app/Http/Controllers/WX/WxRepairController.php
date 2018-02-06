@@ -293,7 +293,7 @@ class WxRepairController extends Controller
                 $array['complain'] = $v->complain;
             }else {
                 //资产名称
-                $array['name'] = Asset::where($v->asset_id)->value("name");
+                $array['name'] = Asset::where("id",$v->asset_id)->value("name");
             }
             $array['repair_id'] = $v->id;
             $array['path'] = get_area($v->area_id);
