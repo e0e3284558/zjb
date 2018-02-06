@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Wechat;
 
 use App\Models\User\User;
 use App\Http\Controllers\Controller;
+use App\Models\WeChat\Test;
 use Illuminate\Support\Facades\Log;
 
 class ServeController extends Controller
@@ -17,30 +18,28 @@ class ServeController extends Controller
         $token = (json_decode($html)->access_token);
 
         //获取用户的UnionID
-        $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid='.$open_id.'=zh_CN ';
+        $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $open_id . '=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
-        return $UnionID_html;
+        return $UnionID_html->unionid;
     }
 
 
-    public function serve(){
+    public function serve()
+    {
         $app = app('wechat.official_account');
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    $user = User::where('g_open_id')->frist();
-                    if ($user->union_id){
-                        if (! $user->g_open_id) {
-                            $user_g = new User;
-                            $user_g->g_open_id = $message['FromUserName'];
-                        }
-                    }else{
-                        $user_g = new User;
-                        $user_g->g_open_id = $message['FromUserName'];
-                        $user_g->union_id=$this->get_unionID($message['FromUserName']);
-                    }
-                    $user_g->save();
-                    return '收到事件消息UnionID' .  $user_g->union_id;
+                    $union_id =$this->get_unionID($message['FromUserName']);
+                    $test11 = new Test;
+                    $test11->comment = $union_id;
+                    $test11->save();
+//                    $union_id = $this->get_unionID($message['FromUserName']);
+//                    $user_g = new User;
+//                    $user_g->g_open_id = $message['FromUserName'];
+//                    $user_g->union_id = $union_id;
+//                    $user_g->save();
+                    return '收到事件消息UnionID';
                     break;
                 case 'text':
                     return '收到文字消息';
