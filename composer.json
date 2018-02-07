@@ -58,8 +58,8 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Helpers/functions.php",
-            "app/Libs/subMail/SUBMAILAutoload.php"
+            "app/Libs/subMail/SUBMAILAutoload.php",
+            "app/Helpers/functions.php"
         ]
     },
     "autoload-dev": {
