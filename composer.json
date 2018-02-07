@@ -59,7 +59,7 @@
         },
         "files": [
             "app/Helpers/functions.php",
-            "app/Libs/subMail/SUBMAILAutoload.php"
+            //"app/Libs/subMail/SUBMAILAutoload.php"
         ]
     },
     "autoload-dev": {
