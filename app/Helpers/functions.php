@@ -609,42 +609,42 @@ if (!function_exists('get_user_asset_category')) {
 if (!function_exists('send_message')) {
     function send_message($data, $project_id = "pzi092")
     {
-        /*
-         | SMS 应用ID
-         */
-        $message_configs['appid'] = '19846';
-
-        /*
-         | SMS 应用密匙
-         */
-        $message_configs['appkey'] = '2b372594aa77bc04188d00751830a009';
-
-        /*
-         | SMS  验证模式
-         | md5=md5 签名验证模式（推荐）
-         | sha1=sha1 签名验证模式（推荐）
-         | normal=密匙明文验证
-         */
-        $message_configs['sign_type'] = 'normal';
-
-        /*
-         |初始化 MESSAGEXsend 类
-         */
-        $submail = new \MESSAGEXsend($message_configs);
-        $submail->setTo($data['tel']);
-        $submail->SetProject($project_id);
-        $submail->AddVar('username',$data['username']);
-        $submail->AddVar('asset',$data['asset']);
-        $submail->AddVar('address',$data['address']);
-        /*
-         |调用 xsend 方法发送短信
-         */
-        $xsend = $submail->xsend();
-
-        /*
-         |打印服务器返回值
-         */
-        return current($xsend);
+//        /*
+//         | SMS 应用ID
+//         */
+//        $message_configs['appid'] = '19846';
+//
+//        /*
+//         | SMS 应用密匙
+//         */
+//        $message_configs['appkey'] = '2b372594aa77bc04188d00751830a009';
+//
+//        /*
+//         | SMS  验证模式
+//         | md5=md5 签名验证模式（推荐）
+//         | sha1=sha1 签名验证模式（推荐）
+//         | normal=密匙明文验证
+//         */
+//        $message_configs['sign_type'] = 'normal';
+//
+//        /*
+//         |初始化 MESSAGEXsend 类
+//         */
+//        $submail = new \MESSAGEXsend($message_configs);
+//        $submail->setTo($data['tel']);
+//        $submail->SetProject($project_id);
+//        $submail->AddVar('username',$data['username']);
+//        $submail->AddVar('asset',$data['asset']);
+//        $submail->AddVar('address',$data['address']);
+//        /*
+//         |调用 xsend 方法发送短信
+//         */
+//        $xsend = $submail->xsend();
+//
+//        /*
+//         |打印服务器返回值
+//         */
+//        return current($xsend);
     }
 }
 
