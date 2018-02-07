@@ -443,8 +443,8 @@ class WxRepairController extends Controller
             'result' => $repair_info->result,
             'service_img_url' => $service_img_url,
             'org_id' => $repair_info->org_id,
-            'create_time' => $repair_info->created_at,
-            'finish_time' => $repair_info->updated_at
+            'create_time' => date("Y-m-d H:i:s",strtotime($repair_info->created_at->date)),
+            'finish_time' => date("Y-m-d H:i:s",strtotime($repair_info->updated_at->date)),
         ];
 
         if($repair_info->other!=null){
