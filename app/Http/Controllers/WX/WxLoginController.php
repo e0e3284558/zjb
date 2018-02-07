@@ -52,6 +52,7 @@ class WxLoginController extends Controller
         }else {
             $user = new User;
             $user->openid = $request->openId;
+            $user->name = $request->name;
             if ($user->save()) {
                 if ($user->orgs()->sync($asset_info->org_id)) {
                     $message = [
