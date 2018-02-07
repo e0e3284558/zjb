@@ -442,7 +442,9 @@ class WxRepairController extends Controller
             'service_worker' => ServiceWorker::where("id", $repair_info->service_worker_id)->value("name"),
             'result' => $repair_info->result,
             'service_img_url' => $service_img_url,
-            'org_id' => $repair_info->org_id
+            'org_id' => $repair_info->org_id,
+            'create_time' => $repair_info->created_at,
+            'finish_time' => $repair_info->updated_at
         ];
 
         if($repair_info->other!=null){
