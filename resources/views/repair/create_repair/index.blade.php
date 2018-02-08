@@ -271,10 +271,9 @@
                                                         <th>报修场地</th>
                                                         <th>报修项目</th>
                                                         <th>维修人员</th>
-                                                        <th>服务商</th>
                                                         <th>维修单详情</th>
-                                                        <th>评分</th>
-                                                        <th>评价</th>
+                                                        <th>开始时间</th>
+                                                        <th>完成时间</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -308,27 +307,15 @@
                                                                     维修工已被移除
                                                                 @endif
                                                             </td>
-                                                            <td>
-                                                                @if($v->serviceProvider)
-                                                                    {{$v->serviceProvider->name}}
-                                                                @else
-                                                                    服务商已被移除
-                                                                @endif
-                                                            </td>
+
                                                             <td>
                                                                 <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
                                                             </td>
-                                                            <td>
-                                                                @for($i=0;$i<$v->score;$i++)
-                                                                    <i class="fa fa-star" style="color:#e8bd0d;"></i>
-                                                                @endfor
-                                                            </td>
-                                                            <td title="{{$v->appraisal}}">
-                                                                {{mb_substr($v->appraisal,0,10)}}
-                                                            </td>
+                                                            <td>{{$v->created_at}}</td>
+                                                            <td>{{$v->finish_time}}</td>
                                                         </tr>
                                                     @endforeach
                                                     </tbody>
