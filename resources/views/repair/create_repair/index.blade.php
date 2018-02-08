@@ -406,14 +406,14 @@
                                                             </td>
                                                             <td>
                                                                 @if($v->status==1)
-                                                                    <button class="btn btn-success btn-sm pull-left"
+                                                                    <button class="btn btn-success btn-xs pull-left"
                                                                             onclick="assign('{{$v->id}}')"
                                                                             data-toggle="modal"
                                                                             data-target=".bs-example-modal-lg">
                                                                         分派维修
                                                                     </button>
                                                                 @elseif($v->status==2 || $v->status==3)
-                                                                    <button class="btn btn-success btn-sm pull-left"
+                                                                    <button class="btn btn-success btn-xs pull-left"
                                                                             onclick="assign('{{$v->id}}')"
                                                                             data-toggle="modal"
                                                                             data-target=".bs-example-modal-lg">
