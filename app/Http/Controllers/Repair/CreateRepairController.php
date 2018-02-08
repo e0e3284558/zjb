@@ -46,6 +46,7 @@ class CreateRepairController extends Controller
                     ->where('processes.status', 1)
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
+                    ->orderBy('created_at', 'desc')
                     ->select('processes.*')->paginate(10);
                 break;
             case 'doing':
@@ -60,6 +61,7 @@ class CreateRepairController extends Controller
                     ->whereIn('processes.status', [2, 3, 4])
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
+                    ->orderBy('created_at', 'desc')
                     ->select('processes.*')->paginate(10);
                 break;
             case 'success':
@@ -74,6 +76,7 @@ class CreateRepairController extends Controller
                     ->whereIn('processes.status', [10])
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
+                    ->orderBy('created_at', 'desc')
                     ->select('processes.*')->paginate(10);
                 break;
             case 'assess':
@@ -89,6 +92,7 @@ class CreateRepairController extends Controller
                     ->whereNull('appraisal')
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
+                    ->orderBy('created_at', 'desc')
                     ->select('processes.*')->paginate(10);
                 break;
             case 'all':
@@ -102,6 +106,7 @@ class CreateRepairController extends Controller
                     ->distinct()
                     ->where('users.id', get_current_login_user_info())
                     ->with('user', 'img', 'asset', 'category', 'otherAsset', 'serviceWorker', 'classify')
+                    ->orderBy('created_at', 'desc')
                     ->select('processes.*')->paginate(10);
                 break;
         }
