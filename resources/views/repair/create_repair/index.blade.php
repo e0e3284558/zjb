@@ -311,7 +311,8 @@
                                                             <td>
                                                                 <span class="cursor_pointer"
                                                                       onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
-                                                                      data-toggle="modal" data-target=".bs-example-modal-lg"
+                                                                      data-toggle="modal"
+                                                                      data-target=".bs-example-modal-lg"
                                                                       title="详情">点击查看详情</span>
                                                             </td>
                                                             <td>{{$v->created_at}}</td>
@@ -411,30 +412,18 @@
                                                                             data-target=".bs-example-modal-lg">
                                                                         分派维修
                                                                     </button>
-                                                                @elseif($v->status=='4' || $v->status=='7')
-                                                                    <button class="btn btn-danger btn-sm pull-left"
-                                                                            data-toggle="modal"
-                                                                            data-target=".bs-example-modal-lg"
-                                                                            onclick="reason('{{$v->id}}')">查看原因
-                                                                    </button>
-                                                                    <button class="btn btn-success btn-sm pull-left"
-                                                                            onclick="assign('{{$v->id}}')"
-                                                                            data-toggle="modal"
-                                                                            data-target=".bs-example-modal-lg">
-                                                                        分派维修
-                                                                    </button>
-                                                                @elseif($v->status=='2')
+                                                                @elseif($v->status=='2' || $v->status=='3')
                                                                     <button class="btn btn-success btn-sm pull-left"
                                                                             onclick="assign('{{$v->id}}')"
                                                                             data-toggle="modal"
                                                                             data-target=".bs-example-modal-lg">
                                                                         重新分派
                                                                     </button>
-                                                                @elseif($v->status=='3')
+                                                                @elseif($v->status=='4')
                                                                     <span class="label label-primary">维修中</span>
-                                                                @elseif($v->status=='5')
+                                                                @elseif($v->score == null  )
                                                                     <span class="label label-primary">待评价</span>
-                                                                @elseif($v->status=='6')
+                                                                @elseif($v->status!=null)
                                                                     <span class="label label-success">已完成</span>
                                                                 @endif
                                                             </td>
