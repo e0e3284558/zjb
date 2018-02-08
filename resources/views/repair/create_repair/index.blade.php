@@ -260,97 +260,79 @@
                                 </div>
                                 <div class="tab-pane @if (request()->active=='success') active  @endif" id="tab-4">
                                     @if(isset($data3))
-                                    <div class="tab-pane">
-                                        <div class="panel-body">
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th><input type="checkbox" class="i-checks" name="checkAll"
-                                                               id="all3"></th>
-                                                    <th>报修人</th>
-                                                    <th>报修场地</th>
-                                                    <th>报修项目</th>
-                                                    <th>维修人员</th>
-                                                    <th>服务商</th>
-                                                    <th>维修单详情</th>
-                                                    <th>评分</th>
-                                                    <th>评价</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($data3 as $v)
+                                        <div class="tab-pane">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <thead>
                                                     <tr>
-                                                        <td role="gridcell">
-                                                            <input type="checkbox" class="i-checks" name="id"
-                                                                   value="{{$v->id}}">
-                                                        </td>
-                                                        @if($v->user)
-                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-                                                        <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->classify && (!$v->asset_id))
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            <td>{{$v->asset->name}}</td>
-                                                        @endif
-                                                        <td>
+                                                        <th><input type="checkbox" class="i-checks" name="checkAll"
+                                                                   id="all3"></th>
+                                                        <th>报修人</th>
+                                                        <th>报修场地</th>
+                                                        <th>报修项目</th>
+                                                        <th>维修人员</th>
+                                                        <th>维修单详情</th>
+                                                        <th>开始时间</th>
+                                                        <th>完成时间</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data3 as $v)
+                                                        <tr>
+                                                            <td role="gridcell">
+                                                                <input type="checkbox" class="i-checks" name="id"
+                                                                       value="{{$v->id}}">
+                                                            </td>
 
-                                                        @if($v->serviceWorker)
-                                                            <td>{{$v->serviceWorker->name}}</td>
-                                                        @else
-                                                            <td>维修工已被移除</td>
-                                                        @endif
-                                                        @if($v->serviceProvider)
-                                                            <td>{{$v->serviceProvider->name}}</td>
-                                                        @else
-                                                            <td>服务商已被移除</td>
-                                                        @endif
-                                                        <td>
-                                                        <span class="cursor_pointer"
+                                                            <td>
+                                                                @if($v->user)
+                                                                    {{$v->user_id?$v->user->name:"未获取到用户信息"}}
+                                                                @endif
+                                                            </td>
+
+                                                            <td>{{@get_area($v->area_id)}}</td>
+
+                                                            <td>
+                                                                @if($v->classify && (!$v->asset_id))
+                                                                    {{$v->classify->name}}
+                                                                @else
+                                                                    {{$v->asset->name}}
+                                                                @endif
+                                                            </td>
+
+                                                            <td>
+                                                                @if($v->serviceWorker)
+                                                                    {{$v->serviceWorker->name}}
+                                                                @else
+                                                                    维修工已被移除
+                                                                @endif
+                                                            </td>
+
+                                                            <td>
+                                                                <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
-                                                        </td>
-                                                        <td>
-                                                            @for($i=0;$i<$v->score;$i++)
-                                                                <i class="fa fa-star" style="color:#e8bd0d;"></i>
-                                                            @endfor
-                                                        </td>
-                                                        <td title="{{$v->appraisal}}">
-                                                            {{mb_substr($v->appraisal,0,10)}}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
+                                                            </td>
+                                                            <td>{{$v->created_at}}</td>
+                                                            <td>{{$v->finish_time}}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="page-header">{{ $data3->appends(['active'=>'success'])->links() }}</div>
+                                        <div class="page-header">{{ $data3->appends(['active'=>'success'])->links() }}</div>
                                     @endif
                                 </div>
                                 <div class="tab-pane @if (request()->active=='all') active  @endif " id="tab-5">
                                     @if(isset($data5))
-                                    <div class="tab-pane">
-                                        <div class="panel-body">
-                                            <table class="table">
-                                                <thead>
-                                                <tr>
-                                                    <th><input type="checkbox" class="i-checks" name="checkAll"
-                                                               id="all5"></th>
-                                                    <th>状态</th>
-                                                    <th>报修人</th>
-                                                    <th>报修场地</th>
-                                                    <th>报修项目</th>
-                                                    <th>维修人员</th>
-                                                    <th>维修单详情</th>
-                                                    <th>操作</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($data5 as $v)
+                                        <div class="tab-pane">
+                                            <div class="panel-body">
+                                                <table class="table">
+                                                    <thead>
                                                     <tr>
+<<<<<<< HEAD
                                                         <td role="gridcell">
                                                             @if($v->status=='1')
                                                                 <input type="checkbox" class="i-checks" name="id"
@@ -382,74 +364,121 @@
                                                                 <span class="label label-success">已完成</span>
                                                             @elseif($v->status=='0')
                                                                 <span class="label label-danger">工单已取消</span>
+=======
+                                                        <th><input type="checkbox" class="i-checks" name="checkAll"
+                                                                   id="all5"></th>
+                                                        <th>状态</th>
+                                                        <th>报修人</th>
+                                                        <th>报修场地</th>
+                                                        <th>报修项目</th>
+                                                        <th>维修人员</th>
+                                                        <th>维修单详情</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($data5 as $v)
+                                                        <tr>
+                                                            <td role="gridcell">
+                                                                @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                    <input type="checkbox" class="i-checks" name="id"
+                                                                           value="{{$v->id}}">
+                                                                @elseif($v->status=='2')
+                                                                    <input type="checkbox" class="i-checks" name="id"
+                                                                           value="{{$v->id}}">
+                                                                @elseif($v->status=='3')
+                                                                    <input type="checkbox" class="i-checks" disabled>
+                                                                @elseif($v->status=='5')
+                                                                    <input type="checkbox" class="i-checks" disabled>
+                                                                @elseif($v->status=='6')
+                                                                    <input type="checkbox" class="i-checks" disabled>
+                                                                @elseif($v->status=='0')
+                                                                    <input type="checkbox" class="i-checks" disabled>
+                                                                @endif
+                                                                {{--<input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">--}}
+                                                            </td>
+                                                            <td>
+                                                                @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                    <span class="label label-info">待分派</span>
+                                                                @elseif($v->status=='2')
+                                                                    <span class="label label-primary">待服务</span>
+                                                                @elseif($v->status=='3')
+                                                                    <span class="label label-warning">维修中</span>
+                                                                @elseif($v->status=='5')
+                                                                    <span class="label label-default">待评价</span>
+                                                                @elseif($v->status=='6')
+                                                                    <span class="label label-success">已完成</span>
+                                                                @elseif($v->status=='0')
+                                                                    <span class="label label-danger">工单已取消</span>
+                                                                @endif
+                                                            </td>
+                                                            @if($v->user)
+                                                                <td>{{$v->user_id?$v->user->name:""}}</td>
+                                                            @else
+                                                                <td></td>
                                                             @endif
-                                                        </td>
-                                                        @if($v->user)
-                                                            <td>{{$v->user_id?$v->user->name:""}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-                                                        <td>{{@get_area($v->area_id)}}</td>
-                                                        @if($v->classify && (!$v->asset_id))
-                                                            <td>{{$v->classify->name}}</td>
-                                                        @else
-                                                            @if($v->asset)
-                                                                <td>{{$v->asset->name}}</td>
+                                                            <td>{{@get_area($v->area_id)}}</td>
+                                                            @if($v->classify && (!$v->asset_id))
+                                                                <td>{{$v->classify->name}}</td>
+                                                            @else
+                                                                @if($v->asset)
+                                                                    <td>{{$v->asset->name}}</td>
+                                                                @endif
+>>>>>>> 3894dcbf75f58d428c4ef693a41d3105bc51eaae
                                                             @endif
-                                                        @endif
-                                                        @if($v->serviceWorker)
-                                                            <td>{{$v->serviceWorker->name}}</td>
-                                                        @else
-                                                            <td></td>
-                                                        @endif
-                                                        <td>
+                                                            @if($v->serviceWorker)
+                                                                <td>{{$v->serviceWorker->name}}</td>
+                                                            @else
+                                                                <td></td>
+                                                            @endif
+                                                            <td>
                                                         <span class="cursor_pointer"
                                                               onclick="show('{{url('repair/repair_list')}}/{{$v->id}}')"
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
-                                                        </td>
-                                                        <td>
-                                                            @if($v->status=='1')
-                                                                <button class="btn btn-success btn-sm pull-left"
-                                                                        onclick="assign('{{$v->id}}')"
-                                                                        data-toggle="modal"
-                                                                        data-target=".bs-example-modal-lg">
-                                                                    分派维修
-                                                                </button>
-                                                            @elseif($v->status=='4' || $v->status=='7')
-                                                                <button class="btn btn-danger btn-sm pull-left"
-                                                                        data-toggle="modal"
-                                                                        data-target=".bs-example-modal-lg"
-                                                                        onclick="reason('{{$v->id}}')">查看原因
-                                                                </button>
-                                                                <button class="btn btn-success btn-sm pull-left"
-                                                                        onclick="assign('{{$v->id}}')"
-                                                                        data-toggle="modal"
-                                                                        data-target=".bs-example-modal-lg">
-                                                                    分派维修
-                                                                </button>
-                                                            @elseif($v->status=='2')
-                                                                <button class="btn btn-success btn-sm pull-left"
-                                                                        onclick="assign('{{$v->id}}')"
-                                                                        data-toggle="modal"
-                                                                        data-target=".bs-example-modal-lg">
-                                                                    重新分派
-                                                                </button>
-                                                            @elseif($v->status=='3')
-                                                                <span class="label label-primary">维修中</span>
-                                                            @elseif($v->status=='5')
-                                                                <span class="label label-primary">待评价</span>
-                                                            @elseif($v->status=='6')
-                                                                <span class="label label-success">已完成</span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
+                                                            </td>
+                                                            <td>
+                                                                @if($v->status=='1')
+                                                                    <button class="btn btn-success btn-sm pull-left"
+                                                                            onclick="assign('{{$v->id}}')"
+                                                                            data-toggle="modal"
+                                                                            data-target=".bs-example-modal-lg">
+                                                                        分派维修
+                                                                    </button>
+                                                                @elseif($v->status=='4' || $v->status=='7')
+                                                                    <button class="btn btn-danger btn-sm pull-left"
+                                                                            data-toggle="modal"
+                                                                            data-target=".bs-example-modal-lg"
+                                                                            onclick="reason('{{$v->id}}')">查看原因
+                                                                    </button>
+                                                                    <button class="btn btn-success btn-sm pull-left"
+                                                                            onclick="assign('{{$v->id}}')"
+                                                                            data-toggle="modal"
+                                                                            data-target=".bs-example-modal-lg">
+                                                                        分派维修
+                                                                    </button>
+                                                                @elseif($v->status=='2')
+                                                                    <button class="btn btn-success btn-sm pull-left"
+                                                                            onclick="assign('{{$v->id}}')"
+                                                                            data-toggle="modal"
+                                                                            data-target=".bs-example-modal-lg">
+                                                                        重新分派
+                                                                    </button>
+                                                                @elseif($v->status=='3')
+                                                                    <span class="label label-primary">维修中</span>
+                                                                @elseif($v->status=='5')
+                                                                    <span class="label label-primary">待评价</span>
+                                                                @elseif($v->status=='6')
+                                                                    <span class="label label-success">已完成</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="page-header">{{ $data5->appends(['active'=>'success'])->links() }}</div>
+                                        <div class="page-header">{{ $data5->appends(['active'=>'success'])->links() }}</div>
                                     @endif
                                 </div>
                             </div>
