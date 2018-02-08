@@ -32,7 +32,7 @@
 
 
     <!-- icheck style-->
-    <link href="{{ asset('assets/js/plugins/icheck/skins/minimal/_all.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/js/plugins/iCheck/skins/minimal/_all.css') }}" rel="stylesheet">
 
     <!-- select2 style-->
     <link href="{{ asset('assets/js/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
@@ -686,7 +686,7 @@
 
 
     <!-- icheck -->
-    <script type="text/javascript" src="{{ asset('assets/js/plugins/icheck/icheck.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/iCheck/icheck.js') }}"></script>
 
     <!-- select2 -->
     <script type="text/javascript" src="{{ asset('assets/js/plugins/select2/js/select2.min.js') }}"></script>
