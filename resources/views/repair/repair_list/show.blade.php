@@ -78,6 +78,13 @@
             </tr>
         @endif
 
+        <tr role="row">
+            <td><label class="control-label">报修时间</label></td>
+            <td>{{$info->created_at}}</td>
+            <td><label class="control-label">维修完成时间</label></td>
+            <td>{{$info->finish_time}}</td>
+        </tr>
+
         </tbody>
     </table>
 </div>
