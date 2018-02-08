@@ -75,7 +75,7 @@
                                                                    value="{{$v->id}}">
                                                         </td>
                                                         <td>
-                                                            @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                            @if($v->status==1)
                                                                 <span class="label label-info">待分派</span>
                                                             @endif
                                                         </td>
@@ -245,7 +245,7 @@
                                                             <td>{{$v->serviceWorker?$v->serviceWorker->name:""}}</td>
                                                             <td>{{$v->serviceProvider?$v->serviceProvider->name:""}}</td>
                                                             <td>
-                                                                @if($v->status=='5')
+                                                                @if($v->status==5 && $v->score==null)
                                                                     <span class="label label-primary">待评价</span>
                                                                 @endif
                                                             </td>
@@ -348,17 +348,17 @@
                                                     @foreach($data5 as $v)
                                                         <tr>
                                                             <td role="gridcell">
-                                                                @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                @if($v->status==1)
                                                                     <input type="checkbox" class="i-checks" name="id"
                                                                            value="{{$v->id}}">
-                                                                @elseif($v->status=='2')
+                                                                @elseif($v->status==2 ||$v->status==3)
                                                                     <input type="checkbox" class="i-checks" name="id"
                                                                            value="{{$v->id}}">
-                                                                @elseif($v->status=='3')
+                                                                @elseif($v->status==4)
                                                                     <input type="checkbox" class="i-checks" disabled>
-                                                                @elseif($v->status=='5')
+                                                                @elseif($v->status==5 && $v->score==null)
                                                                     <input type="checkbox" class="i-checks" disabled>
-                                                                @elseif($v->status=='6')
+                                                                @elseif( $v->score!=null)
                                                                     <input type="checkbox" class="i-checks" disabled>
                                                                 @elseif($v->status=='0')
                                                                     <input type="checkbox" class="i-checks" disabled>
@@ -366,17 +366,17 @@
                                                                 {{--<input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">--}}
                                                             </td>
                                                             <td>
-                                                                @if($v->status=='1' || $v->status=='4' || $v->status=='7')
+                                                                @if($v->status==1)
                                                                     <span class="label label-info">待分派</span>
-                                                                @elseif($v->status=='2')
+                                                                @elseif($v->status==2 ||$v->status==3)
                                                                     <span class="label label-primary">待服务</span>
-                                                                @elseif($v->status=='3')
+                                                                @elseif($v->status==4)
                                                                     <span class="label label-warning">维修中</span>
-                                                                @elseif($v->status=='5')
+                                                                @elseif($v->status==5 && $v->score==null)
                                                                     <span class="label label-default">待评价</span>
-                                                                @elseif($v->status=='6')
+                                                                @elseif( $v->score!=null)
                                                                     <span class="label label-success">已完成</span>
-                                                                @elseif($v->status=='0')
+                                                                @elseif($v->status==0)
                                                                     <span class="label label-danger">工单已取消</span>
                                                                 @endif
                                                             </td>
@@ -405,25 +405,25 @@
                                                               title="详情">点击查看详情</span>
                                                             </td>
                                                             <td>
-                                                                @if($v->status=='1')
+                                                                @if($v->status==1)
                                                                     <button class="btn btn-success btn-sm pull-left"
                                                                             onclick="assign('{{$v->id}}')"
                                                                             data-toggle="modal"
                                                                             data-target=".bs-example-modal-lg">
                                                                         分派维修
                                                                     </button>
-                                                                @elseif($v->status=='2' || $v->status=='3')
+                                                                @elseif($v->status==2 || $v->status==3)
                                                                     <button class="btn btn-success btn-sm pull-left"
                                                                             onclick="assign('{{$v->id}}')"
                                                                             data-toggle="modal"
                                                                             data-target=".bs-example-modal-lg">
                                                                         重新分派
                                                                     </button>
-                                                                @elseif($v->status=='4')
+                                                                @elseif($v->status==4)
                                                                     <span class="label label-primary">维修中</span>
-                                                                @elseif($v->score == null  )
+                                                                @elseif($v->status==5 && $v->score == null  )
                                                                     <span class="label label-primary">待评价</span>
-                                                                @elseif($v->status!=null)
+                                                                @elseif($v->score!=null)
                                                                     <span class="label label-success">已完成</span>
                                                                 @endif
                                                             </td>
