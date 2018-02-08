@@ -389,6 +389,7 @@ class WxRepairController extends Controller
         }
 
         $arr = [
+            'finish_time' => date("Y-m-d H:i:s"),
             'result' => $request->result,
             'status' => $request->status
         ];
@@ -444,7 +445,7 @@ class WxRepairController extends Controller
             'service_img_url' => $service_img_url,
             'org_id' => $repair_info->org_id,
             'create_time' => date("Y-m-d H:i:s",strtotime($repair_info->created_at)),
-            'finish_time' => date("Y-m-d H:i:s",strtotime($repair_info->updated_at)),
+            'finish_time' => date("Y-m-d H:i:s",strtotime($repair_info->finish_time)),
         ];
 
         if($repair_info->other!=null){
