@@ -288,8 +288,9 @@
                                                             <td>
                                                                 @if($v->user)
                                                                     {{$v->user_id?$v->user->name:"未获取到用户信息"}}
-                                                                @else
+                                                                @endif
                                                             </td>
+
                                                             <td>{{@get_area($v->area_id)}}</td>
 
                                                             <td>
