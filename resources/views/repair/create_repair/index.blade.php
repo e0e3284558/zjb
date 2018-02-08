@@ -332,7 +332,6 @@
                                                 <table class="table">
                                                     <thead>
                                                     <tr>
-<<<<<<< HEAD
                                                         <td role="gridcell">
                                                             @if($v->status=='1')
                                                                 <input type="checkbox" class="i-checks" name="id"
@@ -364,67 +363,6 @@
                                                                 <span class="label label-success">已完成</span>
                                                             @elseif($v->status=='0')
                                                                 <span class="label label-danger">工单已取消</span>
-=======
-                                                        <th><input type="checkbox" class="i-checks" name="checkAll"
-                                                                   id="all5"></th>
-                                                        <th>状态</th>
-                                                        <th>报修人</th>
-                                                        <th>报修场地</th>
-                                                        <th>报修项目</th>
-                                                        <th>维修人员</th>
-                                                        <th>维修单详情</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @foreach($data5 as $v)
-                                                        <tr>
-                                                            <td role="gridcell">
-                                                                @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                                    <input type="checkbox" class="i-checks" name="id"
-                                                                           value="{{$v->id}}">
-                                                                @elseif($v->status=='2')
-                                                                    <input type="checkbox" class="i-checks" name="id"
-                                                                           value="{{$v->id}}">
-                                                                @elseif($v->status=='3')
-                                                                    <input type="checkbox" class="i-checks" disabled>
-                                                                @elseif($v->status=='5')
-                                                                    <input type="checkbox" class="i-checks" disabled>
-                                                                @elseif($v->status=='6')
-                                                                    <input type="checkbox" class="i-checks" disabled>
-                                                                @elseif($v->status=='0')
-                                                                    <input type="checkbox" class="i-checks" disabled>
-                                                                @endif
-                                                                {{--<input type="checkbox" class="i-checks" name="id" value="{{$v->id}}">--}}
-                                                            </td>
-                                                            <td>
-                                                                @if($v->status=='1' || $v->status=='4' || $v->status=='7')
-                                                                    <span class="label label-info">待分派</span>
-                                                                @elseif($v->status=='2')
-                                                                    <span class="label label-primary">待服务</span>
-                                                                @elseif($v->status=='3')
-                                                                    <span class="label label-warning">维修中</span>
-                                                                @elseif($v->status=='5')
-                                                                    <span class="label label-default">待评价</span>
-                                                                @elseif($v->status=='6')
-                                                                    <span class="label label-success">已完成</span>
-                                                                @elseif($v->status=='0')
-                                                                    <span class="label label-danger">工单已取消</span>
-                                                                @endif
-                                                            </td>
-                                                            @if($v->user)
-                                                                <td>{{$v->user_id?$v->user->name:""}}</td>
-                                                            @else
-                                                                <td></td>
-                                                            @endif
-                                                            <td>{{@get_area($v->area_id)}}</td>
-                                                            @if($v->classify && (!$v->asset_id))
-                                                                <td>{{$v->classify->name}}</td>
-                                                            @else
-                                                                @if($v->asset)
-                                                                    <td>{{$v->asset->name}}</td>
-                                                                @endif
->>>>>>> 3894dcbf75f58d428c4ef693a41d3105bc51eaae
                                                             @endif
                                                             @if($v->serviceWorker)
                                                                 <td>{{$v->serviceWorker->name}}</td>
