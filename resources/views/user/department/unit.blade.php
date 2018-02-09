@@ -128,7 +128,7 @@
 					 	<div class="form-group">
 						 	<label class="col-md-3 control-label">需要LDAP验证</label>
 						 	<div class="col-md-7">
-							 	<label class="radio-inline i-checks"> <input type="radio" name="is_ldap" class="icheck" value="0" checked> 不需要 </label>
+							 	<label class="radio-inline i-checks"> <input type="radio" name="is_ldap" class="icheck" value="" checked> 不需要 </label>
 							 	<label class="radio-inline i-checks"> <input type="radio" name="is_ldap" class="icheck" value="1" > 需要 </label>
 						 	</div>
 					 	</div>
