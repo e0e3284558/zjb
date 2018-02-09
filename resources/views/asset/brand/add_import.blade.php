@@ -28,7 +28,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <a href="{{asset('uploads/temp/brand_import.xlsx')}}" class="btn btn-default">下载模板</a>
+    <a href="{{url('brand/downloadModel')}}" class="btn btn-default">下载模板</a>
     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
     <button type="button" class="btn btn-success" id="sub">导入</button>
 </div>

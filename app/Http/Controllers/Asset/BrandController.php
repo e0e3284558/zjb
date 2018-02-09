@@ -252,6 +252,55 @@ class BrandController extends Controller
 
 
     /**
+     * 下载模板
+     */
+    public function downloadModel()
+    {
+        $cellData = [['品牌名称','父类','品牌备注']];
+        $cellData2 = [['品牌名称','品牌编号']];
+
+        //类别
+        $list = Brand::where("org_id", Auth::user()->org_id)->get();
+        foreach ($list as $k => $v) {
+            $arr = [
+                $list[$k]->name, $list[$k]->id
+            ];
+            array_push($cellData2, $arr);
+        }
+        Excel::create('品牌模板', function ($excel) use ($cellData, $cellData2) {
+
+            // Our first sheet
+            $excel->sheet('sheet1', function ($sheet1) use ($cellData) {
+                $sheet1->setPageMargin(array(
+                    0.30, 0.30, 0.30
+                ));
+                $sheet1->setWidth(array(
+                    'A' => 40, 'B' => 40, 'C' => 40
+                ));
+                $sheet1->cells('A1:C1', function ($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet1->rows($cellData);
+            });
+
+            // Our second sheet
+            $excel->sheet('品牌类别', function ($sheet2) use ($cellData2) {
+                $sheet2->setPageMargin(array(
+                    0.30, 0.30
+                ));
+                $sheet2->setWidth(array(
+                    'A' => 40, 'B' => 40
+                ));
+                $sheet2->cells('A1:B1', function ($row) {
+                    $row->setBackground('#dfdfdf');
+                });
+                $sheet2->rows($cellData2);
+            });
+        })->export('xls');
+    }
+
+
+    /**
      * @return Response
      */
     public function add_import()
