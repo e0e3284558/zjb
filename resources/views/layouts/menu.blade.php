@@ -125,6 +125,9 @@
                         href="{{ route('contract.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i>
                     合同管理</a>
             </li>
+            <li class="{{ active_class(if_route('brand.index') && if_query('app_groups','asset')) }}"><a
+                        href="{{ route('brand.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 品牌管理</a>
+            </li>
 
             {{--<li class="{{ active_class(if_route('bill.index') && if_query('app_groups','asset')) }}"><a--}}
                         {{--href="{{ route('bill.index',['app_groups'=>'asset']) }}"><i class="fa fa-angle-right"></i> 清单管理</a>--}}

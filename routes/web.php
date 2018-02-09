@@ -243,6 +243,15 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::get("contract/test",'ContractController@test');
     Route::resource("contract",'ContractController');
 
+    //品牌管理
+    Route::get('brand/add_son/{id}', 'BrandController@add');
+    Route::get('brand/prints', 'BrandController@prints');
+    Route::get('brand/export', 'BrandController@export');
+    Route::get('brand/downloadModel', 'BrandController@downloadModel');
+    Route::get('brand/add_import', 'BrandController@add_import');
+    Route::post('brand/import', 'BrandController@import');
+    Route::resource("brand",'BrandController');
+
     //清单管理
 
 //    Route::post("bill/asset_store",'BillController@asset_store');

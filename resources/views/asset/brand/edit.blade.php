@@ -1,45 +1,45 @@
 <div class="ibox m-b-none">
     <div class="ibox-title">
-        <h5>场地编辑</h5>
+        <h5>品牌编辑</h5>
     </div>
     <div class="ibox-content margin-padding-0 relative-ibox-content">
-        <form action="{{ url('area/'.$area->id) }}" class="padding-20" method="post" id="dep-form">
+        <form action="{{ url('brand/'.$brand->id) }}" class="padding-20" method="post" id="dep-form">
             <div class="form-group">
                 <label class="control-label">
-                    上级场地
+                    上级品牌
                 </label>
                 <div>
                     <select name="pid" class="form-control select2" data-error-container="#pid-error">
-                        {!! area_select($area->pid) !!}
+                        {!! brand_select($brand->pid) !!}
                     </select>
-                    <span class="help-block" id="pid-error">请选择上级场地</span>
+                    <span class="help-block" id="pid-error">请选择上级品牌</span>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label">
-                    场地编码<span class="required">*</span>
+                    品牌编码<span class="required">*</span>
                 </label>
                 <div>
-                    <input type="text" placeholder="场地编码" disabled="" name="code" value="{{$area->code}}" class="form-control">
-                    <span class="help-block">请输入场地编码</span>
+                    <input type="text" placeholder="品牌编码" disabled="" name="code" value="{{$brand->code}}" class="form-control">
+                    <span class="help-block">请输入品牌编码</span>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label">
-                    场地名称
+                    品牌名称
                 </label>
                 <div>
-                    <input type="text" placeholder="场地名称" name="name" value="{{$area->name}}" class="form-control">
-                    <span class="help-block">请输入场地名称</span>
+                    <input type="text" placeholder="品牌名称" name="name" value="{{$brand->name}}" class="form-control">
+                    <span class="help-block">请输入品牌名称</span>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label" for="remarks">备注</label>
                 <div>
-                    <textarea class="form-control" name="remarks" cols="5"  placeholder="场地备注">{{$area->remarks}}</textarea>
+                    <textarea class="form-control" name="remarks" cols="5"  placeholder="品牌备注">{{$brand->remarks}}</textarea>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
@@ -48,14 +48,14 @@
                     状态
                 </label>
                 <div>
-                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="icheck" value="1" {{ $area->status ? 'checked' : '' }}> 可用 </label>
-                    <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0" {{ $area->status ? '' : 'checked' }}> 不可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" name="status" class="icheck" value="1" {{ $brand->status ? 'checked' : '' }}> 可用 </label>
+                    <label class="radio-inline i-checks"> <input type="radio" class="icheck" name="status" value="0" {{ $brand->status ? '' : 'checked' }}> 不可用 </label>
                 </div>
             </div>
             <div class="form-actions border-top ">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
-                <input type="hidden" name="id" value="{{ $area->id }}">
+                <input type="hidden" name="id" value="{{ $brand->id }}">
                 <button type="submit" class="btn btn-success ladda-button" data-style="expand-left"><span class="ladda-label">保存</span></button>
                 <button type="button" class="btn btn-danger ladda-button" id="delete" data-style="expand-left">删除</button>
                 <button type="button" class="btn btn-default" id="cannel">取消</button>
@@ -66,7 +66,7 @@
                 var forms = $('#dep-form');
                 var l = $("button[type='submit']").ladda();
                 $('#cannel').click(function(){
-                    zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("area/create") }}',{},false);
+                    zjb.ajaxGetHtml('#dep-form-wrapper','{{ url("brand/create") }}',{},false);
                 });
                 $('#delete').click(function(){
                     var dl = $("#delete").ladda();
@@ -183,7 +183,7 @@
                                     toastr.success(data.message);
                                     //重新载入左侧树形菜单
                                     $.fn.zTree.getZTreeObj("departments-tree").reAsyncChildNodes(null, "refresh");
-                                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("area/".$area->id."/edit") }}',{},false);
+                                    zjb.ajaxGetHtml($('#dep-form-wrapper'),'{{ url("brand/".$brand->id."/edit") }}',{},false);
                                 }else{
                                    toastr.error(data.message,'警告'); 
                                 }

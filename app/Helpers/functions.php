@@ -444,6 +444,28 @@ if (!function_exists('area_select')) {
 }
 
 
+if (!function_exists('brand_select')) {
+    function brand_select($selected = 0, $type = 0)
+    {
+        $list = \App\Models\Asset\Brand::getSpaceTreeData();
+        if ($type == 1) {
+            $str = '<option value="">请选择品牌</option>';
+        } else {
+            $str = '<option value="0">顶级品牌</option>';
+        }
+
+        if ($list) {
+            foreach ($list as $key => $val) {
+                $str .= '<option value="' . $val['id'] . '" '
+                    . ($selected == $val['id'] ? 'selected="selected"' : '') . '>'
+                    . $val['space'] . $val['name'] . '(' . $val['code'] . ')' . '</option>';
+            }
+        }
+        return $str;
+    }
+}
+
+
 /**
  * 通过分类id 获取分类名称
  * @param $id
