@@ -124,6 +124,15 @@
 					 			<span class="help-block">请填写单位联系人邮箱</span>
 					 		</div>
 					 	</div>
+						 <div class="form-group">
+							 <label class="control-label">
+								 需要LDAP验证
+							 </label>
+							 <div>
+								 <label class="radio-inline i-checks"> <input type="radio" name="is_ldap" class="icheck" value="0" checked> 不需要 </label>
+								 <label class="radio-inline i-checks"> <input type="radio" name="is_ldap" class="icheck" value="1" > 需要 </label>
+							 </div>
+						 </div>
 					 	<div class="form-actions border-top">
 					 		<label class="col-md-3 control-label"></label>
 					 		<div class="col-md-7">

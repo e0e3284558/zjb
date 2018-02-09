@@ -65,6 +65,7 @@ class DepartmentController extends Controller
                     $unit->contacts_tel = $data['contacts_tel'];
                     $unit->contacts_postion = $data['contacts_postion'];
                     $unit->contacts_email = $data['contacts_email'];
+                    $unit->is_ldap = $data['is_ldap'];
                     if ($unit->save()) {
                         return response()->json([
                             'status' => 1, 'message' => '保存成功',
