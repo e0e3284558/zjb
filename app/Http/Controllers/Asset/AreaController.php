@@ -251,7 +251,7 @@ class AreaController extends Controller
     /**
      * 下载模板
      */
-    /*public function downloadModel()
+    public function downloadModel()
     {
         $cellData = [['场地名称','父类','场地备注']];
         $cellData2 = [['场地名称','场地编号']];
@@ -296,7 +296,7 @@ class AreaController extends Controller
 
 
         })->export('xls');
-    }*/
+    }
 
     /**
      * @return Response
