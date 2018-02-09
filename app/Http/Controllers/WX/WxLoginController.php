@@ -43,15 +43,28 @@ class WxLoginController extends Controller
 
     public function addUser(Request $request){
         //获取资产的org_id
+
         $asset_info = Asset::where("asset_uid",$request->asset_uuid)->first();
-        if(User::where("openid",$request->openId)->first()){
-            $message = [
-                'code' => 0,
-                'message' => '用户已存在'
-            ];
-        }else {
+        if(User::where("union_id",$request->unionid)->first()){
+            if(User::where("union_id",$request->unionid)->value("openid")){
+                $message = [
+                    'code' => 0,
+                    'message' => '用户已存在'
+                ];
+            }else{
+                $info = User::where("union_id",$request->unionid)->update('openid',$request->openid);
+                if($info){
+                    $message = [
+                        'code' => 1,
+                        'message' => '用户添加成功'
+                    ];
+                }
+            }
+
+        } else {
             $user = new User;
             $user->openid = $request->openId;
+            $user->union_id = $request->unionid;
             $user->name = $request->name;
             if ($user->save()) {
                 if ($user->orgs()->sync($asset_info->org_id)) {
