@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WX;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Repair\Classify;
+use App\Models\User\Org;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,22 +24,32 @@ class WxAreaController extends Controller
     }
 
     public  function getOrg(Request $request){
-        $user_info = User::where("openid",$request->openId)->with("orgs")->first();
+//        $user_info = User::where("openid",$request->openId)->with("orgs")->first();
 
         $arr = [];
-        if ($user_info->orgs->isEmpty()){
-            $arr = [
-                'code' => 0,
-                'message' => '暂无数据'
+//        if ($user_info->orgs->isEmpty()){
+//            $arr = [
+//                'code' => 0,
+//                'message' => '暂无数据'
+//            ];
+//        }else{
+//            foreach ($user_info->orgs as $v){
+//                $arr[] = [
+//                    'id' => $v->id,
+//                    'name' => $v->name
+//                ];
+//            }
+//        }
+
+        $list = Org::get();
+
+        foreach ($list as $v){
+            $arr[] = [
+                'id' => $v->id,
+                'name' => $v->name
             ];
-        }else{
-            foreach ($user_info->orgs as $v){
-                $arr[] = [
-                    'id' => $v->id,
-                    'name' => $v->name
-                ];
-            }
         }
+
         return response()->json($arr);
     }
 
