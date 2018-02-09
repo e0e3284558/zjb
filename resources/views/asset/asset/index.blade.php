@@ -126,6 +126,8 @@
                             <li><a class="btn btn-default" id="printBarcode download" href="{{url('asset/downloadModel')}}"><i class="fa fa-sign-in"></i> 下载模板</a></li>
                             <li><a class="btn btn-default" id="print download" href="{{url('asset/add_import')}}" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="fa fa-sign-in"></i> 资产导入</a></li>
                             <li><a class="btn btn-default" id="print download" href="{{url('asset/export')}}"><i class="fa fa-sign-out"></i> 导出资产数据</a></li>
+                            <li><a class="btn btn-default" id="print download" href="{{url('asset/export')}}"><i class="fa fa-sign-out"></i> 打印资产二维码</a></li>
+                            <li><a class="btn btn-default" id="print download" href="{{url('asset/export')}}"><i class="fa fa-sign-out"></i> 批量打印资产二维码</a></li>
                         </ul>
                     </div>
                 </div>
