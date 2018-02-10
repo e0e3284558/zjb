@@ -211,6 +211,12 @@ class WxLoginController extends Controller
             $info = User::where("tel",$phone_info->phoneNumber)->first();
         }else{
             $info = ServiceWorker::where("tel",$phone_info->phoneNumber)->first();
+            if(!$info){
+                return $message = [
+                    'code' => 0,
+                    'message' => '你没有报修权限，请联系管理员'
+                ];
+            }
         }
 
         if($info){
@@ -268,6 +274,9 @@ class WxLoginController extends Controller
                     'message' => '对不起，你不是维修人员'
                 ];
             }
+        }else{
+            //获取解密后的用户信息
+            return $this->wxxcx->getUserInfo($encryptedData, $iv);
         }
 
 //        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
