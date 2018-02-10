@@ -217,7 +217,7 @@ class WxLoginController extends Controller
             if($request->role==1){
                 $info = User::where("id",$info->id)->update(['phone_authorize'=>1]);
             }else{
-                $info = ServiceWorker::where("id",$info->id)->update(['phone_authorize'=>1]);
+                $info = ServiceWorker::where("id",$info->id)->update(['phone_authorize'=>1,'union_id'=>$request->union_id,'opeid'=>$request->openid]);
             }
             if($info){
                 $message = [
@@ -257,7 +257,7 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
         //首先判断维修人员是否已经认证
-        $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
+        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
         if($workerInfo){
             if($workerInfo->openid){
                 //获取解密后的用户信息
