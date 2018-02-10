@@ -163,21 +163,21 @@ class WxLoginController extends Controller
      */
     public function phoneAuthorize(Request $request){
         //$request->role   1 普通用户  2 维修人员
-        if($request->role==1){
-            $info = User::where("openid",$request->openId)->first();
-        }else{
+//        if($request->role==1){
+//            $info = User::where("openid",$request->openId)->first();
+//        }else{
             $info = ServiceWorker::where("openid",$request->openId)->first();
-        }
+//        }
         if($info){
+            $message=[
+                'code' => 1,
+                'message' => '已经授权'
+            ];
+        }else{
             $message=[
                 'code' => 0,
                 'message' => '需要授权'
 
-            ];
-        }else{
-            $message=[
-                'code' => 1,
-                'message' => '已经授权'
             ];
         }
 
