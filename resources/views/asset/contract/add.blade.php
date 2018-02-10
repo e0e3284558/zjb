@@ -51,19 +51,11 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6" >
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="Comment" class="col-sm-2 control-label">上传合同文件</label>
-                    <div class="col-sm-10">
-                        <input type="hidden" id="upload_id" name="file_id" value="">
-                        <div id="single-file-upload-instance" class="clearfix multi-file-upload">
-                            <div id="single-file-upload-instance-file-list" class="pull-left">
-                            </div>
-                            <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
-                                <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
-                                选择文件
-                            </div>
-                        </div>
+                    <label for="remarks" class="col-sm-4 control-label">备注</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" name="remarks" rows="3" style="height: 80px;resize: none;" placeholder="备注说明 ..."></textarea>
                     </div>
                 </div>
             </div>
@@ -80,15 +72,22 @@
             </div>
         </div>
         <div class="row" >
-            <div class="col-md-12">
+            <div class="col-md-12" >
                 <div class="form-group">
-                    <label for="remarks" class="col-sm-4 control-label">备注</label>
-                    <div class="col-sm-8">
-                        <textarea class="form-control" name="remarks" rows="3" style="height: 80px;resize: none;" placeholder="备注说明 ..."></textarea>
+                    <label for="Comment" class="col-sm-2 control-label">上传合同文件</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" id="upload_id" name="file_id" value="">
+                        <div id="single-file-upload-instance" class="clearfix multi-file-upload">
+                            <div id="single-file-upload-instance-file-list" class="pull-left">
+                            </div>
+                            <div id="single-file-upload-instance-picker" class="pull-left m-b-sm p-xxs b-r-sm tooltips uploader-picker" data-toggle="tooltip" data-placement="top" data-original-title="文件大小10M以内">
+                                <p class="m-b-sm"><i class="fa fa-plus-circle font-blue fa-2x fa-fw"></i></p>
+                                选择文件
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
 
 
