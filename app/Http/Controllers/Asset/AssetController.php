@@ -401,6 +401,8 @@ class AssetController extends Controller
                     'created_at' => date("Y-m-d H:i:s"),
                     'supplier_id' => $info->supplier_id,
                     'status' => "1",
+                    //生产日期
+                    'production_date' => $info->production_date,
                     'contract_id' => $info->contract_id
                 ];
                 //查找当前org_id、当前资产类别下的最大serial_number值

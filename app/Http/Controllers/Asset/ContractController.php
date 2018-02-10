@@ -99,6 +99,7 @@ class ContractController extends Controller
             $arr['supplier_id'] = $request->second_party;
             $arr['org_id'] = get_current_login_user_org_id();
             $arr['status'] = "1";
+            $arr['production_date'] = $request->production_date[$k];
             $arr['created_at'] = date("Y-m-d H:i:s");
             $info = Bill::insert($arr);
         }
