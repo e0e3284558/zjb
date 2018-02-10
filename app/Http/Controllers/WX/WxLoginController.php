@@ -217,7 +217,7 @@ class WxLoginController extends Controller
             if($request->role==1){
                 $info = User::where("id",$info->id)->update(['phone_authorize'=>1]);
             }else{
-                $info = ServiceWorker::where("id",$info->id)->update(['phone_authorize'=>1,'union_id'=>$request->union_id,'opeid'=>$request->openid]);
+                $info = ServiceWorker::where("id",$info->id)->update(['phone_authorize'=>1,'union_id'=>$request->union_id,'openid'=>$request->openid]);
             }
             if($info){
                 $message = [
