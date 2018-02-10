@@ -130,7 +130,7 @@ class WxAreaController extends Controller
     }
 
     public function getClassify(Request $request){
-        $classify_list = Classify::where("enabled",1)->get();
+        $classify_list = Classify::where("enabled",1)->where("pid","!=","0")->get();
         return response()->json($classify_list);
     }
 
