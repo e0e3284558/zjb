@@ -256,17 +256,31 @@ class WxLoginController extends Controller
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
-        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
-
-        if(!$judge){
-            return $message = [
-                'code' => 0,
-                'message' => '对不起，你不是维修人员'
-            ];
-        }else{
-            //获取解密后的用户信息
-            return $this->wxxcx->getUserInfo($encryptedData, $iv);
+        //首先判断维修人员是否已经认证
+        $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
+        if($workerInfo){
+            if($workerInfo->openid){
+                //获取解密后的用户信息
+                return $this->wxxcx->getUserInfo($encryptedData, $iv);
+            }else{
+                return $message = [
+                    'code' => 0,
+                    'message' => '对不起，你不是维修人员'
+                ];
+            }
         }
+
+//        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
+
+//        if(!$judge){
+//            return $message = [
+//                'code' => 0,
+//                'message' => '对不起，你不是维修人员'
+//            ];
+//        }else{
+//            //获取解密后的用户信息
+//            return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//        }
     }
 
     /**
