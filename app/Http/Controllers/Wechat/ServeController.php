@@ -20,7 +20,8 @@ class ServeController extends Controller
         //获取用户的UnionID
         $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $open_id . '=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
-        return $UnionID_html->unionid;
+        $union_id=json_decode($UnionID_html)->unionid;
+        return $union_id;
     }
 
 
@@ -30,15 +31,7 @@ class ServeController extends Controller
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    $union_id =$this->get_unionID($message['FromUserName']);
-                    $test11 = new Test;
-                    $test11->comment = $union_id;
-                    $test11->save();
-//                    $union_id = $this->get_unionID($message['FromUserName']);
-//                    $user_g = new User;
-//                    $user_g->g_open_id = $message['FromUserName'];
-//                    $user_g->union_id = $union_id;
-//                    $user_g->save();
+                    
                     return '收到事件消息UnionID';
                     break;
                 case 'text':
