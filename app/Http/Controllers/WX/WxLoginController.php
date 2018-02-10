@@ -168,15 +168,16 @@ class WxLoginController extends Controller
         }else{
             $info = ServiceWorker::where("openid",$request->openId)->first();
         }
-        if($info->phone_authorize==0){
+        if($info->phone_authorize==1){
             return $message=[
-                'code' => 0,
-                'message' => '需要授权'
+
+                'code' => 1,
+                'message' => '已经授权'
             ];
         }else{
             return $message=[
-                'code' => 1,
-                'message' => '已经授权'
+                'code' => 0,
+                'message' => '需要授权'
             ];
         }
     }
