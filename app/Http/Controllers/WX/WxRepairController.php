@@ -87,6 +87,10 @@ class WxRepairController extends Controller
             'created_at' => date("Y-m-d H:i:s")
         ];
 
+        if($request->user_phone){
+            $arr['user_phone'] = $request->user_phone;
+        }
+
         // 新增一条报修并且获取报修单id
         $process_id = Process::insertGetId($arr);
 
@@ -444,6 +448,7 @@ class WxRepairController extends Controller
             'result' => $repair_info->result,
             'service_img_url' => $service_img_url,
             'org_id' => $repair_info->org_id,
+            'user_phone' => $request->user_phone,
             'create_time' => date("Y-m-d H:i:s",strtotime($repair_info->created_at)),
             'finish_time' => date("Y-m-d H:i:s",strtotime($repair_info->finish_time)),
         ];
