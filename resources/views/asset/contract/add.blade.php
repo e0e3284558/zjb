@@ -71,8 +71,20 @@
                 </div>
             </div>
         </div>
+
         <div class="row" >
             <div class="col-md-6" >
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">签订日期</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="sign_date" class="form-control datepicker" data-date-date = "0d" data-error-container="#error-block" placeholder="签订日期">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" >
+            <div class="col-md-12" >
                 <div class="form-group">
                     <label for="Comment" class="col-sm-2 control-label">上传合同文件</label>
                     <div class="col-sm-10">
@@ -85,15 +97,6 @@
                                 选择文件
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6" >
-                <div class="form-group">
-                    <label class="col-sm-4 control-label">签订日期</label>
-                    <div class="col-sm-8">
-                        <input type="text" name="sign_date" class="form-control datepicker" data-date-date = "0d" data-error-container="#error-block" placeholder="签订日期">
                     </div>
                 </div>
             </div>
