@@ -14,7 +14,7 @@ class AddPidToClassifiesTable extends Migration
     public function up()
     {
         Schema::table('classifies', function (Blueprint $table) {
-            $table->string('pid')->default(0)->commit("子级报修项目");
+            $table->string('pid')->default(0)->comment("子级报修项目");
         });
     }
 

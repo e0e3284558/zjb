@@ -23,6 +23,7 @@
                     <th>计量单位<span style="color: red;" >*</span></th>
                     <th>单价(元)<span style="color: red;" >*</span></th>
                     <th style="width: 150px;">供应商<span style="color: red;" >*</span></th>
+                    <th style="width: 150px;">生产日期<span style="color: red;" >*</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,11 +38,7 @@
                     <td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block" ></td>
                     <td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>
                     <td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>
-                    <td>
-                        <select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">
-                            {!! supplier_select() !!}
-                        </select>
-                    </td>
+                    <td><input class="form-control datepicker" type="text" name="production_date[]" data-date-date = "0d" data-error-container="#error-block" placeholder="生产日期"></td>
                 </tr>
                 </tbody>
             </table>
@@ -215,9 +212,7 @@
                 '<td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block"></td>'+
                 '<td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>'+
                 '<td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>' +
-                '<td><select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">' +
-                '{!! supplier_select() !!}' +
-                '</select></td>' +
+                '<td><input class="form-control datepicker" type="text" name="production_date[]" data-date-date = "0d" data-error-container="#error-block" placeholder="生产日期"></td>'+
                 '</tr>'
             )
         });

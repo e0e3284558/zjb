@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUserPhoneToProcessesTable extends Migration
+class AddSignDateToContractsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddUserPhoneToProcessesTable extends Migration
      */
     public function up()
     {
-        Schema::table('processes', function (Blueprint $table) {
-            $table->string('user_phone')->nullable()->comment("报修人联系方式");
+        Schema::table('contracts', function (Blueprint $table) {
+            $table->string('sign_date')->nullable()->comment("合同签订时间");
         });
     }
 
@@ -25,7 +25,7 @@ class AddUserPhoneToProcessesTable extends Migration
      */
     public function down()
     {
-        Schema::table('processes', function (Blueprint $table) {
+        Schema::table('contracts', function (Blueprint $table) {
             //
         });
     }

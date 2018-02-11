@@ -80,7 +80,8 @@ class ContractController extends Controller
             'file_id' => $request->file_id,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'org_id' => get_current_login_user_org_id()
+            'org_id' => get_current_login_user_org_id(),
+            'sign_date' => $request->sign_date
         ];
         $contract_id = Contract::insertGetId($arrs);
 
@@ -151,6 +152,7 @@ class ContractController extends Controller
             $arr['money'] = $request->money[$k];
             $arr['supplier_id'] = $request->supplier_id[$k];
             $arr['status'] = "1";
+            $arr['production_date'] = $request->production_date[$k];
             $arr['org_id'] = get_current_login_user_org_id();
             $arr['created_at'] = date("Y-m-d H:i:s");
             $info = Bill::insert($arr);
