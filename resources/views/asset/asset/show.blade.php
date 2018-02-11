@@ -86,6 +86,25 @@
     </div>
 
     <div class="row" >
+        <div class="col-md-4" >
+            <div class="form-group">
+                <label class="col-md-4 control-label">生产日期</label>
+                <div class="col-md-8">
+                    <p class="padding-top-7">{{$info->production_date}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" >
+            <div class="form-group">
+                <label class="col-md-4 control-label">维保日期</label>
+                <div class="col-md-8">
+                    <p class="padding-top-7">{{$info->contract ? $info->contract->start_date : '暂无'}} 至 {{$info->contract ? $info->contract->end_date : '暂无'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" >
         <div class="col-md-4">
             <div class="form-group">
                 <label class="col-md-4 control-label">备注</label>
@@ -120,7 +139,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label">所属合同</label>
                 <div class="col-md-8">
-                    <p class="padding-top-7">{{$info->contract->name}}</p>
+                    <p class="padding-top-7">{{$info->contract ? $info->contract->name : '暂无'}}</p>
                 </div>
             </div>
         </div>
