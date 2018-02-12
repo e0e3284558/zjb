@@ -33,7 +33,6 @@ class ServeController extends Controller
     {
         $user_info = $this->get_unionID($open_id);
         $union_id = $user_info->unionid;
-        return $union_id;
         $service_worker = ServiceWorker::where('union_id', $union_id)->frist();
         $user = User::where('union_id', $union_id)->frist();
         if ($service_worker) {
