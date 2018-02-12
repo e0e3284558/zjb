@@ -36,11 +36,7 @@ class ServeController extends Controller
         $service_worker = ServiceWorker::where('union_id', $union_id)->first();
         $user = User::where('union_id', $union_id)->first();
         if ($service_worker) {
-            if (ServiceWorker::where('union_id', $union_id)->update(['g_open_id' => $open_id])) {
-                return '维修人员身份认证绑定成功';
-            } else {
-                return '维修人员身份认证绑定失败';
-            }
+            (ServiceWorker::where('union_id', $union_id)->update(['g_open_id' => $open_id]));
         }
         if ($user) {
             if (User::where('union_id', $union_id)->update(['g_open_id' => $open_id])) {

@@ -28,6 +28,34 @@ class WxRepairController extends Controller
         }
     }
 
+    /**
+     * 发送json形式的post请求
+     * @param $url
+     * @param $jsonStr
+     * @return array
+     */
+    public function http_post_json($url, $jsonStr)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json; charset=utf-8',
+                'Content-Length: ' . strlen($jsonStr)
+            )
+        );
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return array($httpCode, $response);
+    }
+
+
+
+
     //添加一个维修单
     public function add(Request $request)
     {
@@ -63,9 +91,8 @@ class WxRepairController extends Controller
                 }
             }
 
-
             $repair = Process::find($process_id);
-            $repair->service_worker_id = '8';
+            $repair->service_worker_id = 13;
             $worker_info = ServiceWorker::find($repair->service_worker_id);
             $asset = Asset::find($repair->asset_id);
             $address = get_area($asset->area_id?$asset->area_id:$repair->area_id);
@@ -80,20 +107,59 @@ class WxRepairController extends Controller
                     'asset' => $asset->name,
                     'address' => $address
                 );
+
+
+                $wx_data = [
+                    "touser" => $worker_info->g_open_id,
+                    "template_id" => "UaoimdRLOiz0bHgT7zpeMN_j2EpUJrs6mEgkOCsCplw",
+                    "miniprogram" => [
+                        "appid" => "wxfb71758f0f043c02",
+                        "pagepath" => "/pages/index/service/service"
+                    ],
+                    "topcolor" => "#FF0000",
+                    "data" => [
+                        "first" => [
+                            "value" => '尊敬的'.$worker_info->name.'您好',
+                            "color" => "#173177"
+                        ],
+                        "keyword1" => [
+                            "value" => get_org($process_id->org_id),
+                            "color" => "#173177"
+                        ],
+                        "keyword2" => [
+                            "value" =>get_asset_name($process_id->asset_id),
+                            "color" => "#173177"
+                        ],
+                        "keyword3" => [
+                            "value" => date('Y-m-d H:m'),
+                            "color" => "#173177"
+                        ],
+                        "keyword4" => [
+                            "value" => get_area($process_id->area_id),
+                            "color" => "#173177"
+                        ],
+                        "keyword5" => [
+                            "value" => "信息中心",
+                            "color" => "#173177"
+                        ],
+                        "remark" => [
+                            "value" => "感谢您的使用",
+                            "color" => "#173177"
+                        ],
+                    ]
+                ];
+
+                //提交微信公众号推送通知
+                $wx_data = json_encode($wx_data);
+                $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx9105e296fd5119cf&secret=3e8211e98a09d18c9410823e9f2781cf';
+                $html = file_get_contents($url);
+                $token = (json_decode($html)->access_token);
+                $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$token;
+                $jsonStr = $wx_data;
+                list($returnCode, $returnContent) = $this->http_post_json($url, $jsonStr);
+
                 SendShortMessage::dispatch($data);
-
-//                return response()->json([
-//                    'status' => 1, 'message' => '分派成功,且已经短信通知维修人员'
-//                ]);
             }
-//            else {
-//                return response()->json([
-//                    'status' => 0, 'message' => '分派失败',
-//                    'data' => null, 'url' => ''
-//                ]);
-//            }
-
-
             return $message = [
                 'code' => 1,
                 'message' => '报修成功'

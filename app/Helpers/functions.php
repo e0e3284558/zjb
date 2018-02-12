@@ -275,6 +275,7 @@ function id_to_imgs($id)
     }
 }
 
+
 /**
  * 头像返回缩略图或文字图标
  */
@@ -655,9 +656,9 @@ if (!function_exists('send_message')) {
         $submail = new \MESSAGEXsend($message_configs);
         $submail->setTo($data['tel']);
         $submail->SetProject($project_id);
-        $submail->AddVar('username',$data['username']);
-        $submail->AddVar('asset',$data['asset']);
-        $submail->AddVar('address',$data['address']);
+        $submail->AddVar('username', $data['username']);
+        $submail->AddVar('asset', $data['asset']);
+        $submail->AddVar('address', $data['address']);
         /*
          |调用 xsend 方法发送短信
          */
@@ -667,6 +668,14 @@ if (!function_exists('send_message')) {
          |打印服务器返回值
          */
         return current($xsend);
+    }
+}
+
+if (!function_exists('get_asset_name')) {
+    function get_asset_name($id)
+    {
+        $asset_name=App\Models\Asset\Asset::find($id);
+        return $asset_name;
     }
 }
 
