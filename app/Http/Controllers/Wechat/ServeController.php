@@ -21,7 +21,7 @@ class ServeController extends Controller
         $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $open_id . '&lang=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
         $user_info = json_decode($UnionID_html);
-        return $user_info->unionid;
+        return $user_info;
     }
 
 
@@ -33,6 +33,7 @@ class ServeController extends Controller
     {
         $user_info = $this->get_unionID($open_id);
         $union_id = $user_info->unionid;
+        return $union_id;
         $service_worker = ServiceWorker::where('union_id', $union_id)->frist();
         $user = User::where('union_id', $union_id)->frist();
         if ($service_worker) {
