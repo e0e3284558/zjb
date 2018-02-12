@@ -34,7 +34,7 @@ class ServeController extends Controller
         $user_info = $this->get_unionID($open_id);
         $union_id = $user_info->unionid;
         $service_worker = ServiceWorker::where('union_id', $union_id)->frist();
-        return $service_worker;
+        return '维修人员'.$service_worker;
         $user = User::where('union_id', $union_id)->frist();
         if ($service_worker) {
             if (ServiceWorker::where('union_id', $union_id)->update(['g_open_id' => $open_id])) {
