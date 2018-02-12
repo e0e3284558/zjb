@@ -13,6 +13,7 @@ class ServeController extends Controller
 
     public function get_unionID($open_id)
     {
+        return $open_id;
         //公众号获取token
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx9105e296fd5119cf&secret=3e8211e98a09d18c9410823e9f2781cf';
         $html = file_get_contents($url);
