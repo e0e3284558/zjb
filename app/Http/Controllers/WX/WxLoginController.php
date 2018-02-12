@@ -6,11 +6,13 @@ use App\Models\Asset\Asset;
 use App\Models\Repair\ServiceWorker;
 use App\Models\User\Org;
 use App\Models\User\User;
+use EasyWeChat\Factory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Iwanli\Wxxcx\WXBizDataCrypt;
 use Iwanli\Wxxcx\Wxxcx;
 use Illuminate\Support\Facades\Hash;
+use Overtrue\LaravelWeChat\Facade;
 
 class WxLoginController extends Controller
 {
@@ -202,7 +204,12 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
         $sessionKey = $userInfo['session_key'];
-        $appid = 'wxfb71758f0f043c02';
+        if($request->code==2){
+            $appid = 'wxc6cf5e40791e50d3';
+        }else{
+            $appid = 'wxfb71758f0f043c02';
+        }
+
         $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
@@ -263,24 +270,43 @@ class WxLoginController extends Controller
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
-        $userInfo = $this->wxxcx->getLoginInfo($code);
+//        $userInfo = $this->wxxcx->getLoginInfo($code);
+
+        $config = [
+            'app_id' => 'wxc6cf5e40791e50d3',
+            'secret' => '6bfd990614e4af1327cb8fb71e9a2674',
+
+            // 下面为可选项
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+
+            'log' => [
+                'level' => 'debug',
+                'file' => __DIR__.'/wechat.log',
+            ],
+        ];
+
+        $app = Factory::miniProgram($config);
+        $ss = $app->auth->session($code);
+        dump($ss);
+        dd();
 
         //首先判断维修人员是否已经认证
-        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
-        if($workerInfo){
-            if($workerInfo->openid){
-                //获取解密后的用户信息
-                return $this->wxxcx->getUserInfo($encryptedData, $iv);
-            }else{
-                return $message = [
-                    'code' => 0,
-                    'message' => '对不起，你不是维修人员'
-                ];
-            }
-        }else{
-            //获取解密后的用户信息
-            return $this->wxxcx->getUserInfo($encryptedData, $iv);
-        }
+//        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
+//        if($workerInfo){
+//            if($workerInfo->openid){
+//                //获取解密后的用户信息
+//                return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//            }else{
+//                return $message = [
+//                    'code' => 0,
+//                    'message' => '对不起，你不是维修人员'
+//                ];
+//            }
+//        }else{
+//            //获取解密后的用户信息
+//            return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//        }
 
 //        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
 
