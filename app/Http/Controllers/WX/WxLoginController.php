@@ -163,22 +163,25 @@ class WxLoginController extends Controller
      */
     public function phoneAuthorize(Request $request){
         //$request->role   1 普通用户  2 维修人员
-        if($request->role==1){
-            $info = User::where("openid",$request->openId)->first();
-        }else{
+//        if($request->role==1){
+//            $info = User::where("openid",$request->openId)->first();
+//        }else{
             $info = ServiceWorker::where("openid",$request->openId)->first();
-        }
-        if($info->phone_authorize==0){
-            return $message=[
-                'code' => 0,
-                'message' => '需要授权'
-            ];
-        }else{
-            return $message=[
+//        }
+        if($info){
+            $message=[
                 'code' => 1,
                 'message' => '已经授权'
             ];
+        }else{
+            $message=[
+                'code' => 0,
+                'message' => '需要授权'
+
+            ];
         }
+
+        return $message;
     }
 
 
@@ -211,13 +214,19 @@ class WxLoginController extends Controller
             $info = User::where("tel",$phone_info->phoneNumber)->first();
         }else{
             $info = ServiceWorker::where("tel",$phone_info->phoneNumber)->first();
+            if(!$info){
+                return $message = [
+                    'code' => 0,
+                    'message' => '你没有报修权限，请联系管理员'
+                ];
+            }
         }
 
         if($info){
             if($request->role==1){
                 $info = User::where("id",$info->id)->update(['phone_authorize'=>1]);
             }else{
-                $info = ServiceWorker::where("id",$info->id)->update(['phone_authorize'=>1]);
+                $info = ServiceWorker::where("id",$info->id)->update(['phone_authorize'=>1,'union_id'=>$request->union_id,'openid'=>$request->openid]);
             }
             if($info){
                 $message = [
@@ -257,7 +266,7 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
         //首先判断维修人员是否已经认证
-        $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
+        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
         if($workerInfo){
             if($workerInfo->openid){
                 //获取解密后的用户信息
@@ -268,6 +277,9 @@ class WxLoginController extends Controller
                     'message' => '对不起，你不是维修人员'
                 ];
             }
+        }else{
+            //获取解密后的用户信息
+            return $this->wxxcx->getUserInfo($encryptedData, $iv);
         }
 
 //        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();

@@ -49,6 +49,7 @@
             <th lay-data="{field:'second_party', width:180, sort: true}">乙方</th>
             <th lay-data="{field:'third_party', width:180, sort: true}">丙方</th>
             <th lay-data="{field:'file',templet: '#fileTpl', width:180, sort: true}">合同文件</th>
+            <th lay-data="{field:'sign_date', width:180, sort: true}">签订日期</th>
             <th lay-data="{field:'remarks', width:180, sort: true}">备注说明</th>
             <th lay-data="{field:'created_at', width:170, sort: true}">创建时间</th>
             <th lay-data="{field:'updated_at', width:170, sort: true}">更新时间</th>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPidToClassifiesTable extends Migration
+class AddUserPhoneToProcessesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddPidToClassifiesTable extends Migration
      */
     public function up()
     {
-        Schema::table('classifies', function (Blueprint $table) {
-            $table->string('pid')->default(0)->comment("子级报修项目");
+        Schema::table('processes', function (Blueprint $table) {
+            $table->string('user_phone')->nullable()->comment("报修人联系方式");
         });
     }
 
@@ -25,6 +25,8 @@ class AddPidToClassifiesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('processes', function (Blueprint $table) {
+            //
+        });
     }
 }

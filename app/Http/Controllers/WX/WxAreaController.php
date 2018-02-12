@@ -136,11 +136,12 @@ class WxAreaController extends Controller
 
     //场地扫码报修
     public function findArea(Request $request){
-        $area_info = Area::where("uuid",$request->uuid)->first();
+        $area_info = Area::where("uuid",$request->uuid)->with("org")->first();
         $area = [
             'area_id' => $area_info->id,
             'area_name' => get_area($area_info->id),
-            'org_id' => $area_info->org_id
+            'org_id' => $area_info->org_id,
+            'org_name' => $area_info->org->name
         ];
 
         return response()->json($area);

@@ -71,6 +71,18 @@
                 </div>
             </div>
         </div>
+
+        <div class="row" >
+            <div class="col-md-6" >
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">签订日期</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="sign_date" class="form-control datepicker" data-date-date = "0d" data-error-container="#error-block" placeholder="签订日期">
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row" >
             <div class="col-md-12" >
                 <div class="form-group">
@@ -193,7 +205,8 @@
                     number:true
                 },
                 'supplier_id[]':'required',
-                'production_date[]': 'required'
+                'production_date[]': 'required',
+                'sign_date': 'required'
             },
             messages: {
                 'names[]':"清单名称不能为空",
@@ -209,7 +222,8 @@
                     number:'请输入正确单价'
                 },
                 'supplier_id[]':"请选择供应商",
-                'production_date[]':'请选择生产日期'
+                'production_date[]':'请选择生产日期',
+                'sign_date': '请选择签订日期'
             },
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -307,9 +321,6 @@
                 '<td><input class="form-control" type="text" name="spec[]" data-error-container="#error-block"></td>'+
                 '<td><input class="form-control" type="text" name="calculate[]" data-error-container="#error-block"></td>'+
                 '<td><input class="form-control" type="text" name="money[]" data-error-container="#error-block"></td>' +
-                '<td><select class="form-control select2" name="supplier_id[]" data-error-container="#error-block" id="supplier_id">' +
-                '{!! supplier_select() !!}' +
-                '</select></td>' +
                 '<td><input class="form-control datepicker" type="text" name="production_date[]" data-date-date = "0d" data-error-container="#error-block" placeholder="生产日期"></td>'+
                 '</tr>'
             )

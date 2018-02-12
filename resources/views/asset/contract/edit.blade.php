@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label for="money" class="col-sm-4 control-label">丙方</label>
                     <div class="col-sm-8">
-                        <input type="text" name="third_party" value="{{$info->third_party}}" class="form-control" data-error-container="#error-block" placeholder="规格型号">
+                        <input type="text" name="third_party" value="{{$info->third_party}}" class="form-control" data-error-container="#error-block" placeholder="丙方">
                     </div>
                 </div>
             </div>
