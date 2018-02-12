@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Wechat;
 
+use App\Models\Repair\ServiceWorker;
 use App\Models\User\User;
 use App\Http\Controllers\Controller;
 use App\Models\WeChat\Test;
@@ -25,14 +26,39 @@ class ServeController extends Controller
     }
 
 
+    /**
+     * 判断是否为在小程序注册的用户，如果小程序已经注册，则根据union_id绑定公众号，否则不执行操作
+     * @param $open_id
+     */
+    public function is_applet_user($open_id)
+    {
+        $union_id=$this->get_unionID($open_id);
+        $service_worker=ServiceWorker::where('union_id',$union_id)->frist();
+        $user=User::where('union_id',$union_id)->frist();
+        if ($service_worker){
+            if (ServiceWorker::where('union_id',$union_id)->update(['g_open_id'=>$open_id])){
+                return '维修人员身份认证绑定成功';
+            }else{
+                return '维修人员身份认证绑定失败';
+            }
+        }
+        if ($user){
+            if (User::where('union_id',$union_id)->update(['g_open_id'=>$open_id])){
+                return '恭喜您公众号绑定成功';
+            }else{
+                return '抱歉，公众号绑定失败';
+            }
+        }
+    }
+
+
     public function serve()
     {
         $app = app('wechat.official_account');
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    
-                    return '收到事件消息UnionID';
+                    return  $this->is_applet_user($message['FromUserName']);
                     break;
                 case 'text':
                     return '收到文字消息';
