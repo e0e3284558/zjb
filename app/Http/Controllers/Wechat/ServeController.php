@@ -33,6 +33,7 @@ class ServeController extends Controller
     public function is_applet_user($open_id)
     {
         $user_info = $this->get_unionID($open_id);
+        return '关注成功';
         $union_id = $user_info->unionid;
         $service_worker = ServiceWorker::where('union_id', $union_id)->frist();
         $user = User::where('union_id', $union_id)->frist();
