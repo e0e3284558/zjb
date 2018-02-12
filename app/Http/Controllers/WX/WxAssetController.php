@@ -26,8 +26,6 @@ class WxAssetController extends Controller
                 'message' => '请输入正确的编号'
             ];
         }
-        //资产所在场地
-        $info->field = get_area($info->area_id);
 
         return $info;
     }
