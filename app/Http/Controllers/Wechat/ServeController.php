@@ -52,8 +52,8 @@ class ServeController extends Controller
         $user = new User;
         $user->name = $user_info->nickname;
         $user->avatar = $user_info->headimgurl;
-        $user->g_open_id = $user_info->open_id;
-        $user->union_id = $user_info->union_id;
+        $user->g_open_id = $user_info->openid;
+        $user->union_id = $user_info->unionid;
         if ($user->save()) {
             return '恭喜您，关注成功';
         } else {
