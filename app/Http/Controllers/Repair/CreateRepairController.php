@@ -416,27 +416,27 @@ class CreateRepairController extends Controller
             "topcolor" => "#FF0000",
             "data" => [
                 "first" => [
-                    "value" => "黄先生",
+                    "value" => '尊敬的'.$worker_info->name.'您好',
                     "color" => "#173177"
                 ],
                 "keyword1" => [
-                    "value" => "123123123",
+                    "value" => get_org($repair->org_id),
                     "color" => "#173177"
                 ],
                 "keyword2" => [
-                    "value" => "程先生",
+                    "value" =>get_asset_name($repair->asset_id),
                     "color" => "#173177"
                 ],
                 "keyword3" => [
-                    "value" => "18355330216",
+                    "value" => date('Y-m-d H:m'),
                     "color" => "#173177"
                 ],
                 "keyword4" => [
-                    "value" => "拉萨的解放立刻建立看见撒旦",
+                    "value" => get_area($repair->area_id),
                     "color" => "#173177"
                 ],
                 "keyword5" => [
-                    "value" => "2018-2-3 10：10",
+                    "value" => "信息中心",
                     "color" => "#173177"
                 ],
                 "remark" => [
@@ -446,12 +446,15 @@ class CreateRepairController extends Controller
             ]
         ];
 
+        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx9105e296fd5119cf&secret=3e8211e98a09d18c9410823e9f2781cf';
+        $html = file_get_contents($url);
+        $token = (json_decode($html)->access_token);
+
         //提交微信公众号推送通知
         $wx_data = json_encode($wx_data);
-        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . 'fasdhfhjgsdhfhs';
+        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$token;
         $jsonStr = $wx_data;
         list($returnCode, $returnContent) = $this->http_post_json($url, $jsonStr);
-        dd($returnContent);
 
         if ($repair->save()) {
             //使用方法
