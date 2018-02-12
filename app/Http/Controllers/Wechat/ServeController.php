@@ -20,6 +20,7 @@ class ServeController extends Controller
         //获取用户的UnionID
         $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $open_id . '=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
+        return substr($UnionID_html,0,150);
         $user_info = json_decode($UnionID_html);
         return $user_info->unionid;
     }
