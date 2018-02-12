@@ -50,6 +50,7 @@ class ServeController extends Controller
             }
         }
         $user = new User;
+        return $user_info->nickname;
         $user->name = $user_info->nickname;
         $user->avatar = $user_info->headimgurl;
         $user->g_open_id = $user_info->open_id;
