@@ -33,9 +33,8 @@ class ServeController extends Controller
     {
         $user_info = $this->get_unionID($open_id);
         $union_id = $user_info->unionid;
-        $service_worker = ServiceWorker::where('union_id', $union_id)->frist();
-        return substr($service_worker,0,150);
-        $user = User::where('union_id', $union_id)->frist();
+        $service_worker = ServiceWorker::where('union_id', $union_id)->first();
+        $user = User::where('union_id', $union_id)->first();
         if ($service_worker) {
             if (ServiceWorker::where('union_id', $union_id)->update(['g_open_id' => $open_id])) {
                 return '维修人员身份认证绑定成功';
