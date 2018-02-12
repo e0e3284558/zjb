@@ -17,7 +17,7 @@ class ServeController extends Controller
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx9105e296fd5119cf&secret=3e8211e98a09d18c9410823e9f2781cf';
         $html = file_get_contents($url);
         $token = (json_decode($html)->access_token);
-
+        return $token;
         //获取用户的UnionID
         $get_UnionID_url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $open_id . '=zh_CN ';
         $UnionID_html = file_get_contents($get_UnionID_url);
@@ -51,13 +51,13 @@ class ServeController extends Controller
             }
         }
         $user = new User;
-        $user->name =$user_info->nickname;
-        $user->avatar =$user_info->headimgurl;
-        $user->g_open_id =$user_info->open_id;
-        $user->union_id =$user_info->union_id;
-        if ($user->save()){
+        $user->name = $user_info->nickname;
+        $user->avatar = $user_info->headimgurl;
+        $user->g_open_id = $user_info->open_id;
+        $user->union_id = $user_info->union_id;
+        if ($user->save()) {
             return '恭喜您，关注成功';
-        }else{
+        } else {
             return '关注失败，请联系管理员';
         }
     }
