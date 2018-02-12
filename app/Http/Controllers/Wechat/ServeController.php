@@ -68,7 +68,6 @@ class ServeController extends Controller
         $app->server->push(function ($message) {
             switch ($message['MsgType']) {
                 case 'event':
-                    return $this->get_unionID($message['FromUserName']);
                     return $this->is_applet_user($message['FromUserName']);
                     break;
                 case 'text':
