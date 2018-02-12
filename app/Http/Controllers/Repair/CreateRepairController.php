@@ -401,7 +401,7 @@ class CreateRepairController extends Controller
         $repair->service_worker_id = $request->service_worker_id;
         $worker_info = ServiceWorker::find($repair->service_worker_id);
         $asset = Asset::find($repair->asset_id);
-        $address = get_area($asset->area_id);
+        $address = get_area($asset->area_id?$asset->area_id:$repair->area_id);
         $repair->service_provider_id = $request->service_provider_id;
         $repair->status = 2;
 
@@ -448,7 +448,7 @@ class CreateRepairController extends Controller
 
         //提交微信公众号推送通知
         $wx_data = json_encode($wx_data);
-        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $token;
+        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . 'fasdhfhjgsdhfhs';
         $jsonStr = $wx_data;
         list($returnCode, $returnContent) = $this->http_post_json($url, $jsonStr);
         dd($returnContent);

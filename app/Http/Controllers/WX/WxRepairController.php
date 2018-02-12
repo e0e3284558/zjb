@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\WX;
 
+use App\Jobs\SendShortMessage;
 use App\Models\Asset\Area;
 use App\Models\Asset\Asset;
 use App\Models\Asset\AssetCategory;
@@ -61,6 +62,38 @@ class WxRepairController extends Controller
                     }
                 }
             }
+
+
+            $repair = Process::find($process_id);
+            $repair->service_worker_id = '8';
+            $worker_info = ServiceWorker::find($repair->service_worker_id);
+            $asset = Asset::find($repair->asset_id);
+            $address = get_area($asset->area_id?$asset->area_id:$repair->area_id);
+            $repair->service_provider_id = $request->service_provider_id;
+            $repair->status = 2;
+
+            if ($repair->save()) {
+                //使用方法
+                $data = array(
+                    'username' => $worker_info->name,
+                    'tel' => $worker_info->tel,
+                    'asset' => $asset->name,
+                    'address' => $address
+                );
+                SendShortMessage::dispatch($data);
+
+//                return response()->json([
+//                    'status' => 1, 'message' => '分派成功,且已经短信通知维修人员'
+//                ]);
+            }
+//            else {
+//                return response()->json([
+//                    'status' => 0, 'message' => '分派失败',
+//                    'data' => null, 'url' => ''
+//                ]);
+//            }
+
+
             return $message = [
                 'code' => 1,
                 'message' => '报修成功'
