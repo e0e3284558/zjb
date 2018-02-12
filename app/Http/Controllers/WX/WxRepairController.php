@@ -123,11 +123,11 @@ class WxRepairController extends Controller
                             "color" => "#173177"
                         ],
                         "keyword1" => [
-                            "value" => get_org($process_id->org_id),
+                            "value" => get_org($repair->org_id),
                             "color" => "#173177"
                         ],
                         "keyword2" => [
-                            "value" =>get_asset_name($process_id->asset_id),
+                            "value" =>get_asset_name($repair->asset_id),
                             "color" => "#173177"
                         ],
                         "keyword3" => [
@@ -135,7 +135,7 @@ class WxRepairController extends Controller
                             "color" => "#173177"
                         ],
                         "keyword4" => [
-                            "value" => get_area($process_id->area_id),
+                            "value" => get_area($repair->area_id),
                             "color" => "#173177"
                         ],
                         "keyword5" => [
