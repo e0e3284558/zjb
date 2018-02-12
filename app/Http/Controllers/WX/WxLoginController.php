@@ -202,7 +202,7 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
         $sessionKey = $userInfo['session_key'];
-        $appid = 'wxfb71758f0f043c02';
+        $appid = 'wxc6cf5e40791e50d3';
         $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
