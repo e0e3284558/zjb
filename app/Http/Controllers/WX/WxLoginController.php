@@ -277,7 +277,7 @@ class WxLoginController extends Controller
 
 
 
-        $code2session_url = sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",'wxfb71758f0f043c02','c2185e541c2ab1efcd6b6f4bee333acd',$code);
+        $code2session_url = sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",'wxc6cf5e40791e50d3','d229b002be1f04c32ead5acb5167861c',$code);
         $userInfo = httpRequest($code2session_url);
 //        return $userInfo;
         if(!isset($userInfo['session_key'])){
