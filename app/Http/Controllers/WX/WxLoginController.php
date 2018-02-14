@@ -270,50 +270,37 @@ class WxLoginController extends Controller
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
+        $userInfo = $this->wxxcx->getLoginInfo($code);
 
 
-
-
-        $code2session_url = sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",'wxc6cf5e40791e50d3','f462f2ea18595a45235b5c9512a8575f',$code);
-        $userInfo = httpRequest($code2session_url);
-//        return $userInfo;
-        if(!isset($userInfo['session_key'])){
-            return [
-                'code' => 10000,
-                'code' => '获取 session_key 失败',
-            ];
+        //首先判断维修人员是否已经认证
+        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
+        if($workerInfo){
+            if($workerInfo->openid){
+                //获取解密后的用户信息
+                return $this->wxxcx->getUserInfo($encryptedData, $iv);
+            }else{
+                return $message = [
+                    'code' => 0,
+                    'message' => '对不起，你不是维修人员'
+                ];
+            }
+        }else{
+            //获取解密后的用户信息
+            return $this->wxxcx->getUserInfo($encryptedData, $iv);
         }
-        $this->sessionKey = $userInfo['session_key'];
-        return $userInfo;
 
-//        //首先判断维修人员是否已经认证
-//        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
-//        if($workerInfo){
-//            if($workerInfo->openid){
-//                //获取解密后的用户信息
-//                return $this->wxxcx->getUserInfo($encryptedData, $iv);
-//            }else{
-//                return $message = [
-//                    'code' => 0,
-//                    'message' => '对不起，你不是维修人员'
-//                ];
-//            }
-//        }else{
-//            //获取解密后的用户信息
-//            return $this->wxxcx->getUserInfo($encryptedData, $iv);
-//        }
-//
-//        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
-//
-//        if(!$judge){
-//            return $message = [
-//                'code' => 0,
-//                'message' => '对不起，你不是维修人员'
-//            ];
-//        }else{
-//            //获取解密后的用户信息
-//            return $this->wxxcx->getUserInfo($encryptedData, $iv);
-//        }
+        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
+
+        if(!$judge){
+            return $message = [
+                'code' => 0,
+                'message' => '对不起，你不是维修人员'
+            ];
+        }else{
+            //获取解密后的用户信息
+            return $this->wxxcx->getUserInfo($encryptedData, $iv);
+        }
     }
 
     /**

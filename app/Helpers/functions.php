@@ -702,5 +702,20 @@ if(!function_exists('httpRequest')){
 }
 
 
+if(!function_exists('getUserInfo')){
+    function getUserInfo($encryptedData, $iv){
+        $pc = new WXBizDataCrypt('', $this->sessionKey);
+        $decodeData = "";
+        $errCode = $pc->decryptData($encryptedData, $iv, $decodeData);
+        if ($errCode !=0 ) {
+            return [
+                'code' => 10001,
+                'message' => 'encryptedData 解密失败'
+            ];
+        }
+        return $decodeData;
+    }
+}
+
 
 
