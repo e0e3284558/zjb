@@ -278,14 +278,15 @@ class WxLoginController extends Controller
 
         $code2session_url = sprintf('https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code','wxc6cf5e40791e50d3','d229b002be1f04c32ead5acb5167861c',$code);
         $userInfo = httpRequest($code2session_url);
-        if(!isset($userInfo['session_key'])){
-            return [
-                'code' => 10000,
-                'code' => '获取 session_key 失败',
-            ];
-        }
-//        $this->sessionKey = $userInfo['session_key'];
         return $userInfo;
+//        if(!isset($userInfo['session_key'])){
+//            return [
+//                'code' => 10000,
+//                'code' => '获取 session_key 失败',
+//            ];
+//        }
+//        $this->sessionKey = $userInfo['session_key'];
+//        return $userInfo;
 
 
 
