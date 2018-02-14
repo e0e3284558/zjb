@@ -273,6 +273,7 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
 
+        return $userInfo;
 
 
 
@@ -288,34 +289,34 @@ class WxLoginController extends Controller
 //        $this->sessionKey = $userInfo['session_key'];
 //        return $userInfo;
 
-        //首先判断维修人员是否已经认证
-        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
-        if($workerInfo){
-            if($workerInfo->openid){
-                //获取解密后的用户信息
-                return $this->wxxcx->getUserInfo($encryptedData, $iv);
-            }else{
-                return $message = [
-                    'code' => 0,
-                    'message' => '对不起，你不是维修人员'
-                ];
-            }
-        }else{
-            //获取解密后的用户信息
-            return $this->wxxcx->getUserInfo($encryptedData, $iv);
-        }
-
-        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
-
-        if(!$judge){
-            return $message = [
-                'code' => 0,
-                'message' => '对不起，你不是维修人员'
-            ];
-        }else{
-            //获取解密后的用户信息
-            return $this->wxxcx->getUserInfo($encryptedData, $iv);
-        }
+//        //首先判断维修人员是否已经认证
+//        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
+//        if($workerInfo){
+//            if($workerInfo->openid){
+//                //获取解密后的用户信息
+//                return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//            }else{
+//                return $message = [
+//                    'code' => 0,
+//                    'message' => '对不起，你不是维修人员'
+//                ];
+//            }
+//        }else{
+//            //获取解密后的用户信息
+//            return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//        }
+//
+//        $judge = ServiceWorker::where("openid",$userInfo['openid'])->first();
+//
+//        if(!$judge){
+//            return $message = [
+//                'code' => 0,
+//                'message' => '对不起，你不是维修人员'
+//            ];
+//        }else{
+//            //获取解密后的用户信息
+//            return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//        }
     }
 
     /**
