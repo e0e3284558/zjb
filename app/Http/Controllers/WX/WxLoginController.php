@@ -273,21 +273,21 @@ class WxLoginController extends Controller
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
 
+//        return $userInfo;
+
+
+
+        $code2session_url = sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",'wxfb71758f0f043c02','c2185e541c2ab1efcd6b6f4bee333acd',$code);
+        $userInfo = httpRequest($code2session_url);
+//        return $userInfo;
+        if(!isset($userInfo['session_key'])){
+            return [
+                'code' => 10000,
+                'code' => '获取 session_key 失败',
+            ];
+        }
+        $this->sessionKey = $userInfo['session_key'];
         return $userInfo;
-
-
-
-//        $code2session_url = sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",'wxc6cf5e40791e50d3','d229b002be1f04c32ead5acb5167861c',$code);
-//        $userInfo = httpRequest($code2session_url);
-//        return $userInfo;
-//        if(!isset($userInfo['session_key'])){
-//            return [
-//                'code' => 10000,
-//                'code' => '获取 session_key 失败',
-//            ];
-//        }
-//        $this->sessionKey = $userInfo['session_key'];
-//        return $userInfo;
 
 //        //首先判断维修人员是否已经认证
 //        $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
