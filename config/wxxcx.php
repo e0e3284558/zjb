@@ -10,7 +10,7 @@ return [
      * 小程序Secret
      */
 //    'secret' => 'c2185e541c2ab1efcd6b6f4bee333acd',
-    'secret' => 'd229b002be1f04c32ead5acb5167861c',
+    'secret' => 'f462f2ea18595a45235b5c9512a8575f',
     /**
      * 小程序登录凭证 code 获取 session_key 和 openid 地址，不需要改动
      */
