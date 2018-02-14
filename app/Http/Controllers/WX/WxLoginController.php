@@ -270,14 +270,14 @@ class WxLoginController extends Controller
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
-//        $userInfo = $this->wxxcx->getLoginInfo($code);
+        $userInfo = $this->wxxcx->getLoginInfo($code);
 
 
 
 
 
-        $code2session_url = sprintf('https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code','wxc6cf5e40791e50d3','d229b002be1f04c32ead5acb5167861c',$code);
-        $userInfo = httpRequest($code2session_url);
+//        $code2session_url = sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",'wxc6cf5e40791e50d3','d229b002be1f04c32ead5acb5167861c',$code);
+//        $userInfo = httpRequest($code2session_url);
         return $userInfo;
 //        if(!isset($userInfo['session_key'])){
 //            return [
