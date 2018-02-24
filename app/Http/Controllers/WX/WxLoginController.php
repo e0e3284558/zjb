@@ -286,13 +286,13 @@ class WxLoginController extends Controller
 
 
         $userInfo = $this->httpRequest($code2session_url);
-        if(!isset($userInfo['session_key'])){
-            return [
-                'code' => 10000,
-                'code' => '获取 session_key 失败1',
-            ];
-        }
-        $this->sessionKey = $userInfo['session_key'];
+//        if(!isset($userInfo['session_key'])){
+//            return [
+//                'code' => 10000,
+//                'code' => '获取 session_key 失败1',
+//            ];
+//        }
+//        $this->sessionKey = $userInfo['session_key'];
         return $userInfo;
 
 //        if(!isset($apiData['errcode'])){
