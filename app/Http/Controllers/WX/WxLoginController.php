@@ -30,20 +30,20 @@ class WxLoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-//    public function login(Request  $request)
-//    {
-//        //code 在小程序端使用 wx.login 获取
-//        $code = $request->input('code');
-//        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
-//        $encryptedData = request('encryptedData', '');
-//        $iv = request('iv', '');
-//        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
-//        $userInfo = $this->wxxcx->getLoginInfo($code);
-//
-//        //获取解密后的用户信息
-//        return $this->wxxcx->getUserInfo($encryptedData, $iv);
-//
-//    }
+    public function login(Request  $request)
+    {
+        //code 在小程序端使用 wx.login 获取
+        $code = $request->input('code');
+        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
+        $encryptedData = request('encryptedData', '');
+        $iv = request('iv', '');
+        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
+        $userInfo = $this->wxxcx->getLoginInfo($code);
+
+        //获取解密后的用户信息
+        return $this->wxxcx->getUserInfo($encryptedData, $iv);
+
+    }
 
     public function addUser(Request $request){
         //获取资产的org_id
@@ -276,15 +276,15 @@ class WxLoginController extends Controller
         $appid = "wxc6cf5e40791e50d3" ;
         $secret = "f462f2ea18595a45235b5c9512a8575f";
 
-        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
-//        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
-
-//        $code2session_url = sprintf($URL,$appid,$secret,$code);
-
-//        dump($URL);
+//        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
 
 
-        $userInfo = $this->httpRequest($URL);
+        $code2session_url = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
+
+        $code2session_url = sprintf($code2session_url,$appid,$secret,$code);
+        $userInfo = $this->httpRequest($code2session_url);
+
+//        $userInfo = $this->httpRequest($URL);
 //        if(!isset($userInfo['session_key'])){
 //            return [
 //                'code' => 10000,
