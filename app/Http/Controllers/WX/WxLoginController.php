@@ -279,7 +279,7 @@ class WxLoginController extends Controller
         $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
 
         $apiData=file_get_contents($URL);
-        // var_dump($code,'wwwwwwww',$apiData['errscode']);
+         var_dump($code,'wwwwwwww',$apiData['errscode']);
         //     $ch = curl_init();
         // 　　curl_setopt($ch, CURLOPT_URL, $URL);
         // 　　curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -288,21 +288,21 @@ class WxLoginController extends Controller
         // 　　curl_close($ch)
 
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $URL);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-        if (!empty($data)){
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        }
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($curl);
-        if($output === FALSE ){
-            return false;
-        }
-        curl_close($curl);
-        return json_decode($output,JSON_UNESCAPED_UNICODE);
+//        $curl = curl_init();
+//        curl_setopt($curl, CURLOPT_URL, $URL);
+//        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+//        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+//        if (!empty($data)){
+//            curl_setopt($curl, CURLOPT_POST, 1);
+//            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+//        }
+//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//        $output = curl_exec($curl);
+//        if($output === FALSE ){
+//            return false;
+//        }
+//        curl_close($curl);
+//        return json_decode($output,JSON_UNESCAPED_UNICODE);
 
 //        if(!isset($apiData['errcode'])){
 //            $sessionKey = json_decode($apiData)->session_key;
