@@ -7,7 +7,7 @@
  */
 
 
-include_once "errorCode.php";
+include_once   app_path('/Http/Controllers/WX/errorCode.php');
 
 
 class WXBizDataCrypt
