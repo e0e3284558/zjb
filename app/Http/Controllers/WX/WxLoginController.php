@@ -287,14 +287,31 @@ class WxLoginController extends Controller
         // 　　$output = curl_exec($ch);
         // 　　curl_close($ch)
 
-        if(!isset($apiData['errcode'])){
-            $sessionKey = json_decode($apiData)->session_key;
-            $userifo = new \WXBizDataCrypt($appid, $sessionKey);
 
-            $errCode = $userifo->decryptData($encryptedData, $iv, $data );
-
-            dump($data);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $URL);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if (!empty($data)){
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        if($output === FALSE ){
+            return false;
+        }
+        curl_close($curl);
+        return json_decode($output,JSON_UNESCAPED_UNICODE);
+
+//        if(!isset($apiData['errcode'])){
+//            $sessionKey = json_decode($apiData)->session_key;
+//            $userifo = new \WXBizDataCrypt($appid, $sessionKey);
+//
+//            $errCode = $userifo->decryptData($encryptedData, $iv, $data );
+//
+//            dump($data);
+//        }
 
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
 //        $userInfo = $this->wxxcx->getLoginInfo($code);
