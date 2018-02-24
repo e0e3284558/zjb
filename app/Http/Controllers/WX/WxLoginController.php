@@ -14,6 +14,8 @@ use Iwanli\Wxxcx\Wxxcx;
 use Illuminate\Support\Facades\Hash;
 use Overtrue\LaravelWeChat\Facade;
 
+include_once   app_path('/Http/Controllers/WX/wxBizDataCrypt.php');
+
 class WxLoginController extends Controller
 {
     protected $wxxcx;
@@ -269,6 +271,46 @@ class WxLoginController extends Controller
         //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
+
+
+        $appid = "wxc6cf5e40791e50d3" ;
+        $secret = "f462f2ea18595a45235b5c9512a8575f";
+
+        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
+
+        $apiData=file_get_contents($URL);
+        // var_dump($code,'wwwwwwww',$apiData['errscode']);
+        //     $ch = curl_init();
+        // 　　curl_setopt($ch, CURLOPT_URL, $URL);
+        // 　　curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // 　　curl_setopt($ch, CURLOPT_HEADER, 0);
+        // 　　$output = curl_exec($ch);
+        // 　　curl_close($ch)
+
+        if(!isset($apiData['errcode'])){
+            $sessionKey = json_decode($apiData)->session_key;
+            $userifo = new \WXBizDataCrypt($appid, $sessionKey);
+
+            $errCode = $userifo->decryptData($encryptedData, $iv, $data );
+
+            dump($data);
+        }
+
+        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
+//        $userInfo = $this->wxxcx->getLoginInfo($code);
+
+
+
+    }
+
+
+    /*public function workerLogin(Request  $request)
+    {
+        //code 在小程序端使用 wx.login 获取
+        $code = $request->input('code');
+        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
+        $encryptedData = request('encryptedData', '');
+        $iv = request('iv', '');
         //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
         $userInfo = $this->wxxcx->getLoginInfo($code);
 
@@ -301,7 +343,7 @@ class WxLoginController extends Controller
             //获取解密后的用户信息
             return $this->wxxcx->getUserInfo($encryptedData, $iv);
         }
-    }
+    }*/
 
     /**
      * 利用资产的org_id查找公司是否需要LDAP验证登录
