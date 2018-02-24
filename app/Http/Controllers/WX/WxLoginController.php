@@ -276,33 +276,24 @@ class WxLoginController extends Controller
         $appid = "wxc6cf5e40791e50d3" ;
         $secret = "f462f2ea18595a45235b5c9512a8575f";
 
-        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
+//        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
+        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
 
-        $apiData=file_get_contents($URL);
-         var_dump($code,'wwwwwwww',$apiData['errscode']);
-        //     $ch = curl_init();
-        // 　　curl_setopt($ch, CURLOPT_URL, $URL);
-        // 　　curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // 　　curl_setopt($ch, CURLOPT_HEADER, 0);
-        // 　　$output = curl_exec($ch);
-        // 　　curl_close($ch)
+        $code2session_url = sprintf($URL,$appid,$secret,$code);
+
+//        $apiData=file_get_contents($URL);
 
 
-//        $curl = curl_init();
-//        curl_setopt($curl, CURLOPT_URL, $URL);
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-//        if (!empty($data)){
-//            curl_setopt($curl, CURLOPT_POST, 1);
-//            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-//        }
-//        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-//        $output = curl_exec($curl);
-//        if($output === FALSE ){
-//            return false;
-//        }
-//        curl_close($curl);
-//        return json_decode($output,JSON_UNESCAPED_UNICODE);
+
+        $userInfo = $this->httpRequest($code2session_url);
+        if(!isset($userInfo['session_key'])){
+            return [
+                'code' => 10000,
+                'code' => '获取 session_key 失败',
+            ];
+        }
+        $this->sessionKey = $userInfo['session_key'];
+        return $userInfo;
 
 //        if(!isset($apiData['errcode'])){
 //            $sessionKey = json_decode($apiData)->session_key;
@@ -318,6 +309,25 @@ class WxLoginController extends Controller
 
 
 
+    }
+
+    public function httpRequest($url, $data = null)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        if (!empty($data)){
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        }
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        if($output === FALSE ){
+            return false;
+        }
+        curl_close($curl);
+        return json_decode($output,JSON_UNESCAPED_UNICODE);
     }
 
 
