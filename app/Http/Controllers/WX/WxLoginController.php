@@ -267,7 +267,7 @@ class WxLoginController extends Controller
     public function workerLogin(Request  $request)
     {
         //code 在小程序端使用 wx.login 获取
-        $code = $request->input('code');
+        $code = $request->code;
         //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
