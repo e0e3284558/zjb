@@ -283,9 +283,10 @@ class WxLoginController extends Controller
 
 //        $apiData=file_get_contents($URL);
 
+        dump($URL);
 
 
-        $userInfo = $this->httpRequest($URL);
+//        $userInfo = $this->httpRequest($URL);
 //        if(!isset($userInfo['session_key'])){
 //            return [
 //                'code' => 10000,
