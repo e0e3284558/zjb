@@ -289,7 +289,7 @@ class WxLoginController extends Controller
         if(!isset($userInfo['session_key'])){
             return [
                 'code' => 10000,
-                'code' => '获取 session_key 失败',
+                'code' => '获取 session_key 失败1',
             ];
         }
         $this->sessionKey = $userInfo['session_key'];
