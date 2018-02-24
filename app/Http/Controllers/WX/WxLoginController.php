@@ -281,12 +281,10 @@ class WxLoginController extends Controller
 
 //        $code2session_url = sprintf($URL,$appid,$secret,$code);
 
-//        $apiData=file_get_contents($URL);
-
-        dump($URL);
+//        dump($URL);
 
 
-//        $userInfo = $this->httpRequest($URL);
+        $userInfo = $this->httpRequest($URL);
 //        if(!isset($userInfo['session_key'])){
 //            return [
 //                'code' => 10000,
@@ -295,20 +293,6 @@ class WxLoginController extends Controller
 //        }
 //        $this->sessionKey = $userInfo['session_key'];
         return $userInfo;
-
-//        if(!isset($apiData['errcode'])){
-//            $sessionKey = json_decode($apiData)->session_key;
-//            $userifo = new \WXBizDataCrypt($appid, $sessionKey);
-//
-//            $errCode = $userifo->decryptData($encryptedData, $iv, $data );
-//
-//            dump($data);
-//        }
-
-        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
-//        $userInfo = $this->wxxcx->getLoginInfo($code);
-
-
 
     }
 
