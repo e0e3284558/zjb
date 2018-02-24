@@ -317,10 +317,10 @@ class WxLoginController extends Controller
                 oKlaRv85IfVunYzO0IKXsyl7JCUjCpoG
                 20f0a04COwfneQAGGwd5oa+T8yO5hzuy
                 Db/XcxxmK01EpqOyuxINew==";
-//
+
         $iv = 'r7BXXKkLb8qrSNn05n0qiA==';
 
-        $pc = new WXBizDataCrypt($appid, $sessionKey);
+        $pc = new WXBizDataCrypt($appid, null);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
