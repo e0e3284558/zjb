@@ -278,9 +278,11 @@ class WxLoginController extends Controller
 
         $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
 
+        dump($URL);
+
         $userInfo = file_get_contents($URL);
 
-        dump(json_decode($userInfo));
+        dump($userInfo);
         dd();
 
 //        $code2session_url = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
