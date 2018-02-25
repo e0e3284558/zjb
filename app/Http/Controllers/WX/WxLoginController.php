@@ -292,41 +292,13 @@ class WxLoginController extends Controller
 
         $user = $app->auth->session($code);
 
-        $pc = new WXBizDataCrypt($appid, $user['session_key']);
-        $errCode = $pc->decryptData($encryptedData, $iv, $data );
-        return json_decode($data);
+        dump($user);
+
+//        $pc = new WXBizDataCrypt($appid, $user['session_key']);
+//        $errCode = $pc->decryptData($encryptedData, $iv, $data );
 //        if ($errCode == 0) {
 //            $userInfo = json_decode($data);
 //            return $userInfo;
-//            dump($userInfo);
-            //首先判断维修人员是否已经认证
-//            $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
-//
-//            if($workerInfo){
-//                if($workerInfo->openid){
-//                    //获取解密后的用户信息
-//                    return $userInfo;
-//                }else{
-//                    return $message = [
-//                        'code' => 0,
-//                        'message' => '对不起，你不是维修人员'
-//                    ];
-//                }
-//            }else{
-//                //获取解密后的用户信息
-//                $judge = ServiceWorker::where("openid",$userInfo->openId)->first();
-//
-//                if(!$judge){
-//                    return $message = [
-//                        'code' => 0,
-//                        'message' => '对不起，你不是维修人员'
-//                    ];
-//                }else{
-//                    //获取解密后的用户信息
-//                    return $userInfo;
-//                }
-//            }
-//
 //        } else {
 //            print($errCode . "\n");
 //        }
