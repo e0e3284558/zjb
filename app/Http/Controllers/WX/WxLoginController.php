@@ -307,7 +307,7 @@ class WxLoginController extends Controller
 
         if ($errCode == 0) {
 //            print($data . "\n");
-//            $data = json_encode($data);
+            $data = json_decode($data);
             dump($data);
             //首先判断维修人员是否已经认证
 //            $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
