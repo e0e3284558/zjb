@@ -198,9 +198,9 @@ class WxLoginController extends Controller
         //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
-
+        $appid = 'wxc6cf5e40791e50d3';
         $config = [
-            'app_id' => 'wxc6cf5e40791e50d3',
+            'app_id' => $appid,
             'secret' => 'f462f2ea18595a45235b5c9512a8575f',
 
             // 下面为可选项
@@ -219,12 +219,9 @@ class WxLoginController extends Controller
 
         $sessionKey = $userInfo['session_key'];
 
-        $appid = 'wxc6cf5e40791e50d3';
-
         $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
-
-
+        
         //授权用户手机号 修改授权状态
         $phone_info = json_decode($data);
 
