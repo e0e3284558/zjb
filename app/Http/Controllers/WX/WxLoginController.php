@@ -260,14 +260,12 @@ class WxLoginController extends Controller
 
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
      */
-    public function workerLogin(Request  $request)
+    public function workerLogin(Request $request)
     {
         //code 在小程序端使用 wx.login 获取
-        $code = $request->code;
+        $code = $request->input('code');
         //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
