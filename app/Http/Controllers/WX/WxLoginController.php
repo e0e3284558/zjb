@@ -270,19 +270,8 @@ class WxLoginController extends Controller
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
 
-
         $appid = "wxc6cf5e40791e50d3" ;
         $secret = "f462f2ea18595a45235b5c9512a8575f";
-//
-//        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
-//
-//        dump($URL);
-//
-//        $userInfo = file_get_contents($URL);
-//
-//        dump($userInfo);
-//        dd();
-
 
         $config = [
             'app_id' => 'wxc6cf5e40791e50d3',
@@ -306,11 +295,8 @@ class WxLoginController extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
-//            print($data . "\n");
-            $data = json_decode($data);
-            dump($data);
-            //首先判断维修人员是否已经认证
-//            $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
+            print($data . "\n");
+//            $data = json_decode($data);
         } else {
             print($errCode . "\n");
         }
