@@ -296,13 +296,12 @@ class WxLoginController extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
-//            print($data . "\n");
             $userInfo = json_decode($data);
+            return $userInfo;
 //            dump($userInfo);
             //首先判断维修人员是否已经认证
-            $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
-
-            dump($workerInfo);
+//            $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
+//
 //            if($workerInfo){
 //                if($workerInfo->openid){
 //                    //获取解密后的用户信息
