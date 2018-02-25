@@ -198,15 +198,28 @@ class WxLoginController extends Controller
         //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
         $encryptedData = request('encryptedData', '');
         $iv = request('iv', '');
-        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
-        $userInfo = $this->wxxcx->getLoginInfo($code);
+
+        $config = [
+            'app_id' => 'wxc6cf5e40791e50d3',
+            'secret' => 'f462f2ea18595a45235b5c9512a8575f',
+
+            // 下面为可选项
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+
+            'log' => [
+                'level' => 'debug',
+                'file' => __DIR__.'/wechat.log',
+            ],
+        ];
+
+        $app = Factory::miniProgram($config);
+
+        $userInfo = $app->auth->session($code);
 
         $sessionKey = $userInfo['session_key'];
-        if($request->code==2){
-            $appid = 'wxc6cf5e40791e50d3';
-        }else{
-            $appid = 'wxfb71758f0f043c02';
-        }
+
+        $appid = 'wxc6cf5e40791e50d3';
 
         $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
@@ -257,6 +270,7 @@ class WxLoginController extends Controller
 
     /**
      * @param Request $request
+     * @return mixed
      */
     public function workerLogin(Request $request)
     {
@@ -291,14 +305,10 @@ class WxLoginController extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
-//            print($data . "\n");
-//            $data = json_decode($data);
             return $data;
         } else {
             print($errCode . "\n");
         }
-
-
 
     }
 
