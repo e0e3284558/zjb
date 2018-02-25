@@ -168,8 +168,6 @@ class WxLoginController extends Controller
     public function phoneAuthorize(Request $request){
         //$request->role   1 普通用户  2 维修人员
         $info = ServiceWorker::where("openid",$request->openId)->first();
-        dump($info);
-        dd();
         if($info){
             $message=[
                 'code' => 1,
@@ -293,8 +291,9 @@ class WxLoginController extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
-            print($data . "\n");
-//            $data = json_decode($data);
+//            print($data . "\n");
+            $data = json_decode($data);
+            return $data;
         } else {
             print($errCode . "\n");
         }
