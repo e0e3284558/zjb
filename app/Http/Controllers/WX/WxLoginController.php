@@ -18,32 +18,32 @@ include_once   app_path('/Http/Controllers/WX/wxBizDataCrypt.php');
 
 class WxLoginController extends Controller
 {
-    protected $wxxcx;
+//    protected $wxxcx;
 
-    public function __construct(Wxxcx $wxxcx)
-    {
-        $this->wxxcx = $wxxcx;
-    }
+//    public function __construct(Wxxcx $wxxcx)
+//    {
+//        $this->wxxcx = $wxxcx;
+//    }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(Request  $request)
-    {
-        //code 在小程序端使用 wx.login 获取
-        $code = $request->input('code');
-        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
-        $encryptedData = request('encryptedData', '');
-        $iv = request('iv', '');
-        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
-        $userInfo = $this->wxxcx->getLoginInfo($code);
-
-        //获取解密后的用户信息
-        return $this->wxxcx->getUserInfo($encryptedData, $iv);
-
-    }
+//    public function login(Request  $request)
+//    {
+//        //code 在小程序端使用 wx.login 获取
+//        $code = $request->input('code');
+//        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
+//        $encryptedData = request('encryptedData', '');
+//        $iv = request('iv', '');
+//        //根据 code 获取用户 session_key 等信息, 返回用户openid 和 session_key
+//        $userInfo = $this->wxxcx->getLoginInfo($code);
+//
+//        //获取解密后的用户信息
+//        return $this->wxxcx->getUserInfo($encryptedData, $iv);
+//
+//    }
 
     public function addUser(Request $request){
         //获取资产的org_id
