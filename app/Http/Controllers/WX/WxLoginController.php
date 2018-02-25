@@ -292,7 +292,7 @@ class WxLoginController extends Controller
 
         if ($errCode == 0) {
 //            print($data . "\n");
-            $data = json_decode($data);
+            $data = json_encode($data);
             return $data;
         } else {
             print($errCode . "\n");
