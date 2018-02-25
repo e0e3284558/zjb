@@ -271,8 +271,8 @@ class WxLoginController extends Controller
         $iv = request('iv', '');
 
 
-//        $appid = "wxc6cf5e40791e50d3" ;
-//        $secret = "f462f2ea18595a45235b5c9512a8575f";
+        $appid = "wxc6cf5e40791e50d3" ;
+        $secret = "f462f2ea18595a45235b5c9512a8575f";
 //
 //        $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
 //
@@ -300,7 +300,16 @@ class WxLoginController extends Controller
 
         $app = Factory::miniProgram($config);
 
-        dump($app->auth->session($code));
+        $user = $app->auth->session($code);
+
+        $pc = new WXBizDataCrypt($appid, $user['session_key']);
+        $errCode = $pc->decryptData($encryptedData, $iv, $data );
+
+        if ($errCode == 0) {
+            print($data . "\n");
+        } else {
+            print($errCode . "\n");
+        }
 
     }
 
