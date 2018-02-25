@@ -221,7 +221,7 @@ class WxLoginController extends Controller
 
         $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
-        
+
         //授权用户手机号 修改授权状态
         $phone_info = json_decode($data);
 
