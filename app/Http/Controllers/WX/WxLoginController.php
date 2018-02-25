@@ -264,15 +264,15 @@ class WxLoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-//    public function workerLogin(Request  $request)
-//    {
-//        //code 在小程序端使用 wx.login 获取
-//        $code = $request->code;
-//        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
-//        $encryptedData = request('encryptedData', '');
-//        $iv = request('iv', '');
-//
-//
+    public function workerLogin(Request  $request)
+    {
+        //code 在小程序端使用 wx.login 获取
+        $code = $request->code;
+        //encryptedData 和 iv 在小程序端使用 wx.getUserInfo 获取
+        $encryptedData = request('encryptedData', '');
+        $iv = request('iv', '');
+
+
 //        $appid = "wxc6cf5e40791e50d3" ;
 //        $secret = "f462f2ea18595a45235b5c9512a8575f";
 //
@@ -284,62 +284,30 @@ class WxLoginController extends Controller
 //
 //        dump($userInfo);
 //        dd();
-//
-//
-//        $appid = 'wx4f4bc4dec97d474b';
-//        $sessionKey = 'tiihtNczf5v6AKRyjwEUhQ==';
-//
-//        $encryptedData="CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZM
-//            QmRzooG2xrDcvSnxIMXFufNstNGTyaGS
-//                9uT5geRa0W4oTOb1WT7fJlAC+oNPdbB+
-//                3hVbJSRgv+4lGOETKUQz6OYStslQ142d
-//                NCuabNPGBzlooOmB231qMM85d2/fV6Ch
-//                evvXvQP8Hkue1poOFtnEtpyxVLW1zAo6
-//                /1Xx1COxFvrc2d7UL/lmHInNlxuacJXw
-//                u0fjpXfz/YqYzBIBzD6WUfTIF9GRHpOn
-//                /Hz7saL8xz+W//FRAUid1OksQaQx4CMs
-//                8LOddcQhULW4ucetDf96JcR3g0gfRK4P
-//                C7E/r7Z6xNrXd2UIeorGj5Ef7b1pJAYB
-//                6Y5anaHqZ9J6nKEBvB4DnNLIVWSgARns
-//                /8wR2SiRS7MNACwTyrGvt9ts8p12PKFd
-//                lqYTopNHR1Vf7XjfhQlVsAJdNiKdYmYV
-//                oKlaRv85IfVunYzO0IKXsyl7JCUjCpoG
-//                20f0a04COwfneQAGGwd5oa+T8yO5hzuy
-//                Db/XcxxmK01EpqOyuxINew==";
-//
-//        $iv = 'r7BXXKkLb8qrSNn05n0qiA==';
-//
-//        $pc = new WXBizDataCrypt($appid, $sessionKey);
-//        $errCode = $pc->decryptData($encryptedData, $iv, $data );
-//
-//        if ($errCode == 0) {
-//            print($data . "\n");
-//        } else {
-//            print($errCode . "\n");
-//        }
-//    }
 
-    public function httpRequest($url, $data = null)
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-        if (!empty($data)){
-            curl_setopt($curl, CURLOPT_POST, 1);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        }
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($curl);
-        if($output === FALSE ){
-            return false;
-        }
-        curl_close($curl);
-        return json_decode($output,JSON_UNESCAPED_UNICODE);
+
+        $config = [
+            'app_id' => 'wxc6cf5e40791e50d3',
+            'secret' => 'f462f2ea18595a45235b5c9512a8575f',
+
+            // 下面为可选项
+            // 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名
+            'response_type' => 'array',
+
+            'log' => [
+                'level' => 'debug',
+                'file' => __DIR__.'/wechat.log',
+            ],
+        ];
+
+        $app = Factory::miniProgram($config);
+
+        dump($app->auth->session($code));
+
     }
 
 
-    public function workerLogin(Request  $request)
+    /*public function workerLogin(Request  $request)
     {
         //code 在小程序端使用 wx.login 获取
         $code = $request->input('code');
@@ -378,7 +346,7 @@ class WxLoginController extends Controller
             //获取解密后的用户信息
             return $this->wxxcx->getUserInfo($encryptedData, $iv);
         }
-    }
+    }*/
 
     /**
      * 利用资产的org_id查找公司是否需要LDAP验证登录
