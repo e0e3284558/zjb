@@ -278,9 +278,9 @@ class WxLoginController extends Controller
 
         $URL = "https://api.weixin.qq.com/sns/jscode2session?appid=$appid&secret=$secret&js_code=$code&grant_type=authorization_code";
 
-        $userInfo = $this->httpRequest($URL);
+        $userInfo = file_get_contents($URL);
 
-        dump($userInfo);
+        dump(json_decode($userInfo));
         dd();
 
 //        $code2session_url = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code";
@@ -324,7 +324,7 @@ class WxLoginController extends Controller
 
         $iv = 'r7BXXKkLb8qrSNn05n0qiA==';
 
-        $pc = new WXBizDataCrypt($appid, null);
+        $pc = new WXBizDataCrypt($appid, $sessionKey);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
@@ -343,7 +343,7 @@ class WxLoginController extends Controller
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-//        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
         if (!empty($data)){
             curl_setopt($curl, CURLOPT_POST, 1);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
