@@ -306,10 +306,16 @@ class WxLoginController extends Controller
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
 
         if ($errCode == 0) {
-            print($data . "\n");
+//            print($data . "\n");
+            $data = json_encode($data);
+            dump($data);
+            //首先判断维修人员是否已经认证
+//            $workerInfo = ServiceWorker::where("union_id",$userInfo['unionid'])->first();
         } else {
             print($errCode . "\n");
         }
+
+
 
     }
 
