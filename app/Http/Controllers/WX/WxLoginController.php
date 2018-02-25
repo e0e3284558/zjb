@@ -294,10 +294,10 @@ class WxLoginController extends Controller
 
         $pc = new WXBizDataCrypt($appid, $user['session_key']);
         $errCode = $pc->decryptData($encryptedData, $iv, $data );
-
-        if ($errCode == 0) {
-            $userInfo = json_decode($data);
-            return $userInfo;
+        return json_decode($data);
+//        if ($errCode == 0) {
+//            $userInfo = json_decode($data);
+//            return $userInfo;
 //            dump($userInfo);
             //首先判断维修人员是否已经认证
 //            $workerInfo = ServiceWorker::where("union_id",$userInfo->unionId)->first();
@@ -326,10 +326,10 @@ class WxLoginController extends Controller
 //                    return $userInfo;
 //                }
 //            }
-
-        } else {
-            print($errCode . "\n");
-        }
+//
+//        } else {
+//            print($errCode . "\n");
+//        }
     }
 
 
