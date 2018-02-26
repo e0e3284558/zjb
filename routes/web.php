@@ -359,3 +359,12 @@ Route::group(['prefix' => 'wechat', 'namespace' => 'Wechat'], function () {
 //微信小程序API路由结束
 
 
+//检查设备路由开始
+//-------------------------------------------------------------------------
+Route::group(['prefix' => 'check', 'namespace' => 'Check'], function () {
+    //点检管理
+    Route::resource("little_check",'LittleCheckController');
+});
+
+//-------------------------------------------------------------------------
+//检查设备路由结束

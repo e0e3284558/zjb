@@ -36,6 +36,20 @@
             </li>
         </ul>
     </li>
+    <li class="{{ active_class(if_uri_pattern('check/*')) }}">
+        <a href="javascript:;"><i class="fa fa-wrench"></i> <span class="nav-label">检查管理</span> <span
+                    class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse">
+            <li class="{{ active_class(if_route('little_check.index'))}}"><a
+                        href="{{ url('check/little_check?app_groups=check') }}"><i
+                            class="fa fa-angle-right"></i>
+                    点检管理</a>
+            </li>
+            <li class="{{ active_class(if_route('inspection.index'))}}"><a
+                        href="{{ url('check/inspection?app_groups=check') }}"><i class="fa fa-angle-right"></i> 巡检管理</a>
+            </li>
+        </ul>
+    </li>
 @if(Auth::user()->is_org_admin=="0")
     <li class="{{ active_class(if_route('repair_list.index'))}}"><a
                 href="{{ url('repair/repair_list?app_groups=repair') }}"><i class="fa fa-angle-right"></i>
