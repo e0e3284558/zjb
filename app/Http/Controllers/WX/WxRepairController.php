@@ -536,6 +536,7 @@ class WxRepairController extends Controller
             $service_img_url = null;
         }
         $arr = [
+            'asset_uuid' => Asset::where("id",$repair_info->asset_id)->value("asset_uid"),
             'field_path' => get_area($repair_info->area_id),
             'remarks' => $repair_info->remarks,
             'img_url' => $img_url,
