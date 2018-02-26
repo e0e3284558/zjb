@@ -401,7 +401,7 @@ class CreateRepairController extends Controller
         $repair->service_worker_id = $request->service_worker_id;
         $worker_info = ServiceWorker::find($repair->service_worker_id);
         $asset = Asset::find($repair->asset_id);
-        $address = get_area($asset->area_id?$asset->area_id:$repair->area_id);
+        $address = get_area($asset->area_id ? $asset->area_id : $repair->area_id);
         $repair->service_provider_id = $request->service_provider_id;
         $repair->status = 2;
 
@@ -416,7 +416,7 @@ class CreateRepairController extends Controller
             "topcolor" => "#FF0000",
             "data" => [
                 "first" => [
-                    "value" => '尊敬的'.$worker_info->name.'您好',
+                    "value" => '尊敬的' . $worker_info->name . '您好',
                     "color" => "#173177"
                 ],
                 "keyword1" => [
@@ -424,7 +424,7 @@ class CreateRepairController extends Controller
                     "color" => "#173177"
                 ],
                 "keyword2" => [
-                    "value" =>get_asset_name($repair->asset_id),
+                    "value" => get_asset_name($repair->asset_id),
                     "color" => "#173177"
                 ],
                 "keyword3" => [
@@ -452,7 +452,7 @@ class CreateRepairController extends Controller
 
         //提交微信公众号推送通知
         $wx_data = json_encode($wx_data);
-        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$token;
+        $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $token;
         $jsonStr = $wx_data;
         list($returnCode, $returnContent) = $this->http_post_json($url, $jsonStr);
 
@@ -464,6 +464,7 @@ class CreateRepairController extends Controller
                 'asset' => $asset->name,
                 'address' => $address
             );
+            // 短信通知维修人员
             SendShortMessage::dispatch($data);
 
             return response()->json([
@@ -482,8 +483,7 @@ class CreateRepairController extends Controller
      * 管理员更改状态
      * @param $id
      */
-    public
-    function changeStatus($id)
+    public function changeStatus($id)
     {
         if ($res = is_permission('create.repair.edit')) {
             return $res;

@@ -92,7 +92,7 @@ class WxRepairController extends Controller
             }
 
             $repair = Process::find($process_id);
-            $repair->service_worker_id = 13;
+            $repair->service_worker_id = $repair->service_worker_id;
             $worker_info = ServiceWorker::find($repair->service_worker_id);
             $asset = Asset::find($repair->asset_id);
             $address = get_area($asset->area_id?$asset->area_id:$repair->area_id);
