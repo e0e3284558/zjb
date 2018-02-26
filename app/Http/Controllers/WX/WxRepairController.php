@@ -90,84 +90,9 @@ class WxRepairController extends Controller
                     }
                 }
             }
-
-            $repair = Process::find($process_id);
-            $repair->service_worker_id = $repair->service_worker_id;
-            $worker_info = ServiceWorker::find($repair->service_worker_id);
-            $asset = Asset::find($repair->asset_id);
-            $address = get_area($asset->area_id?$asset->area_id:$repair->area_id);
-            $repair->service_provider_id = $request->service_provider_id;
-            $repair->status = 2;
-
-            if ($repair->save()) {
-                //使用方法
-                $data = array(
-                    'username' => $worker_info->name,
-                    'tel' => $worker_info->tel,
-                    'asset' => $asset->name,
-                    'address' => $address
-                );
-
-
-                $wx_data = [
-                    "touser" => $worker_info->g_open_id,
-                    "template_id" => "UaoimdRLOiz0bHgT7zpeMN_j2EpUJrs6mEgkOCsCplw",
-                    "miniprogram" => [
-                        "appid" => "wxfb71758f0f043c02",
-                        "pagepath" => "/pages/index/service/service"
-                    ],
-                    "topcolor" => "#FF0000",
-                    "data" => [
-                        "first" => [
-                            "value" => '尊敬的'.$worker_info->name.'您好',
-                            "color" => "#173177"
-                        ],
-                        "keyword1" => [
-                            "value" => get_org($repair->org_id),
-                            "color" => "#173177"
-                        ],
-                        "keyword2" => [
-                            "value" =>get_asset_name($repair->asset_id),
-                            "color" => "#173177"
-                        ],
-                        "keyword3" => [
-                            "value" => date('Y-m-d H:m'),
-                            "color" => "#173177"
-                        ],
-                        "keyword4" => [
-                            "value" => get_area($repair->area_id),
-                            "color" => "#173177"
-                        ],
-                        "keyword5" => [
-                            "value" => "信息中心",
-                            "color" => "#173177"
-                        ],
-                        "remark" => [
-                            "value" => "感谢您的使用",
-                            "color" => "#173177"
-                        ],
-                    ]
-                ];
-
-                //提交微信公众号推送通知
-                $wx_data = json_encode($wx_data);
-                $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx9105e296fd5119cf&secret=3e8211e98a09d18c9410823e9f2781cf';
-                $html = file_get_contents($url);
-                $token = (json_decode($html)->access_token);
-                $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$token;
-                $jsonStr = $wx_data;
-                list($returnCode, $returnContent) = $this->http_post_json($url, $jsonStr);
-
-                SendShortMessage::dispatch($data);
-            }
             return $message = [
                 'code' => 1,
                 'message' => '报修成功'
-            ];
-        } else {
-            return $message = [
-                'code' => 0,
-                'message' => '报修失败'
             ];
         }
     }
