@@ -20,6 +20,7 @@ class CreateChecksTable extends Migration
             $table->integer("status")->default(0)->comment("点检状态 0|未分派 1|已分派未点检 2|已点检");
             $table->string("remarks")->nullable()->comment("点检结果描述");
             $table->string("asset_status")->nullable()->comment("点检资产情况 0|有问题,请求解决 1|检查正常 2|有问题已解决");
+            $table->dateTime("check_time")->nullable();
             $table->timestamps();
         });
     }

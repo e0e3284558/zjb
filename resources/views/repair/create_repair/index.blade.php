@@ -165,7 +165,7 @@
                                                               data-toggle="modal" data-target=".bs-example-modal-lg"
                                                               title="详情">点击查看详情</span>
                                                             </td>
-                                                            <td>{{$v->serviceWorker->name}}</td>
+                                                            <td>{{@$v->serviceWorker->name}}</td>
                                                             <td>
                                                                 <button class="btn btn-warning btn-sm left"
                                                                         data-toggle="modal"
