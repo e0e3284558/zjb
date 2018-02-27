@@ -178,7 +178,7 @@ class WxRepairController extends Controller
                     $array['path'] = get_area($v->area_id);
                     $array['repair_id'] = $v->id;
                     //图片
-                    $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
+                    $img_list = DB::table("file_process")->where(["process_id"=>$v->id,"is_worker"=>null])->get();
                     if ($img_list) {
                         foreach ($img_list as $value) {
                             $array['img_url'][] = File::where("id", $value->file_id)->value("url");
