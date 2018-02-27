@@ -177,13 +177,23 @@ class WxRepairController extends Controller
                     $array['name'] = Classify::where("id",$v->classify_id)->value("name");
                     $array['path'] = get_area($v->area_id);
                     $array['repair_id'] = $v->id;
-                    //图片
-                    $img_list = DB::table("file_process")->where(["process_id"=>$v->id,"is_worker"=>null])->get();
-                    if ($img_list) {
-                        foreach ($img_list as $value) {
-                            $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+
+                    //用户拍摄图片
+                    $list = Process::where("id", $v->id)->with("img")->first()->img;
+                    if ($list) {
+                        foreach ($list as $v) {
+                            $array['img_url'][] = File::where("id", $v->id)->value("url");
                         }
                     }
+
+                    //图片
+                    //$img_list = DB::table("file_process")->where("process_id", $v->id)->with("img")->first()->img;
+
+//                    if ($img_list) {
+//                        foreach ($img_list as $value) {
+//                            $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+//                        }
+//                    }
                     $array['complain'] = $v->complain;
                 }else{
                     //资产名称
@@ -327,13 +337,22 @@ class WxRepairController extends Controller
             }
             $array['repair_id'] = $v->id;
             $array['path'] = get_area($v->area_id);
-            //图片
-            $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
-            if ($img_list) {
-                foreach ($img_list as $value) {
-                    $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+//            //图片
+//            $img_list = DB::table("file_process")->where("process_id", $v->id)->get();
+//            if ($img_list) {
+//                foreach ($img_list as $value) {
+//                    $array['img_url'][] = File::where("id", $value->file_id)->value("url");
+//                }
+//            }
+
+            //用户拍摄图片
+            $list = Process::where("id", $v->id)->with("img")->first()->img;
+            if ($list) {
+                foreach ($list as $value) {
+                    $array['img_url'][] = File::where("id", $value->id)->value("url");
                 }
             }
+
             $arr[] = $array;
         }
         return response()->json($arr);
