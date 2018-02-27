@@ -65,7 +65,7 @@
                                                     <td>{{@get_area($v->area_id)}}</td>
 
                                                     @if($v->classify && (!$v->asset_id))
-                                                        <td>{{$v->classify->name}}</td>
+                                                        <td>{{$v->classify->name?$v->classify->name:""}}</td>
                                                     @else
                                                         <td>{{@$v->asset->name}}</td>
                                                     @endif
@@ -100,9 +100,9 @@
                                                 <tr>
                                                     <td>{{@get_area($v->area_id)}}</td>
                                                     @if($v->classify && (!$v->asset_id))
-                                                        <td>{{$v->classify->name}}</td>
+                                                        <td>{{$v->classify->name?$v->classify->name:""}}</td>
                                                     @else
-                                                        <td>{{$v->asset->name}}</td>
+                                                        <td>{{$v->asset->name?$v->asset->name:""}}</td>
                                                     @endif
 
                                                     <td>
