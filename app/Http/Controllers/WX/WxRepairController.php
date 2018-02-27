@@ -179,10 +179,10 @@ class WxRepairController extends Controller
                     $array['repair_id'] = $v->id;
 
                     //用户拍摄图片
-                    $list = Process::where("id", $v->id)->with("img")->first()->img;
-                    if ($list) {
-                        foreach ($list as $v) {
-                            $array['img_url'][] = File::where("id", $v->id)->value("url");
+                    $img_list = Process::where("id", $v->id)->with("img")->first()->img;
+                    if ($img_list) {
+                        foreach ($img_list as $value) {
+                            $array['img_url'][] = File::where("id", $value->id)->value("url");
                         }
                     }
 
