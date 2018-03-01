@@ -206,7 +206,7 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::get('asset/add_import', 'AssetController@add_import');
     Route::post('asset/import', 'AssetController@import');
     Route::get('asset/slt_supplier/{id}', 'AssetController@slt_supplier');
-    Route::resource('asset', 'AssetController');
+
 
     //资产调拨
     Route::get('asset_transfer/slt_asset',"AssetTransferController@slt_asset");
@@ -263,6 +263,11 @@ Route::group(["namespace" => "Asset", 'middleware' => ['auth']], function () {
     Route::post("upload/uploadFile", "UploadController@uploadFile");
     Route::resource("upload", "UploadController");
 });
+
+Route::group(["namespace" => "Asset"], function () {
+    Route::resource('asset', 'AssetController');
+});
+
 //-------------------------------------------------------------------------
 //资产管理模块路由开始
 
