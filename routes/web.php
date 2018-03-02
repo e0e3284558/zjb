@@ -148,6 +148,9 @@ Route::group(['prefix' => 'repair', 'namespace' => 'Repair', 'middleware' => 'au
     Route::get('repair_list/showImg/{id}','RepairListController@showImg');
     Route::resource('repair_list','RepairListController');
 
+    //维修日志记录
+    Route::resource('repair_log','RepairLogController');
+
 });
 Route::group(['prefix' => 'repair', 'namespace' => 'Repair','middleware' => 'auth:service_workers'], function () {
 
